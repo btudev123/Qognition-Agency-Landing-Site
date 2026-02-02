@@ -28,11 +28,20 @@ export interface Service {
   relatedIndustries: string[];
 }
 
+export interface SubIndustry {
+  name: string;
+  slug: string; // URL friendly ID
+  description: string;
+  features: string[];
+  benefits?: string[]; // New: Key selling points
+  faqs?: FAQ[];       // New: Specific FAQs
+}
+
 export interface Industry {
   id: string;
   name: string;
   description: string;
-  subIndustries: string[];
+  subIndustries: SubIndustry[]; 
   painPoints: string[];
   solutions: string[];
   relatedServices: string[];
@@ -88,7 +97,7 @@ export interface SchemaData {
   description?: string;
   url?: string;
   image?: string;
-  type?: 'Organization' | 'WebSite' | 'Service' | 'Article' | 'Place' | 'SoftwareApplication';
+  type?: 'Organization' | 'WebSite' | 'Service' | 'Article' | 'Place' | 'SoftwareApplication' | 'CollectionPage';
   [key: string]: any;
 }
 
@@ -96,17 +105,17 @@ export interface SchemaData {
 export interface Tool {
   id: string;
   name: string;
-  category: string; // e.g., "SEO", "AI", "Analytics"
+  category: string;
   shortDescription: string;
   fullDescription: string;
   pricing: 'Free' | 'Freemium' | 'Paid' | 'Enterprise' | 'Open Source';
   websiteUrl: string;
-  rating: number; // 1-5
+  rating: number;
   tags: string[];
-  agencyVerdict: string; // The "Qognition Take"
-  relatedServiceId?: string; // Link back to internal service
-  imageUrl?: string; // Optional image from Product Hunt
-  votesCount?: number; // Optional Product Hunt votes
+  agencyVerdict: string;
+  relatedServiceId?: string;
+  imageUrl?: string;
+  votesCount?: number;
 }
 
 export interface ToolCategory {
@@ -114,17 +123,16 @@ export interface ToolCategory {
   name: string;
   description: string;
   slug: string;
-  phTopicSlug?: string; // Product Hunt Topic Slug
+  phTopicSlug?: string;
 }
 
-// Product Hunt API Types
 export interface PHPost {
   id: string;
   name: string;
   tagline: string;
   description: string;
   url: string;
-  slug: string; // Added slug
+  slug: string;
   website: string;
   thumbnail: {
     url: string;
