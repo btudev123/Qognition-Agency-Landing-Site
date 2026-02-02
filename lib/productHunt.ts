@@ -1,12 +1,5 @@
 import { PHPost } from '../types';
 
-const API_KEY = "7F2ibwHqAZ82bsGNiIhZADWvF7sc2pqt3QQK-gAs55c";
-const API_SECRET = "bQ7BWD2gdTSy1e1LCg-1b2eGYqFfWKaf0Jn3adYI2RI";
-const GRAPHQL_ENDPOINT = "https://api.producthunt.com/v2/api/graphql";
-const TOKEN_ENDPOINT = "https://api.producthunt.com/v2/oauth/token";
-
-let accessToken: string | null = null;
-
 export interface PHPageInfo {
     endCursor: string;
     hasNextPage: boolean;
@@ -24,48 +17,22 @@ export interface PHTopic {
     description?: string;
 }
 
-async function getAccessToken(): Promise<string> {
-  if (accessToken) return accessToken;
-
-  try {
-    const response = await fetch(TOKEN_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        client_id: API_KEY,
-        client_secret: API_SECRET,
-        grant_type: "client_credentials",
-      }),
-    });
-
-    const data = await response.json();
-    if (data.access_token) {
-      accessToken = data.access_token;
-      return data.access_token;
-    }
-    throw new Error("Failed to get access token");
-  } catch (error) {
-    console.error("Product Hunt Auth Error:", error);
-    return "";
-  }
-}
-
-// Helper to execute GraphQL queries
+// Helper to execute GraphQL queries via our Vercel API Proxy
+// This prevents CORS errors and hides the Access Token from the browser
 async function phQuery(query: string, variables: any = {}) {
-  const token = await getAccessToken();
-  if (!token) return null;
-
   try {
-    const response = await fetch(GRAPHQL_ENDPOINT, {
+    const response = await fetch("/api/ph", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify({ query, variables }),
     });
+    
+    if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`);
+    }
+
     return await response.json();
   } catch (error) {
     console.error("Product Hunt Query Error:", error);
