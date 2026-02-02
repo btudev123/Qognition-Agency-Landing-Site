@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
@@ -6,13 +7,15 @@ interface ParallaxImageProps {
   alt: string;
   className?: string;
   aspectRatio?: string;
+  priority?: boolean;
 }
 
 const ParallaxImage: React.FC<ParallaxImageProps> = ({ 
   src, 
   alt, 
   className = "",
-  aspectRatio = "aspect-video" 
+  aspectRatio = "aspect-video",
+  priority = false
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   
@@ -36,6 +39,8 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({
         alt={alt}
         style={{ y: smoothY, scale: 1.15 }} // Scale up slightly to avoid empty edges during parallax
         className="w-full h-full object-cover absolute top-0 left-0"
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
       />
     </div>
   );

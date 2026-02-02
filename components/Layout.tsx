@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
-import { NAV_ITEMS, CALENDLY_LINK } from '../constants';
+import { NAV_ITEMS, CALENDLY_LINK, TOOL_CATEGORIES } from '../constants';
 import MagneticButton from './MagneticButton';
 import NeuronBackground from './NeuronBackground';
 
@@ -202,15 +203,20 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </ul>
           </div>
           
-          {/* New Resources Column */}
+          {/* Updated Resources Column */}
           <div className="md:col-span-2">
             <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Resources</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
               <li><Link to="/directory" className="hover:text-white transition-colors font-bold text-teal-200">Tools Directory</Link></li>
-              <li><Link to="/directory?cat=LLMs" className="hover:text-white transition-colors">LLMs & AI</Link></li>
-              <li><Link to="/directory?cat=Engineering" className="hover:text-white transition-colors">Engineering</Link></li>
-              <li><Link to="/directory?cat=Marketing" className="hover:text-white transition-colors">Marketing</Link></li>
-              <li><Link to="/llm" className="hover:text-white transition-colors">LLM Graph</Link></li>
+              {/* Map top 4 categories dynamically */}
+              {TOOL_CATEGORIES.slice(0, 4).map(cat => (
+                 <li key={cat.id}>
+                    <Link to={`/directory/${cat.slug}`} className="hover:text-white transition-colors">
+                        {cat.name}
+                    </Link>
+                 </li>
+              ))}
+              <li><Link to="/blog" className="hover:text-white transition-colors">Insights & Blog</Link></li>
             </ul>
           </div>
 
