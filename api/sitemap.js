@@ -22,7 +22,8 @@ export default async function handler(request, response) {
   const industries = ['law-legal', 'financial-services', 'ecommerce', 'saas-tech', 'healthcare', 'real-estate'];
   const regions = ['usa', 'uk', 'uae-ksa', 'india', 'australia'];
   const caseStudies = ['fintech-scale', 'saas-brand', 'retail-ai'];
-  const toolCategories = ['llms', 'engineering', 'marketing', 'design', 'social', 'finance', 'ai-agents'];
+  // Updated with new slugs from constants.tsx
+  const toolCategories = ['llm', 'engineering', 'marketing', 'design', 'social', 'finance', 'ai-agents'];
 
   try {
     // --- 3. EXTERNAL DYNAMIC DATA (Product Hunt) ---
@@ -56,6 +57,7 @@ export default async function handler(request, response) {
               edges {
                 node {
                   id
+                  slug
                   topics(first: 1) { edges { node { slug } } }
                 }
               }
@@ -70,6 +72,7 @@ export default async function handler(request, response) {
               edges {
                 node {
                   id
+                  slug
                   topics(first: 1) { edges { node { slug } } }
                 }
               }
@@ -107,7 +110,7 @@ export default async function handler(request, response) {
         allToolsRaw.forEach(tool => {
             if (!uniqueTools.has(tool.id)) {
                 uniqueTools.set(tool.id, {
-                    id: tool.id,
+                    id: tool.slug || tool.id, // Prefer Slug
                     category: tool.topics.edges[0]?.node.slug || 'tech'
                 });
             }

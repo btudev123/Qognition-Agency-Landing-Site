@@ -1,3 +1,4 @@
+
 import { PHPost } from '../types';
 
 export interface PHPageInfo {
@@ -18,7 +19,6 @@ export interface PHTopic {
 }
 
 // Helper to execute GraphQL queries via our Vercel API Proxy
-// This prevents CORS errors and hides the Access Token from the browser
 async function phQuery(query: string, variables: any = {}) {
   try {
     const response = await fetch("/api/ph", {
@@ -55,6 +55,7 @@ export async function fetchToolsByTopic(topicSlug: string, cursor?: string): Pro
             tagline
             description
             url
+            slug
             website
             votesCount
             thumbnail {
@@ -64,6 +65,7 @@ export async function fetchToolsByTopic(topicSlug: string, cursor?: string): Pro
               edges {
                 node {
                   name
+                  slug
                 }
               }
             }
@@ -95,6 +97,7 @@ export async function fetchTrendingTools(cursor?: string): Promise<PHFetchResult
               tagline
               description
               url
+              slug
               website
               votesCount
               thumbnail {
@@ -104,6 +107,7 @@ export async function fetchTrendingTools(cursor?: string): Promise<PHFetchResult
                 edges {
                   node {
                     name
+                    slug
                   }
                 }
               }
@@ -120,15 +124,21 @@ export async function fetchTrendingTools(cursor?: string): Promise<PHFetchResult
     };
 }
 
-export async function fetchToolDetails(id: string): Promise<PHPost | null> {
+export async function fetchToolDetails(idOrSlug: string): Promise<PHPost | null> {
+  // Determine query variable based on format
+  // If it's a numeric string, assume ID (though V2 IDs are strings/base64, numeric might work for legacy).
+  // If it has hyphens or letters, assume slug.
+  const isSlug = isNaN(Number(idOrSlug));
+
   const query = `
-    query getPost($id: ID!) {
-      post(id: $id) {
+    query getPost($id: ID, $slug: String) {
+      post(id: $id, slug: $slug) {
         id
         name
         tagline
         description
         url
+        slug
         website
         votesCount
         thumbnail {
@@ -138,6 +148,7 @@ export async function fetchToolDetails(id: string): Promise<PHPost | null> {
           edges {
             node {
               name
+              slug
             }
           }
         }
@@ -145,7 +156,8 @@ export async function fetchToolDetails(id: string): Promise<PHPost | null> {
     }
   `;
 
-  const data = await phQuery(query, { id });
+  const variables = isSlug ? { slug: idOrSlug } : { id: idOrSlug };
+  const data = await phQuery(query, variables);
   return data?.data?.post || null;
 }
 

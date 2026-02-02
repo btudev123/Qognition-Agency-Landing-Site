@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavItem, ClientLogo, Testimonial } from './types';
 
@@ -10,13 +11,13 @@ export { TOOLS } from './data/tools';
 
 // Updated categories with URL-friendly slugs that map to Logic
 export const TOOL_CATEGORIES = [
-    { id: 'llms', name: 'LLMs & AI', description: 'Foundation models and large language models.', slug: 'artificial-intelligence' },
-    { id: 'engineering', name: 'Engineering', description: 'Dev tools and infrastructure.', slug: 'developer-tools' },
-    { id: 'marketing', name: 'Marketing', description: 'Growth, CRM, and Ads.', slug: 'marketing' },
-    { id: 'design', name: 'Design', description: 'Generative AI and UI tools.', slug: 'design-tools' },
-    { id: 'social', name: 'Social', description: 'Social media management.', slug: 'social-media-tools' },
-    { id: 'finance', name: 'Finance', description: 'Fintech and Ops.', slug: 'fintech' },
-    { id: 'productivity', name: 'Productivity', description: 'Workflow automation.', slug: 'productivity' },
+    { id: 'llms', name: 'LLMs & AI Models', description: 'Foundation models and large language models for enterprise intelligence.', slug: 'llm', phTopicSlug: 'artificial-intelligence' },
+    { id: 'engineering', name: 'Engineering & Dev', description: 'Tools for building, deploying, and scaling modern web applications.', slug: 'engineering', phTopicSlug: 'developer-tools' },
+    { id: 'marketing', name: 'Marketing & Sales', description: 'Platforms for growth, CRM, and customer acquisition.', slug: 'marketing', phTopicSlug: 'marketing' },
+    { id: 'design', name: 'Design & Creative', description: 'Generative AI and UI/UX tools for world-class aesthetics.', slug: 'design', phTopicSlug: 'design-tools' },
+    { id: 'social', name: 'Social & Community', description: 'Tools to manage, schedule, and grow social presence.', slug: 'social', phTopicSlug: 'social-media-tools' },
+    { id: 'finance', name: 'Finance & Ops', description: 'Modern financial stacks for scaling agencies and startups.', slug: 'finance', phTopicSlug: 'fintech' },
+    { id: 'ai-agents', name: 'AI Agents', description: 'Autonomous agents for task automation and research.', slug: 'ai-agents', phTopicSlug: 'artificial-intelligence' },
 ];
 
 export const CALENDLY_LINK = "https://calendly.com/qognition-agency/15min";

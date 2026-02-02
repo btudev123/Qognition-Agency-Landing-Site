@@ -1,19 +1,10 @@
-import { Tool, ToolCategory } from '../types';
 
-export const TOOL_CATEGORIES: ToolCategory[] = [
-    { id: 'llms', name: 'LLMs & AI Models', description: 'Foundation models and large language models for enterprise intelligence.', slug: 'llms' },
-    { id: 'engineering', name: 'Engineering & Dev', description: 'Tools for building, deploying, and scaling modern web applications.', slug: 'engineering' },
-    { id: 'marketing', name: 'Marketing & Sales', description: 'Platforms for growth, CRM, and customer acquisition.', slug: 'marketing' },
-    { id: 'design', name: 'Design & Creative', description: 'Generative AI and UI/UX tools for world-class aesthetics.', slug: 'design' },
-    { id: 'social', name: 'Social & Community', description: 'Tools to manage, schedule, and grow social presence.', slug: 'social' },
-    { id: 'finance', name: 'Finance & Ops', description: 'Modern financial stacks for scaling agencies and startups.', slug: 'finance' },
-    { id: 'ai-agents', name: 'AI Agents', description: 'Autonomous agents for task automation and research.', slug: 'ai-agents' },
-];
+import { Tool, ToolCategory } from '../types';
 
 export const TOOLS: Tool[] = [
     // --- LLMs ---
     {
-        id: 'openai-api',
+        id: 'openai',
         name: 'OpenAI API',
         category: 'LLMs & AI Models',
         shortDescription: 'The industry standard for LLM integration.',
@@ -26,7 +17,7 @@ export const TOOLS: Tool[] = [
         relatedServiceId: 'ai-seo'
     },
     {
-        id: 'anthropic-claude',
+        id: 'claude',
         name: 'Claude 3.5 Sonnet',
         category: 'LLMs & AI Models',
         shortDescription: 'The best model for coding and creative writing.',
@@ -39,7 +30,7 @@ export const TOOLS: Tool[] = [
         relatedServiceId: 'seo'
     },
     {
-        id: 'google-gemini',
+        id: 'gemini',
         name: 'Google Gemini',
         category: 'LLMs & AI Models',
         shortDescription: 'Multimodal AI with massive context windows.',
@@ -214,7 +205,7 @@ export const TOOLS: Tool[] = [
         relatedServiceId: 'web-development'
     },
     {
-        id: 'adobe-firefly',
+        id: 'firefly',
         name: 'Adobe Firefly',
         category: 'Design & Creative',
         shortDescription: 'Commercially safe AI generation.',
@@ -229,7 +220,7 @@ export const TOOLS: Tool[] = [
 
     // --- Social ---
     {
-        id: 'sprout-social',
+        id: 'sprout',
         name: 'Sprout Social',
         category: 'Social & Community',
         shortDescription: 'Enterprise social media management.',

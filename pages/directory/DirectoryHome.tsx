@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
@@ -28,21 +29,23 @@ const DirectoryHome: React.FC = () => {
   const loadTools = async (isLoadMore = false) => {
     setIsLoading(true);
     
-    // If loading more, use the current endCursor, otherwise undefined for first page
     const cursor = isLoadMore && pageInfo ? pageInfo.endCursor : undefined;
     
     try {
       let result: PHFetchResult;
       
-      // Fetch logic based on category presence
-      if (category) {
-          result = await fetchToolsByTopic(category, cursor);
+      // Determine Product Hunt Topic from local config if available, otherwise assume slug is topic
+      const categoryConfig = TOOL_CATEGORIES.find(c => c.slug === category);
+      const phTopic = categoryConfig?.phTopicSlug || category;
+
+      if (phTopic) {
+          result = await fetchToolsByTopic(phTopic, cursor);
       } else {
           result = await fetchTrendingTools(cursor);
       }
 
       const mappedTools: Tool[] = result.posts.map((post: PHPost) => ({
-          id: post.id,
+          id: post.slug || post.id,
           name: post.name,
           category: post.topics.edges[0]?.node.name || 'Tech',
           shortDescription: post.tagline,
@@ -72,17 +75,14 @@ const DirectoryHome: React.FC = () => {
     loadTools(false);
   }, [category]);
 
-  // Merge internal tools if we are on the main page or matching category
   const internalFiltered = TOOLS.filter(tool => {
     if (!category) return true;
-    const catSlug = tool.category.toLowerCase().includes('ai') ? 'artificial-intelligence' 
-                  : tool.category.toLowerCase().includes('marketing') ? 'marketing'
-                  : tool.category.toLowerCase().includes('engineer') ? 'developer-tools'
-                  : 'tech';
-    return catSlug === category;
+    
+    // Reverse lookup: find the config that matches this tool's category name
+    const config = TOOL_CATEGORIES.find(c => c.name === tool.category);
+    return config?.slug === category;
   });
 
-  // Combine and Filter by search
   const allTools = [...internalFiltered, ...phTools].filter(t => 
       t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
       t.shortDescription.toLowerCase().includes(searchTerm.toLowerCase())
@@ -132,7 +132,6 @@ const DirectoryHome: React.FC = () => {
             </p>
         </header>
 
-        {/* Search & Filter */}
         <div className="mb-16 max-w-4xl mx-auto">
             <div className="relative mb-8">
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-500" />
@@ -152,7 +151,6 @@ const DirectoryHome: React.FC = () => {
                 >
                     Trending
                 </Link>
-                {/* Primary Curated Categories */}
                 {TOOL_CATEGORIES.map(cat => (
                     <Link 
                         key={cat.id}
@@ -165,7 +163,6 @@ const DirectoryHome: React.FC = () => {
             </div>
         </div>
 
-        {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {allTools.length > 0 ? (
                 allTools.map((tool, index) => (
@@ -222,7 +219,6 @@ const DirectoryHome: React.FC = () => {
                 </div>
             )}
             
-            {/* Loading Skeletons */}
             {isLoading && (
                [...Array(3)].map((_, i) => (
                   <div key={`skeleton-${i}`} className="h-96 p-8 border border-white/5 rounded-2xl bg-white/5 animate-pulse">
@@ -235,7 +231,6 @@ const DirectoryHome: React.FC = () => {
             )}
         </div>
 
-        {/* Load More Button */}
         {pageInfo?.hasNextPage && !isLoading && (
             <div className="text-center mb-24">
                 <button 
@@ -247,7 +242,6 @@ const DirectoryHome: React.FC = () => {
             </div>
         )}
 
-        {/* Dynamic Topic Cloud (Programmatic SEO Hub) */}
         {topics.length > 0 && (
             <div className="border-t border-white/10 pt-16">
                 <h2 className="font-display text-2xl md:text-3xl mb-8 flex items-center gap-2">

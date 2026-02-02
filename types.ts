@@ -124,6 +124,7 @@ export interface PHPost {
   tagline: string;
   description: string;
   url: string;
+  slug: string; // Added slug
   website: string;
   thumbnail: {
     url: string;
@@ -133,6 +134,7 @@ export interface PHPost {
     edges: {
       node: {
         name: string;
+        slug?: string;
       }
     }[]
   };
