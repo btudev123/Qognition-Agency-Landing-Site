@@ -2,20 +2,28 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Instagram, Linkedin, Twitter, Youtube, Facebook, Dribbble } from 'lucide-react';
 import { NAV_ITEMS, CALENDLY_LINK, TOOL_CATEGORIES } from '../constants';
 import MagneticButton from './MagneticButton';
 import NeuronBackground from './NeuronBackground';
 
-// Custom Qognition Logo Component - Concentric Q with Pointer
+// Custom Icons for ones missing in Lucide (or style preference)
+const BehanceIcon = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 19h-5l-.7-2.3h-3.6L9 19H4l6-16h4l5 16ZM14.1 13h-3.2l1.6-4.9 1.6 4.9ZM22 5h-5M3 5h5M5 3v4" opacity="0" /> {/* Fallback if needed, using custom path for Behance */}
+    <path d="M8 5h7a3 3 0 0 1 0 6H8V5zm7 6a3 3 0 0 1 0 6H8v-6h7zM17 11h5v2h-5z" stroke="none" fill="currentColor"/> 
+    <path d="M18.5 5.5h-3c-1.1 0-2 .9-2 2v.5h-1v-.5c0-1.1-.9-2-2-2h-3c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h3c1.1 0 2-.9 2-2v-.5h1v.5c0 1.1.9 2 2 2h3c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zm-3 7h-2v-2h2v2zm-2-4v-2h2v2h-2zm-6 4h-2v-2h2v2zm-2-4v-2h2v2h-2z" fillRule="evenodd"/>
+    {/* Simple Behance text representation for clarity if path fails */}
+    <text x="2" y="18" fontSize="16" fontWeight="bold" fill="currentColor">Be</text>
+  </svg>
+);
+
+// Custom Qognition Logo Component
 const Logo: React.FC<{ className?: string }> = ({ className = "w-10 h-10" }) => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    {/* Concentric Lines */}
     <path d="M50 20 C66.5685 20 80 33.4315 80 50 C80 66.5685 66.5685 80 50 80 C33.4315 80 20 66.5685 20 50 C20 33.4315 33.4315 20 50 20" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="opacity-100" />
     <path d="M50 32 C59.9411 32 68 40.0589 68 50 C68 59.9411 59.9411 68 50 68 C40.0589 68 32 59.9411 32 50 C32 40.0589 40.0589 32 50 32" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="opacity-70" />
     <path d="M50 42 C54.4183 42 58 45.5817 58 50 C58 54.4183 54.4183 58 50 58 C45.5817 58 42 54.4183 42 50 C42 45.5817 45.5817 42 50 42" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="opacity-40" />
-    
-    {/* Teal Pointer Triangle */}
     <path d="M50 85 L62 100 L38 100 Z" fill="#00C2A8" />
   </svg>
 );
@@ -26,12 +34,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [hoveredPath, setHoveredPath] = useState<string | null>(null);
   const location = useLocation();
 
-  // Close menu on route change
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
 
-  // Handle scroll effect for navbar
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -40,11 +46,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const socialLinks = [
+    { name: 'Twitter / X', url: 'https://x.com/qognition_tech', icon: Twitter },
+    { name: 'LinkedIn', url: 'https://in.linkedin.com/company/qognition-tech', icon: Linkedin },
+    { name: 'YouTube', url: 'https://www.youtube.com/@QognitionAgency', icon: Youtube },
+    { name: 'Facebook', url: 'https://www.facebook.com/qognitiontech', icon: Facebook },
+    { name: 'Instagram', url: 'https://www.instagram.com/qognition_agency/', icon: Instagram },
+    { name: 'Dribbble', url: 'https://dribbble.com/qognition?utm_source=chatgpt.com', icon: Dribbble },
+    { name: 'Behance', url: 'https://www.behance.net/qognition-agency', icon: BehanceIcon },
+  ];
+
   return (
     <div className="min-h-screen relative font-sans text-white selection:bg-teal-500/30">
       <NeuronBackground />
       
-      {/* Navbar - Fixed & High Z-Index */}
+      {/* Navbar */}
       <nav 
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-out border-b ${
           scrolled 
@@ -53,8 +69,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         }`}
       >
         <div className="px-6 md:px-12 max-w-8xl mx-auto flex justify-between items-center relative">
-          
-          {/* Logo */}
           <Link to="/" className="z-50 group relative flex items-center gap-3">
             <div className={`transition-colors duration-300 ${scrolled ? 'text-white' : 'text-white'}`}>
               <Logo className="w-10 h-10 md:w-12 md:h-12" />
@@ -64,7 +78,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </span>
           </Link>
 
-          {/* Desktop Nav - Interactive Pill */}
+          {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm">
             {NAV_ITEMS.map((item) => {
               const isActive = item.path === location.pathname;
@@ -77,8 +91,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   onMouseLeave={() => setHoveredPath(null)}
                 >
                   <span className="relative z-10">{item.label}</span>
-                  
-                  {/* Active State Background */}
                   {isActive && (
                       <motion.div
                           layoutId="navbar-indicator"
@@ -86,8 +98,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                       />
                   )}
-                  
-                  {/* Hover State Background */}
                   {hoveredPath === item.path && !isActive && (
                       <motion.div
                           layoutId="navbar-hover"
@@ -103,7 +113,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             })}
           </div>
 
-          {/* CTA & Mobile Toggle */}
           <div className="flex items-center gap-6">
             <div className="hidden md:block">
                 <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
@@ -112,7 +121,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                    </MagneticButton>
                 </a>
             </div>
-
             <button 
                 className="lg:hidden z-50 p-2 text-white hover:text-teal-400 transition-colors"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -124,14 +132,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: "-100%" }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} // Luxury easing
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center border-b border-white/10"
           >
             <div className="flex flex-col gap-6 text-center">
@@ -166,7 +174,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
       <main className="relative z-10 min-h-screen">
         {children}
       </main>
@@ -184,10 +191,17 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <p className="text-gray-400 text-lg max-w-md mb-8 font-light leading-relaxed">
               Global Digital Growth Partner. We fuse creative strategy, technical engineering, and performance marketing to build category-defining brands.
             </p>
-            <div className="flex gap-4">
-              {['Instagram', 'LinkedIn', 'Twitter'].map((social) => (
-                <a key={social} href="#" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black hover:border-white transition-all duration-300">
-                  <ArrowUpRight size={18} />
+            <div className="flex gap-4 flex-wrap">
+              {socialLinks.map((social) => (
+                <a 
+                  key={social.name} 
+                  href={social.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label={social.name}
+                  className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black hover:border-white transition-all duration-300"
+                >
+                  <social.icon size={18} />
                 </a>
               ))}
             </div>
@@ -203,12 +217,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </ul>
           </div>
           
-          {/* Updated Resources Column */}
           <div className="md:col-span-2">
             <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Resources</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
               <li><Link to="/directory" className="hover:text-white transition-colors font-bold text-teal-200">Tools Directory</Link></li>
-              {/* Map top 4 categories dynamically */}
               {TOOL_CATEGORIES.slice(0, 4).map(cat => (
                  <li key={cat.id}>
                     <Link to={`/directory/${cat.slug}`} className="hover:text-white transition-colors">
@@ -216,7 +228,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     </Link>
                  </li>
               ))}
-              <li><Link to="/blog" className="hover:text-white transition-colors">Insights & Blog</Link></li>
             </ul>
           </div>
 
@@ -227,14 +238,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                <li><Link to="/contact" className="hover:text-white transition-colors">Careers</Link></li>
                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
                <li><Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link></li>
-             </ul>
-          </div>
-          
-           <div className="md:col-span-2">
-             <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Legal</h4>
-             <ul className="space-y-4 text-gray-400 text-sm">
-               <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-               <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
              </ul>
           </div>
         </div>

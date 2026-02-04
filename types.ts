@@ -14,6 +14,24 @@ export interface ProcessStep {
   description: string;
 }
 
+export interface ExpertQuote {
+    author: string;
+    role: string;
+    quote: string;
+    image?: string;
+}
+
+export interface DeepDiveSection {
+    title: string;
+    content: string; // Markdown-like string or long text
+}
+
+export interface MarketData {
+    label: string;
+    value: string;
+    description: string;
+}
+
 export interface Service {
   id: string;
   title: string;
@@ -26,6 +44,9 @@ export interface Service {
   process: ProcessStep[];
   techStack: string[];
   relatedIndustries: string[];
+  // New Fields for Content Depth
+  deepDive?: DeepDiveSection[]; 
+  expertQuote?: ExpertQuote;
 }
 
 export interface SubIndustry {
@@ -47,6 +68,9 @@ export interface Industry {
   relatedServices: string[];
   caseStudyRef?: string;
   faqs: FAQ[];
+  // New Fields
+  expertQuote?: ExpertQuote;
+  marketData?: MarketData[];
 }
 
 export interface Region {

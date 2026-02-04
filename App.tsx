@@ -1,6 +1,5 @@
-
 import React, { useEffect, Suspense, lazy } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 
 // Lazy load pages for performance optimization (Code Splitting)
@@ -20,10 +19,11 @@ const LLM = lazy(() => import('./pages/LLM'));
 const Sitemap = lazy(() => import('./pages/Sitemap'));
 const DirectoryHome = lazy(() => import('./pages/directory/DirectoryHome'));
 const DirectoryToolDetail = lazy(() => import('./pages/directory/DirectoryToolDetail'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
-// Loading Fallback
+// Loading Fallback - Optimized for quick render
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-black">
+  <div className="min-h-screen flex items-center justify-center bg-black z-50">
     <div className="w-8 h-8 border-2 border-teal-400 border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
@@ -49,7 +49,6 @@ const App: React.FC = () => {
             <Route path="/services/:id" element={<ServiceDetail />} />
             <Route path="/industries" element={<Industries />} />
             <Route path="/industries/:id" element={<IndustryDetail />} />
-            {/* New Sub-Industry Route */}
             <Route path="/industries/:id/:subId" element={<SubIndustryDetail />} />
             
             <Route path="/regions" element={<Regions />} />
@@ -61,10 +60,13 @@ const App: React.FC = () => {
             <Route path="/llm" element={<LLM />} />
             <Route path="/sitemap" element={<Sitemap />} />
             
-            {/* Directory Routes - SEO Optimized Structure */}
+            {/* Directory Routes */}
             <Route path="/directory" element={<DirectoryHome />} />
             <Route path="/directory/:category" element={<DirectoryHome />} />
             <Route path="/directory/:category/:toolId" element={<DirectoryToolDetail />} />
+
+            {/* 404 Catch-all */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </Layout>

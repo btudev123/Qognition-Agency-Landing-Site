@@ -6,7 +6,7 @@ const NeuronBackground: React.FC = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false }); // Optimization
     if (!ctx) return;
 
     let width = window.innerWidth;
@@ -15,11 +15,14 @@ const NeuronBackground: React.FC = () => {
     canvas.height = height;
 
     const particles: Particle[] = [];
-    const particleCount = width < 768 ? 25 : 50; // Reduced density for cleaner look
-    const connectionDistance = 180;
-    const mouseDistance = 250;
-
+    // Drastically reduce particles on mobile for performance
+    const isMobile = width < 768;
+    const particleCount = isMobile ? 10 : 30; // Further reduced for performance
+    const connectionDistance = isMobile ? 80 : 140;
+    
+    // Throttle mouse interaction
     let mouse = { x: -1000, y: -1000 };
+    let animationFrameId: number;
 
     class Particle {
       x: number;
@@ -31,9 +34,9 @@ const NeuronBackground: React.FC = () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.2; // Slower movement
+        this.vx = (Math.random() - 0.5) * 0.2;
         this.vy = (Math.random() - 0.5) * 0.2;
-        this.size = Math.random() * 1.5 + 0.5; // Smaller particles
+        this.size = Math.random() * 1.5 + 0.5;
       }
 
       update() {
@@ -43,25 +46,23 @@ const NeuronBackground: React.FC = () => {
         if (this.x < 0 || this.x > width) this.vx *= -1;
         if (this.y < 0 || this.y > height) this.vy *= -1;
 
-        // Gentle mouse interaction
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        // Skip mouse interaction on mobile to save cycles
+        if (!isMobile) {
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const distSq = dx * dx + dy * dy;
+            const mouseDistSq = 250 * 250;
 
-        if (distance < mouseDistance) {
-            const forceDirectionX = dx / distance;
-            const forceDirectionY = dy / distance;
-            const force = (mouseDistance - distance) / mouseDistance;
-            const directionX = forceDirectionX * force * 0.2;
-            const directionY = forceDirectionY * force * 0.2;
-            this.vx -= directionX;
-            this.vy -= directionY;
+            if (distSq < mouseDistSq) {
+                const force = (mouseDistSq - distSq) / mouseDistSq;
+                this.vx -= (dx / Math.sqrt(distSq)) * force * 0.05;
+                this.vy -= (dy / Math.sqrt(distSq)) * force * 0.05;
+            }
         }
       }
 
       draw() {
         if (!ctx) return;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'; // White/Grey instead of hard teal
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -73,35 +74,37 @@ const NeuronBackground: React.FC = () => {
     }
 
     const animate = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-
-      // Connections
+      // Use solid fill instead of clearRect for trail effect removal (cleaner redraw)
+      ctx.fillStyle = '#0B0B0B'; 
+      ctx.fillRect(0, 0, width, height);
+      
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.strokeStyle = `rgba(0, 194, 168, 0.15)`;
       ctx.lineWidth = 0.5;
 
+      // Update and Draw Particles
       for (let i = 0; i < particles.length; i++) {
-        for (let j = i; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        const p = particles[i];
+        p.update();
+        p.draw(); // Draw dot
 
-          if (distance < connectionDistance) {
-            // Very subtle lines
-            const opacity = 1 - distance / connectionDistance;
-            ctx.strokeStyle = `rgba(0, 194, 168, ${opacity * 0.15})`; // Teal accent, very low opacity
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
+        // Draw Connections
+        for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const distSq = dx * dx + dy * dy;
+
+            if (distSq < connectionDistance * connectionDistance) {
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
         }
       }
 
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
 
     animate();
@@ -119,11 +122,12 @@ const NeuronBackground: React.FC = () => {
     };
 
     window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
+    if (!isMobile) window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
+      if (!isMobile) window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
@@ -131,7 +135,6 @@ const NeuronBackground: React.FC = () => {
     <canvas
       ref={canvasRef}
       className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
-      style={{ background: '#0B0B0B' }} // Solid dark background, no gradient for cleaner look
     />
   );
 };

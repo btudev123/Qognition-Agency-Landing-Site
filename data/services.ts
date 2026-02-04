@@ -1,3 +1,4 @@
+
 import { Service } from '../types';
 
 const COMMON_FAQS = [
@@ -14,6 +15,25 @@ export const SERVICES: Service[] = [
     fullDescription: 'We dominate search results by combining technical excellence with semantic authority. Our strategies are future-proofed against core updates and AI search transitions (SGE). We move beyond keywords to own the entire entity graph of your brand.',
     icon: 'Search',
     kpis: ['+200% Organic Traffic', 'Top 3 Keywords', '50% Lower CAC'],
+    expertQuote: {
+        author: "Dr. Elena Vance",
+        role: "Head of Search Engineering",
+        quote: "In the era of SGE, keywords are dead. Entities and relationships are the new currency. If Google doesn't understand 'who' you are, it won't rank 'what' you sell."
+    },
+    deepDive: [
+        {
+            title: "The Paradigm Shift: From Keywords to Entities",
+            content: "Traditional SEO focused on 'strings'—keywords placed strategically in title tags and headers. Modern SEO, powered by Knowledge Graph technology and LLMs, focuses on 'things'—entities. \n\nOur proprietary methodology maps your brand's entity in Wikidata and Google's Knowledge Graph API. By ensuring your digital identity is unambiguously resolved, we help you rank for conceptual queries, not just exact match keywords. This protects your visibility against the volatility of Search Generative Experience (SGE) rollouts."
+        },
+        {
+            title: "Core Web Vitals & Technical Speed",
+            content: "Google has confirmed that Core Web Vitals (CWV) are a ranking factor. We don't just patch WordPress sites; we re-architect them using Next.js and Vercel Edge Networks. \n\nBy utilizing edge caching, advanced image optimization pipelines (AVIF/WebP), and minimizing main-thread JavaScript execution, we consistently achieve sub-100ms Time to First Byte (TTFB). This technical superiority directly correlates with crawl budget efficiency, ensuring Google indexes your content faster than your competitors."
+        },
+        {
+            title: "Information Gain & Content Strategy",
+            content: "With AI flooding the web with derivative content, Google's algorithms now prioritize 'Information Gain'—content that provides unique value not found elsewhere. \n\nOur editorial team includes subject matter experts who produce original research, data studies, and expert analysis. We don't just summarize the top 10 results; we create the source material that everyone else links to. This approach builds durable backlink profiles naturally."
+        }
+    ],
     subServices: [
         { name: 'Technical SEO', description: 'Crawlability, indexing, and core web vitals optimization. Javascript rendering audits.' },
         { name: 'Content SEO', description: 'Semantic clustering and authority building via long-form expert content.' },
@@ -41,6 +61,17 @@ export const SERVICES: Service[] = [
     fullDescription: 'Data-driven social strategies that build community and drive revenue. We manage end-to-end creative, from short-form video production to community management, ensuring your brand voice resonates globally.',
     icon: 'Globe',
     kpis: ['+150% Engagement', '4x ROAS', 'Viral Reach'],
+    expertQuote: {
+        author: "Marcus Chen",
+        role: "Creative Director",
+        quote: "Content is no longer king; context is. A video that works on TikTok will fail on LinkedIn if the contextual wrapper isn't adjusted for the mindset of the user."
+    },
+    deepDive: [
+        {
+            title: "Algorithmic Resonance",
+            content: "Each platform's algorithm prioritizes different signals. TikTok values watch time and retention; LinkedIn values comment density and dwell time. Our content production is reverse-engineered from these algorithmic requirements."
+        }
+    ],
     subServices: [
         { name: 'Strategy & Direction', description: 'Platform-specific content roadmaps and voice definition.' },
         { name: 'Community Management', description: '24/7 engagement and growth. Crisis management protocols.' },
