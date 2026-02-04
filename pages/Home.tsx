@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, TrendingUp, Target, Monitor, Play, PenTool, Layers, Globe } from 'lucide-react';
@@ -387,7 +388,7 @@ const Home: React.FC = () => {
                              <p className="text-gray-400 text-sm mb-8 line-clamp-2 leading-relaxed">{ind.description}</p>
                              <div className="flex flex-wrap gap-2 mt-auto">
                                 {ind.subIndustries.slice(0,3).map(sub => (
-                                    <span key={sub} className="text-[10px] uppercase tracking-wider px-3 py-1 bg-black rounded-full border border-white/10 text-gray-400 group-hover:border-white/30 transition-colors">{sub}</span>
+                                    <span key={sub.slug} className="text-[10px] uppercase tracking-wider px-3 py-1 bg-black rounded-full border border-white/10 text-gray-400 group-hover:border-white/30 transition-colors">{sub.name}</span>
                                 ))}
                              </div>
                         </div>

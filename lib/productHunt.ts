@@ -19,7 +19,6 @@ export interface PHTopic {
 }
 
 // Helper to execute GraphQL queries via our Vercel API Proxy
-// On static hosts (GitHub Pages), this will fail (404), so we handle it gracefully.
 async function phQuery(query: string, variables: any = {}) {
   try {
     const response = await fetch("/api/ph", {
@@ -30,11 +29,8 @@ async function phQuery(query: string, variables: any = {}) {
       body: JSON.stringify({ query, variables }),
     });
     
-    // Check if the response is actually JSON (api exists) or HTML (404 page)
-    const contentType = response.headers.get("content-type");
-    if (!response.ok || !contentType || !contentType.includes("application/json")) {
-        console.warn("API unavailable (Static Host detected). Returning empty data.");
-        return null;
+    if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`);
     }
 
     return await response.json();
@@ -129,6 +125,9 @@ export async function fetchTrendingTools(cursor?: string): Promise<PHFetchResult
 }
 
 export async function fetchToolDetails(idOrSlug: string): Promise<PHPost | null> {
+  // Determine query variable based on format
+  // If it's a numeric string, assume ID (though V2 IDs are strings/base64, numeric might work for legacy).
+  // If it has hyphens or letters, assume slug.
   const isSlug = isNaN(Number(idOrSlug));
 
   const query = `

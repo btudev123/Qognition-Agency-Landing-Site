@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, Target, ArrowRight } from 'lucide-react';
@@ -45,12 +46,18 @@ const IndustryDetail: React.FC = () => {
                 </p>
 
                 <div className="mb-16">
-                    <h2 className="font-display text-3xl mb-8">Specialized Focus</h2>
-                    <div className="flex flex-wrap gap-3">
+                    <h2 className="font-display text-3xl mb-8">Specialized Verticals</h2>
+                    <p className="text-gray-400 mb-6">Select a specific niche to see tailored strategies:</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {industry.subIndustries.map(sub => (
-                            <span key={sub} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm">
-                                {sub}
-                            </span>
+                            <Link 
+                                key={sub.slug} 
+                                to={`/industries/${industry.id}/${sub.slug}`}
+                                className="group p-4 bg-white/5 border border-white/10 rounded-lg hover:border-teal-400 hover:bg-white/10 transition-all flex justify-between items-center"
+                            >
+                                <span className="font-bold text-gray-200 group-hover:text-white">{sub.name}</span>
+                                <ArrowRight size={16} className="text-teal-400 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                            </Link>
                         ))}
                     </div>
                 </div>
