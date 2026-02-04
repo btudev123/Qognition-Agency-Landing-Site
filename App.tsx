@@ -9,7 +9,6 @@ const Services = lazy(() => import('./pages/Services'));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const Industries = lazy(() => import('./pages/Industries'));
 const IndustryDetail = lazy(() => import('./pages/IndustryDetail'));
-const SubIndustryDetail = lazy(() => import('./pages/SubIndustryDetail')); // New Page
 const Work = lazy(() => import('./pages/Work'));
 const CaseStudyDetail = lazy(() => import('./pages/CaseStudyDetail'));
 const Contact = lazy(() => import('./pages/Contact'));
@@ -49,9 +48,6 @@ const App: React.FC = () => {
             <Route path="/services/:id" element={<ServiceDetail />} />
             <Route path="/industries" element={<Industries />} />
             <Route path="/industries/:id" element={<IndustryDetail />} />
-            {/* New Sub-Industry Route */}
-            <Route path="/industries/:id/:subId" element={<SubIndustryDetail />} />
-            
             <Route path="/regions" element={<Regions />} />
             <Route path="/regions/:slug" element={<RegionDetail />} />
             <Route path="/work" element={<Work />} />

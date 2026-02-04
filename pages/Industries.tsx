@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -36,12 +35,12 @@ const Industries: React.FC = () => {
                         <h4 className="text-xs font-bold uppercase tracking-widest text-teal-400 mb-4">Focus Areas</h4>
                         <div className="flex flex-wrap gap-3">
                             {ind.subIndustries.slice(0, 4).map(sub => (
-                                <Link key={sub.slug} to={`/industries/${ind.id}/${sub.slug}`} className="px-3 py-1 bg-black/40 border border-white/10 rounded-full text-sm text-gray-300 hover:text-teal-400 hover:border-teal-400 transition-colors">
-                                    {sub.name}
-                                </Link>
+                                <span key={sub} className="px-3 py-1 bg-black/40 border border-white/10 rounded-full text-sm text-gray-300">
+                                    {sub}
+                                </span>
                             ))}
                             {ind.subIndustries.length > 4 && (
-                                <Link to={`/industries/${ind.id}`} className="px-3 py-1 text-sm text-gray-500 hover:text-white transition-colors">+{ind.subIndustries.length - 4} more</Link>
+                                <span className="px-3 py-1 text-sm text-gray-500">+{ind.subIndustries.length - 4} more</span>
                             )}
                         </div>
                      </div>

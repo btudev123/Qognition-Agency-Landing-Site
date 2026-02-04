@@ -19,61 +19,12 @@ export default async function handler(request, response) {
   ];
 
   const services = ['seo', 'smm', 'ai-seo', 'web-development', 'ppc'];
+  const industries = ['law-legal', 'financial-services', 'ecommerce', 'saas-tech', 'healthcare', 'real-estate'];
   const regions = ['usa', 'uk', 'uae-ksa', 'india', 'australia'];
   const caseStudies = ['fintech-scale', 'saas-brand', 'retail-ai'];
   
-  // --- INDUSTRIES & SUB-INDUSTRIES ---
-  // Replicating data structure from data/industries.ts for sitemap generation
-  // In a real DB environment, this would be a DB fetch.
-  const industryData = [
-    { 
-        id: 'law-legal', 
-        subs: ['corporate-law', 'criminal-defense', 'family-divorce', 'ip-law', 'real-estate-law', 'litigation'] 
-    },
-    { 
-        id: 'accounting-cpa', 
-        subs: ['chartered-accounting', 'tax-consultancy', 'audit-assurance', 'payroll-services', 'bookkeeping', 'tax-advisory'] 
-    },
-    { 
-        id: 'financial-services', 
-        subs: ['wealth-management', 'investment-advisory', 'fintech', 'mutual-funds', 'insurance', 'financial-planning'] 
-    },
-    { 
-        id: 'consulting', 
-        subs: ['strategy-consulting', 'operations-consulting', 'hr-consulting', 'startup-advisory', 'risk-compliance', 'digital-transformation'] 
-    },
-    { 
-        id: 'real-estate', 
-        subs: ['commercial-real-estate', 'residential-agencies', 'property-management', 'facility-management', 'leasing-consultants', 'real-estate-investment'] 
-    },
-    { 
-        id: 'manufacturing', 
-        subs: ['b2b-manufacturing', 'industrial-equipment', 'oem', 'raw-materials', 'factory-automation', 'engineering-fabrication'] 
-    },
-    { 
-        id: 'coaching', 
-        subs: ['exam-coaching', 'career-coaching', 'business-coaching', 'corporate-training', 'skill-development', 'certification-coaching'] 
-    },
-    { 
-        id: 'industrial-trade', 
-        subs: ['manufacturing-units', 'heavy-equipment', 'b2b-factories', 'industrial-supplies', 'export-import', 'logistics'] 
-    },
-    { 
-        id: 'care-homes', 
-        subs: ['assisted-living', 'home-nursing', 'medical-care-homes', 'rehab-centers', 'disability-care', 'post-hospital'] 
-    },
-    { 
-        id: 'elder-care', 
-        subs: ['senior-living', 'retirement-homes', 'memory-care', 'independent-living', 'palliative-care', 'long-term-care'] 
-    },
-    { 
-        id: 'waste-management', 
-        subs: ['waste-collection', 'recycling-scrap', 'e-waste', 'biomedical-waste', 'hazardous-waste', 'scrap-processing'] 
-    }
-  ];
-
-  
   // --- 2. STATIC FALLBACK TOOLS (Guaranteed Indexing) ---
+  // These ensures we have high-quality tools even if the API times out.
   const popularTools = [
     'slack', 'notion', 'figma', 'linear', 'zoom', 'discord', 'chatgpt', 'midjourney',
     'canva', 'airtable', 'loom', 'zapier', 'webflow', 'framer', 'shopify', 'stripe',
@@ -115,6 +66,7 @@ export default async function handler(request, response) {
         const accessToken = tokenData.access_token;
 
         // QUERY 1: Fetch Top 500 Topics (These are all valid directory pages)
+        // This is the key to high page count. Every topic is a page.
         const topicsQuery = `
           query {
             topics(first: 100, order: FOLLOWERS_COUNT) {
@@ -161,13 +113,20 @@ export default async function handler(request, response) {
     }
 
     // Combine Dynamic Tools with Static Fallback Tools
+    // We map static tools to a generic 'tech' category if we don't know it, 
+    // the frontend handles redirect/fetching anyway.
     const allToolsMap = new Map();
+    
+    // Add dynamic tools first
     phTools.forEach(t => allToolsMap.set(t.id, t));
+
+    // Add static fallback tools (deduplicated)
     popularTools.forEach(slug => {
         if (!allToolsMap.has(slug)) {
             allToolsMap.set(slug, { id: slug, category: 'software' });
         }
     });
+
     const finalToolList = Array.from(allToolsMap.values());
 
     // --- 4. BUILD XML ---
@@ -189,24 +148,21 @@ export default async function handler(request, response) {
       <!-- 2. Services (High Priority) -->
       ${services.map(slug => generateUrl(`/services/${slug}`, '0.9')).join('')}
 
-      <!-- 3. Industries (Parent Pages) -->
-      ${industryData.map(ind => generateUrl(`/industries/${ind.id}`, '0.9')).join('')}
+      <!-- 3. Industries -->
+      ${industries.map(slug => generateUrl(`/industries/${slug}`, '0.8')).join('')}
 
-      <!-- 4. Sub-Industries (Deep Vertical Pages) -->
-      ${industryData.map(ind => 
-          ind.subs.map(sub => generateUrl(`/industries/${ind.id}/${sub}`, '0.85')).join('')
-      ).join('')}
-
-      <!-- 5. Regions -->
+      <!-- 4. Regions -->
       ${regions.map(slug => generateUrl(`/regions/${slug}`, '0.8')).join('')}
 
-      <!-- 6. Case Studies -->
+      <!-- 5. Case Studies -->
       ${caseStudies.map(slug => generateUrl(`/work/${slug}`, '0.8')).join('')}
 
-      <!-- 7. Directory Topics (Category Pages - High Volume) -->
+      <!-- 6. Directory Topics (Category Pages - High Volume) -->
+      <!-- We have fetched 100+ topics, creating 100+ landing pages -->
       ${phTopics.map(slug => generateUrl(`/directory/${slug}`, '0.7', 'daily')).join('')}
 
-      <!-- 8. Tools Pages (The Long Tail) -->
+      <!-- 7. Tools Pages (The Long Tail) -->
+      <!-- Combining API results + Static Fallback list to ensure ~200-300 tool pages minimum -->
       ${finalToolList.map(tool => generateUrl(`/directory/${tool.category}/${tool.id}`, '0.6', 'weekly')).join('')}
 
     </urlset>`;
