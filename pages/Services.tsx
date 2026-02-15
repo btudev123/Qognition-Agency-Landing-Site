@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Search, Globe, Brain, Code, Zap } from 'lucide-react';
 import { SERVICES } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 // Icon mapping for dynamic rendering
 const IconMap: { [key: string]: React.ElementType } = {
@@ -17,12 +17,14 @@ const IconMap: { [key: string]: React.ElementType } = {
 const Services: React.FC = () => {
   return (
     <>
-      <JsonLd 
-        data={{
-          title: "Services | Qognition Agency",
-          description: "Full-service digital capabilities including SEO, PPC, Web Development, and AI Integration.",
-          url: "/services",
-          type: "Service"
+      <SEO 
+        title="Digital Marketing Services | SEO, PPC, Social Media & Web Development"
+        description="Explore our comprehensive digital marketing services including SEO optimization, PPC advertising, social media marketing, and custom web development. Get a free consultation today!"
+        path="/services"
+        schemaData={{
+          type: "Service",
+          name: "Digital Marketing Services",
+          url: "https://qognitionagency.com/services"
         }}
       />
       

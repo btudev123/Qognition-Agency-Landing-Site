@@ -2,17 +2,19 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import MagneticButton from '../components/MagneticButton';
 import { CALENDLY_LINK } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 const Contact: React.FC = () => {
   return (
     <>
-       <JsonLd 
-        data={{
-          title: "Contact Us | Qognition Agency",
-          description: "Start your project with Qognition. London, New York, Dubai.",
-          url: "/contact",
-          type: "Organization"
+      <SEO 
+        title="Contact Qognition Agency | Start Your Project Today"
+        description="Ready to grow your business? Contact Qognition Agency for a free consultation. Reach out to our team in London, New York, or Dubai. Get in touch now!"
+        path="/contact"
+        schemaData={{
+          type: "Organization",
+          name: "Qognition Agency",
+          url: "https://qognitionagency.com/contact"
         }}
       />
       <div className="min-h-screen pt-20 px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">

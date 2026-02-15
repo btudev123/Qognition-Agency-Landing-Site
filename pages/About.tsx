@@ -2,19 +2,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, Target, Rocket, Globe, Zap, Heart } from 'lucide-react';
 import { ABOUT_DATA, CALENDLY_LINK } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 import MagneticButton from '../components/MagneticButton';
 import TextReveal from '../components/TextReveal';
 
 const About: React.FC = () => {
   return (
     <>
-      <JsonLd 
-        data={{
-          title: "About Qognition | Global Digital Agency",
-          description: "Meet the 120+ experts behind Qognition. We are a next-generation agency fusing AI, creativity, and engineering.",
-          url: "/about",
-          type: "Organization"
+      <SEO 
+        title="About Qognition Agency | Our Team & Mission"
+        description="Meet the experts behind Qognition Agency. Learn about our mission, vision, and team of 120+ digital marketing professionals. Discover why we're a leader in AI-powered marketing."
+        path="/about"
+        schemaData={{
+          type: "Organization",
+          name: "Qognition Agency",
+          url: "https://qognitionagency.com/about"
         }}
       />
       
