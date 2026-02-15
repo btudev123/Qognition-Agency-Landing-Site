@@ -121,7 +121,7 @@ export interface SchemaData {
   description?: string;
   url?: string;
   image?: string;
-  type?: 'Organization' | 'WebSite' | 'Service' | 'Article' | 'Place' | 'SoftwareApplication' | 'CollectionPage';
+  type?: 'Organization' | 'WebSite' | 'Service' | 'Article' | 'Place' | 'SoftwareApplication' | 'CollectionPage' | 'LocalBusiness';
   [key: string]: any;
 }
 

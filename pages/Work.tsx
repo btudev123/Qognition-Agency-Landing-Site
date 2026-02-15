@@ -34,10 +34,7 @@ const Work: React.FC = () => {
           url: "https://qognitionagency.com/work"
         }}
       />
-          url: "/work",
-          type: "WebSite"
-        }}
-      />
+
       <div className="pt-24 md:pt-32 px-6 md:px-12 max-w-[1920px] mx-auto min-h-screen">
         <header className="mb-24 max-w-7xl mx-auto text-center md:text-left">
           <motion.h1 
