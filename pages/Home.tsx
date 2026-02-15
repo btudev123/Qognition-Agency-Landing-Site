@@ -21,8 +21,8 @@ const Home: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Qognition | Global Digital Marketing Agency"
-        description="Premium digital marketing agency specializing in SEO, Performance, and Web Development. We engineer growth for ambitious brands."
+        title="Qognition Agency | Future-Ready Digital Marketing Solutions"
+        description="Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions. Partner with industry experts for exponential growth. Book your strategy call today!"
         path="/"
         schemaData={{
           type: "Organization",
@@ -30,8 +30,8 @@ const Home: React.FC = () => {
           url: "https://qognitionagency.com",
           logo: "https://qognitionagency.com/logo.png",
           sameAs: [
-            "https://www.linkedin.com/company/qognition",
-            "https://twitter.com/qognition"
+            "https://www.linkedin.com/company/qognition-tech",
+            "https://twitter.com/qognition_tech"
           ]
         }}
       />

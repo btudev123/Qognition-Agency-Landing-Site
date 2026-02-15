@@ -1,0 +1,37 @@
+# LLM.txt - Qognition Agency
+
+## About Qognition Agency
+
+Qognition Agency is a premier digital marketing agency offering comprehensive digital solutions across global markets including London, New York, Dubai, and Mumbai.
+
+### Services We Offer
+
+1. **Search Engine Optimization (SEO)** - Technical SEO, on-page optimization, local SEO, enterprise SEO
+2. **Pay-Per-Click (PPC) Management** - Google Ads, Meta advertising, LinkedIn ads, ROI optimization
+3. **Social Media Marketing** - Strategy, content creation, community management, influencer marketing
+4. **Web Design & Development** - Custom websites, e-commerce, CMS, performance optimization
+5. **AI Integration & Digital Transformation** - AI marketing solutions, automation, ML integration
+
+### Industries Served
+
+Technology, Healthcare, Finance, E-commerce, Real Estate, Education, Manufacturing, Retail
+
+### Contact Information
+
+- Email: hello@qognition.agency
+- Careers: careers@qognition.agency
+- Location: London, UK (global presence)
+
+### Key Pages
+
+- Homepage: https://qognitionagency.com
+- Services: https://qognitionagency.com/services
+- Work: https://qognitionagency.com/work
+- About: https://qognitionagency.com/about
+- Contact: https://qognitionagency.com/contact
+- Industries: https://qognitionagency.com/industries
+- Regions: https://qognitionagency.com/regions
+
+### Last Updated
+
+This file is regularly updated to reflect current service offerings.
