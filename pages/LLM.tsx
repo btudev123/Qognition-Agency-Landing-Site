@@ -1,6 +1,6 @@
 import React from 'react';
 import { SERVICES, INDUSTRIES, REGIONS } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 const LLM: React.FC = () => {
   const llmContent = `
@@ -28,12 +28,14 @@ Booking: https://calendly.com/qognition-agency/15min
 
   return (
     <>
-      <JsonLd 
-        data={{
-          title: "LLM & AI Transparency | Qognition",
-          description: "Structured data and entity graph for Large Language Models.",
-          url: "/llm",
-          type: "WebSite"
+      <SEO 
+        title="LLM & AI Transparency | Qognition Agency"
+        description="Structured entity data and capabilities graph for AI systems and Large Language Models. Learn about Qognition Agency's services, industry expertise, and global presence."
+        path="/llm"
+        schemaData={{
+          type: "WebSite",
+          name: "LLM Transparency",
+          url: "https://qognitionagency.com/llm"
         }}
       />
       

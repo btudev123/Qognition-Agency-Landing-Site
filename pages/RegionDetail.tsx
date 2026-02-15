@@ -4,7 +4,7 @@ import { ArrowLeft, Globe, MapPin, TrendingUp, BarChart3, Radio, Info, ArrowRigh
 import { REGIONS, CASE_STUDIES, CALENDLY_LINK } from '../constants';
 import MagneticButton from '../components/MagneticButton';
 import AccordionItem from '../components/Accordion';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 import ParallaxImage from '../components/ParallaxImage';
 import { motion } from 'framer-motion';
 
@@ -25,12 +25,14 @@ const RegionDetail: React.FC = () => {
 
   return (
     <>
-      <JsonLd 
-        data={{
-          title: `Digital Marketing Agency in ${region.name} | Qognition`,
-          description: `Premier digital growth agency serving ${region.name}. ${region.localStrategy}`,
-          url: `/regions/${region.slug}`,
-          type: "Place"
+      <SEO 
+        title={`Digital Marketing Agency ${region.name} | Local SEO & PPC Services`}
+        description={`Qognition Agency in ${region.name}. ${region.description} Get local digital marketing expertise with our ${region.marketFocus.join(', ')} focus. Partner with our ${region.name} team for results-driven strategies.`}
+        path={`/regions/${region.slug}`}
+        schemaData={{
+          type: "LocalBusiness",
+          name: `Qognition Agency ${region.name}`,
+          url: `https://qognitionagency.com/regions/${region.slug}`
         }}
       />
       

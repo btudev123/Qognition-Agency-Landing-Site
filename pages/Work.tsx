@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CASE_STUDIES } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 import ParallaxImage from '../components/ParallaxImage';
 import { ArrowRight } from 'lucide-react';
 
@@ -24,10 +24,16 @@ const Work: React.FC = () => {
 
   return (
     <>
-      <JsonLd 
-        data={{
-          title: "Case Studies | Qognition Agency",
-          description: "See how we've helped Fintech, SaaS, and Enterprise clients achieve measurable growth.",
+      <SEO 
+        title="Our Work | Case Studies & Success Stories"
+        description="Explore our portfolio of successful digital marketing campaigns. See real results and case studies from work with ambitious brands. Discover how we deliver measurable growth."
+        path="/work"
+        schemaData={{
+          type: "WebSite",
+          name: "Our Work",
+          url: "https://qognitionagency.com/work"
+        }}
+      />
           url: "/work",
           type: "WebSite"
         }}

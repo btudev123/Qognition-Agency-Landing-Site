@@ -5,7 +5,7 @@ import { ArrowLeft, CheckCircle, Target, ArrowRight } from 'lucide-react';
 import { INDUSTRIES, CALENDLY_LINK } from '../constants';
 import MagneticButton from '../components/MagneticButton';
 import AccordionItem from '../components/Accordion';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 const IndustryDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,12 +24,14 @@ const IndustryDetail: React.FC = () => {
 
   return (
     <>
-      <JsonLd 
-        data={{
-          title: `${industry.name} Marketing Services | Qognition`,
-          description: industry.description,
-          url: `/industries/${industry.id}`,
-          type: "Service"
+      <SEO 
+        title={`${industry.name} Digital Marketing | Industry Experts`}
+        description={`Specialized digital marketing for ${industry.name}. ${industry.description} Partner with Qognition Agency for industry-specific strategies that drive real results. Get a free consultation today!`}
+        path={`/industries/${industry.id}`}
+        schemaData={{
+          type: "Service",
+          name: `${industry.name} Digital Marketing`,
+          url: `https://qognitionagency.com/industries/${industry.id}`
         }}
       />
       

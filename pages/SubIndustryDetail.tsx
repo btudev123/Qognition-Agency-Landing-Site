@@ -5,7 +5,7 @@ import { ArrowLeft, CheckCircle2, Target, BarChart3, ArrowRight, ShieldCheck, He
 import { INDUSTRIES, CALENDLY_LINK } from '../constants';
 import MagneticButton from '../components/MagneticButton';
 import AccordionItem from '../components/Accordion';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 const SubIndustryDetail: React.FC = () => {
   const { id, subId } = useParams<{ id: string; subId: string }>();
@@ -35,12 +35,14 @@ const SubIndustryDetail: React.FC = () => {
 
   return (
     <>
-      <JsonLd 
-        data={{
-          title: `Digital Marketing for ${subIndustry.name} | Qognition`,
-          description: `Specialized growth strategies, SEO, and web development for ${subIndustry.name}. ${subIndustry.description}`,
-          url: `/industries/${industry.id}/${subIndustry.slug}`,
-          type: "Service"
+      <SEO 
+        title={`${subIndustry.name} Marketing | Digital Strategies for ${subIndustry.name}`}
+        description={`Specialized digital marketing for ${subIndustry.name}. ${subIndustry.description} Get expert SEO, PPC, and growth strategies tailored for the ${subIndustry.name} industry from Qognition Agency.`}
+        path={`/industries/${industry.id}/${subIndustry.slug}`}
+        schemaData={{
+          type: "Service",
+          name: `${subIndustry.name} Digital Marketing`,
+          url: `https://qognitionagency.com/industries/${industry.id}/${subIndustry.slug}`
         }}
       />
       

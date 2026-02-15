@@ -5,7 +5,7 @@ import { ArrowLeft, CheckCircle, Quote, Layers, BarChart } from 'lucide-react';
 import { SERVICES, CALENDLY_LINK } from '../constants';
 import MagneticButton from '../components/MagneticButton';
 import AccordionItem from '../components/Accordion';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 const ServiceDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,12 +22,14 @@ const ServiceDetail: React.FC = () => {
 
   return (
     <>
-      <JsonLd 
-        data={{
-          title: `${service.title} Services | Qognition Agency`,
-          description: service.shortDescription,
-          url: `/services/${service.id}`,
-          type: "Service"
+      <SEO 
+        title={`${service.title} Services | Expert Digital Marketing`}
+        description={`${service.shortDescription} Get expert ${service.title.toLowerCase()} services from Qognition Agency. Our team delivers measurable results with proven strategies. Contact us today!`}
+        path={`/services/${service.id}`}
+        schemaData={{
+          type: "Service",
+          name: `${service.title} Services`,
+          url: `https://qognitionagency.com/services/${service.id}`
         }}
       />
       

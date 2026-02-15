@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { CASE_STUDIES, CALENDLY_LINK } from '../constants';
 import MagneticButton from '../components/MagneticButton';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 import ParallaxImage from '../components/ParallaxImage';
 
 const CaseStudyDetail: React.FC = () => {
@@ -27,12 +27,14 @@ const CaseStudyDetail: React.FC = () => {
 
   return (
     <>
-      <JsonLd 
-        data={{
-          title: `${study.title} | Qognition Case Study`,
-          description: `How we helped ${study.client} achieve ${study.stats[0].value} ${study.stats[0].label}.`,
-          url: `/work/${study.id}`,
-          type: "Article"
+      <SEO 
+        title={`${study.title} | Case Study - Qognition Agency`}
+        description={`${study.title} - ${study.client} case study. See how Qognition Agency delivered measurable results with ${study.stats.map(s => s.value + ' ' + s.label).join(', ')}. Read the full success story and get similar results!`}
+        path={`/work/${study.id}`}
+        schemaData={{
+          type: "Article",
+          name: study.title,
+          url: `https://qognitionagency.com/work/${study.id}`
         }}
       />
 

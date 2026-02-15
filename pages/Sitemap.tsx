@@ -1,18 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SERVICES, INDUSTRIES, REGIONS, CASE_STUDIES } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 import { ArrowRight } from 'lucide-react';
 
 const Sitemap: React.FC = () => {
   return (
     <>
-      <JsonLd 
-        data={{
-          title: "Sitemap | Qognition Agency",
-          description: "Full directory of Qognition Agency pages, services, industries, and locations.",
-          url: "/sitemap",
-          type: "WebSite"
+      <SEO 
+        title="Sitemap | Complete Directory of Pages"
+        description="Complete sitemap of Qognition Agency. Find all our services, case studies, industry solutions, regional offices, and resources. Navigate easily to any page on our website."
+        path="/sitemap"
+        schemaData={{
+          type: "WebSite",
+          name: "Sitemap",
+          url: "https://qognitionagency.com/sitemap"
         }}
       />
       

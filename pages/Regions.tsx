@@ -3,17 +3,19 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Globe, MapPin, TrendingUp } from 'lucide-react';
 import { REGIONS } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 const Regions: React.FC = () => {
   return (
     <>
-      <JsonLd 
-        data={{
-          title: "Global Regions | Qognition Agency",
-          description: "Our global hubs in USA, UK, UAE, Saudi Arabia, India, and Australia.",
-          url: "/regions",
-          type: "Organization"
+      <SEO 
+        title="Global Presence | Digital Marketing Agency Offices Worldwide"
+        description="Qognition Agency operates globally with offices in London, New York, Dubai, Mumbai, and Australia. Get local expertise with global scale for your digital marketing needs."
+        path="/regions"
+        schemaData={{
+          type: "Organization",
+          name: "Global Presence",
+          url: "https://qognitionagency.com/regions"
         }}
       />
       

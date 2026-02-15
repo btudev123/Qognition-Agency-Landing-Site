@@ -4,17 +4,19 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { INDUSTRIES } from '../constants';
-import JsonLd from '../components/JsonLd';
+import SEO from '../components/SEO';
 
 const Industries: React.FC = () => {
   return (
     <>
-      <JsonLd 
-        data={{
-          title: "Industries | Qognition Agency",
-          description: "Specialized digital marketing for Law, Finance, Real Estate, Manufacturing, and more.",
-          url: "/industries",
-          type: "WebSite"
+      <SEO 
+        title="Industries We Serve | Digital Marketing Solutions"
+        description="Specialized digital marketing for technology, healthcare, finance, e-commerce, real estate, and more. Get industry-specific strategies that drive real results. Contact us today!"
+        path="/industries"
+        schemaData={{
+          type: "WebSite",
+          name: "Industries We Serve",
+          url: "https://qognitionagency.com/industries"
         }}
       />
       
