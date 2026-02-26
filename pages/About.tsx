@@ -10,8 +10,8 @@ const About: React.FC = () => {
   return (
     <>
       <SEO 
-        title="About Qognition Agency | Our Team & Mission"
-        description="Meet the experts behind Qognition Agency. Learn about our mission, vision, and team of 120+ digital marketing professionals. Discover why we're a leader in AI-powered marketing."
+        title="About Qognition | Your Digital Growth Partner"
+        description="Meet Qognition Agency - 120+ experts specializing in SEO, PPC & web development. Learn about our mission to deliver measurable results. Start your journey today!"
         path="/about"
         schemaData={{
           type: "Organization",
@@ -38,6 +38,24 @@ const About: React.FC = () => {
             <p>
               We built the anti-agency. A high-velocity collective of data scientists, creative directors, and full-stack engineers embedded directly into your growth stack.
             </p>
+          </div>
+        </div>
+
+        {/* Our Story */}
+        <div className="mb-32">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="font-display text-4xl md:text-5xl mb-8 text-center">Our Story</h2>
+            <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
+              <p>
+                Founded in 2020, Qognition Agency emerged from a frustration with traditional digital marketing agencies. We saw businesses being charged premium fees for generic strategies that rarely moved the needle on their bottom line. The industry was plagued by long turnaround times, lack of transparency, and strategies that prioritized agency comfort over client results.
+              </p>
+              <p>
+                We set out to change that. Our founders, with backgrounds in data science, engineering, and creative marketing, built Qognition as a new kind of agency—one that combines the analytical rigor of a consultancy with the creative excellence of a top-tier agency.
+              </p>
+              <p>
+                Today, we work with ambitious brands across the globe, from startups looking to establish their digital presence to enterprises seeking to dominate their industries. Our team has grown to over 120 professionals, but our core philosophy remains the same: deliver results that matter.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -135,15 +153,33 @@ const About: React.FC = () => {
         <div className="text-center py-24 border-t border-white/10">
             <h2 className="font-display text-4xl md:text-6xl mb-8">Join the movement.</h2>
             <p className="text-gray-400 mb-12 max-w-2xl mx-auto">
-                We are always looking for world-class talent and ambitious partners.
+                We are always looking for world-class talent and ambitious partners. Ready to grow your business with a partner who truly understands digital marketing?
             </p>
-            <div className="flex flex-col md:flex-row justify-center gap-6">
+            <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
                  <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                     <MagneticButton variant="primary" className="w-full md:w-auto">Work With Us</MagneticButton>
                  </a>
                  <a href="mailto:careers@qognition.agency">
                     <MagneticButton variant="outline" className="w-full md:w-auto">Join the Team</MagneticButton>
                  </a>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left">
+                <div className="p-6 border border-white/10 rounded-xl">
+                    <h3 className="font-display text-xl mb-3">Our Services</h3>
+                    <p className="text-gray-400 text-sm mb-4">Discover how we can help grow your business.</p>
+                    <a href="/services" className="text-teal-400 hover:underline">Explore services →</a>
+                </div>
+                <div className="p-6 border border-white/10 rounded-xl">
+                    <h3 className="font-display text-xl mb-3">Our Work</h3>
+                    <p className="text-gray-400 text-sm mb-4">See the results we've delivered for our clients.</p>
+                    <a href="/work" className="text-teal-400 hover:underline">View case studies →</a>
+                </div>
+                <div className="p-6 border border-white/10 rounded-xl">
+                    <h3 className="font-display text-xl mb-3">Industries</h3>
+                    <p className="text-gray-400 text-sm mb-4">Learn about the sectors we specialize in.</p>
+                    <a href="/industries" className="text-teal-400 hover:underline">Explore industries →</a>
+                </div>
             </div>
         </div>
       </div>

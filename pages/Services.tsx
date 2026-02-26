@@ -18,8 +18,8 @@ const Services: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Digital Marketing Services | SEO, PPC, Social Media & Web Development"
-        description="Explore our comprehensive digital marketing services including SEO optimization, PPC advertising, social media marketing, and custom web development. Get a free consultation today!"
+        title="Digital Marketing Services | SEO, PPC & Web Development"
+        description="Expert SEO, PPC, social media marketing & web development services. Drive growth with data-driven strategies. Get your free marketing audit today!"
         path="/services"
         schemaData={{
           type: "Service",
@@ -43,6 +43,16 @@ const Services: React.FC = () => {
           </p>
         </header>
 
+        {/* Introduction Content */}
+        <div className="mb-20 max-w-4xl mx-auto text-center">
+          <p className="text-lg text-gray-300 leading-relaxed mb-8">
+            In today's digital landscape, having a strong online presence is essential for business success. At Qognition Agency, we offer end-to-end digital marketing solutions designed to help your brand reach, engage, and convert your target audience. Our team of experts combines years of industry experience with cutting-edge technology to deliver results that matter.
+          </p>
+          <p className="text-lg text-gray-300 leading-relaxed">
+            Whether you're looking to improve your search engine rankings, launch targeted advertising campaigns, build a new website, or establish your brand on social media, we have the expertise to help you achieve your goals. <Link to="/contact" className="text-teal-400 hover:underline">Contact us today</Link> for a free consultation and discover how we can transform your digital presence.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SERVICES.map((service, index) => {
                 const IconComponent = IconMap[service.icon] || Search;
@@ -60,7 +70,6 @@ const Services: React.FC = () => {
                           }}
                           className="h-full p-8 border border-white/10 rounded-xl bg-white/5 relative overflow-hidden transition-colors duration-500 hover:border-teal-400/40"
                       >
-                          {/* Animated Gradient Background on Hover */}
                           <motion.div 
                             variants={{
                                 hover: { opacity: 0.15, scale: 1.2 }
@@ -83,7 +92,6 @@ const Services: React.FC = () => {
                                    </div>
                                </motion.div>
                                
-                               {/* Interactive Arrow Cue */}
                                <motion.div
                                  variants={{
                                      hover: { x: 0, opacity: 1 }
@@ -113,6 +121,52 @@ const Services: React.FC = () => {
                   </Link>
                 );
             })}
+        </div>
+
+        {/* Why Choose Our Services */}
+        <div className="mt-32">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-4xl md:text-5xl mb-6">Why Choose Our Services?</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              We don't just provide services - we deliver results that impact your bottom line.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="p-8 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-2xl mb-4 text-teal-400">Proven Results</h3>
+              <p className="text-gray-400 mb-4">Our track record speaks for itself. We've helped hundreds of clients achieve significant growth in their digital presence. From increasing organic traffic by over 200% to generating qualified leads that convert at higher rates, our results-driven approach delivers measurable outcomes.</p>
+              <Link to="/work" className="text-teal-400 hover:underline">View our case studies →</Link>
+            </div>
+            <div className="p-8 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-2xl mb-4 text-teal-400">Dedicated Team</h3>
+              <p className="text-gray-400 mb-4">When you work with Qognition, you get a dedicated team of experts passionate about your success. Our account managers, strategists, and specialists work collaboratively to ensure your digital marketing efforts align with your business objectives.</p>
+              <Link to="/about" className="text-teal-400 hover:underline">Meet our team →</Link>
+            </div>
+            <div className="p-8 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-2xl mb-4 text-teal-400">Transparent Reporting</h3>
+              <p className="text-gray-400 mb-4">We believe in complete transparency. You'll receive detailed reports showing exactly how your campaigns are performing, with clear insights and recommendations for improvement. No hidden fees, no surprise charges.</p>
+              <Link to="/contact" className="text-teal-400 hover:underline">Start your project →</Link>
+            </div>
+            <div className="p-8 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-2xl mb-4 text-teal-400">Cutting-Edge Technology</h3>
+              <p className="text-gray-400 mb-4">We leverage the latest digital marketing tools and technologies to give you a competitive edge. From advanced analytics platforms to AI-powered optimization tools, we invest in the best resources to drive your success.</p>
+              <Link to="/industries" className="text-teal-400 hover:underline">Explore industries →</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-20 text-center">
+          <p className="text-xl text-gray-300 mb-8">Ready to transform your digital presence?</p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center">
+            <Link to="/contact" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
+              Get Free Consultation
+            </Link>
+            <Link to="/work" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+              View Our Work
+            </Link>
+          </div>
         </div>
       </div>
     </>

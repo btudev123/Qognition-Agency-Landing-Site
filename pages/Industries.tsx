@@ -10,8 +10,8 @@ const Industries: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Industries We Serve | Digital Marketing Solutions"
-        description="Specialized digital marketing for technology, healthcare, finance, e-commerce, real estate, and more. Get industry-specific strategies that drive real results. Contact us today!"
+        title="Industries We Serve | Expert Digital Marketing"
+        description="Specialized digital marketing for tech, healthcare, finance & e-commerce. Get industry-tailored strategies that drive results. Request a free consultation today!"
         path="/industries"
         schemaData={{
           type: "WebSite",
@@ -27,6 +27,16 @@ const Industries: React.FC = () => {
             Deep vertical expertise. We understand the regulatory landscapes and buyer journeys of your specific industry.
           </p>
         </header>
+
+        {/* Industry Introduction */}
+        <div className="mb-20 max-w-4xl mx-auto text-center">
+          <p className="text-lg text-gray-300 leading-relaxed mb-8">
+            At Qognition Agency, we believe that successful digital marketing requires a deep understanding of the industries we serve. Each sector has its unique challenges, competitive landscape, and customer behaviors. Our team has accumulated years of experience working with businesses across diverse industries, allowing us to develop specialized strategies that resonate with your target audience.
+          </p>
+          <p className="text-lg text-gray-300 leading-relaxed">
+            Whether you're in <Link to="/industries/technology" className="text-teal-400 hover:underline">technology</Link>, <Link to="/industries/healthcare" className="text-teal-400 hover:underline">healthcare</Link>, <Link to="/industries/finance" className="text-teal-400 hover:underline">finance</Link>, or <Link to="/industries/ecommerce" className="text-teal-400 hover:underline">e-commerce</Link>, we have the expertise to help you achieve your digital marketing goals. Our data-driven approach ensures that every strategy is backed by insights and optimized for results.
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {INDUSTRIES.map((ind, index) => (
@@ -55,6 +65,22 @@ const Industries: React.FC = () => {
                      </div>
                 </div>
             ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-20 text-center">
+          <h2 className="font-display text-3xl mb-6">Don't see your industry?</h2>
+          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+            We have experience across many more sectors. Contact us to discuss your specific needs.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link to="/contact" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
+              Get in Touch
+            </Link>
+            <Link to="/services" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+              Our Services
+            </Link>
+          </div>
         </div>
       </div>
     </>

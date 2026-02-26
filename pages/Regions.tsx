@@ -9,8 +9,8 @@ const Regions: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Global Presence | Digital Marketing Agency Offices Worldwide"
-        description="Qognition Agency operates globally with offices in London, New York, Dubai, Mumbai, and Australia. Get local expertise with global scale for your digital marketing needs."
+        title="Global Offices | Digital Marketing Agency Near You"
+        description="Qognition has offices in London, New York, Dubai & Mumbai. Get local expertise with global scale. Contact us for a free consultation in your region!"
         path="/regions"
         schemaData={{
           type: "Organization",
@@ -46,6 +46,16 @@ const Regions: React.FC = () => {
           </motion.p>
         </header>
 
+        {/* Introduction */}
+        <div className="mb-20 max-w-4xl mx-auto text-center">
+          <p className="text-lg text-gray-300 leading-relaxed mb-6">
+            At Qognition Agency, we believe that great digital marketing requires both global perspective and local understanding. Our strategically located offices allow clients across multiple time zones while us to serve understanding the unique characteristics of each market.
+          </p>
+          <p className="text-lg text-gray-300 leading-relaxed">
+            Whether you're based in <Link to="/regions/united-kingdom" className="text-teal-400 hover:underline">London</Link>, <Link to="/regions/united-states" className="text-teal-400 hover:underline">New York</Link>, <Link to="/regions/uae" className="text-teal-400 hover:underline">Dubai</Link>, or <Link to="/regions/india" className="text-teal-400 hover:underline">Mumbai</Link>, our team is ready to help you achieve digital marketing success. Each office is staffed with local experts who understand the regional market dynamics, cultural nuances, and business practices.
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {REGIONS.map((region, index) => (
                 <Link to={`/regions/${region.slug}`} key={region.id} className="group">
@@ -56,7 +66,6 @@ const Regions: React.FC = () => {
                         transition={{ delay: index * 0.1 }}
                         className="h-full p-8 border border-white/10 rounded-2xl bg-gradient-to-br from-white/5 to-transparent hover:border-teal-400/50 hover:from-teal-900/10 transition-all duration-500 relative overflow-hidden flex flex-col justify-between"
                     >
-                        {/* Map Background Hint */}
                         <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
                             <svg className="w-full h-full text-white" viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <path d="M0 100 L100 0" stroke="currentColor" strokeWidth="0.5" strokeDasharray="5,5" />
@@ -94,6 +103,22 @@ const Regions: React.FC = () => {
                     </motion.div>
                 </Link>
             ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-20 text-center">
+          <h2 className="font-display text-3xl mb-6">Need support in a specific region?</h2>
+          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+            Our team can provide localized strategies for virtually any market. Let's discuss your global expansion goals.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link to="/contact" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
+              Contact Us
+            </Link>
+            <Link to="/services" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+              Our Services
+            </Link>
+          </div>
         </div>
       </div>
     </>

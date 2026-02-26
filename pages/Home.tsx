@@ -21,8 +21,8 @@ const Home: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Qognition Agency | Future-Ready Digital Marketing Solutions"
-        description="Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions. Partner with industry experts for exponential growth. Book your strategy call today!"
+        title="Qognition | Future-Ready Digital Marketing Agency"
+        description="Scale your business with Qognition's ROI-focused digital marketing. Expert SEO, PPC, social media & web development. Get a free strategy consultation today!"
         path="/"
         schemaData={{
           type: "Organization",
@@ -473,6 +473,156 @@ const Home: React.FC = () => {
                     <MagneticButton variant="secondary">View All Locations</MagneticButton>
                 </Link>
             </div>
+        </div>
+      </section>
+
+      {/* Why Choose Qognition */}
+      <section className="py-32 px-6 md:px-12 bg-zinc-950 border-t border-white/5">
+        <div className="max-w-8xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="text-teal-400 font-mono text-sm mb-4 block tracking-widest">// WHY QOGNITION</span>
+            <h2 className="font-display text-4xl md:text-6xl mb-6">Your Growth Partner</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+              We're not just another digital agency. We are your strategic growth partner, committed to delivering measurable results that impact your bottom line.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 border border-white/10 rounded-2xl bg-white/5">
+              <TrendingUp className="text-teal-400 mb-6" size={40} />
+              <h3 className="font-display text-2xl mb-4">Data-Driven Approach</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Every decision we make is backed by data. Our team analyzes metrics continuously to optimize your campaigns and maximize ROI. We believe in transparent reporting and measurable outcomes that matter to your business.
+              </p>
+            </div>
+            <div className="p-8 border border-white/10 rounded-2xl bg-white/5">
+              <Target className="text-teal-400 mb-6" size={40} />
+              <h3 className="font-display text-2xl mb-4">ROI-Focused Strategy</h3>
+              <p className="text-gray-400 leading-relaxed">
+                We focus on strategies that deliver real business results. Our experts work tirelessly to ensure every dollar you invest generates qualified leads and measurable growth for your organization.
+              </p>
+            </div>
+            <div className="p-8 border border-white/10 rounded-2xl bg-white/5">
+              <Monitor className="text-teal-400 mb-6" size={40} />
+              <h3 className="font-display text-2xl mb-4">Full-Service Solutions</h3>
+              <p className="text-gray-400 leading-relaxed">
+                From <Link to="/services" className="text-teal-400 hover:underline">SEO</Link> and <Link to="/services" className="text-teal-400 hover:underline">PPC</Link> to web development and content marketing, we offer comprehensive digital solutions under one roof. No more managing multiple vendors - we handle everything.
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <Link to="/about" className="inline-flex items-center gap-2 text-teal-400 hover:text-white transition-colors">
+              Learn more about our mission <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Industries We Serve */}
+      <section className="py-32 px-6 md:px-12 bg-black border-t border-white/5">
+        <div className="max-w-8xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="text-teal-400 font-mono text-sm mb-4 block tracking-widest">// INDUSTRIES</span>
+            <h2 className="font-display text-4xl md:text-6xl mb-6">Expertise Across Sectors</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+              Our team has proven experience driving results for businesses across diverse industries. We understand the unique challenges and opportunities in each sector.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {INDUSTRIES.slice(0, 8).map((ind) => (
+              <Link key={ind.id} to={`/industries/${ind.id}`} className="group p-6 border border-white/10 rounded-xl hover:border-teal-400/50 transition-all bg-white/5 hover:bg-white/10">
+                <Layers className="text-teal-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
+                <h3 className="font-display text-xl mb-2">{ind.name}</h3>
+                <p className="text-gray-500 text-sm line-clamp-2">{ind.description}</p>
+              </Link>
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <Link to="/industries" className="inline-flex items-center gap-2 text-teal-400 hover:text-white transition-colors">
+              View all industries we serve <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Process */}
+      <section className="py-32 px-6 md:px-12 bg-zinc-950 border-t border-white/5">
+        <div className="max-w-8xl mx-auto">
+          <div className="text-center mb-20">
+            <span className="text-teal-400 font-mono text-sm mb-4 block tracking-widest">// OUR PROCESS</span>
+            <h2 className="font-display text-4xl md:text-6xl mb-6">How We Deliver Results</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+              Our proven methodology ensures consistent results. We follow a systematic approach to digital marketing that has helped hundreds of clients achieve their growth goals.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">1</div>
+              <h3 className="font-display text-xl mb-4">Discovery</h3>
+              <p className="text-gray-400 text-sm">We start by understanding your business, goals, target audience, and competitive landscape through comprehensive research.</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">2</div>
+              <h3 className="font-display text-xl mb-4">Strategy</h3>
+              <p className="text-gray-400 text-sm">Our experts develop a customized digital strategy aligned with your business objectives and market opportunities.</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">3</div>
+              <h3 className="font-display text-xl mb-4">Execution</h3>
+              <p className="text-gray-400 text-sm">We implement campaigns with precision, leveraging industry best practices and cutting-edge technology.</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">4</div>
+              <h3 className="font-display text-xl mb-4">Optimization</h3>
+              <p className="text-gray-400 text-sm">We continuously monitor, analyze, and optimize your campaigns to maximize performance and ROI.</p>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <Link to="/services" className="inline-flex items-center gap-2 text-teal-400 hover:text-white transition-colors">
+              Explore our services <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-32 px-6 md:px-12 bg-black border-t border-white/5">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="text-teal-400 font-mono text-sm mb-4 block tracking-widest">// FAQ</span>
+            <h2 className="font-display text-4xl md:text-5xl mb-6">Common Questions</h2>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="p-6 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-xl mb-3">How long does it take to see results from digital marketing?</h3>
+              <p className="text-gray-400">Results vary based on your goals and competition. Typically, PPC campaigns show immediate results within days, while SEO takes 3-6 months for significant improvements. Our team provides realistic timelines during the strategy phase.</p>
+            </div>
+            <div className="p-6 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-xl mb-3">What makes Qognition different from other agencies?</h3>
+              <p className="text-gray-400">We combine data-driven strategies with creative excellence. Our team consists of industry experts who have worked with leading brands globally. We focus on ROI and provide transparent reporting with dedicated account managers.</p>
+            </div>
+            <div className="p-6 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-xl mb-3">Do you work with businesses of all sizes?</h3>
+              <p className="text-gray-400">Yes! We work with startups, SMBs, and enterprise companies. Our flexible pricing and customized strategies ensure we can meet the unique needs of businesses at any stage of growth.</p>
+            </div>
+            <div className="p-6 border border-white/10 rounded-xl bg-white/5">
+              <h3 className="font-display text-xl mb-3">How do you measure success?</h3>
+              <p className="text-gray-400">We define success metrics based on your business goals - whether that's leads generated, revenue growth, website traffic, or brand awareness. Our dashboards provide real-time visibility into performance.</p>
+            </div>
+          </div>
+          
+          <div className="mt-12 text-center">
+            <p className="text-gray-400 mb-6">Have more questions?</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 text-teal-400 hover:text-white transition-colors">
+              Get in touch with our team <ArrowRight size={20} />
+            </Link>
+          </div>
         </div>
       </section>
 
