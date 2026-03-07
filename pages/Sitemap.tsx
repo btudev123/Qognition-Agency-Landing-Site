@@ -1,113 +1,51 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { SERVICES, INDUSTRIES, REGIONS, CASE_STUDIES } from '../constants';
+import React, { useEffect, useState } from 'react';
 import SEO from '../components/SEO';
-import { ArrowRight } from 'lucide-react';
 
 const Sitemap: React.FC = () => {
+  const [xmlContent, setXmlContent] = useState<string>('Loading sitemap...');
+
+  useEffect(() => {
+    // This fetches the sitemap.xml file from your 'public' folder
+    fetch('/sitemap.xml')
+      .then((res) => res.text())
+      .then((data) => setXmlContent(data))
+      .catch(() => setXmlContent('Error: Could not load sitemap.xml. Ensure it is in the public folder.'));
+  }, []);
+
   return (
     <>
       <SEO 
-        title="Sitemap | Complete Directory of Pages"
-        description="Complete sitemap of Qognition Agency. Find all our services, case studies, industry solutions, regional offices, and resources. Navigate easily to any page on our website."
+        title="Sitemap | XML View"
+        description="Direct XML sitemap for Qognition Agency."
         path="/sitemap"
-        schemaData={{
-          type: "WebSite",
-          name: "Sitemap",
-          url: "https://qognitionagency.com/sitemap"
-        }}
       />
       
-      <div className="pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-32 min-h-screen">
-        <header className="mb-24">
-          <h1 className="font-display text-5xl md:text-7xl mb-8">Sitemap</h1>
-          <p className="text-xl text-gray-400 max-w-2xl">
-            A comprehensive overview of our digital ecosystem.
+      <div className="pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-32 min-h-screen bg-black">
+        <header className="mb-12">
+          <h1 className="font-display text-4xl md:text-6xl mb-4 text-white">XML Sitemap</h1>
+          <p className="text-xl text-gray-400">
+            Raw index of all platform endpoints.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
-            
-            {/* Core Pages */}
-            <div className="space-y-6">
-                <h2 className="font-display text-2xl text-teal-400 border-b border-teal-500/30 pb-4">Company</h2>
-                <ul className="space-y-4">
-                    <li><Link to="/" className="text-lg hover:text-teal-400 transition-colors flex items-center gap-2 group">Home <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity"/></Link></li>
-                    <li><Link to="/about" className="text-lg hover:text-teal-400 transition-colors flex items-center gap-2 group">About Us <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity"/></Link></li>
-                    <li><Link to="/contact" className="text-lg hover:text-teal-400 transition-colors flex items-center gap-2 group">Contact <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity"/></Link></li>
-                    <li><Link to="/llm" className="text-lg hover:text-teal-400 transition-colors flex items-center gap-2 group">LLM Transparency <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity"/></Link></li>
-                </ul>
+        <div className="relative group">
+          {/* Custom Scrollbar Styling */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+          
+          <div className="relative bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-2 bg-gray-800/50 border-b border-gray-700">
+              <span className="text-xs font-mono text-gray-400">sitemap.xml</span>
+              <button 
+                onClick={() => navigator.clipboard.writeText(xmlContent)}
+                className="text-xs text-teal-400 hover:text-teal-300 transition-colors"
+              >
+                Copy XML
+              </button>
             </div>
-
-            {/* Services */}
-            <div className="space-y-6">
-                <h2 className="font-display text-2xl text-teal-400 border-b border-teal-500/30 pb-4">Services</h2>
-                <ul className="space-y-4">
-                    <li><Link to="/services" className="text-lg font-bold hover:text-teal-400 transition-colors">All Services</Link></li>
-                    {SERVICES.map(service => (
-                        <li key={service.id}>
-                            <Link to={`/services/${service.id}`} className="text-gray-300 hover:text-white transition-colors">
-                                {service.title}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            {/* Industries */}
-            <div className="space-y-6">
-                <h2 className="font-display text-2xl text-teal-400 border-b border-teal-500/30 pb-4">Industries</h2>
-                <ul className="space-y-4">
-                    <li><Link to="/industries" className="text-lg font-bold hover:text-teal-400 transition-colors">All Sectors</Link></li>
-                    {INDUSTRIES.map(ind => (
-                        <li key={ind.id}>
-                            <Link to={`/industries/${ind.id}`} className="text-gray-300 hover:text-white transition-colors">
-                                {ind.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            {/* Regions */}
-            <div className="space-y-6">
-                <h2 className="font-display text-2xl text-teal-400 border-b border-teal-500/30 pb-4">Global Hubs</h2>
-                <ul className="space-y-4">
-                    <li><Link to="/regions" className="text-lg font-bold hover:text-teal-400 transition-colors">All Locations</Link></li>
-                    {REGIONS.map(region => (
-                        <li key={region.id}>
-                            <Link to={`/regions/${region.slug}`} className="text-gray-300 hover:text-white transition-colors">
-                                {region.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            {/* Case Studies */}
-            <div className="space-y-6">
-                <h2 className="font-display text-2xl text-teal-400 border-b border-teal-500/30 pb-4">Work</h2>
-                <ul className="space-y-4">
-                    <li><Link to="/work" className="text-lg font-bold hover:text-teal-400 transition-colors">Case Studies Hub</Link></li>
-                    {CASE_STUDIES.map(study => (
-                        <li key={study.id}>
-                            <Link to={`/work/${study.id}`} className="text-gray-300 hover:text-white transition-colors">
-                                {study.client}: {study.title}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            {/* Legal */}
-            <div className="space-y-6">
-                <h2 className="font-display text-2xl text-teal-400 border-b border-teal-500/30 pb-4">Legal</h2>
-                <ul className="space-y-4">
-                    <li><span className="text-gray-500 cursor-not-allowed">Privacy Policy</span></li>
-                    <li><span className="text-gray-500 cursor-not-allowed">Terms of Service</span></li>
-                    <li><span className="text-gray-500 cursor-not-allowed">Cookie Policy</span></li>
-                </ul>
-            </div>
+            <pre className="p-6 text-teal-400 font-mono text-sm whitespace-pre-wrap break-all h-[600px] overflow-y-auto custom-scrollbar">
+              {xmlContent}
+            </pre>
+          </div>
         </div>
       </div>
     </>
