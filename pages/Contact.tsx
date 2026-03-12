@@ -29,17 +29,17 @@ const Contact: React.FC = () => {
             <div>
               <h3 className="text-white font-bold mb-2">New Business Inquiries</h3>
               <p className="text-gray-400 mb-2">Ready to start your project? Send us a message.</p>
-              <a href="mailto:hello@qognition.agency" className="text-gray-400 hover:text-teal-400 transition-colors text-lg">hello@qognition.agency</a>
+              <a href="mailto:hello@qognitionagency.com" className="text-gray-400 hover:text-teal-400 transition-colors text-lg">hello@qognitionagency.com</a>
             </div>
             <div>
               <h3 className="text-white font-bold mb-2">Careers</h3>
               <p className="text-gray-400 mb-2">Join our team of digital marketing experts.</p>
-              <a href="mailto:careers@qognition.agency" className="text-gray-400 hover:text-teal-400 transition-colors text-lg">careers@qognition.agency</a>
+              <a href="mailto:hello@qognitionagency.com" className="text-gray-400 hover:text-teal-400 transition-colors text-lg">hello@qognitionagency.com</a>
             </div>
             <div>
               <h3 className="text-white font-bold mb-2">General Inquiries</h3>
               <p className="text-gray-400 mb-2">Questions about our services? We're happy to help.</p>
-              <a href="mailto:info@qognition.agency" className="text-gray-400 hover:text-teal-400 transition-colors text-lg">info@qognition.agency</a>
+              <a href="mailto:hello@qognitionagency.com" className="text-gray-400 hover:text-teal-400 transition-colors text-lg">hello@qognitionagency.com</a>
             </div>
           </div>
 
