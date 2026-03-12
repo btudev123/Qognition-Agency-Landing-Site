@@ -10,7 +10,7 @@ const Contact: React.FC = () => {
     <>
       <SEO 
         title="Contact Qognition | Free Marketing Consultation"
-        description="Ready to scale your business? Get a free consultation with our digital marketing experts. Email us at hello@qognition.agency or book a call today!"
+        description="Ready to scale your business? Get a free consultation with our digital marketing experts. Email us at hello@qognitionagency.com or book a call today!"
         path="/contact"
         schemaData={{
           type: "Organization",
