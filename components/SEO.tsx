@@ -13,7 +13,11 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }) => {
-  const canonicalUrl = path === '/' ? SITE_URL : `${SITE_URL}${path}`;
+    // 2. IMPROVED LOGIC: 
+  // If path is "/" or empty, use just the SITE_URL.
+  // Otherwise, ensure we don't have double slashes if the path starts with one.
+  const cleanPath = path === '/' || !path ? '' : path.startsWith('/') ? path : `/${path}`;
+  const canonicalUrl = `${SITE_URL}${cleanPath}`;
   const fullTitle = title.includes('Qognition') ? title : `${title} | ${SITE_NAME}`;
   const ogImage = image || `${SITE_URL}/og-image.png`;
 
