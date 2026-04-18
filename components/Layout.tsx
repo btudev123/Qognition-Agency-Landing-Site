@@ -242,11 +242,25 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
         
-        <div className="max-w-8xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-600 text-xs font-mono uppercase tracking-wider">
-           <p>© {new Date().getFullYear()} Qognition Agency.</p>
-           <p className="mt-2 md:mt-0">London • New York • Dubai • Bangalore • Sydney</p>
+<div className="max-w-8xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-600 text-xs font-mono uppercase tracking-wider">
+            <p>© {new Date().getFullYear()} Qognition Agency.</p>
+            <p className="mt-2 md:mt-0">London • New York • Dubai • Bangalore • Sydney</p>
         </div>
       </footer>
+
+      {/* WhatsApp Floating Button */}
+      <a 
+        href="https://wa.me/919217129349"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-400 text-white p-4 rounded-full shadow-2xl shadow-green-500/30 transition-all duration-300 hover:scale-110 group"
+        aria-label="Chat on WhatsApp"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273.099-.472.162-.672.162.175 1.331.565 2.423 1.703 2.896l-.297-.149c-.509-.256-1.071-.508-1.573-.732-.254-.119-.491-.223-.708.223-.297.297-.783.925-1.003 1.115-.146.124-.291.149-.424.049-.385-.298-.736-.672-1.059-1.141-.245-.362-.441-.749-.441-1.232 0-1.525 1.372-2.795 1.943-3.208.294-.214.671-.248 1.009-.124.297.116.783.925 1.003 1.115.146.124.291.149.424.049.385-.298.736-.672 1.059-1.141.245-.362.441-.749.441-1.232 0-1.525-1.372-2.795-1.943-3.208-.294-.214-.671-.248-1.009-.124-.297.116-.783.925-1.003 1.115-.146.124-.291.149-.424.049-.385-.298-.736-.672-1.059-1.141-.245-.362-.441-.749-.441-1.232 0-.483.121-.939.33-1.331l1.897.789c.146.049.297.124.424.049.385-.298.736-.672 1.059-1.141.245-.362.441-.749.441-1.232 0-.483-.121-.939-.33-1.331l1.897.789c.146.049.297.124.424.049zM12.704 22c4.15 0 7.532-3.07 7.532-7.21 0-.478-.101-.947-.293-1.371l-1.133-3.692c-.072-.234-.465-.35-.703-.293l-2.959.789c-1.335-.896-2.859-1.549-4.511-1.549-4.15 0-7.532 3.07-7.532 7.21 0 1.525.459 2.963 1.259 4.207l1.133-3.692c.072-.234.465-.35.703-.293l2.959.789c1.335.896 2.859 1.549 4.511 1.549z"/>
+        </svg>
+        <span className="absolute right-0 top-0 w-3 h-3 bg-green-400 rounded-full border-2 border-black animate-pulse"></span>
+      </a>
     </div>
   );
 };
