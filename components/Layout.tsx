@@ -207,15 +207,16 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
 
-          <div className="md:col-span-2 md:col-start-6">
-            <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Sitemap</h4>
-            <ul className="space-y-4 text-gray-400 text-sm">
-              <li><Link to="/services" className="hover:text-white transition-colors">Capabilities</Link></li>
-              <li><Link to="/industries" className="hover:text-white transition-colors">Industries</Link></li>
-              <li><Link to="/regions" className="hover:text-white transition-colors">Global Hubs</Link></li>
-              <li><Link to="/work" className="hover:text-white transition-colors">Case Studies</Link></li>
-            </ul>
-          </div>
+            <div className="md:col-span-2 md:col-start-6">
+              <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Sitemap</h4>
+              <ul className="space-y-4 text-gray-400 text-sm">
+                <li><Link to="/services" className="hover:text-white transition-colors">Capabilities</Link></li>
+                <li><Link to="/industries" className="hover:text-white transition-colors">Industries</Link></li>
+                <li><Link to="/regions" className="hover:text-white transition-colors">Global Hubs</Link></li>
+                <li><Link to="/work" className="hover:text-white transition-colors">Case Studies</Link></li>
+                <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+              </ul>
+            </div>
           
           <div className="md:col-span-2">
             <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Resources</h4>

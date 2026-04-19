@@ -19,6 +19,8 @@ const LLM = lazy(() => import('./pages/LLM'));
 const Sitemap = lazy(() => import('./pages/Sitemap')); // The component that shows the XML
 const DirectoryHome = lazy(() => import('./pages/directory/DirectoryHome'));
 const DirectoryToolDetail = lazy(() => import('./pages/directory/DirectoryToolDetail'));
+const BlogPage = lazy(() => import('./pages/blog'));
+const BlogPostPage = lazy(() => import('./pages/blog/[slug]'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const PageLoader = () => (
@@ -55,6 +57,8 @@ const App: React.FC = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
             <Route path="/llm" element={<LLM />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
             
             {/* The route for your direct sitemap display */}
             <Route path="/sitemap" element={<Sitemap />} />

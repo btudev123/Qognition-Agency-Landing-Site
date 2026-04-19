@@ -27,6 +27,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Work', path: '/work' },
   { label: 'Regions', path: '/regions' },
   { label: 'About', path: '/about' },
+  { label: 'Blog', path: '/blog' },
   { label: 'Contact', path: '/contact' },
 ];
 

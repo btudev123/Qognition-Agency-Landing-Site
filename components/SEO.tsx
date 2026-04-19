@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useInsertionEffect } from 'react';
 import { SchemaData } from '../types';
 
-const SITE_URL = 'https://www.qognitionagency.com';
+const SITE_URL = 'https://qognitionagency.com';
 const SITE_NAME = 'Qognition Agency';
 
 interface SEOProps {
@@ -13,17 +13,22 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }) => {
-    // 2. IMPROVED LOGIC: 
-  // If path is "/" or empty, use just the SITE_URL.
-  // Otherwise, ensure we don't have double slashes if the path starts with one.
   const cleanPath = path === '/' || !path ? '' : path.startsWith('/') ? path : `/${path}`;
   const canonicalUrl = `${SITE_URL}${cleanPath}`;
   const fullTitle = title.includes('Qognition') ? title : `${title} | ${SITE_NAME}`;
-  const ogImage = image || `${SITE_URL}/og-image.png`;
 
-  useEffect(() => {
-    document.title = fullTitle;
+  // Use insertion effect to inject meta tags BEFORE React hydrates - critical for Google SEO
+  useInsertionEffect(() => {
+    // Set canonical URL immediately - this runs BEFORE first paint!
+    let linkCanon = document.querySelector("link[rel='canonical']");
+    if (!linkCanon) {
+      linkCanon = document.createElement("link");
+      linkCanon.setAttribute("rel", "canonical");
+      document.head.appendChild(linkCanon);
+    }
+    linkCanon.setAttribute("href", canonicalUrl);
 
+    // Set meta description
     let metaDesc = document.querySelector("meta[name='description']");
     if (!metaDesc) {
       metaDesc = document.createElement("meta");
@@ -32,13 +37,14 @@ const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }
     }
     metaDesc.setAttribute("content", description);
 
-    let linkCanon = document.querySelector("link[rel='canonical']");
-    if (!linkCanon) {
-      linkCanon = document.createElement("link");
-      linkCanon.setAttribute("rel", "canonical");
-      document.head.appendChild(linkCanon);
-    }
-    linkCanon.setAttribute("href", canonicalUrl);
+    // Set title
+    document.title = fullTitle;
+
+  }, [canonicalUrl, description, fullTitle]);
+
+  // Use regular effect for secondary meta tags (after React hydrates)
+  useEffect(() => {
+    document.title = fullTitle;
 
     let ogUrl = document.querySelector("meta[property='og:url']");
     if (!ogUrl) {
