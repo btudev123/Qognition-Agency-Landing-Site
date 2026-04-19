@@ -89,7 +89,7 @@ const Home: React.FC = () => {
                 >
                     <Link to="/work">
                       <MagneticButton variant="primary" className="px-8 py-4 text-base w-full sm:w-auto min-w-[180px]">
-                          View Work
+                          Start Work
                       </MagneticButton>
                     </Link>
                     <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
