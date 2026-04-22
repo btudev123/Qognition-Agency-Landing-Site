@@ -1,0 +1,24 @@
+# Robots.txt for Qognition Agency
+# https://qognitionagency.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://qognitionagency.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow private areas
+Disallow: /api/
+
+# Allow static resources
+Allow: /static/
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.svg
+Allow: /*.js
+Allow: /*.css
+
+Host: https://qognitionagency.com
