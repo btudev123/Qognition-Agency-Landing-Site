@@ -1,46 +1,25 @@
 {
   "name": "qognition-agency",
-  "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "framer-motion": "11.0.8",
-    "lucide-react": "0.344.0",
-    "marked": "^18.0.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-router-dom": "6.22.3"
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/react": "18.2.64",
-    "@types/react-dom": "18.2.21",
-    "@vitejs/plugin-react": "4.2.1",
-    "typescript": "5.2.2",
-    "vite": "5.1.6"
-  },
-  "overrides": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "description": "<div align=\"center\"> <img width=\"1200\" height=\"475\" alt=\"GHBanner\" src=\"https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6\" /> </div>",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/qognition-tech/qognition-agency-landing.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/qognition-tech/qognition-agency-landing/issues"
-  },
-  "homepage": "https://github.com/qognition-tech/qognition-agency-landing#readme"
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10",
+    "postcss": "^8",
+    "tailwindcss": "^3",
+    "typescript": "^5"
+  }
 }

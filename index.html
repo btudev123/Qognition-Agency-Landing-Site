@@ -23,21 +23,20 @@
     <meta name="description" content="Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions. Partner with industry experts in London, New York, Dubai, and Mumbai." />
     <meta name="author" content="Qognition Agency" />
 <meta name="robots" content="index, follow" />
-    <!-- Dynamic Canonical - runs before React hydrates -->
+    <!-- Dynamic Canonical for SEO - uses window location for SPA -->
     <script>
       (function() {
-        var path = location.pathname;
-        if (path === '' || path === '/') {
-          path = '/';
-        } else if (path.slice(-1) === '/') {
-          path = path.slice(0, -1);
-        }
-        var link = document.createElement('link');
-        link.rel = 'canonical';
-        link.href = 'https://qognitionagency.com' + path;
-        document.head.appendChild(link);
+        var path = window.location.pathname || '/';
+        if (path.slice(-1) === '/' && path !== '/') path = path.slice(0, -1);
+        if (path === '') path = '/';
+        var canonical = document.createElement('link');
+        canonical.rel = 'canonical';
+        canonical.href = 'https://qognitionagency.com' + path;
+        document.head.appendChild(canonical);
       })();
     </script>
+    <!-- Static fallback canonical (for legacy/non-JS crawlers - will be overwritten by JS for JS-capable) -->
+    <link rel="canonical" href="https://qognitionagency.com/" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
