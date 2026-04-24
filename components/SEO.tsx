@@ -1,7 +1,7 @@
 import React, { useEffect, useInsertionEffect } from 'react';
 import { SchemaData } from '../types';
 
-const SITE_URL = 'https://qognitionagency.com';
+const SITE_URL = 'https://www.qognitionagency.com';
 const SITE_NAME = 'Qognition Agency';
 
 interface SEOProps {
@@ -12,14 +12,40 @@ interface SEOProps {
   image?: string;
 }
 
+// Builds the canonical URL dynamically from the real browser URL,
+// always enforcing www — works for every page without any hardcoding.
+const getDynamicCanonicalUrl = (fallbackPath: string): string => {
+  if (typeof window !== 'undefined') {
+    // Read the actual live URL from the browser
+    const protocol = window.location.protocol;        // "https:"
+    let hostname   = window.location.hostname;        // "qognitionagency.com" or "www.qognitionagency.com"
+    const path     = window.location.pathname;        // "/about", "/services/seo", etc.
+    const search   = window.location.search;          // "?ref=google" or ""
+
+    // Always enforce www — even if the visitor landed on the non-www version
+    if (!hostname.startsWith('www.')) {
+      hostname = `www.${hostname}`;
+    }
+
+    return `${protocol}//${hostname}${path}${search}`;
+  }
+
+  // SSR / build-time fallback: use the prop passed in
+  const cleanPath =
+    fallbackPath === '/' || !fallbackPath
+      ? ''
+      : fallbackPath.startsWith('/')
+      ? fallbackPath
+      : `/${fallbackPath}`;
+  return `${SITE_URL}${cleanPath}`;
+};
+
 const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }) => {
-  const cleanPath = path === '/' || !path ? '' : path.startsWith('/') ? path : `/${path}`;
-  const canonicalUrl = `${SITE_URL}${cleanPath}`;
+  const canonicalUrl = getDynamicCanonicalUrl(path);
   const fullTitle = title.includes('Qognition') ? title : `${title} | ${SITE_NAME}`;
 
-  // Use insertion effect to inject meta tags BEFORE React hydrates - critical for Google SEO
+  // useInsertionEffect runs BEFORE first paint — critical for Google SEO
   useInsertionEffect(() => {
-    // Set canonical URL immediately - this runs BEFORE first paint!
     let linkCanon = document.querySelector("link[rel='canonical']");
     if (!linkCanon) {
       linkCanon = document.createElement("link");
@@ -28,7 +54,6 @@ const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }
     }
     linkCanon.setAttribute("href", canonicalUrl);
 
-    // Set meta description
     let metaDesc = document.querySelector("meta[name='description']");
     if (!metaDesc) {
       metaDesc = document.createElement("meta");
@@ -37,55 +62,28 @@ const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }
     }
     metaDesc.setAttribute("content", description);
 
-    // Set title
     document.title = fullTitle;
-
   }, [canonicalUrl, description, fullTitle]);
 
-  // Use regular effect for secondary meta tags (after React hydrates)
+  // useEffect for secondary OG tags (after React hydrates)
   useEffect(() => {
     document.title = fullTitle;
 
-    let ogUrl = document.querySelector("meta[property='og:url']");
-    if (!ogUrl) {
-      ogUrl = document.createElement("meta");
-      ogUrl.setAttribute("property", "og:url");
-      document.head.appendChild(ogUrl);
-    }
-    ogUrl.setAttribute("content", canonicalUrl);
+    const setMeta = (attr: string, value: string, content: string) => {
+      let el = document.querySelector(`meta[${attr}='${value}']`);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, value);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", content);
+    };
 
-    let ogTitle = document.querySelector("meta[property='og:title']");
-    if (!ogTitle) {
-      ogTitle = document.createElement("meta");
-      ogTitle.setAttribute("property", "og:title");
-      document.head.appendChild(ogTitle);
-    }
-    ogTitle.setAttribute("content", fullTitle);
-
-    let ogDesc = document.querySelector("meta[property='og:description']");
-    if (!ogDesc) {
-      ogDesc = document.createElement("meta");
-      ogDesc.setAttribute("property", "og:description");
-      document.head.appendChild(ogDesc);
-    }
-    ogDesc.setAttribute("content", description);
-
-    let ogImage = document.querySelector("meta[property='og:image']");
-    if (!ogImage) {
-      ogImage = document.createElement("meta");
-      ogImage.setAttribute("property", "og:image");
-      document.head.appendChild(ogImage);
-    }
-    ogImage.setAttribute("content", image || `${SITE_URL}/og-image.png`);
-
-    let ogSiteName = document.querySelector("meta[property='og:site_name']");
-    if (!ogSiteName) {
-      ogSiteName = document.createElement("meta");
-      ogSiteName.setAttribute("property", "og:site_name");
-      document.head.appendChild(ogSiteName);
-    }
-    ogSiteName.setAttribute("content", SITE_NAME);
-
+    setMeta("property", "og:url",         canonicalUrl);
+    setMeta("property", "og:title",        fullTitle);
+    setMeta("property", "og:description",  description);
+    setMeta("property", "og:image",        image || `${SITE_URL}/og-image.png`);
+    setMeta("property", "og:site_name",    SITE_NAME);
   }, [fullTitle, description, canonicalUrl, image]);
 
   return (
@@ -93,7 +91,7 @@ const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }
       {schemaData && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ 
+          dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": schemaData.type || "WebSite",
@@ -115,7 +113,7 @@ const SEO: React.FC<SEOProps> = ({ title, description, path, schemaData, image }
                 "https://www.facebook.com/qognitiontech"
               ],
               ...schemaData
-            }) 
+            })
           }}
         />
       )}
