@@ -20,7 +20,7 @@ export const TOOL_CATEGORIES = [
     { id: 'ai-agents', name: 'AI Agents', description: 'Autonomous agents for task automation and research.', slug: 'ai-agents', phTopicSlug: 'artificial-intelligence' },
 ];
 
-export const CALENDLY_LINK = "https://calendly.com/qognition-agency/15min";
+export const CALENDLY_LINK = "https://calendly.com/hello-qognitionagency/30min";
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Expertise', path: '/services' },
