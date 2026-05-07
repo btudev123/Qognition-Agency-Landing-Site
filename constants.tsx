@@ -6,8 +6,10 @@ import { NavItem, ClientLogo, Testimonial } from './types';
 export { SERVICES } from './data/services';
 export { INDUSTRIES } from './data/industries';
 export { REGIONS } from './data/regions';
+export { LOCATIONS } from './data/locations';
 export { CASE_STUDIES } from './data/work';
 export { TOOLS } from './data/tools';
+export { DIRECTORY_PRODUCTS } from './data/directoryProducts';
 
 // Updated categories with URL-friendly slugs that map to Logic
 export const TOOL_CATEGORIES = [

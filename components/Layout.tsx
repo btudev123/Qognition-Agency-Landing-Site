@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from '../lib/routerCompat';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight, Instagram, Linkedin, Twitter, Youtube, Facebook, Dribbble } from 'lucide-react';
 import { NAV_ITEMS, CALENDLY_LINK, TOOL_CATEGORIES } from '../constants';
@@ -212,6 +212,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li><Link to="/services" className="hover:text-white transition-colors">Capabilities</Link></li>
                 <li><Link to="/industries" className="hover:text-white transition-colors">Industries</Link></li>
+                <li><Link to="/locations" className="hover:text-white transition-colors">Locations</Link></li>
                 <li><Link to="/regions" className="hover:text-white transition-colors">Global Hubs</Link></li>
                 <li><Link to="/work" className="hover:text-white transition-colors">Case Studies</Link></li>
                 <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>

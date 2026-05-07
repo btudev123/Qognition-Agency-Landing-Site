@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/routerCompat';
 import { SERVICES } from '../constants';
 
 const ServiceShowcase: React.FC = () => {

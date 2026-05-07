@@ -24,13 +24,13 @@ Technology, Healthcare, Finance, E-commerce, Real Estate, Education, Manufacturi
 
 ### Key Pages
 
-- Homepage: https://qognitionagency.com
-- Services: https://qognitionagency.com/services
-- Work: https://qognitionagency.com/work
-- About: https://qognitionagency.com/about
-- Contact: https://qognitionagency.com/contact
-- Industries: https://qognitionagency.com/industries
-- Regions: https://qognitionagency.com/regions
+- Homepage: https://www.qognitionagency.com
+- Services: https://www.qognitionagency.com/services
+- Work: https://www.qognitionagency.com/work
+- About: https://www.qognitionagency.com/about
+- Contact: https://www.qognitionagency.com/contact
+- Industries: https://www.qognitionagency.com/industries
+- Regions: https://www.qognitionagency.com/regions
 
 ### Last Updated
 

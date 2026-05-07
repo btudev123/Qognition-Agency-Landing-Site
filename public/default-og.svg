@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Qognition Agency</title>
+  <desc id="desc">Open Graph image for Qognition Agency digital marketing and programmatic SEO pages.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#041111"/>
+      <stop offset="0.55" stop-color="#071827"/>
+      <stop offset="1" stop-color="#120b22"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2dd4bf"/>
+      <stop offset="1" stop-color="#60a5fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <path d="M84 92h1032v446H84z" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
+  <circle cx="1015" cy="138" r="64" fill="none" stroke="url(#accent)" stroke-width="14"/>
+  <path d="M1002 138h88" stroke="url(#accent)" stroke-width="14" stroke-linecap="round"/>
+  <text x="110" y="228" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="78" font-weight="800" letter-spacing="0">
+    Qognition Agency
+  </text>
+  <text x="114" y="310" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="500" letter-spacing="0">
+    Programmatic SEO, AI Search, PPC, Web Development
+  </text>
+  <rect x="114" y="390" width="420" height="6" fill="url(#accent)" rx="3"/>
+  <text x="114" y="462" fill="#94a3b8" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="500" letter-spacing="0">
+    qognitionagency.com
+  </text>
+</svg>

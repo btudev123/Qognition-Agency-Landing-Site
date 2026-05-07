@@ -89,6 +89,30 @@ export interface Region {
   relatedCaseStudy?: string;
 }
 
+export interface Location {
+  name: string;
+  slug: string;
+  country: string;
+  region: string;
+  type: 'city' | 'state' | 'province' | 'country' | 'continent' | 'region';
+  marketFocus: string[];
+  intro: string;
+  localModifiers: string[];
+  canonicalParent?: string;
+  schemaType: 'ServiceArea' | 'AdministrativeArea' | 'City' | 'Country';
+}
+
+export interface ProgrammaticPage {
+  route: string;
+  title: string;
+  description: string;
+  h1: string;
+  intro: string;
+  faq: FAQ[];
+  relatedLinks: { label: string; href: string }[];
+  schema: SchemaData;
+}
+
 export interface CaseStudy {
   id: string;
   client: string;
@@ -140,6 +164,12 @@ export interface Tool {
   relatedServiceId?: string;
   imageUrl?: string;
   votesCount?: number;
+}
+
+export interface DirectoryProduct extends Tool {
+  slug: string;
+  categorySlug: string;
+  source: 'curated' | 'product-hunt' | 'generated';
 }
 
 export interface ToolCategory {

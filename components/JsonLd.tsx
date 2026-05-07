@@ -1,7 +1,7 @@
 import React from 'react';
 import { SchemaData } from '../types';
 
-const SITE_URL = 'https://qognitionagency.com';
+const SITE_URL = 'https://www.qognitionagency.com';
 const SITE_NAME = 'Qognition Agency';
 
 const JsonLd: React.FC<{ data: SchemaData }> = ({ data }) => {
