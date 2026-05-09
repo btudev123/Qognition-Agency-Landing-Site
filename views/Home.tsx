@@ -78,7 +78,7 @@ const Home: React.FC = () => {
                     transition={{ delay: 1, duration: 0.8 }}
                     className="text-lg md:text-2xl text-gray-300 leading-relaxed font-light mb-10 md:mb-12"
                  >
-                    We act as your strategic growth engine. Combining technical SEO, creative firepower, and performance marketing to dominate your category.
+                    We help law firms, accounting firms, clinics, consultants, SaaS teams, and B2B companies get qualified leads through SEO, Google Ads, landing pages, and AI search visibility.
                 </motion.p>
 
                 <motion.div 
@@ -89,15 +89,15 @@ const Home: React.FC = () => {
                 >
                     <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                       <MagneticButton variant="primary" className="px-8 py-4 text-base w-full sm:w-auto min-w-[180px]">
-                          Start Work
+                          Book Strategy Call
                       </MagneticButton>
                     </a>
-                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
+                    <Link to="/resources/free-seo-audit-checklist" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
                        <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center">
                           <Play size={12} fill="currentColor" />
                        </div>
-                       <span className="text-sm font-bold uppercase tracking-wider">Showreel</span>
-                    </a>
+                       <span className="text-sm font-bold uppercase tracking-wider">Free SEO Checklist</span>
+                    </Link>
                 </motion.div>
               </div>
             </div>
@@ -548,48 +548,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Our Process */}
-      <section className="py-32 px-6 md:px-12 bg-zinc-950 border-t border-white/5">
-        <div className="max-w-8xl mx-auto">
-          <div className="text-center mb-20">
-            <span className="text-teal-400 font-mono text-sm mb-4 block tracking-widest">// OUR PROCESS</span>
-            <h2 className="font-display text-4xl md:text-6xl mb-6">How We Deliver Results</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-              Our proven methodology ensures consistent results. We follow a systematic approach to digital marketing that has helped hundreds of clients achieve their growth goals.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">1</div>
-              <h3 className="font-display text-xl mb-4">Discovery</h3>
-              <p className="text-gray-400 text-sm">We start by understanding your business, goals, target audience, and competitive landscape through comprehensive research.</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">2</div>
-              <h3 className="font-display text-xl mb-4">Strategy</h3>
-              <p className="text-gray-400 text-sm">Our experts develop a customized digital strategy aligned with your business objectives and market opportunities.</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">3</div>
-              <h3 className="font-display text-xl mb-4">Execution</h3>
-              <p className="text-gray-400 text-sm">We implement campaigns with precision, leveraging industry best practices and cutting-edge technology.</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-teal-400/20 flex items-center justify-center text-teal-400 font-bold text-2xl mx-auto mb-6">4</div>
-              <h3 className="font-display text-xl mb-4">Optimization</h3>
-              <p className="text-gray-400 text-sm">We continuously monitor, analyze, and optimize your campaigns to maximize performance and ROI.</p>
-            </div>
-          </div>
-          
-          <div className="mt-16 text-center">
-            <Link to="/services" className="inline-flex items-center gap-2 text-teal-400 hover:text-white transition-colors">
-              Explore our services <ArrowRight size={20} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ Section */}
       <section className="py-32 px-6 md:px-12 bg-black border-t border-white/5">
         <div className="max-w-4xl mx-auto">
@@ -643,7 +601,7 @@ const Home: React.FC = () => {
               </a>
               <Link to={CONTACT_MAILTO}>
                  <MagneticButton variant="outline" className="text-lg px-12 py-6 w-full md:w-auto">
-                    Contact Sales
+                    Email Us
                  </MagneticButton>
               </Link>
           </div>

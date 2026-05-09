@@ -150,7 +150,7 @@ const IndustryDetail: React.FC = () => {
                     </a>
                     <Link to={CONTACT_MAILTO}>
                          <MagneticButton variant="outline" className="text-lg px-8 py-6">
-                             Contact Sales <ArrowRight size={18} />
+                             Email Us <ArrowRight size={18} />
                          </MagneticButton>
                     </Link>
                 </div>

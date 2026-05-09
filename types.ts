@@ -2,6 +2,7 @@
 export interface SubService {
   name: string;
   description: string;
+  slug?: string;
 }
 
 export interface FAQ {
@@ -121,6 +122,23 @@ export interface CaseStudy {
   image: string;
   tags: string[];
   stats: { label: string; value: string }[];
+  summary?: string;
+  timeline?: string;
+  roi?: string;
+  beforeAfter?: { before: string; after: string }[];
+  funnelStages?: { stage: string; before: string; after: string }[];
+  analytics?: { label: string; value: string; note: string }[];
+  clientJourney?: string[];
+  challenge?: string;
+  solution?: string;
+  implementation?: string[];
+  results?: string[];
+  testimonial?: {
+    quote: string;
+    author: string;
+    role: string;
+  };
+  contentSections?: { title: string; content: string }[];
 }
 
 export interface NavItem {
@@ -133,6 +151,10 @@ export interface Testimonial {
   author: string;
   role: string;
   company: string;
+  image?: string;
+  linkedin?: string;
+  service?: string;
+  proof?: string;
 }
 
 export interface ClientLogo {
@@ -170,6 +192,86 @@ export interface DirectoryProduct extends Tool {
   slug: string;
   categorySlug: string;
   source: 'curated' | 'product-hunt' | 'generated';
+  profileSlug?: string;
+  profileName?: string;
+  audience?: string;
+  bestFor?: string[];
+  useCases?: string[];
+  pros?: string[];
+  cons?: string[];
+  alternatives?: string[];
+  implementationSteps?: string[];
+  workflowExample?: string;
+  seoNotes?: string;
+  faqs?: FAQ[];
+}
+
+export interface ServiceSubPage {
+  serviceId: string;
+  slug: string;
+  title: string;
+  description: string;
+  h1: string;
+  intro: string;
+  deliverables: string[];
+  sections: { title: string; content: string }[];
+  faqs: FAQ[];
+  relatedLinks: { label: string; href: string }[];
+}
+
+export interface ResourceLeadMagnet {
+  slug: string;
+  title: string;
+  description: string;
+  format: string;
+  readingTime: string;
+  gated: boolean;
+  audience: string;
+  highlights: string[];
+  sections: { title: string; content: string }[];
+}
+
+export interface FreeToolPage {
+  slug: string;
+  title: string;
+  description: string;
+  h1: string;
+  intro: string;
+  inputs: string[];
+  outputs: string[];
+  useCases: string[];
+  faqs: FAQ[];
+}
+
+export interface ComparisonPage {
+  slug: string;
+  title: string;
+  description: string;
+  h1: string;
+  category: 'competitor' | 'city' | 'strategy';
+  summary: string;
+  decisionFactors: string[];
+  qognitionFit: string[];
+  alternatives: string[];
+  faqs: FAQ[];
+}
+
+export interface GlossaryTerm {
+  slug: string;
+  term: string;
+  definition: string;
+  category: string;
+  relatedTerms: string[];
+}
+
+export interface TeamMember {
+  slug: string;
+  name: string;
+  role: string;
+  focus: string;
+  bio: string;
+  image?: string;
+  linkedin?: string;
 }
 
 export interface ToolCategory {

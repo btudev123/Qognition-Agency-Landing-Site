@@ -63,7 +63,7 @@ const CaseStudyDetail: React.FC = () => {
             
             <div className="lg:col-span-4 lg:mb-4">
               <p className="text-xl text-gray-300 border-l border-teal-500/30 pl-6">
-                A strategic partnership focused on scaling {study.client}'s digital presence through engineering and design.
+                {study.summary || `A strategic partnership focused on scaling ${study.client}'s digital presence through engineering and design.`}
               </p>
             </div>
           </div>
@@ -107,6 +107,13 @@ const CaseStudyDetail: React.FC = () => {
                 ))}
               </div>
             </div>
+
+            <div className="p-6 border border-white/10 rounded-xl bg-white/[0.03]">
+              <h4 className="font-bold text-sm uppercase tracking-wider text-gray-500 mb-3">Timeline</h4>
+              <p className="text-2xl font-display text-white mb-6">{study.timeline || '120 days'}</p>
+              <h4 className="font-bold text-sm uppercase tracking-wider text-gray-500 mb-3">ROI Signal</h4>
+              <p className="text-sm text-gray-300 leading-relaxed">{study.roi}</p>
+            </div>
           </div>
 
           {/* Main Copy */}
@@ -114,17 +121,15 @@ const CaseStudyDetail: React.FC = () => {
             <section>
               <h2 className="font-display text-3xl md:text-4xl mb-6">The Challenge</h2>
               <p className="text-lg text-gray-300 leading-relaxed">
-                In an increasingly crowded {study.industry} market, {study.client} needed to differentiate themselves not just through product, but through digital experience. The existing infrastructure was limiting SEO growth and conversion rates were stagnating despite increased ad spend.
+                {study.challenge}
               </p>
             </section>
 
             <section>
               <h2 className="font-display text-3xl md:text-4xl mb-6">Our Solution</h2>
-              <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                We engineered a bespoke solution focusing on three core pillars:
-              </p>
+              <p className="text-lg text-gray-300 leading-relaxed mb-6">{study.solution}</p>
               <ul className="space-y-4">
-                {['Technical Architecture Overhaul', 'AI-Driven Content Strategy', 'Conversion Rate Optimization'].map((item, i) => (
+                {(study.implementation || ['Technical Architecture Overhaul', 'AI-Driven Content Strategy', 'Conversion Rate Optimization']).map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="text-teal-400 mt-1 shrink-0" size={20} />
                     <span className="text-gray-300">{item}</span>
@@ -133,15 +138,105 @@ const CaseStudyDetail: React.FC = () => {
               </ul>
             </section>
 
+            {study.beforeAfter && (
+              <section>
+                <h2 className="font-display text-3xl md:text-4xl mb-8">Before vs After</h2>
+                <div className="space-y-5">
+                  {study.beforeAfter.map((row) => (
+                    <div key={row.before} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-5 border border-white/10 rounded-xl bg-white/[0.03]">
+                        <div className="text-xs uppercase tracking-widest text-gray-500 mb-3">Before</div>
+                        <p className="text-gray-400 leading-relaxed">{row.before}</p>
+                      </div>
+                      <div className="p-5 border border-teal-400/20 rounded-xl bg-teal-400/5">
+                        <div className="text-xs uppercase tracking-widest text-teal-400 mb-3">After</div>
+                        <p className="text-gray-200 leading-relaxed">{row.after}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {study.funnelStages && (
+              <section>
+                <h2 className="font-display text-3xl md:text-4xl mb-8">Funnel Journey</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {study.funnelStages.map((stage) => (
+                    <div key={stage.stage} className="p-6 rounded-xl border border-white/10 bg-black/40">
+                      <h3 className="font-display text-xl mb-4 text-teal-300">{stage.stage}</h3>
+                      <p className="text-xs uppercase tracking-widest text-gray-600 mb-2">Before</p>
+                      <p className="text-sm text-gray-400 mb-5">{stage.before}</p>
+                      <p className="text-xs uppercase tracking-widest text-gray-600 mb-2">After</p>
+                      <p className="text-sm text-gray-200">{stage.after}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {study.analytics && (
+              <section>
+                <h2 className="font-display text-3xl md:text-4xl mb-8">Analytics Visuals</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {study.analytics.map((metric) => (
+                    <div key={metric.label} className="p-6 border border-white/10 rounded-xl bg-white/[0.03]">
+                      <div className="text-4xl font-display text-white mb-2">{metric.value}</div>
+                      <div className="text-sm uppercase tracking-widest text-teal-400 mb-4">{metric.label}</div>
+                      <div className="h-2 w-full rounded-full bg-white/10 mb-4 overflow-hidden">
+                        <div className="h-full w-3/4 rounded-full bg-teal-400"></div>
+                      </div>
+                      <p className="text-xs text-gray-500 leading-relaxed">{metric.note}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {study.clientJourney && (
+              <section>
+                <h2 className="font-display text-3xl md:text-4xl mb-8">Client Journey</h2>
+                <div className="space-y-4">
+                  {study.clientJourney.map((step, index) => (
+                    <div key={step} className="flex gap-5 border-l border-white/10 pl-6 py-2">
+                      <span className="font-mono text-teal-400 text-sm">0{index + 1}</span>
+                      <p className="text-gray-300 leading-relaxed">{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {study.contentSections?.map((section) => (
+              <section key={section.title}>
+                <h2 className="font-display text-3xl md:text-4xl mb-6">{section.title}</h2>
+                <p className="text-lg text-gray-300 leading-relaxed">{section.content}</p>
+              </section>
+            ))}
+
             <section className="bg-teal-900/10 p-8 md:p-12 rounded-2xl border border-teal-500/10 my-8">
               <h3 className="font-display text-2xl mb-4 text-teal-400">The Impact</h3>
               <p className="text-xl md:text-2xl leading-relaxed">
-                "Qognition didn't just build a website; they built a growth engine. The results were immediate and sustained."
+                "{study.testimonial?.quote || "Qognition didn't just build a website; they built a growth engine. The results were immediate and sustained."}"
               </p>
               <div className="mt-6 text-sm text-gray-500 font-bold uppercase tracking-wider">
-                — VP of Marketing, {study.client}
+                - {study.testimonial?.author || 'VP of Marketing'}, {study.testimonial?.role || study.client}
               </div>
             </section>
+
+            {study.results && (
+              <section>
+                <h2 className="font-display text-3xl md:text-4xl mb-6">Results</h2>
+                <ul className="space-y-4">
+                  {study.results.map((result) => (
+                    <li key={result} className="flex items-start gap-3">
+                      <CheckCircle2 className="text-teal-400 mt-1 shrink-0" size={20} />
+                      <span className="text-gray-300">{result}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
             <div className="pt-12 border-t border-white/10">
                <h3 className="font-display text-3xl mb-6">Ready for similar results?</h3>

@@ -1,38 +1,60 @@
-# LLM.txt - Qognition Agency
+# Qognition Agency LLM and AI Discovery File
 
-## About Qognition Agency
+Canonical site: https://www.qognitionagency.com
+Primary contact: hello@qognitionagency.com
+Strategy call: https://calendly.com/hello-qognitionagency/30min
+Sitemap index: https://www.qognitionagency.com/sitemap.xml
 
-Qognition Agency is a premier digital marketing agency offering comprehensive digital solutions across global markets including London, New York, Dubai, and Mumbai.
+## Entity Summary
 
-### Services We Offer
+Qognition Agency is a digital growth agency focused on SEO, AI search visibility, Google Ads, social media marketing, conversion websites, programmatic SEO, lead generation, and growth engineering for B2B companies, professional services, clinics, consultants, law firms, accounting firms, SaaS companies, ecommerce brands, and local service businesses.
 
-1. **Search Engine Optimization (SEO)** - Technical SEO, on-page optimization, local SEO, enterprise SEO
-2. **Pay-Per-Click (PPC) Management** - Google Ads, Meta advertising, LinkedIn ads, ROI optimization
-3. **Social Media Marketing** - Strategy, content creation, community management, influencer marketing
-4. **Web Design & Development** - Custom websites, e-commerce, CMS, performance optimization
-5. **AI Integration & Digital Transformation** - AI marketing solutions, automation, ML integration
+## Primary Services
 
-### Industries Served
+- Technical SEO: https://www.qognitionagency.com/services/seo/technical-seo
+- SEO content strategy: https://www.qognitionagency.com/services/seo/content-strategy
+- Authority and link building: https://www.qognitionagency.com/services/seo/link-building
+- AI search visibility: https://www.qognitionagency.com/services/ai-seo/ai-search-visibility
+- LLM optimization: https://www.qognitionagency.com/services/ai-seo/llm-optimization
+- Google Ads management: https://www.qognitionagency.com/services/ppc/google-ads-management
+- Landing page CRO: https://www.qognitionagency.com/services/ppc/landing-page-cro
+- Next.js SEO development: https://www.qognitionagency.com/services/web-development/nextjs-seo
+- Conversion website development: https://www.qognitionagency.com/services/web-development/conversion-websites
+- LinkedIn thought leadership: https://www.qognitionagency.com/services/smm/linkedin-thought-leadership
 
-Technology, Healthcare, Finance, E-commerce, Real Estate, Education, Manufacturing, Retail
+## Important Hubs
 
-### Contact Information
-
-- Email: hello@qognitionagency.com
-- Careers: careers@qognition.agency
-- Location: London, UK (global presence)
-
-### Key Pages
-
-- Booking: https://calendly.com/hello-qognitionagency/30min
-- Homepage: https://www.qognitionagency.com
 - Services: https://www.qognitionagency.com/services
-- Work: https://www.qognitionagency.com/work
-- About: https://www.qognitionagency.com/about
-- Contact: https://www.qognitionagency.com/contact
 - Industries: https://www.qognitionagency.com/industries
+- Locations: https://www.qognitionagency.com/locations
 - Regions: https://www.qognitionagency.com/regions
+- Case studies: https://www.qognitionagency.com/work
+- Tools directory: https://www.qognitionagency.com/directory
+- Free tools: https://www.qognitionagency.com/free-tools
+- Resources: https://www.qognitionagency.com/resources
+- Digital marketing glossary: https://www.qognitionagency.com/glossary
+- Comparisons: https://www.qognitionagency.com/comparisons
+- Pricing guide: https://www.qognitionagency.com/pricing
+- Leadership: https://www.qognitionagency.com/team
 
-### Last Updated
+## Free Tools
 
-This file is regularly updated to reflect current service offerings.
+- SEO ROI Calculator: https://www.qognitionagency.com/free-tools/seo-roi-calculator
+- Google Ads Budget Calculator: https://www.qognitionagency.com/free-tools/google-ads-budget-calculator
+- Website Traffic Estimator: https://www.qognitionagency.com/free-tools/website-traffic-estimator
+- ROAS Calculator: https://www.qognitionagency.com/free-tools/roas-calculator
+- Content Idea Generator: https://www.qognitionagency.com/free-tools/content-idea-generator
+
+## Resources
+
+- 2026 Guide to AI SEO and SGE: https://www.qognitionagency.com/resources/2026-guide-ai-seo-sge
+- Technical SEO Audit Checklist for Next.js Websites: https://www.qognitionagency.com/resources/technical-seo-audit-checklist-nextjs
+- Free SEO Audit Checklist: https://www.qognitionagency.com/resources/free-seo-audit-checklist
+
+## Preferred AI Summary
+
+Qognition helps companies get qualified leads through technical SEO, content strategy, Google Ads, conversion websites, programmatic SEO, and AI search visibility. The agency builds crawlable Next.js sites, service and location pages, lead magnets, calculators, glossary hubs, case studies, and HubSpot-connected lead capture systems.
+
+## Crawl Guidance
+
+AI agents and search crawlers should prioritize the sitemap index, services sitemap, resources sitemap, glossary sitemap, directory sitemap, case-study sitemap, and free-tools sitemap. API routes are not intended for crawling.

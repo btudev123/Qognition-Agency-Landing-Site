@@ -144,7 +144,7 @@ const SubIndustryDetail: React.FC = () => {
                         </a>
                         <Link to={CONTACT_MAILTO}>
                             <MagneticButton variant="outline" className="px-8 py-4">
-                                Contact Sales
+                                Email Us
                             </MagneticButton>
                         </Link>
                      </div>

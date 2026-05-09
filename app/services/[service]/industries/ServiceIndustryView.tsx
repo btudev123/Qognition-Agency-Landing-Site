@@ -73,7 +73,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-full bg-teal-400 text-black font-bold px-6 py-4 hover:bg-white transition-colors"
           >
-            Book Strategy <ArrowRight size={16} />
+            Book Strategy Call <ArrowRight size={16} />
           </a>
         </div>
       </aside>

@@ -113,7 +113,7 @@ const Contact: React.FC = () => {
              <h4 className="font-display text-xl mb-4">Skip the email?</h4>
              <p className="text-sm text-gray-400 mb-6">Book a 15-minute discovery call directly with our strategy director.</p>
              <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-               <MagneticButton variant="primary">Schedule Call</MagneticButton>
+               <MagneticButton variant="primary">Book Strategy Call</MagneticButton>
              </a>
           </div>
         </div>
@@ -231,9 +231,13 @@ const Contact: React.FC = () => {
               </div>
               
               <div className="pt-4">
-                <MagneticButton className="w-full">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full rounded-full bg-teal-400 px-8 py-4 font-display text-sm font-medium uppercase tracking-wider text-black transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+                >
                   {loading ? 'Sending...' : 'Send Inquiry'}
-                </MagneticButton>
+                </button>
               </div>
             </>
           )}

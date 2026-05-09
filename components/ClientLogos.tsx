@@ -1,26 +1,26 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { CLIENT_LOGOS } from '../constants';
 
 const ClientLogos: React.FC = () => {
+  const repeated = [...CLIENT_LOGOS, ...CLIENT_LOGOS];
+
   return (
     <section className="py-12 border-b border-white/5 bg-black/50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
         <p className="text-sm uppercase tracking-widest text-gray-500">Trusted by Global Brands</p>
       </div>
       <div className="relative flex overflow-x-hidden group">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {/* Repeat list twice for seamless loop */}
-          {[...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, index) => (
-            <div key={index} className="mx-12 opacity-50 hover:opacity-100 transition-opacity duration-300">
-               <span className="text-2xl font-display font-bold text-white">{logo.name}</span>
+        <div className="flex animate-marquee whitespace-nowrap" aria-label="Selected brand experience">
+          {repeated.map((logo, index) => (
+            <div key={`${logo.name}-${index}`} className="mx-10 h-14 w-36 opacity-60 grayscale invert hover:opacity-100 transition-opacity duration-300">
+               <img src={logo.url} alt={index < CLIENT_LOGOS.length ? logo.name : ''} className="h-full w-full object-contain" loading="lazy" />
             </div>
           ))}
         </div>
-        <div className="absolute top-0 flex animate-marquee2 whitespace-nowrap">
-           {[...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, index) => (
-            <div key={index} className="mx-12 opacity-50 hover:opacity-100 transition-opacity duration-300">
-               <span className="text-2xl font-display font-bold text-white">{logo.name}</span>
+        <div className="absolute top-0 flex animate-marquee2 whitespace-nowrap" aria-hidden="true">
+           {repeated.map((logo, index) => (
+            <div key={`${logo.name}-duplicate-${index}`} className="mx-10 h-14 w-36 opacity-60 grayscale invert transition-opacity duration-300">
+               <img src={logo.url} alt="" className="h-full w-full object-contain" loading="lazy" />
             </div>
           ))}
         </div>

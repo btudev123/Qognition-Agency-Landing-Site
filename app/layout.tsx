@@ -106,6 +106,8 @@ const websiteSchema = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const hubSpotTrackingId = process.env.NEXT_PUBLIC_HUBSPOT_TRACKING_ID;
+
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} scroll-smooth`}>
       <body>
@@ -135,6 +137,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <Script id="reb2b" strategy="afterInteractive">
           {`!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("Z6PVLHQY3G6R");`}
         </Script>
+        {hubSpotTrackingId && (
+          <Script
+            id="hubspot-tracking"
+            src={`https://js.hs-scripts.com/${hubSpotTrackingId}.js`}
+            strategy="afterInteractive"
+          />
+        )}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
         <ClientLayout>{children}</ClientLayout>

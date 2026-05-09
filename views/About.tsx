@@ -157,7 +157,7 @@ const About: React.FC = () => {
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
                  <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                    <MagneticButton variant="primary" className="w-full md:w-auto">Work With Us</MagneticButton>
+                    <MagneticButton variant="primary" className="w-full md:w-auto">Book Strategy Call</MagneticButton>
                  </a>
                  <a href="mailto:careers@qognition.agency">
                     <MagneticButton variant="outline" className="w-full md:w-auto">Join the Team</MagneticButton>

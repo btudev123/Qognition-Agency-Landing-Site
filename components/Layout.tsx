@@ -2,8 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from '../lib/routerCompat';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight, Instagram, Linkedin, Twitter, Youtube, Facebook, Dribbble } from 'lucide-react';
-import { NAV_ITEMS, CALENDLY_LINK, CONTACT_MAILTO, TOOL_CATEGORIES, WHATSAPP_LINK } from '../constants';
+import { Menu, X, Instagram, Linkedin, Twitter, Youtube, Facebook, Dribbble, ChevronDown } from 'lucide-react';
+import {
+  CALENDLY_LINK,
+  CONTACT_MAILTO,
+  TOOL_CATEGORIES,
+  WHATSAPP_LINK,
+  SERVICES,
+  INDUSTRIES,
+  REGIONS,
+  LOCATIONS,
+  RESOURCES,
+  FREE_TOOLS,
+  SERVICE_SUB_PAGES
+} from '../constants';
 import MagneticButton from './MagneticButton';
 import NeuronBackground from './NeuronBackground';
 
@@ -33,6 +45,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredPath, setHoveredPath] = useState<string | null>(null);
+  const [activeMega, setActiveMega] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -64,6 +77,92 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { name: 'Behance', url: 'https://www.behance.net/qognition-agency', icon: BehanceIcon },
   ];
 
+  const navGroups = [
+    {
+      label: 'Services',
+      path: '/services',
+      columns: [
+        { title: 'Core Services', links: SERVICES.map((service) => ({ label: service.title, path: `/services/${service.id}` })).slice(0, 6) },
+        {
+          title: 'SEO Sub-Services',
+          links: SERVICE_SUB_PAGES.slice(0, 8).map((page) => ({ label: page.title.replace(' Services', ''), path: `/services/${page.serviceId}/${page.slug}` }))
+        },
+        {
+          title: 'Free Tools',
+          links: FREE_TOOLS.map((tool) => ({ label: tool.title, path: `/free-tools/${tool.slug}` }))
+        }
+      ]
+    },
+    {
+      label: 'Industries',
+      path: '/industries',
+      columns: [
+        { title: 'Industries', links: INDUSTRIES.slice(0, 9).map((industry) => ({ label: industry.name, path: `/industries/${industry.id}` })) },
+        {
+          title: 'Specialist Verticals',
+          links: INDUSTRIES.flatMap((industry) =>
+            industry.subIndustries.slice(0, 2).map((sub) => ({ label: sub.name, path: `/industries/${industry.id}/${sub.slug}` }))
+          ).slice(0, 10)
+        }
+      ]
+    },
+    {
+      label: 'Regions',
+      path: '/regions',
+      columns: [
+        { title: 'Region Hubs', links: REGIONS.map((region) => ({ label: region.name, path: `/regions/${region.slug}` })) },
+        { title: 'Top Cities', links: LOCATIONS.filter((location) => location.type === 'city').slice(0, 14).map((location) => ({ label: location.name, path: `/locations/${location.slug}` })) },
+        { title: 'Location Services', links: LOCATIONS.filter((location) => location.type === 'city').slice(0, 6).map((location) => ({ label: `SEO in ${location.name}`, path: `/locations/${location.slug}/seo` })) }
+      ]
+    },
+    {
+      label: 'Work',
+      path: '/work',
+      columns: [
+        {
+          title: 'Proof',
+          links: [
+            { label: 'Case Studies', path: '/work' },
+            { label: 'Team and Leadership', path: '/team' },
+            { label: 'Pricing Guide', path: '/pricing' }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Resources',
+      path: '/resources',
+      columns: [
+        { title: 'Lead Magnets', links: RESOURCES.map((resource) => ({ label: resource.title, path: `/resources/${resource.slug}` })) },
+        {
+          title: 'Discovery Pages',
+          links: [
+            { label: 'Tools Directory', path: '/directory' },
+            { label: 'Digital Marketing Glossary', path: '/glossary' },
+            { label: 'Agency Comparisons', path: '/comparisons' },
+            { label: 'Blog', path: '/blog' },
+            { label: 'LLM Transparency', path: '/llm' }
+          ]
+        },
+        { title: 'Tool Categories', links: TOOL_CATEGORIES.slice(0, 6).map((cat) => ({ label: cat.name, path: `/directory/${cat.slug}` })) }
+      ]
+    },
+    {
+      label: 'About',
+      path: '/about',
+      columns: [
+        {
+          title: 'Company',
+          links: [
+            { label: 'About Qognition', path: '/about' },
+            { label: 'Leadership', path: '/team' },
+            { label: 'Contact', path: CONTACT_MAILTO }
+          ]
+        }
+      ]
+    }
+  ];
+
   return (
     <div className="min-h-screen relative font-sans text-white selection:bg-teal-500/30">
       <NeuronBackground />
@@ -87,18 +186,28 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm">
-            {NAV_ITEMS.map((item) => {
+          <div
+            className="hidden lg:block"
+            onMouseLeave={() => {
+              setHoveredPath(null);
+              setActiveMega(null);
+            }}
+          >
+          <div className="flex items-center gap-1 p-1 rounded-full bg-white/5 border border-white/5 backdrop-blur-sm">
+            {navGroups.map((item) => {
               const isActive = item.path === location.pathname;
               return (
                 <Link 
                   key={item.path} 
                   to={item.path} 
-                  className={`relative px-6 py-2.5 text-xs font-medium uppercase tracking-widest transition-colors duration-300 z-10 ${isActive ? 'text-black' : 'text-gray-300 hover:text-white'}`}
-                  onMouseEnter={() => setHoveredPath(item.path)}
-                  onMouseLeave={() => setHoveredPath(null)}
+                  className={`relative px-5 py-2.5 text-xs font-medium uppercase tracking-widest transition-colors duration-300 z-10 flex items-center gap-1 ${isActive ? 'text-black' : 'text-gray-300 hover:text-white'}`}
+                  onMouseEnter={() => {
+                    setHoveredPath(item.path);
+                    setActiveMega(item.label);
+                  }}
                 >
                   <span className="relative z-10">{item.label}</span>
+                  <ChevronDown size={12} className="relative z-10 opacity-60" />
                   {isActive && (
                       <motion.div
                           layoutId="navbar-indicator"
@@ -120,12 +229,39 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               );
             })}
           </div>
+          <AnimatePresence>
+            {activeMega && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.18 }}
+                className="absolute left-1/2 top-full w-[min(1120px,calc(100vw-64px))] -translate-x-1/2 pt-4"
+              >
+                <div className="grid grid-cols-3 gap-8 rounded-2xl border border-white/10 bg-black/95 p-8 shadow-2xl shadow-black/60 backdrop-blur-xl">
+                  {navGroups.find((group) => group.label === activeMega)?.columns.map((column) => (
+                    <div key={column.title}>
+                      <h3 className="mb-5 text-xs font-bold uppercase tracking-widest text-teal-400">{column.title}</h3>
+                      <div className="space-y-3">
+                        {column.links.map((link) => (
+                          <Link key={link.path} to={link.path} className="block rounded-lg px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          </div>
 
           <div className="flex items-center gap-6">
             <div className="hidden md:block">
                 <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                    <MagneticButton variant="primary" className="scale-90 origin-right">
-                      Start Project
+                      Book Strategy Call
                    </MagneticButton>
                 </a>
             </div>
@@ -155,7 +291,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-start border-b border-white/10 overflow-y-auto px-6 pt-28 pb-12"
           >
             <div className="flex min-h-full w-full max-w-md flex-col justify-center gap-4 text-center">
-              {NAV_ITEMS.map((item, i) => (
+              {navGroups.map((item, i) => (
                 <motion.div
                   key={item.path}
                   initial={{ opacity: 0, y: 20 }}
@@ -164,11 +300,23 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 >
                   <Link 
                     to={item.path} 
-                    className="font-display text-4xl sm:text-5xl font-light hover:text-teal-400 transition-colors block py-2"
+                    className="font-display text-3xl sm:text-4xl font-light hover:text-teal-400 transition-colors block py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
                   </Link>
+                  <div className="mt-2 grid grid-cols-1 gap-2">
+                    {item.columns.flatMap((column) => column.links.slice(0, 4)).slice(0, 8).map((link) => (
+                      <Link
+                        key={link.path}
+                        to={link.path}
+                        className="block rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-gray-400 hover:text-white"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
                 </motion.div>
               ))}
               <motion.div 
@@ -178,7 +326,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                  className="mt-6"
               >
                   <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                    <MagneticButton variant="primary">Schedule Call</MagneticButton>
+                    <MagneticButton variant="primary">Book Strategy Call</MagneticButton>
                   </a>
               </motion.div>
             </div>
@@ -227,6 +375,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <li><Link to="/locations" className="hover:text-white transition-colors">Locations</Link></li>
                 <li><Link to="/regions" className="hover:text-white transition-colors">Global Hubs</Link></li>
                 <li><Link to="/work" className="hover:text-white transition-colors">Case Studies</Link></li>
+                <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing Guide</Link></li>
                 <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
               </ul>
             </div>
@@ -235,13 +384,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Resources</h4>
             <ul className="space-y-4 text-gray-400 text-sm">
               <li><Link to="/directory" className="hover:text-white transition-colors font-bold text-teal-200">Tools Directory</Link></li>
-              {TOOL_CATEGORIES.slice(0, 4).map(cat => (
-                 <li key={cat.id}>
-                    <Link to={`/directory/${cat.slug}`} className="hover:text-white transition-colors">
-                        {cat.name}
-                    </Link>
-                 </li>
-              ))}
+              <li><Link to="/resources" className="hover:text-white transition-colors">Lead Magnets</Link></li>
+              <li><Link to="/free-tools" className="hover:text-white transition-colors">Free Tools</Link></li>
+              <li><Link to="/glossary" className="hover:text-white transition-colors">Glossary</Link></li>
+              <li><Link to="/comparisons" className="hover:text-white transition-colors">Comparisons</Link></li>
             </ul>
           </div>
 
@@ -249,6 +395,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
              <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Company</h4>
              <ul className="space-y-4 text-gray-400 text-sm">
                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
+               <li><Link to="/team" className="hover:text-white transition-colors">Leadership</Link></li>
                <li><Link to={CONTACT_MAILTO} className="hover:text-white transition-colors">Careers</Link></li>
                <li><Link to={CONTACT_MAILTO} className="hover:text-white transition-colors">Contact</Link></li>
                <li><Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link></li>

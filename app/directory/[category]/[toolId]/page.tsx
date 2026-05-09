@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import SchemaScript from '../../../SchemaScript';
 import ViewRenderer from '../../../ViewRenderer';
 import { DIRECTORY_PRODUCTS } from '../../../../data/directoryProducts';
-import { breadcrumbSchema, directoryProductSchema, getDirectoryProductMetadata } from '../../../../lib/seo';
+import { breadcrumbSchema, directoryProductSchema, faqSchema, getDirectoryProductMetadata } from '../../../../lib/seo';
 
 export const dynamicParams = true;
 
@@ -31,6 +31,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
   return (
     <>
       <SchemaScript data={directoryProductSchema(product, path)} />
+      {product.faqs && <SchemaScript data={faqSchema(product.faqs)} />}
       <SchemaScript
         data={breadcrumbSchema([
           { name: 'Home', path: '/' },

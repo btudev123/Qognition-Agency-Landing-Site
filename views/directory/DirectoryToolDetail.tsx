@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from '../../lib/routerCompat';
-import { ArrowLeft, ExternalLink, Star, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Star, ArrowRight, ShieldCheck, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DIRECTORY_PRODUCTS, TOOLS, SERVICES } from '../../constants';
 import MagneticButton from '../../components/MagneticButton';
@@ -197,6 +197,115 @@ const DirectoryToolDetail: React.FC = () => {
                             {tool.fullDescription}
                         </p>
                     </section>
+
+                    {directoryTool.bestFor && (
+                        <section>
+                            <h2 className="font-display text-3xl mb-6">Best Fit</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {directoryTool.bestFor.map((item) => (
+                                    <div key={item} className="p-5 bg-white/[0.03] border border-white/10 rounded-xl">
+                                        <CheckCircle2 className="text-teal-400 mb-4" size={20} />
+                                        <p className="text-sm text-gray-300 leading-relaxed">{item}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {directoryTool.useCases && (
+                        <section>
+                            <h2 className="font-display text-3xl mb-6">Practical Use Cases</h2>
+                            <div className="space-y-4">
+                                {directoryTool.useCases.map((item, index) => (
+                                    <div key={item} className="flex gap-4 border border-white/10 bg-black/40 rounded-xl p-5">
+                                        <span className="font-mono text-teal-400 text-sm">0{index + 1}</span>
+                                        <p className="text-gray-300 leading-relaxed">{item}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {(directoryTool.pros || directoryTool.cons) && (
+                        <section>
+                            <h2 className="font-display text-3xl mb-6">Pros and Limits</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="p-6 border border-teal-400/20 bg-teal-400/5 rounded-xl">
+                                    <h3 className="font-display text-xl mb-5 text-teal-300">Where it helps</h3>
+                                    <div className="space-y-4">
+                                        {(directoryTool.pros || []).map((item) => (
+                                            <div key={item} className="flex gap-3 text-sm text-gray-300">
+                                                <CheckCircle2 className="text-teal-400 shrink-0 mt-0.5" size={16} />
+                                                <span>{item}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="p-6 border border-white/10 bg-white/[0.03] rounded-xl">
+                                    <h3 className="font-display text-xl mb-5">Watch-outs</h3>
+                                    <div className="space-y-4">
+                                        {(directoryTool.cons || []).map((item) => (
+                                            <div key={item} className="flex gap-3 text-sm text-gray-300">
+                                                <XCircle className="text-gray-500 shrink-0 mt-0.5" size={16} />
+                                                <span>{item}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
+                    {directoryTool.workflowExample && (
+                        <section className="border border-white/10 rounded-2xl p-8 bg-white/[0.03]">
+                            <h2 className="font-display text-3xl mb-6">Workflow Example</h2>
+                            <p className="text-gray-300 text-lg leading-relaxed mb-6">{directoryTool.workflowExample}</p>
+                            {directoryTool.implementationSteps && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {directoryTool.implementationSteps.map((step, index) => (
+                                        <div key={step} className="flex gap-4 p-4 bg-black/50 rounded-lg border border-white/10">
+                                            <span className="text-teal-400 font-mono text-xs mt-1">{index + 1}</span>
+                                            <span className="text-sm text-gray-300">{step}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+                    )}
+
+                    {directoryTool.seoNotes && (
+                        <section className="border-l-2 border-teal-400 pl-6">
+                            <h2 className="font-display text-3xl mb-4">SEO and AI Search Notes</h2>
+                            <p className="text-gray-300 text-lg leading-relaxed">{directoryTool.seoNotes}</p>
+                        </section>
+                    )}
+
+                    {directoryTool.alternatives && directoryTool.alternatives.length > 0 && (
+                        <section>
+                            <h2 className="font-display text-3xl mb-6">Alternatives to Compare</h2>
+                            <div className="flex flex-wrap gap-3">
+                                {directoryTool.alternatives.map((item) => (
+                                    <span key={item} className="px-4 py-2 border border-white/10 bg-white/[0.03] rounded-full text-gray-300">
+                                        {item}
+                                    </span>
+                                ))}
+                            </div>
+                        </section>
+                    )}
+
+                    {directoryTool.faqs && (
+                        <section>
+                            <h2 className="font-display text-3xl mb-6">FAQs</h2>
+                            <div className="space-y-4">
+                                {directoryTool.faqs.map((faq) => (
+                                    <div key={faq.question} className="p-5 border border-white/10 rounded-xl bg-white/[0.03]">
+                                        <h3 className="font-display text-lg mb-2">{faq.question}</h3>
+                                        <p className="text-sm text-gray-400 leading-relaxed">{faq.answer}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    )}
 
                     <section>
                         <h2 className="font-display text-3xl mb-6">Tags</h2>
