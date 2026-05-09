@@ -18,14 +18,15 @@ const BehanceIcon = ({ size = 20 }) => (
   </svg>
 );
 
-// Custom Qognition Logo Component
-const Logo: React.FC<{ className?: string }> = ({ className = "w-10 h-10" }) => (
-  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M50 20 C66.5685 20 80 33.4315 80 50 C80 66.5685 66.5685 80 50 80 C33.4315 80 20 66.5685 20 50 C20 33.4315 33.4315 20 50 20" stroke="currentColor" strokeWidth="6" strokeLinecap="round" className="opacity-100" />
-    <path d="M50 32 C59.9411 32 68 40.0589 68 50 C68 59.9411 59.9411 68 50 68 C40.0589 68 32 59.9411 32 50 C32 40.0589 40.0589 32 50 32" stroke="currentColor" strokeWidth="5" strokeLinecap="round" className="opacity-70" />
-    <path d="M50 42 C54.4183 42 58 45.5817 58 50 C58 54.4183 54.4183 58 50 58 C45.5817 58 42 54.4183 42 50 C42 45.5817 45.5817 42 50 42" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="opacity-40" />
-    <path d="M50 85 L62 100 L38 100 Z" fill="#00C2A8" />
-  </svg>
+const Logo: React.FC<{ className?: string }> = ({ className = "w-11 h-11" }) => (
+  <img
+    src="/qognition-mark.png"
+    alt=""
+    className={`${className} object-contain transition-transform duration-300 group-hover:scale-105`}
+    width={96}
+    height={96}
+    draggable={false}
+  />
 );
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -36,7 +37,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [location]);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,11 +77,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         }`}
       >
         <div className="px-6 md:px-12 max-w-8xl mx-auto flex justify-between items-center relative">
-          <Link to="/" className="z-50 group relative flex items-center gap-3">
-            <div className={`transition-colors duration-300 ${scrolled ? 'text-white' : 'text-white'}`}>
-              <Logo className="w-10 h-10 md:w-12 md:h-12" />
+          <Link to="/" aria-label="Qognition home" className="z-50 group relative flex items-center gap-3">
+            <div className="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-white/5 border border-white/10 p-2 shadow-lg shadow-black/20 transition-colors duration-300 group-hover:border-teal-400/40">
+              <Logo className="w-full h-full" />
             </div>
-            <span className={`font-display font-bold text-2xl tracking-tighter hidden md:block transition-colors duration-300 ${scrolled ? 'text-white' : 'text-white'}`}>
+            <span className="font-display font-bold text-2xl tracking-tighter hidden md:block text-white transition-colors duration-300 group-hover:text-teal-100">
               Qognition
             </span>
           </Link>
@@ -122,9 +130,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 </a>
             </div>
             <button 
-                className="lg:hidden z-50 p-2 text-white hover:text-teal-400 transition-colors"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                type="button"
+                className="lg:hidden z-[120] p-3 -mr-2 rounded-full text-white hover:text-teal-400 hover:bg-white/10 transition-colors"
+                onClick={() => setIsMenuOpen((open) => !open)}
                 aria-label="Toggle Menu"
+                aria-controls="mobile-menu"
+                aria-expanded={isMenuOpen}
             >
                 {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -136,13 +147,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: "-100%" }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center border-b border-white/10"
+            className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-start border-b border-white/10 overflow-y-auto px-6 pt-28 pb-12"
           >
-            <div className="flex flex-col gap-6 text-center">
+            <div className="flex min-h-full w-full max-w-md flex-col justify-center gap-4 text-center">
               {NAV_ITEMS.map((item, i) => (
                 <motion.div
                   key={item.path}
@@ -152,7 +164,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 >
                   <Link 
                     to={item.path} 
-                    className="font-display text-5xl font-light hover:text-teal-400 transition-colors block py-2"
+                    className="font-display text-4xl sm:text-5xl font-light hover:text-teal-400 transition-colors block py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -163,7 +175,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                  initial={{ opacity: 0 }}
                  animate={{ opacity: 1 }}
                  transition={{ delay: 0.5 }}
-                 className="mt-8"
+                 className="mt-6"
               >
                   <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                     <MagneticButton variant="primary">Schedule Call</MagneticButton>
@@ -182,9 +194,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <footer className="relative z-10 bg-black pt-24 pb-12 px-6 md:px-12 border-t border-white/10">
         <div className="max-w-8xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
           <div className="md:col-span-4">
-            <Link to="/" className="flex items-center gap-3 mb-8 group">
-                <div className="w-10 h-10 text-white group-hover:text-teal-400 transition-colors">
-                    <Logo />
+            <Link to="/" aria-label="Qognition home" className="flex items-center gap-3 mb-8 group">
+                <div className="h-12 w-12 rounded-2xl bg-white/5 border border-white/10 p-2 group-hover:border-teal-400/40 transition-colors">
+                    <Logo className="w-full h-full" />
                 </div>
                 <span className="font-display font-bold text-2xl tracking-tight text-white group-hover:text-teal-400 transition-colors">Qognition</span>
             </Link>

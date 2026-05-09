@@ -11,14 +11,14 @@ const JsonLd: React.FC<{ data: SchemaData }> = ({ data }) => {
     "name": data.name || SITE_NAME,
     "url": SITE_URL + data.url,
     "description": data.description,
-    "logo": `${SITE_URL}/logo.png`,
+    "logo": `${SITE_URL}/favicon.png`,
     "publisher": {
       "@type": "Organization",
       "name": SITE_NAME,
       "url": SITE_URL,
       "logo": {
         "@type": "ImageObject",
-        "url": `${SITE_URL}/logo.png`
+        "url": `${SITE_URL}/favicon.png`
       }
     },
     "sameAs": [

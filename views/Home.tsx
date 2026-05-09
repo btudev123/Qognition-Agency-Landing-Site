@@ -28,7 +28,7 @@ const Home: React.FC = () => {
           type: "Organization",
           name: "Qognition Agency",
           url: "https://www.qognitionagency.com",
-          logo: "https://www.qognitionagency.com/logo.png",
+          logo: "https://www.qognitionagency.com/favicon.png",
           sameAs: [
             "https://www.linkedin.com/company/qognition-tech",
             "https://twitter.com/qognition_tech"
