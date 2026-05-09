@@ -3,6 +3,7 @@ import { useParams, Link } from '../../lib/routerCompat';
 import { BLOG_POSTS } from '../../data/blog';
 import SEO from '../../components/SEO';
 import MagneticButton from '../../components/MagneticButton';
+import { CALENDLY_LINK } from '../../constants';
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -98,9 +99,9 @@ const BlogPostPage: React.FC = () => {
           <div className="mt-16 p-8 bg-gray-900/50 rounded-lg border border-white/10">
             <h2 className="text-2xl font-semibold mb-6">Ready to implement these strategies?</h2>
             <p className="mb-6 text-lg">Let Qognition Agency help you leverage AI marketing and SEO to grow your business.</p>
-            <MagneticButton variant="primary">
-              <Link to="/contact">Get Started Today</Link>
-            </MagneticButton>
+            <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
+              <MagneticButton variant="primary">Get Started Today</MagneticButton>
+            </a>
           </div>
           
           {/* Related Posts */}

@@ -23,6 +23,11 @@ export const TOOL_CATEGORIES = [
 ];
 
 export const CALENDLY_LINK = "https://calendly.com/hello-qognitionagency/30min";
+export const CONTACT_EMAIL = "hello@qognitionagency.com";
+export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
+export const WHATSAPP_NUMBER = "919217129349";
+export const WHATSAPP_DISPLAY = "+91 92171 29349";
+export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Expertise', path: '/services' },
@@ -30,7 +35,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Regions', path: '/regions' },
   { label: 'About', path: '/about' },
   { label: 'Blog', path: '/blog' },
-  { label: 'Contact', path: '/contact' },
+  { label: 'Contact', path: CONTACT_MAILTO },
 ];
 
 export const CLIENT_LOGOS: ClientLogo[] = [

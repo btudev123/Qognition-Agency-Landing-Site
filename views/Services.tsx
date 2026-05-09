@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '../lib/routerCompat';
 import { ArrowRight, Search, Globe, Brain, Code, Zap } from 'lucide-react';
-import { SERVICES } from '../constants';
+import { CALENDLY_LINK, CONTACT_MAILTO, SERVICES } from '../constants';
 import SEO from '../components/SEO';
 
 // Icon mapping for dynamic rendering
@@ -49,7 +49,7 @@ const Services: React.FC = () => {
             In today's digital landscape, having a strong online presence is essential for business success. At Qognition Agency, we offer end-to-end digital marketing solutions designed to help your brand reach, engage, and convert your target audience. Our team of experts combines years of industry experience with cutting-edge technology to deliver results that matter.
           </p>
           <p className="text-lg text-gray-300 leading-relaxed">
-            Whether you're looking to improve your search engine rankings, launch targeted advertising campaigns, build a new website, or establish your brand on social media, we have the expertise to help you achieve your goals. <Link to="/contact" className="text-teal-400 hover:underline">Contact us today</Link> for a free consultation and discover how we can transform your digital presence.
+            Whether you're looking to improve your search engine rankings, launch targeted advertising campaigns, build a new website, or establish your brand on social media, we have the expertise to help you achieve your goals. <Link to={CONTACT_MAILTO} className="text-teal-400 hover:underline">Contact us today</Link> for a free consultation and discover how we can transform your digital presence.
           </p>
         </div>
 
@@ -146,7 +146,7 @@ const Services: React.FC = () => {
             <div className="p-8 border border-white/10 rounded-xl bg-white/5">
               <h3 className="font-display text-2xl mb-4 text-teal-400">Transparent Reporting</h3>
               <p className="text-gray-400 mb-4">We believe in complete transparency. You'll receive detailed reports showing exactly how your campaigns are performing, with clear insights and recommendations for improvement. No hidden fees, no surprise charges.</p>
-              <Link to="/contact" className="text-teal-400 hover:underline">Start your project →</Link>
+              <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">Start your project →</a>
             </div>
             <div className="p-8 border border-white/10 rounded-xl bg-white/5">
               <h3 className="font-display text-2xl mb-4 text-teal-400">Cutting-Edge Technology</h3>
@@ -160,9 +160,9 @@ const Services: React.FC = () => {
         <div className="mt-20 text-center">
           <p className="text-xl text-gray-300 mb-8">Ready to transform your digital presence?</p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Link to="/contact" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
+            <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
               Get Free Consultation
-            </Link>
+            </a>
             <Link to="/work" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
               View Our Work
             </Link>

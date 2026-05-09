@@ -189,7 +189,7 @@ export const LocationServiceView = ({ location, service }: { location: Location;
           <div className="space-y-3">
             <Link href={`/services/${service.id}`} className="block text-teal-400 hover:text-white">{service.title}</Link>
             <Link href={`/locations/${location.slug}`} className="block text-teal-400 hover:text-white">{location.name} Digital Marketing</Link>
-            <Link href="/contact" className="block text-teal-400 hover:text-white">Get a Strategy Call</Link>
+            <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="block text-teal-400 hover:text-white">Get a Strategy Call</a>
           </div>
         </div>
       </aside>

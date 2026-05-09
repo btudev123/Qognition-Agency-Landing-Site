@@ -11,7 +11,7 @@ import ParallaxImage from '../components/ParallaxImage';
 import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
 import HeroOrb from '../components/HeroOrb';
-import { CASE_STUDIES, CALENDLY_LINK, REGIONS, INDUSTRIES } from '../constants';
+import { CASE_STUDIES, CALENDLY_LINK, CONTACT_MAILTO, REGIONS, INDUSTRIES } from '../constants';
 
 const Home: React.FC = () => {
   const processRef = useRef<HTMLDivElement>(null);
@@ -87,11 +87,11 @@ const Home: React.FC = () => {
                   transition={{ delay: 1.2, duration: 0.8 }}
                   className="flex flex-col sm:flex-row gap-4 sm:gap-6"
                 >
-                    <Link to="/work">
+                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                       <MagneticButton variant="primary" className="px-8 py-4 text-base w-full sm:w-auto min-w-[180px]">
                           Start Work
                       </MagneticButton>
-                    </Link>
+                    </a>
                     <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
                        <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center">
                           <Play size={12} fill="currentColor" />
@@ -619,7 +619,7 @@ const Home: React.FC = () => {
           
           <div className="mt-12 text-center">
             <p className="text-gray-400 mb-6">Have more questions?</p>
-            <Link to="/contact" className="inline-flex items-center gap-2 text-teal-400 hover:text-white transition-colors">
+            <Link to={CONTACT_MAILTO} className="inline-flex items-center gap-2 text-teal-400 hover:text-white transition-colors">
               Get in touch with our team <ArrowRight size={20} />
             </Link>
           </div>
@@ -641,7 +641,7 @@ const Home: React.FC = () => {
                     Book Strategy Call
                  </MagneticButton>
               </a>
-              <Link to="/contact">
+              <Link to={CONTACT_MAILTO}>
                  <MagneticButton variant="outline" className="text-lg px-12 py-6 w-full md:w-auto">
                     Contact Sales
                  </MagneticButton>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from '../lib/routerCompat';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight, Instagram, Linkedin, Twitter, Youtube, Facebook, Dribbble } from 'lucide-react';
-import { NAV_ITEMS, CALENDLY_LINK, TOOL_CATEGORIES } from '../constants';
+import { NAV_ITEMS, CALENDLY_LINK, CONTACT_MAILTO, TOOL_CATEGORIES, WHATSAPP_LINK } from '../constants';
 import MagneticButton from './MagneticButton';
 import NeuronBackground from './NeuronBackground';
 
@@ -237,8 +237,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
              <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Company</h4>
              <ul className="space-y-4 text-gray-400 text-sm">
                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-               <li><Link to="/contact" className="hover:text-white transition-colors">Careers</Link></li>
-               <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+               <li><Link to={CONTACT_MAILTO} className="hover:text-white transition-colors">Careers</Link></li>
+               <li><Link to={CONTACT_MAILTO} className="hover:text-white transition-colors">Contact</Link></li>
                <li><Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link></li>
              </ul>
           </div>
@@ -252,10 +252,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 {/* WhatsApp Floating Button */}
       <a 
-        href="https://wa.me/919217129349"
+        href={WHATSAPP_LINK}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#20BD5A] text-white p-4 rounded-full shadow-2xl shadow-[#25D366]/30 transition-all duration-300 hover:scale-110 group"
+        className="fixed bottom-6 left-6 z-50 bg-[#25D366] hover:bg-[#20BD5A] text-white p-4 rounded-full shadow-2xl shadow-[#25D366]/30 transition-all duration-300 hover:scale-110 group"
         aria-label="Chat on WhatsApp"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

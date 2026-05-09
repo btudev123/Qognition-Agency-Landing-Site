@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from '../lib/routerCompat';
 import { ArrowLeft, CheckCircle, Target, ArrowRight } from 'lucide-react';
-import { INDUSTRIES, CALENDLY_LINK } from '../constants';
+import { INDUSTRIES, CALENDLY_LINK, CONTACT_MAILTO } from '../constants';
 import MagneticButton from '../components/MagneticButton';
 import AccordionItem from '../components/Accordion';
 import SEO from '../components/SEO';
@@ -148,7 +148,7 @@ const IndustryDetail: React.FC = () => {
                             Book {industry.name} Strategy
                         </MagneticButton>
                     </a>
-                    <Link to="/contact">
+                    <Link to={CONTACT_MAILTO}>
                          <MagneticButton variant="outline" className="text-lg px-8 py-6">
                              Contact Sales <ArrowRight size={18} />
                          </MagneticButton>

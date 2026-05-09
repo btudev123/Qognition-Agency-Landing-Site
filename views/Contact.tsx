@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '../lib/routerCompat';
 import MagneticButton from '../components/MagneticButton';
-import { CALENDLY_LINK } from '../constants';
+import { CALENDLY_LINK, WHATSAPP_DISPLAY, WHATSAPP_LINK } from '../constants';
 import SEO from '../components/SEO';
 
 const Contact: React.FC = () => {
@@ -43,7 +43,7 @@ const Contact: React.FC = () => {
       if (response.ok) {
         setSubmitted(true);
         const waMessage = `*New Form Submission*%0A%0A*Name:* ${formData.name}%0A*Email:* ${formData.email}%0A*Website:* ${formData.website || 'Not provided'}%0A*Services:* ${formData.services.join(', ') || 'Not specified'}%0A*Message:* ${formData.message}`;
-        window.open(`https://wa.me/919217129349?text=${waMessage}`, '_blank');
+        window.open(`${WHATSAPP_LINK}?text=${waMessage}`, '_blank');
       }
     } catch (error) {
       console.error('Form submission error:', error);
@@ -80,8 +80,8 @@ const Contact: React.FC = () => {
             <div>
               <h3 className="text-white font-bold mb-2">WhatsApp</h3>
               <p className="text-gray-400 mb-2">Chat with us instantly</p>
-              <a href="https://wa.me/919217129349" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-teal-400 transition-colors text-lg flex items-center gap-2">
-                +91 92171 29349 <span className="text-green-400 text-sm">● Online</span>
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-teal-400 transition-colors text-lg flex items-center gap-2">
+                {WHATSAPP_DISPLAY} <span className="text-green-400 text-sm">● Online</span>
               </a>
             </div>
             <div>
@@ -132,7 +132,7 @@ const Contact: React.FC = () => {
               <div className="text-6xl mb-6">🎉</div>
               <h3 className="font-display text-3xl mb-4">Thank You!</h3>
               <p className="text-gray-400 mb-8">We've received your message. We'll get back to you within 24 hours.</p>
-              <a href="https://wa.me/919217129349" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">
                 Or chat with us on WhatsApp →
               </a>
             </div>

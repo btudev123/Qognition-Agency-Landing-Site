@@ -22,8 +22,8 @@ ${INDUSTRIES.map(i => `- ${i.name}: ${i.description}`).join('\n')}
 ${REGIONS.map(r => `- ${r.name}: ${r.description}`).join('\n')}
 
 ## Contact
-Email: hello@qognition.agency
-Booking: https://calendly.com/qognition-agency/15min
+Email: hello@qognitionagency.com
+Booking: https://calendly.com/hello-qognitionagency/30min
 `;
 
   return (

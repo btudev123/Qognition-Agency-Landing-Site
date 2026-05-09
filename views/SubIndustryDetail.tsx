@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from '../lib/routerCompat';
 import { ArrowLeft, CheckCircle2, Target, BarChart3, ArrowRight, ShieldCheck, HelpCircle } from 'lucide-react';
-import { INDUSTRIES, CALENDLY_LINK } from '../constants';
+import { INDUSTRIES, CALENDLY_LINK, CONTACT_MAILTO } from '../constants';
 import MagneticButton from '../components/MagneticButton';
 import AccordionItem from '../components/Accordion';
 import SEO from '../components/SEO';
@@ -142,7 +142,7 @@ const SubIndustryDetail: React.FC = () => {
                                 Book {subIndustry.name} Strategy
                             </MagneticButton>
                         </a>
-                        <Link to="/contact">
+                        <Link to={CONTACT_MAILTO}>
                             <MagneticButton variant="outline" className="px-8 py-4">
                                 Contact Sales
                             </MagneticButton>

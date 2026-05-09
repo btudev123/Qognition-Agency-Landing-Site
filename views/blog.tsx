@@ -2,6 +2,7 @@ import { BLOG_POSTS } from '../data/blog';
 import SEO from '../components/SEO';
 import { Link } from '../lib/routerCompat';
 import MagneticButton from '../components/MagneticButton';
+import { CONTACT_MAILTO } from '../constants';
 
 const BlogPage = () => {
   return (
@@ -60,9 +61,11 @@ const BlogPage = () => {
         </div>
         
         <div className="mt-16 text-center">
-          <MagneticButton variant="outline">
-            Contact Us for Expert Guidance
-          </MagneticButton>
+          <a href={CONTACT_MAILTO}>
+            <MagneticButton variant="outline">
+              Contact Us for Expert Guidance
+            </MagneticButton>
+          </a>
         </div>
       </div>
     </>

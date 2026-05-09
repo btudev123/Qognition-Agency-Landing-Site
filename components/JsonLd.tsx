@@ -30,7 +30,7 @@ const JsonLd: React.FC<{ data: SchemaData }> = ({ data }) => {
     ],
     "contactPoint": {
       "@type": "ContactPoint",
-      "email": "hello@qognition.agency",
+      "email": "hello@qognitionagency.com",
       "contactType": "sales",
       "areaServed": ["GB", "US", "AE", "IN"],
       "availableLanguage": ["English"]

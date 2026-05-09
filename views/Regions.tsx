@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '../lib/routerCompat';
 import { ArrowRight, Globe, MapPin, TrendingUp } from 'lucide-react';
-import { REGIONS } from '../constants';
+import { CONTACT_MAILTO, REGIONS } from '../constants';
 import SEO from '../components/SEO';
 
 const Regions: React.FC = () => {
@@ -112,7 +112,7 @@ const Regions: React.FC = () => {
             Our team can provide localized strategies for virtually any market. Let's discuss your global expansion goals.
           </p>
           <div className="flex gap-4 justify-center">
-            <Link to="/contact" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
+            <Link to={CONTACT_MAILTO} className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
               Contact Us
             </Link>
             <Link to="/services" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
