@@ -1,6 +1,5 @@
 
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React from 'react';
 
 interface ParallaxImageProps {
   src: string;
@@ -17,28 +16,12 @@ const ParallaxImage: React.FC<ParallaxImageProps> = ({
   aspectRatio = "aspect-video",
   priority = false
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  
-  // Track scroll progress of the container relative to the viewport
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-
-  // Map scroll progress to vertical movement (parallax effect)
-  // We move the image slightly opposite to the scroll direction
-  const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-  
-  // Smooth out the movement
-  const smoothY = useSpring(y, { stiffness: 100, damping: 20 });
-
   return (
-    <div ref={ref} className={`overflow-hidden relative ${aspectRatio} ${className}`}>
-      <motion.img 
+    <div className={`overflow-hidden relative ${aspectRatio} ${className}`}>
+      <img
         src={src} 
         alt={alt}
-        style={{ y: smoothY, scale: 1.15 }} // Scale up slightly to avoid empty edges during parallax
-        className="w-full h-full object-cover absolute top-0 left-0"
+        className="w-full h-full object-cover absolute top-0 left-0 scale-[1.03] transition-transform duration-700 hover:scale-[1.08]"
         loading={priority ? "eager" : "lazy"}
         decoding="async"
       />

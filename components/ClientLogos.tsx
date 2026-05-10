@@ -1,5 +1,5 @@
 import React from 'react';
-import { CLIENT_LOGOS } from '../constants';
+import { CLIENT_LOGOS } from '../data/trust';
 
 const ClientLogos: React.FC = () => {
   return (

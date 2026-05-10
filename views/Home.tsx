@@ -1,6 +1,5 @@
 
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
 import { ArrowRight, TrendingUp, Target, Monitor, Play, PenTool, Layers, Globe } from 'lucide-react';
 import { Link } from '../lib/routerCompat';
 import TextReveal from '../components/TextReveal';
@@ -11,13 +10,12 @@ import ParallaxImage from '../components/ParallaxImage';
 import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
 import HeroOrb from '../components/HeroOrb';
-import { CASE_STUDIES, CALENDLY_LINK, CONTACT_MAILTO, REGIONS, INDUSTRIES } from '../constants';
+import { CALENDLY_LINK, CONTACT_MAILTO } from '../data/siteConfig';
+import { CASE_STUDIES } from '../data/work';
+import { REGIONS } from '../data/regions';
+import { INDUSTRIES } from '../data/industries';
 
 const Home: React.FC = () => {
-  const processRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: processRef });
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
-
   return (
     <>
       <SEO 
@@ -49,15 +47,12 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-8">
                {/* Badge */}
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+              <div
                 className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 md:mb-10"
               >
                  <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></div>
                  <span className="uppercase tracking-widest text-[10px] md:text-[11px] font-bold text-white">Global Growth Partner</span>
-              </motion.div>
+              </div>
               
               {/* Main Headline */}
               <h1 className="font-display text-5xl md:text-8xl lg:text-[100px] font-medium leading-[0.95] md:leading-[0.9] tracking-tight text-white mb-8 md:mb-10">
@@ -94,15 +89,12 @@ const Home: React.FC = () => {
 
             {/* Visual Stat Card */}
             <div className="lg:col-span-4 hidden lg:block">
-               <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.5, duration: 1 }}
+               <div
                   className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md relative overflow-hidden"
                >
                   <div className="absolute top-0 right-0 p-32 bg-teal-500/20 blur-[80px] rounded-full pointer-events-none"></div>
                   <div className="relative z-10">
-                     <h3 className="text-gray-400 text-sm uppercase tracking-widest mb-6">Live Impact</h3>
+                     <p className="text-gray-400 text-sm uppercase tracking-widest mb-6">Live Impact</p>
                      <div className="flex justify-between items-end border-b border-white/10 pb-6 mb-6">
                         <span className="text-5xl font-display text-white">$500M+</span>
                         <span className="text-teal-400 text-xs font-bold">Revenue Driven</span>
@@ -122,7 +114,7 @@ const Home: React.FC = () => {
                         </div>
                      </div>
                   </div>
-               </motion.div>
+               </div>
             </div>
           </div>
         </div>
@@ -146,10 +138,7 @@ const Home: React.FC = () => {
              <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-6 h-auto md:h-[700px]">
                  
                  {/* 1. Performance */}
-                 <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                 <div
                     className="md:col-span-2 md:row-span-1 p-8 md:p-10 bg-zinc-900/30 border border-white/5 rounded-3xl flex flex-col md:flex-row justify-between relative overflow-hidden group hover:border-teal-500/30 transition-all duration-500"
                  >
                      <div className="absolute inset-0 bg-gradient-to-r from-teal-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -164,14 +153,10 @@ const Home: React.FC = () => {
                          <span className="text-5xl font-display text-white">4.2x</span>
                          <span className="text-sm text-gray-400 uppercase tracking-widest">Avg. ROAS</span>
                      </div>
-                 </motion.div>
+                 </div>
 
                  {/* 2. SEO */}
-                 <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
+                 <div
                     className="md:col-span-1 md:row-span-1 p-8 bg-black border border-white/10 rounded-3xl flex flex-col justify-between group hover:bg-zinc-900 transition-colors"
                  >
                      <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-white mb-6 group-hover:bg-teal-400 group-hover:text-black transition-colors">
@@ -181,14 +166,10 @@ const Home: React.FC = () => {
                         <h3 className="text-2xl font-display mb-2 text-white">Enterprise SEO</h3>
                         <p className="text-gray-400 text-sm">Dominate search results with technical audits and authority-building content.</p>
                      </div>
-                 </motion.div>
+                 </div>
 
                  {/* 3. Creative/Brand */}
-                 <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
+                 <div
                     className="md:col-span-1 md:row-span-1 p-8 bg-black border border-white/10 rounded-3xl flex flex-col justify-between group hover:bg-zinc-900 transition-colors"
                  >
                      <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center text-white mb-6 group-hover:bg-teal-400 group-hover:text-black transition-colors">
@@ -198,14 +179,10 @@ const Home: React.FC = () => {
                         <h3 className="text-2xl font-display mb-2 text-white">Brand & Creative</h3>
                         <p className="text-gray-400 text-sm">World-class design and motion that elevates your brand perception.</p>
                      </div>
-                 </motion.div>
+                 </div>
 
                  {/* 4. Development */}
-                 <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
+                 <div
                     className="md:col-span-2 md:row-span-1 p-8 md:p-10 bg-white text-black border border-white/10 rounded-3xl flex flex-col md:flex-row justify-between relative overflow-hidden group"
                  >
                      <div className="relative z-10 max-w-lg">
@@ -219,30 +196,30 @@ const Home: React.FC = () => {
                          <span className="text-5xl font-display text-black">100</span>
                          <span className="text-sm text-gray-500 uppercase tracking-widest">PageSpeed Score</span>
                      </div>
-                 </motion.div>
+                 </div>
              </div>
         </div>
       </section>
 
       {/* --- HORIZONTAL SCROLL PROCESS (Immersive) --- */}
-      <section className="relative bg-black border-y border-white/5 hidden lg:block h-[300vh]" ref={processRef}>
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-             <div className="absolute top-12 left-12 z-20">
+      <section className="relative bg-black border-y border-white/5 hidden lg:block py-32">
+        <div className="max-w-8xl mx-auto px-12">
+             <div className="mb-16">
                  <span className="text-teal-400 font-mono text-sm block tracking-widest mb-2">// THE METHODOLOGY</span>
                  <h2 className="font-display text-5xl">How We Win</h2>
              </div>
 
-             <motion.div style={{ x }} className="flex gap-24 px-24">
+             <div className="grid grid-cols-2 gap-16">
                 {/* Step 1 */}
-                <div className="w-[800px] shrink-0">
+                <div className="min-w-0">
                     <div className="grid grid-cols-2 gap-12">
-                         <div className="text-9xl font-display font-bold text-white/5">01</div>
+                         <div aria-hidden="true" className="text-9xl font-display font-bold text-white/10">01</div>
                          <div>
                              <h3 className="text-5xl font-display mb-8 text-teal-400">Discovery & Audit</h3>
                              <p className="text-2xl text-gray-400 leading-relaxed mb-8">
                                  We start with a forensic audit of your current digital footprint. We analyze competitors, identify keyword gaps, and audit your tech stack.
                              </p>
-                             <ul className="space-y-4 text-gray-500">
+                             <ul className="space-y-4 text-gray-400">
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Technical SEO Audit</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Competitor Reconnaissance</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> User Journey Mapping</li>
@@ -252,15 +229,15 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Step 2 */}
-                <div className="w-[800px] shrink-0">
+                <div className="min-w-0">
                     <div className="grid grid-cols-2 gap-12">
-                         <div className="text-9xl font-display font-bold text-white/5">02</div>
+                         <div aria-hidden="true" className="text-9xl font-display font-bold text-white/10">02</div>
                          <div>
                              <h3 className="text-5xl font-display mb-8 text-teal-400">Strategy & Architecture</h3>
                              <p className="text-2xl text-gray-400 leading-relaxed mb-8">
                                  We build the roadmap. Defining the content strategy, designing the visual identity, and architecting the conversion funnels.
                              </p>
-                             <ul className="space-y-4 text-gray-500">
+                             <ul className="space-y-4 text-gray-400">
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Brand Positioning</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Content Calendar</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> UX/UI Prototyping</li>
@@ -270,15 +247,15 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Step 3 */}
-                <div className="w-[800px] shrink-0">
+                <div className="min-w-0">
                     <div className="grid grid-cols-2 gap-12">
-                         <div className="text-9xl font-display font-bold text-white/5">03</div>
+                         <div aria-hidden="true" className="text-9xl font-display font-bold text-white/10">03</div>
                          <div>
                              <h3 className="text-5xl font-display mb-8 text-teal-400">Execution & Launch</h3>
                              <p className="text-2xl text-gray-400 leading-relaxed mb-8">
                                  Rapid deployment. Our engineers ship code, our creatives launch ads, and our SEOs optimize content. We move fast.
                              </p>
-                             <ul className="space-y-4 text-gray-500">
+                             <ul className="space-y-4 text-gray-400">
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Next.js Development</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Campaign Activation</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Content Publishing</li>
@@ -288,15 +265,15 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Step 4 */}
-                 <div className="w-[800px] shrink-0">
+                 <div className="min-w-0">
                     <div className="grid grid-cols-2 gap-12">
-                         <div className="text-9xl font-display font-bold text-white/5">04</div>
+                         <div aria-hidden="true" className="text-9xl font-display font-bold text-white/10">04</div>
                          <div>
                              <h3 className="text-5xl font-display mb-8 text-teal-400">Scale & Optimize</h3>
                              <p className="text-2xl text-gray-400 leading-relaxed mb-8">
                                  Data-driven iteration. We monitor results in real-time, doubling down on what works and cutting what doesn't.
                              </p>
-                             <ul className="space-y-4 text-gray-500">
+                             <ul className="space-y-4 text-gray-400">
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Conversion Optimization</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Budget Scaling</li>
                                  <li className="flex gap-4"><ArrowRight className="text-teal-400"/> Retention Automation</li>
@@ -304,7 +281,7 @@ const Home: React.FC = () => {
                          </div>
                     </div>
                 </div>
-             </motion.div>
+             </div>
         </div>
       </section>
 
@@ -401,17 +378,13 @@ const Home: React.FC = () => {
           <div className="space-y-40">
             {CASE_STUDIES.slice(0, 2).map((study, index) => (
               <div key={study.id} className={`flex flex-col ${index % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 md:gap-24 items-center group`}>
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
+                <div
                   className="w-full md:w-3/5 overflow-hidden rounded-2xl cursor-pointer shadow-2xl shadow-teal-900/10"
                 >
                   <Link to={`/work/${study.id}`}>
                      <ParallaxImage src={study.image} alt={study.title} />
                   </Link>
-                </motion.div>
+                </div>
                 
                 <div className="w-full md:w-2/5">
                   <div className="flex items-center gap-3 text-teal-400 mb-6 text-sm font-bold uppercase tracking-wider">

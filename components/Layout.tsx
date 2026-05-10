@@ -1,21 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from '../lib/routerCompat';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Instagram, Linkedin, Twitter, Youtube, Facebook, Dribbble, ChevronDown } from 'lucide-react';
-import {
-  CALENDLY_LINK,
-  CONTACT_MAILTO,
-  TOOL_CATEGORIES,
-  WHATSAPP_LINK,
-  SERVICES,
-  INDUSTRIES,
-  REGIONS,
-  LOCATIONS,
-  RESOURCES,
-  FREE_TOOLS,
-  SERVICE_SUB_PAGES
-} from '../constants';
+import { CALENDLY_LINK, CONTACT_MAILTO, WHATSAPP_LINK } from '../data/siteConfig';
+import { TOOL_CATEGORIES } from '../data/toolCategories';
+import { SERVICES } from '../data/services';
+import { INDUSTRIES } from '../data/industries';
+import { REGIONS } from '../data/regions';
+import { LOCATIONS } from '../data/locations';
+import { RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
 import MagneticButton from './MagneticButton';
 import NeuronBackground from './NeuronBackground';
 
@@ -217,33 +210,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <span className="relative z-10">{item.label}</span>
                   <ChevronDown size={12} className="relative z-10 opacity-60" />
                   {isActive && (
-                      <motion.div
-                          layoutId="navbar-indicator"
+                      <div
                           className="absolute inset-0 bg-teal-400 rounded-full z-0"
-                          transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                       />
                   )}
                   {hoveredPath === item.path && !isActive && (
-                      <motion.div
-                          layoutId="navbar-hover"
+                      <div
                           className="absolute inset-0 bg-white/10 rounded-full z-0"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.2 }}
                       />
                   )}
                 </Link>
               );
             })}
           </div>
-          <AnimatePresence>
             {activeMega && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.18 }}
+              <div
                 className="absolute left-1/2 top-full w-[min(1180px,calc(100vw-48px))] -translate-x-1/2 pt-3"
               >
                 <div className="grid max-h-[72vh] grid-cols-3 gap-5 overflow-y-auto rounded-2xl border border-white/10 bg-black/95 p-6 shadow-2xl shadow-black/60 backdrop-blur-xl">
@@ -260,9 +241,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
           </div>
 
           <div className="flex items-center gap-6">
@@ -288,23 +268,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </nav>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
         {isMenuOpen && (
-          <motion.div
+          <div
             id="mobile-menu"
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-start border-b border-white/10 overflow-y-auto px-6 pt-28 pb-12"
           >
             <div className="w-full max-w-2xl space-y-4 text-left">
-              {navGroups.map((item, i) => (
-                <motion.div
+              {navGroups.map((item) => (
+                <div
                   key={item.path}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * i + 0.2 }}
                   className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
                 >
                   <button
@@ -319,14 +291,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                       className={`text-teal-400 transition-transform ${activeMobileGroup === item.label ? 'rotate-180' : ''}`}
                     />
                   </button>
-                  <AnimatePresence initial={false}>
                     {activeMobileGroup === item.label && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
+                      <div className="overflow-hidden">
                         <Link 
                           to={item.path} 
                           className="mt-4 block rounded-xl bg-teal-400 px-4 py-3 text-center text-sm font-bold uppercase tracking-widest text-black"
@@ -353,25 +319,18 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                             </div>
                           ))}
                         </div>
-                      </motion.div>
+                      </div>
                     )}
-                  </AnimatePresence>
-                </motion.div>
+                </div>
               ))}
-              <motion.div 
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 transition={{ delay: 0.5 }}
-                 className="mt-6"
-              >
+              <div className="mt-6">
                   <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                     <MagneticButton variant="primary">Book Strategy Call</MagneticButton>
                   </a>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
       <main className="relative z-10 min-h-screen">
         {children}

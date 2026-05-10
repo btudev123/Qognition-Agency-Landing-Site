@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion, Variants } from 'framer-motion';
 
 interface TextRevealProps {
   children: string;
@@ -8,46 +7,19 @@ interface TextRevealProps {
 }
 
 const TextReveal: React.FC<TextRevealProps> = ({ children, className = "", delay = 0 }) => {
-  // Simple word split for animation
   const words = children.split(" ");
-
-  const container: Variants = {
-    hidden: { opacity: 1 },
-    visible: (i: number = 1) => ({
-      opacity: 1,
-      transition: { staggerChildren: 0.05, delayChildren: delay * 0.1 }
-    })
-  };
-
-  const child: Variants = {
-    hidden: {
-      opacity: 1,
-      y: 0,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-      }
-    }
-  };
+  void delay;
 
   return (
-    <motion.div
+    <div
       className={`overflow-hidden flex flex-wrap gap-x-[0.25em] ${className}`}
-      variants={container}
-      initial="hidden"
-      animate="visible"
     >
       {words.map((word, index) => (
-        <motion.span variants={child} key={index} className="inline-block">
+        <span key={index} className="inline-block">
           {word}
-        </motion.span>
+        </span>
       ))}
-    </motion.div>
+    </div>
   );
 };
 
