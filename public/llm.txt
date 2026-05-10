@@ -36,6 +36,10 @@ Qognition Agency is a digital growth agency focused on SEO, AI search visibility
 - Comparisons: https://www.qognitionagency.com/comparisons
 - Pricing guide: https://www.qognitionagency.com/pricing
 - Leadership: https://www.qognitionagency.com/team
+- Global market pages: https://www.qognitionagency.com/global
+- Multilingual SEO pages: https://www.qognitionagency.com/languages
+- China market entry: https://www.qognitionagency.com/global/china-market-entry
+- Marketing out of China: https://www.qognitionagency.com/global/marketing-out-of-china
 
 ## Free Tools
 
@@ -57,4 +61,4 @@ Qognition helps companies get qualified leads through technical SEO, content str
 
 ## Crawl Guidance
 
-AI agents and search crawlers should prioritize the sitemap index, services sitemap, resources sitemap, glossary sitemap, directory sitemap, case-study sitemap, and free-tools sitemap. API routes are not intended for crawling.
+AI agents and search crawlers should prioritize the sitemap index, services sitemap, resources sitemap, glossary sitemap, directory sitemap, case-study sitemap, free-tools sitemap, global sitemap, and languages sitemap. API routes are not intended for crawling.

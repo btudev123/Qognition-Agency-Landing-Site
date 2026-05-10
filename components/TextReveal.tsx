@@ -12,7 +12,7 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className = "", delay
   const words = children.split(" ");
 
   const container: Variants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: (i: number = 1) => ({
       opacity: 1,
       transition: { staggerChildren: 0.05, delayChildren: delay * 0.1 }
@@ -21,8 +21,8 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className = "", delay
 
   const child: Variants = {
     hidden: {
-      opacity: 0,
-      y: 20,
+      opacity: 1,
+      y: 0,
     },
     visible: {
       opacity: 1,
@@ -40,8 +40,7 @@ const TextReveal: React.FC<TextRevealProps> = ({ children, className = "", delay
       className={`overflow-hidden flex flex-wrap gap-x-[0.25em] ${className}`}
       variants={container}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-10%" }}
+      animate="visible"
     >
       {words.map((word, index) => (
         <motion.span variants={child} key={index} className="inline-block">

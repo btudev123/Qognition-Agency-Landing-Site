@@ -4,6 +4,10 @@ const NeuronBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const isMobileViewport = window.innerWidth < 768;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isMobileViewport || prefersReducedMotion) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false }); // Optimization
@@ -16,9 +20,9 @@ const NeuronBackground: React.FC = () => {
 
     const particles: Particle[] = [];
     // Drastically reduce particles on mobile for performance
-    const isMobile = width < 768;
-    const particleCount = isMobile ? 10 : 30; // Further reduced for performance
-    const connectionDistance = isMobile ? 80 : 140;
+    const isMobile = false;
+    const particleCount = 24;
+    const connectionDistance = 130;
     
     // Throttle mouse interaction
     let mouse = { x: -1000, y: -1000 };
@@ -134,7 +138,7 @@ const NeuronBackground: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+      className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 hidden md:block"
     />
   );
 };

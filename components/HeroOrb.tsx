@@ -4,6 +4,10 @@ const HeroOrb: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const isMobileViewport = window.innerWidth < 768;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isMobileViewport || prefersReducedMotion) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true }); // optimize
@@ -15,9 +19,9 @@ const HeroOrb: React.FC = () => {
     canvas.height = height;
 
     // Reduced density for mobile for better INP/FPS
-    const isMobile = width < 768;
-    const globeRadius = isMobile ? 100 : 200;
-    const dotDensity = isMobile ? 25 : 60; 
+    const isMobile = false;
+    const globeRadius = 190;
+    const dotDensity = 48; 
     const rotationSpeed = 0.001; // Slower rotation for elegance
     let rotation = 0;
     
@@ -101,7 +105,7 @@ const HeroOrb: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-60"
+      className="absolute top-0 left-0 w-full h-full pointer-events-none z-0 opacity-60 hidden md:block"
     />
   );
 };

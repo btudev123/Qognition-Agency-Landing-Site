@@ -1,47 +1,29 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React from 'react';
-import About from '../views/About';
-import CaseStudyDetail from '../views/CaseStudyDetail';
-import Contact from '../views/Contact';
-import Home from '../views/Home';
-import Industries from '../views/Industries';
-import IndustryDetail from '../views/IndustryDetail';
-import LLM from '../views/LLM';
-import NotFound from '../views/NotFound';
-import RegionDetail from '../views/RegionDetail';
-import Regions from '../views/Regions';
-import ServiceDetail from '../views/ServiceDetail';
-import Services from '../views/Services';
-import Sitemap from '../views/Sitemap';
-import SubIndustryDetail from '../views/SubIndustryDetail';
-import Work from '../views/Work';
-import BlogPage from '../views/blog';
-import BlogPostPage from '../views/blog/[slug]';
-import DirectoryHome from '../views/directory/DirectoryHome';
-import DirectoryToolDetail from '../views/directory/DirectoryToolDetail';
 import { ParamProvider } from '../lib/routerCompat';
 
 const views = {
-  about: About,
-  blog: BlogPage,
-  blogPost: BlogPostPage,
-  caseStudy: CaseStudyDetail,
-  contact: Contact,
-  directory: DirectoryHome,
-  directoryTool: DirectoryToolDetail,
-  home: Home,
-  industries: Industries,
-  industry: IndustryDetail,
-  llm: LLM,
-  notFound: NotFound,
-  region: RegionDetail,
-  regions: Regions,
-  service: ServiceDetail,
-  services: Services,
-  sitemap: Sitemap,
-  subIndustry: SubIndustryDetail,
-  work: Work
+  about: dynamic(() => import('../views/About')),
+  blog: dynamic(() => import('../views/blog')),
+  blogPost: dynamic(() => import('../views/blog/[slug]')),
+  caseStudy: dynamic(() => import('../views/CaseStudyDetail')),
+  contact: dynamic(() => import('../views/Contact')),
+  directory: dynamic(() => import('../views/directory/DirectoryHome')),
+  directoryTool: dynamic(() => import('../views/directory/DirectoryToolDetail')),
+  home: dynamic(() => import('../views/Home')),
+  industries: dynamic(() => import('../views/Industries')),
+  industry: dynamic(() => import('../views/IndustryDetail')),
+  llm: dynamic(() => import('../views/LLM')),
+  notFound: dynamic(() => import('../views/NotFound')),
+  region: dynamic(() => import('../views/RegionDetail')),
+  regions: dynamic(() => import('../views/Regions')),
+  service: dynamic(() => import('../views/ServiceDetail')),
+  services: dynamic(() => import('../views/Services')),
+  sitemap: dynamic(() => import('../views/Sitemap')),
+  subIndustry: dynamic(() => import('../views/SubIndustryDetail')),
+  work: dynamic(() => import('../views/Work'))
 };
 
 type ViewName = keyof typeof views;

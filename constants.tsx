@@ -49,14 +49,14 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const CLIENT_LOGOS: ClientLogo[] = [
-  { name: "Magalu", url: "https://logo.clearbit.com/magazineluiza.com.br" },
-  { name: "Wildberries", url: "https://logo.clearbit.com/wildberries.ru" },
-  { name: "Meesho", url: "https://logo.clearbit.com/meesho.com" },
-  { name: "Daraz", url: "https://logo.clearbit.com/daraz.com" },
-  { name: "Noon", url: "https://logo.clearbit.com/noon.com" },
-  { name: "Accent Group", url: "https://logo.clearbit.com/accentgr.com.au" },
-  { name: "Ozon", url: "https://logo.clearbit.com/ozon.ru" },
-  { name: "Rakuten", url: "https://logo.clearbit.com/rakuten.com" }
+  { name: "Magalu", url: "/brand-logos/magalu.svg" },
+  { name: "Wildberries", url: "/brand-logos/wildberries.svg" },
+  { name: "Meesho", url: "/brand-logos/meesho.svg" },
+  { name: "Daraz", url: "/brand-logos/daraz.svg" },
+  { name: "Noon", url: "/brand-logos/noon.svg" },
+  { name: "Accent Group", url: "/brand-logos/accent-group.svg" },
+  { name: "Ozon", url: "/brand-logos/ozon.svg" },
+  { name: "Rakuten", url: "/brand-logos/rakuten.svg" }
 ];
 
 export const ABOUT_DATA = {

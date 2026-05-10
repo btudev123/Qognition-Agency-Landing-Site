@@ -1,5 +1,6 @@
 import { BLOG_POSTS } from '../data/blog';
 import { DIRECTORY_PRODUCTS } from '../data/directoryProducts';
+import { GLOBAL_MARKETS, LANGUAGE_SEO_PAGES } from '../data/internationalSeo';
 import { INDUSTRIES } from '../data/industries';
 import { LOCATIONS } from '../data/locations';
 import { REGIONS } from '../data/regions';
@@ -29,7 +30,9 @@ export const sitemapIndexes = [
   'case-studies',
   'glossary',
   'comparisons',
-  'tools'
+  'tools',
+  'global',
+  'languages'
 ];
 
 export const coreRoutes = (): SitemapEntry[] => [
@@ -46,6 +49,9 @@ export const coreRoutes = (): SitemapEntry[] => [
   { path: '/glossary', priority: 0.84, changefreq: 'weekly' },
   { path: '/pricing', priority: 0.82, changefreq: 'monthly' },
   { path: '/team', priority: 0.72, changefreq: 'monthly' },
+  { path: '/global', priority: 0.88, changefreq: 'weekly' },
+  { path: '/languages', priority: 0.84, changefreq: 'weekly' },
+  { path: '/lead-generation-roadmap', priority: 0.86, changefreq: 'monthly' },
   { path: '/blog', priority: 0.8, changefreq: 'weekly' },
   { path: '/about', priority: 0.7, changefreq: 'monthly' },
   { path: '/contact', priority: 0.8, changefreq: 'monthly' },
@@ -113,6 +119,12 @@ export const comparisonRoutes = (): SitemapEntry[] =>
 export const toolRoutes = (): SitemapEntry[] =>
   FREE_TOOLS.map((tool) => ({ path: `/free-tools/${tool.slug}`, priority: 0.84, changefreq: 'monthly' }));
 
+export const globalRoutes = (): SitemapEntry[] =>
+  GLOBAL_MARKETS.map((market) => ({ path: `/global/${market.slug}`, priority: 0.82, changefreq: 'monthly' }));
+
+export const languageRoutes = (): SitemapEntry[] =>
+  LANGUAGE_SEO_PAGES.map((language) => ({ path: `/languages/${language.slug}`, priority: 0.78, changefreq: 'monthly' }));
+
 export const directoryRoutes = (): SitemapEntry[] => [
   ...TOOL_CATEGORIES.map((category) => ({ path: `/directory/${category.slug}`, priority: 0.78, changefreq: 'weekly' as const })),
   ...DIRECTORY_PRODUCTS.map((product) => ({
@@ -135,7 +147,9 @@ export const routesForSitemap = (name: string): SitemapEntry[] => {
     'case-studies': caseStudyRoutes,
     glossary: glossaryRoutes,
     comparisons: comparisonRoutes,
-    tools: toolRoutes
+    tools: toolRoutes,
+    global: globalRoutes,
+    languages: languageRoutes
   };
 
   return map[name]?.() || [];

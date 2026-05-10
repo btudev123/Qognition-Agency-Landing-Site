@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120" role="img" aria-labelledby="title">
+  <title id="title">Accent Group</title>
+  <rect width="320" height="120" fill="none"/>
+  <text x="22" y="58" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="800">Accent</text>
+  <text x="172" y="58" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">GROUP</text>
+  <rect x="24" y="76" width="250" height="8" rx="4" fill="#111"/>
+</svg>

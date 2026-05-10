@@ -58,8 +58,7 @@ export const metadata: Metadata = {
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     shortcut: ['/favicon-32x32.png']
   },
-  authors: [{ name: 'Qognition Agency' }],
-  manifest: '/manifest.json'
+  authors: [{ name: 'Qognition Agency' }]
 };
 
 export const viewport: Viewport = {
@@ -107,41 +106,47 @@ const websiteSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const hubSpotTrackingId = process.env.NEXT_PUBLIC_HUBSPOT_TRACKING_ID;
+  const marketingScriptsEnabled = process.env.NEXT_PUBLIC_ENABLE_MARKETING_SCRIPTS === 'true';
+  const googleTagManagerId = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-P4QMTWPJ';
 
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} scroll-smooth`}>
       <body>
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-P4QMTWPJ"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        <Script id="gtm" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        {marketingScriptsEnabled && (
+          <>
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${googleTagManagerId}`}
+                height="0"
+                width="0"
+                style={{ display: 'none', visibility: 'hidden' }}
+              />
+            </noscript>
+            <Script id="gtm" strategy="lazyOnload">
+              {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-P4QMTWPJ');`}
-        </Script>
-        <Script id="leadfeeder" strategy="afterInteractive">
-          {`(function(ss,ex){ window.ldfdr=window.ldfdr||function(){(ldfdr._q=ldfdr._q||[]).push([].slice.call(arguments));}; (function(d,s){ var fs=d.getElementsByTagName(s)[0]; function ce(src){ var cs=d.createElement(s); cs.src=src; cs.async=1; fs.parentNode.insertBefore(cs,fs); }; ce('https://sc.lfeeder.com/lftracker_v1_'+ss+(ex?'_'+ex:'')+'.js'); })(document,'script'); })('JMvZ8gvz0Mea2pOd');`}
-        </Script>
-        <Script
-          id="warmly-script-loader"
-          src="https://opps-widget.getwarmly.com/warmly.js?clientId=068e9213ab8b4b30a08f7b13e53ab215"
-          strategy="afterInteractive"
-        />
-        <Script id="reb2b" strategy="afterInteractive">
-          {`!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("Z6PVLHQY3G6R");`}
-        </Script>
-        {hubSpotTrackingId && (
+})(window,document,'script','dataLayer','${googleTagManagerId}');`}
+            </Script>
+            <Script id="leadfeeder" strategy="lazyOnload">
+              {`(function(ss,ex){ window.ldfdr=window.ldfdr||function(){(ldfdr._q=ldfdr._q||[]).push([].slice.call(arguments));}; (function(d,s){ var fs=d.getElementsByTagName(s)[0]; function ce(src){ var cs=d.createElement(s); cs.src=src; cs.async=1; fs.parentNode.insertBefore(cs,fs); }; ce('https://sc.lfeeder.com/lftracker_v1_'+ss+(ex?'_'+ex:'')+'.js'); })(document,'script'); })('JMvZ8gvz0Mea2pOd');`}
+            </Script>
+            <Script
+              id="warmly-script-loader"
+              src="https://opps-widget.getwarmly.com/warmly.js?clientId=068e9213ab8b4b30a08f7b13e53ab215"
+              strategy="lazyOnload"
+            />
+            <Script id="reb2b" strategy="lazyOnload">
+              {`!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("Z6PVLHQY3G6R");`}
+            </Script>
+          </>
+        )}
+        {marketingScriptsEnabled && hubSpotTrackingId && (
           <Script
             id="hubspot-tracking"
             src={`https://js.hs-scripts.com/${hubSpotTrackingId}.js`}
-            strategy="afterInteractive"
+            strategy="lazyOnload"
           />
         )}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />

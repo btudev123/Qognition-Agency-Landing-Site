@@ -62,43 +62,33 @@ const Home: React.FC = () => {
               {/* Main Headline */}
               <h1 className="font-display text-5xl md:text-8xl lg:text-[100px] font-medium leading-[0.95] md:leading-[0.9] tracking-tight text-white mb-8 md:mb-10">
                 <div className="overflow-hidden">
-                  <TextReveal delay={0.5}>Accelerating</TextReveal>
+                  <TextReveal delay={0.5}>Get qualified</TextReveal>
                 </div>
                 <div className="overflow-hidden flex items-center gap-2 md:gap-4 flex-wrap">
-                   <TextReveal delay={1.5} className="text-gray-500 font-light italic font-serif">digital</TextReveal>
-                   <TextReveal delay={2.5}>performance.</TextReveal>
+                   <TextReveal delay={1.5} className="text-gray-300 font-light italic font-serif">leads</TextReveal>
+                   <TextReveal delay={2.5}>online.</TextReveal>
                 </div>
               </h1>
 
               {/* Subheadline & CTAs */}
               <div className="max-w-2xl">
-                 <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1, duration: 0.8 }}
-                    className="text-lg md:text-2xl text-gray-300 leading-relaxed font-light mb-10 md:mb-12"
-                 >
-                    We help law firms, accounting firms, clinics, consultants, SaaS teams, and B2B companies get qualified leads through SEO, Google Ads, landing pages, and AI search visibility.
-                </motion.p>
+                 <p className="text-lg md:text-2xl text-gray-300 leading-relaxed font-light mb-10 md:mb-12">
+                    Qognition helps law firms, clinics, consultants, SaaS teams, and B2B companies turn search demand into booked calls with SEO, Google Ads, conversion pages, AI search visibility, and HubSpot tracking.
+                </p>
 
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.2, duration: 0.8 }}
-                  className="flex flex-col sm:flex-row gap-4 sm:gap-6"
-                >
-                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                    <Link to="/resources/free-seo-audit-checklist">
                       <MagneticButton variant="primary" className="px-8 py-4 text-base w-full sm:w-auto min-w-[180px]">
-                          Book Strategy Call
+                          Get Free Growth Audit
                       </MagneticButton>
-                    </a>
-                    <Link to="/resources/free-seo-audit-checklist" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
+                    </Link>
+                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
                        <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center">
                           <Play size={12} fill="currentColor" />
                        </div>
-                       <span className="text-sm font-bold uppercase tracking-wider">Free SEO Checklist</span>
-                    </Link>
-                </motion.div>
+                       <span className="text-sm font-bold uppercase tracking-wider">Book Strategy Call</span>
+                    </a>
+                </div>
               </div>
             </div>
 
@@ -119,15 +109,15 @@ const Home: React.FC = () => {
                      </div>
                      <div className="space-y-4">
                         <div className="flex justify-between text-sm">
-                           <span className="text-gray-500">Global Campaigns</span>
+                           <span className="text-gray-400">Global Campaigns</span>
                            <span className="text-white">142</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                           <span className="text-gray-500">ROAS Average</span>
+                           <span className="text-gray-400">ROAS Average</span>
                            <span className="text-white">4.2x</span>
                         </div>
                          <div className="flex justify-between text-sm">
-                           <span className="text-gray-500">Hubs</span>
+                           <span className="text-gray-400">Hubs</span>
                            <span className="text-white">12</span>
                         </div>
                      </div>
@@ -172,7 +162,7 @@ const Home: React.FC = () => {
                      </div>
                      <div className="relative z-10 flex flex-col justify-end mt-8 md:mt-0">
                          <span className="text-5xl font-display text-white">4.2x</span>
-                         <span className="text-sm text-gray-500 uppercase tracking-widest">Avg. ROAS</span>
+                         <span className="text-sm text-gray-400 uppercase tracking-widest">Avg. ROAS</span>
                      </div>
                  </motion.div>
 
@@ -341,13 +331,13 @@ const Home: React.FC = () => {
       {/* --- TECH STACK MARQUEE --- */}
       <section className="py-12 bg-black border-b border-white/10 overflow-hidden">
          <div className="max-w-7xl mx-auto px-6 mb-8 text-center">
-            <p className="text-sm uppercase tracking-widest text-gray-500">Powered By Modern Tech</p>
+            <p className="text-sm uppercase tracking-widest text-gray-400">Powered By Modern Tech</p>
          </div>
          <div className="flex animate-marquee whitespace-nowrap">
              {[...Array(2)].map((_, i) => (
                  <div key={i} className="flex gap-16 mx-8">
                      {['Next.js 14', 'React', 'TypeScript', 'Tailwind', 'Framer Motion', 'Shopify Plus', 'Sanity CMS', 'Google Cloud', 'Vercel', 'Supabase', 'OpenAI', 'Ahrefs', 'GA4'].map((tech) => (
-                         <span key={tech} className="text-xl font-mono text-gray-600 hover:text-teal-400 transition-colors cursor-default">{tech}</span>
+                         <span key={tech} className="text-xl font-mono text-gray-400 hover:text-teal-400 transition-colors cursor-default">{tech}</span>
                      ))}
                  </div>
              ))}
@@ -435,7 +425,7 @@ const Home: React.FC = () => {
                     {study.stats.map(stat => (
                       <div key={stat.label}>
                         <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</div>
-                        <div className="text-xs text-gray-500 uppercase tracking-wide">{stat.label}</div>
+                        <div className="text-xs text-gray-400 uppercase tracking-wide">{stat.label}</div>
                       </div>
                     ))}
                   </div>
@@ -506,7 +496,7 @@ const Home: React.FC = () => {
               <Monitor className="text-teal-400 mb-6" size={40} />
               <h3 className="font-display text-2xl mb-4">Full-Service Solutions</h3>
               <p className="text-gray-400 leading-relaxed">
-                From <Link to="/services" className="text-teal-400 hover:underline">SEO</Link> and <Link to="/services" className="text-teal-400 hover:underline">PPC</Link> to web development and content marketing, we offer comprehensive digital solutions under one roof. No more managing multiple vendors - we handle everything.
+                From <Link to="/services" className="text-teal-300 underline underline-offset-4 decoration-teal-400/60 hover:text-white">SEO</Link> and <Link to="/services" className="text-teal-300 underline underline-offset-4 decoration-teal-400/60 hover:text-white">PPC</Link> to web development and content marketing, we offer comprehensive digital solutions under one roof. No more managing multiple vendors - we handle everything.
               </p>
             </div>
           </div>
@@ -535,7 +525,7 @@ const Home: React.FC = () => {
               <Link key={ind.id} to={`/industries/${ind.id}`} className="group p-6 border border-white/10 rounded-xl hover:border-teal-400/50 transition-all bg-white/5 hover:bg-white/10">
                 <Layers className="text-teal-400 mb-4 group-hover:scale-110 transition-transform" size={32} />
                 <h3 className="font-display text-xl mb-2">{ind.name}</h3>
-                <p className="text-gray-500 text-sm line-clamp-2">{ind.description}</p>
+                <p className="text-gray-400 text-sm line-clamp-2">{ind.description}</p>
               </Link>
             ))}
           </div>

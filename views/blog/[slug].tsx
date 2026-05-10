@@ -26,23 +26,26 @@ const BlogPostPage: React.FC = () => {
   const parseContent = (content: string) => {
     return content
       .split('\n')
-      .map((line) => {
+      .map((line, index) => {
+        if (line.startsWith('# ')) {
+          return <h2 key={index} className="text-3xl font-bold mt-10 mb-5">{line.replace('# ', '')}</h2>;
+        }
         if (line.startsWith('## ')) {
-          return <h2 className="text-2xl font-bold mt-8 mb-4">{line.replace('## ', '')}</h2>;
+          return <h2 key={index} className="text-2xl font-bold mt-8 mb-4">{line.replace('## ', '')}</h2>;
         }
         if (line.startsWith('### ')) {
-          return <h3 className="text-xl font-semibold mt-6 mb-3">{line.replace('### ', '')}</h3>;
+          return <h3 key={index} className="text-xl font-semibold mt-6 mb-3">{line.replace('### ', '')}</h3>;
         }
         if (line.startsWith('- ')) {
-          return <li className="ml-4 mb-2">{line.replace('- ', '')}</li>;
+          return <li key={index} className="ml-4 mb-2">{line.replace('- ', '')}</li>;
         }
         if (line.match(/^\d+\. /)) {
-          return <li className="ml-4 mb-2 list-decimal">{line.replace(/^\d+\. /, '')}</li>;
+          return <li key={index} className="ml-4 mb-2 list-decimal">{line.replace(/^\d+\. /, '')}</li>;
         }
         if (line.trim() === '') {
-          return <br />;
+          return <br key={index} />;
         }
-        return <p className="mb-4">{line}</p>;
+        return <p key={index} className="mb-4">{line}</p>;
       });
   };
 

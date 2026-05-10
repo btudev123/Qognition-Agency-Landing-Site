@@ -15,7 +15,7 @@ const Testimonials: React.FC = () => {
         <Quote size={80} />
       </div>
       
-      <div className="relative min-h-[300px] flex items-center">
+      <div className="relative min-h-[300px] flex items-center" aria-live="polite">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
@@ -37,10 +37,20 @@ const Testimonials: React.FC = () => {
       </div>
 
       <div className="flex gap-4 mt-8">
-        <button onClick={prev} className="p-3 border border-white/10 rounded-full hover:bg-teal-400 hover:text-black hover:border-teal-400 transition-all">
+        <button
+          type="button"
+          onClick={prev}
+          aria-label="Show previous testimonial"
+          className="p-3 border border-white/10 rounded-full hover:bg-teal-400 hover:text-black hover:border-teal-400 transition-all"
+        >
           <ChevronLeft size={20} />
         </button>
-        <button onClick={next} className="p-3 border border-white/10 rounded-full hover:bg-teal-400 hover:text-black hover:border-teal-400 transition-all">
+        <button
+          type="button"
+          onClick={next}
+          aria-label="Show next testimonial"
+          className="p-3 border border-white/10 rounded-full hover:bg-teal-400 hover:text-black hover:border-teal-400 transition-all"
+        >
           <ChevronRight size={20} />
         </button>
       </div>

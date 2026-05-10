@@ -1,4 +1,6 @@
-export const BLOG_POSTS = [
+import { GROWTH_BLOG_POSTS } from './growthBlogPosts';
+
+const BASE_BLOG_POSTS = [
   {
     id: 'ai-marketing-trends-2026',
     title: 'AI Marketing Trends 2026: What Every CMO Needs to Know',
@@ -458,3 +460,5 @@ Remember that SEO is a marathon, not a sprint. The businesses that succeed are t
 *Ready to implement these SEO strategies for your small business? [Contact Qognition Agency](/contact) for a personalized SEO consultation tailored to your specific needs and budget.*`
   }
 ];
+
+export const BLOG_POSTS = [...GROWTH_BLOG_POSTS, ...BASE_BLOG_POSTS];

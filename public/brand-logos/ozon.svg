@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120" role="img" aria-labelledby="title">
+  <title id="title">Ozon</title>
+  <rect width="320" height="120" fill="none"/>
+  <circle cx="78" cy="60" r="26" fill="none" stroke="#111" stroke-width="14"/>
+  <text x="122" y="76" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900">zon</text>
+</svg>

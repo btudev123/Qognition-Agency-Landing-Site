@@ -32,11 +32,13 @@ const BehanceIcon = ({ size = 20 }) => (
 
 const Logo: React.FC<{ className?: string }> = ({ className = "w-11 h-11" }) => (
   <img
-    src="/qognition-mark.png"
+    src="/favicon-192x192.png"
+    srcSet="/favicon-32x32.png 32w, /favicon-192x192.png 192w"
+    sizes="(min-width: 768px) 40px, 32px"
     alt=""
     className={`${className} object-contain transition-transform duration-300 group-hover:scale-105`}
-    width={96}
-    height={96}
+    width={56}
+    height={56}
     draggable={false}
   />
 );
@@ -140,6 +142,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             { label: 'Tools Directory', path: '/directory' },
             { label: 'Digital Marketing Glossary', path: '/glossary' },
             { label: 'Agency Comparisons', path: '/comparisons' },
+            { label: 'Lead Generation Roadmap', path: '/lead-generation-roadmap' },
+            { label: 'Global Markets', path: '/global' },
+            { label: 'Multilingual SEO', path: '/languages' },
             { label: 'Blog', path: '/blog' },
             { label: 'LLM Transparency', path: '/llm' }
           ]
@@ -368,7 +373,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
 
             <div className="md:col-span-2 md:col-start-6">
-              <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Sitemap</h4>
+              <p className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Sitemap</p>
               <ul className="space-y-4 text-gray-400 text-sm">
                 <li><Link to="/services" className="hover:text-white transition-colors">Capabilities</Link></li>
                 <li><Link to="/industries" className="hover:text-white transition-colors">Industries</Link></li>
@@ -381,18 +386,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           
           <div className="md:col-span-2">
-            <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Resources</h4>
+            <p className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Resources</p>
             <ul className="space-y-4 text-gray-400 text-sm">
               <li><Link to="/directory" className="hover:text-white transition-colors font-bold text-teal-200">Tools Directory</Link></li>
               <li><Link to="/resources" className="hover:text-white transition-colors">Lead Magnets</Link></li>
               <li><Link to="/free-tools" className="hover:text-white transition-colors">Free Tools</Link></li>
               <li><Link to="/glossary" className="hover:text-white transition-colors">Glossary</Link></li>
               <li><Link to="/comparisons" className="hover:text-white transition-colors">Comparisons</Link></li>
+              <li><Link to="/lead-generation-roadmap" className="hover:text-white transition-colors">Lead Roadmap</Link></li>
+              <li><Link to="/global" className="hover:text-white transition-colors">Global Markets</Link></li>
+              <li><Link to="/languages" className="hover:text-white transition-colors">Languages</Link></li>
             </ul>
           </div>
 
           <div className="md:col-span-2">
-             <h4 className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Company</h4>
+             <p className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Company</p>
              <ul className="space-y-4 text-gray-400 text-sm">
                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
                <li><Link to="/team" className="hover:text-white transition-colors">Leadership</Link></li>
@@ -403,7 +411,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
         </div>
         
-<div className="max-w-8xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-600 text-xs font-mono uppercase tracking-wider">
+<div className="max-w-8xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs font-mono uppercase tracking-wider">
             <p>© {new Date().getFullYear()} Qognition Agency.</p>
             <p className="mt-2 md:mt-0">London • New York • Dubai • Bangalore • Sydney</p>
         </div>

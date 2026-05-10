@@ -91,7 +91,7 @@ const ServiceShowcase: React.FC = () => {
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
                 <div className="flex items-baseline gap-8">
-                  <span className="font-mono text-sm text-teal-400/50 group-hover:text-teal-400 transition-colors">0{index + 1}</span>
+                  <span className="font-mono text-sm text-teal-300 group-hover:text-teal-200 transition-colors">0{index + 1}</span>
                   <h3 className="font-display text-3xl md:text-5xl group-hover:translate-x-4 transition-transform duration-500">{service.title}</h3>
                 </div>
                 
