@@ -5,7 +5,6 @@ import React from 'react';
 import ClientLayout from './ClientLayout';
 import './globals.css';
 import { SITE_URL } from '../lib/seo';
-
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
