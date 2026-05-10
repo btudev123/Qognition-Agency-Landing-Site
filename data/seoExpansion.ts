@@ -3,7 +3,9 @@ import {
   FreeToolPage,
   GlossaryTerm,
   ResourceLeadMagnet,
+  Service,
   ServiceSubPage,
+  SubService,
   TeamMember
 } from '../types';
 import { INDUSTRIES } from './industries';
@@ -35,7 +37,7 @@ const serviceFaq = (topic: string) => [
   }
 ];
 
-export const SERVICE_SUB_PAGES: ServiceSubPage[] = [
+const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
   {
     serviceId: 'seo',
     slug: 'technical-seo',
@@ -328,7 +330,7 @@ export const SERVICE_SUB_PAGES: ServiceSubPage[] = [
     ],
     faqs: serviceFaq('Conversion Website Development'),
     relatedLinks: [
-      { label: 'Pricing Guide', href: '/pricing' },
+      { label: 'Lead Generation Roadmap', href: '/lead-generation-roadmap' },
       { label: 'Landing Page CRO', href: '/services/ppc/landing-page-cro' },
       { label: 'Case Studies', href: '/work' }
     ]
@@ -366,6 +368,79 @@ export const SERVICE_SUB_PAGES: ServiceSubPage[] = [
       { label: 'Resources', href: '/resources' }
     ]
   }
+];
+
+const serviceOutcomeCopy: Record<string, string> = {
+  seo: 'qualified organic demand, better indexation, and stronger authority',
+  smm: 'consistent social visibility, community trust, and content-assisted pipeline',
+  'ai-seo': 'LLM citations, answer-engine visibility, and entity clarity',
+  'web-development': 'faster pages, clearer journeys, and higher conversion rates',
+  'branding-creative': 'stronger positioning, memorable creative, and better campaign recall',
+  ppc: 'lower wasted spend, better lead quality, and measurable revenue efficiency'
+};
+
+const buildGeneratedServiceSubPage = (service: Service, subService: SubService): ServiceSubPage => {
+  const slug = subService.slug || slugify(subService.name);
+  const serviceOutcome = serviceOutcomeCopy[service.id] || 'measurable growth';
+  return {
+    serviceId: service.id,
+    slug,
+    title: `${subService.name} Services`,
+    description: `${subService.description} Built by Qognition as part of ${service.title.toLowerCase()} programs for AI-led growth marketing.`,
+    h1: `${subService.name} Services for AI Growth Marketing`,
+    intro:
+      `${subService.description} Qognition turns this into a practical growth system with strategy, implementation, tracking, internal links, schema, and conversion paths so the work can be discovered by search engines, AI agents, and qualified buyers.`,
+    deliverables: [
+      `${subService.name} audit and opportunity map`,
+      'Buyer-intent messaging and page architecture',
+      'Implementation sprint plan with ownership',
+      'Analytics, reporting, and conversion QA',
+      'Internal links to services, industries, locations, case studies, and tools',
+      'Schema and crawlability review before launch'
+    ],
+    sections: [
+      {
+        title: 'Key Takeaways',
+        content:
+          `${subService.name} should not operate as an isolated task. It works best when it is tied to a clear offer, a measurable buyer action, and a page or campaign system that compounds over time.`
+      },
+      {
+        title: 'What Qognition Builds',
+        content:
+          `We connect ${subService.name.toLowerCase()} to ${service.title.toLowerCase()} strategy, content, creative, analytics, and CRM handoff. The result is ${serviceOutcome} without relying on thin templates or disconnected deliverables.`
+      },
+      {
+        title: 'How It Gets Discovered',
+        content:
+          'Every important page includes a single H1, structured headings, concise summaries, semantic HTML, internal links, canonical metadata, and JSON-LD so Googlebot, Bingbot, GPTBot, CCBot, and Google-Extended can understand the page quickly.'
+      },
+      {
+        title: 'How We Measure It',
+        content:
+          `The scorecard depends on the channel, but usually includes visibility, qualified traffic, assisted conversions, booked calls, lead quality, conversion rate, revenue influence, and the next highest-impact sprint.`
+      }
+    ],
+    faqs: serviceFaq(subService.name),
+    relatedLinks: [
+      { label: service.title, href: `/services/${service.id}` },
+      { label: 'Case Studies', href: '/work' },
+      { label: 'Locations', href: '/locations' },
+      { label: 'Industries', href: '/industries' },
+      { label: 'Tools Directory', href: '/directory' },
+      { label: 'Book a Strategy Call', href: 'https://calendly.com/hello-qognitionagency/30min' }
+    ]
+  };
+};
+
+const generatedServiceSubPages = SERVICES.flatMap((service) =>
+  service.subServices.map((subService) => buildGeneratedServiceSubPage(service, subService))
+);
+
+const customKeys = new Set(CUSTOM_SERVICE_SUB_PAGES.map((page) => `${page.serviceId}/${page.slug}`));
+
+export const SERVICE_SUB_PAGES: ServiceSubPage[] = [
+  ...CUSTOM_SERVICE_SUB_PAGES,
+  ...generatedServiceSubPages.filter((page) => !customKeys.has(`${page.serviceId}/${page.slug}`))
 ];
 
 export const getServiceSubPage = (serviceId: string, slug: string) =>
@@ -723,34 +798,53 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = glossarySource.slice(0, 320).map((
 
 export const TEAM_MEMBERS: TeamMember[] = [
   {
-    slug: 'alex-morgan',
-    name: 'Alex Morgan',
-    role: 'Chief Strategy Officer',
-    focus: 'AI search, positioning, enterprise growth strategy',
-    bio: 'Alex leads growth strategy across SEO, paid media, AI search visibility, and executive-level roadmap design for ambitious B2B teams.',
-    image: '/images/team/alex-morgan.jpg'
+    slug: 'prabal-bhandari',
+    name: 'Prabal Bhandari',
+    role: 'CEO',
+    focus: 'AI growth strategy, client vision, market expansion',
+    bio: 'Prabal leads Qognition as an AI growth marketing partner for companies that need clearer positioning, qualified pipeline, and modern search visibility across Google and LLM-powered discovery.'
   },
   {
-    slug: 'sarah-chen',
-    name: 'Sarah Chen',
-    role: 'Head of SEO Services',
-    focus: 'Technical SEO, content systems, programmatic SEO',
-    bio: 'Sarah oversees technical SEO, topic architecture, indexation strategy, content quality systems, and search-led revenue planning.',
-    image: '/images/team/sarah-chen.jpg'
+    slug: 'manish-kunwar',
+    name: 'Manish Kunwar',
+    role: 'CTO',
+    focus: 'Next.js systems, automation, analytics, AI infrastructure',
+    bio: 'Manish owns the technical architecture behind crawlable Next.js sites, programmatic SEO systems, automation workflows, analytics, and the engineering layer that keeps growth measurable.'
   },
   {
-    slug: 'maya rao'.replace(' ', '-'),
-    name: 'Maya Rao',
-    role: 'Director of Performance Marketing',
-    focus: 'Google Ads, paid social, CRO, revenue analytics',
-    bio: 'Maya leads paid acquisition programs with a focus on qualified pipeline, landing page economics, and CRM-backed reporting.'
+    slug: 'nimesh-shakya',
+    name: 'Nimesh Shakya',
+    role: 'Design Head',
+    focus: 'Visual systems, UX direction, brand experience',
+    bio: 'Nimesh leads design systems and web experience direction so Qognition’s growth work feels premium, usable, and conversion-focused without weakening SEO or performance.'
   },
   {
-    slug: 'daniel-kim',
-    name: 'Daniel Kim',
-    role: 'Lead Growth Engineer',
-    focus: 'Next.js, analytics, HubSpot integrations, automation',
-    bio: 'Daniel builds the technical growth infrastructure behind crawlable websites, calculators, lead capture, analytics, and marketing automation.'
+    slug: 'richa-sharma',
+    name: 'Richa Sharma',
+    role: 'Creative Director',
+    focus: 'Campaign ideas, brand storytelling, creative systems',
+    bio: 'Richa turns positioning into creative direction, campaign narratives, social ideas, and brand moments that help buyers understand why a company is different.'
+  },
+  {
+    slug: 'kushal-adhikari',
+    name: 'Kushal Adhikari',
+    role: 'Lead Graphic Designer',
+    focus: 'Campaign visuals, social design, lead magnet design',
+    bio: 'Kushal builds the visual assets that support ads, social content, resources, case studies, sales collateral, and conversion pages.'
+  },
+  {
+    slug: 'sabina-thapa',
+    name: 'Sabina Thapa',
+    role: 'Lead Content Strategist',
+    focus: 'Content systems, editorial strategy, B2B messaging',
+    bio: 'Sabina leads content strategy across blogs, resources, service pages, industry pages, case studies, and internal linking systems built for search and sales.'
+  },
+  {
+    slug: 'sujan-rai',
+    name: 'Sujan Rai',
+    role: 'Lead SEO Executive',
+    focus: 'Technical SEO, local SEO, AI search visibility',
+    bio: 'Sujan manages SEO execution across crawlability, keyword intent, schema, location pages, Search Console checks, and AI-readable content structures.'
   }
 ];
 

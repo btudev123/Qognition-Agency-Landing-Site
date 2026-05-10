@@ -3,6 +3,8 @@ import { ArrowRight, CheckCircle, Globe, MapPin, Search, TrendingUp } from 'luci
 import { CALENDLY_LINK } from '../../constants';
 import { INDUSTRIES } from '../../data/industries';
 import { SERVICES } from '../../data/services';
+import { FREE_TOOLS, RESOURCES } from '../../data/seoExpansion';
+import { CASE_STUDIES } from '../../data/work';
 import { Location, Service } from '../../types';
 
 export const LocationsIndexView = ({ locations }: { locations: Location[] }) => (
@@ -73,6 +75,18 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
       </p>
     </header>
 
+    <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
+      {[
+        `TL;DR: Qognition helps companies target ${location.name} with SEO, paid media, AI search visibility, landing pages, and conversion tracking.`,
+        `We treat ${location.name} as a service-area market and do not claim a physical office unless an existing hub page states one.`,
+        `Every local plan links services, industries, case studies, resources, and FAQs so Google, Bing, and AI agents can understand the page.`
+      ].map((item) => (
+        <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
+          {item}
+        </div>
+      ))}
+    </section>
+
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
       <main className="lg:col-span-8 space-y-16">
         <section>
@@ -92,6 +106,22 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
         </section>
 
         <section>
+          <h2 className="font-display text-4xl mb-6">{location.name} Market Demand</h2>
+          <div className="space-y-5 text-lg text-gray-300 leading-relaxed">
+            <p>
+              Buyers in {location.name} compare vendors across search results, social proof, review signals, paid landing pages, case studies,
+              and AI-generated summaries before they ever submit a form. The goal is not just more traffic; it is qualified demand from the
+              segments that match your margins and sales capacity.
+            </p>
+            <p>
+              Qognition builds the page architecture, campaign tracking, and internal links that help a {location.name}-focused strategy become
+              discoverable. We connect service pages, industry pages, local proof, lead magnets, and tools so a founder, CMO, or procurement team can
+              move from research to booked call without hunting through the site.
+            </p>
+          </div>
+        </section>
+
+        <section>
           <h2 className="font-display text-4xl mb-6">Services in {location.name}</h2>
           <ServicePills location={location} />
         </section>
@@ -107,6 +137,49 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
               >
                 {industry.name}
               </Link>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-display text-4xl mb-6">Relevant Case Studies</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {CASE_STUDIES.slice(0, 4).map((study) => (
+              <Link key={study.id} href={`/work/${study.id}`} className="rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:border-teal-400/50 transition-colors">
+                <p className="text-xs uppercase tracking-widest text-teal-400 mb-3">{study.industry}</p>
+                <h3 className="font-display text-2xl mb-3">{study.client}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{study.summary || study.title}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-display text-4xl mb-6">Resources for {location.name} Teams</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, href: `/resources/${resource.slug}`, note: resource.description })),
+              ...FREE_TOOLS.slice(0, 2).map((tool) => ({ label: tool.title, href: `/free-tools/${tool.slug}`, note: tool.description }))].map((item) => (
+              <Link key={item.href} href={item.href} className="rounded-xl border border-white/10 bg-black/40 p-5 hover:border-teal-400/50 transition-colors">
+                <h3 className="font-display text-xl mb-3">{item.label}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{item.note}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="font-display text-4xl mb-6">Common Questions</h2>
+          <div className="space-y-4">
+            {[
+              [`Can Qognition help a company generate leads in ${location.name}?`, `Yes. We map local intent, build landing pages, connect analytics, and prioritize services that match buyer demand in ${location.name}.`],
+              [`Is this page written for Google and AI search?`, 'Yes. It uses a clear H1, semantic sections, canonical metadata, JSON-LD, internal links, and concise summaries at the top.'],
+              [`Which industries work best in ${location.name}?`, `${location.marketFocus.join(', ')} are current priority segments, but we also support B2B, professional services, ecommerce, healthcare, and local services.`],
+              [`What is the fastest channel for ${location.name}?`, 'Paid search and landing pages can create near-term tests, while SEO, resources, and AI search visibility compound over several months.']
+            ].map(([question, answer]) => (
+              <div key={question} className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+                <h3 className="font-display text-xl mb-2">{question}</h3>
+                <p className="text-gray-400 leading-relaxed">{answer}</p>
+              </div>
             ))}
           </div>
         </section>
@@ -153,6 +226,18 @@ export const LocationServiceView = ({ location, service }: { location: Location;
           local intent mapping, landing page systems, tracking, and technical SEO foundations.
         </p>
 
+        <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            `TL;DR: ${service.title} in ${location.name} should connect local intent, page speed, conversion tracking, and sales-qualified lead quality.`,
+            `This page is a service-area page. It avoids false office claims and focuses on the market you want to reach.`,
+            `Related service, industry, case-study, tool, and resource links are included so crawlers can discover the wider topic cluster.`
+          ].map((item) => (
+            <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
+              {item}
+            </div>
+          ))}
+        </section>
+
         <section className="mb-16">
           <h2 className="font-display text-4xl mb-8">What We Build</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -166,13 +251,49 @@ export const LocationServiceView = ({ location, service }: { location: Location;
           </div>
         </section>
 
+        <section className="mb-16">
+          <h2 className="font-display text-4xl mb-6">How We Adapt {service.title} for {location.name}</h2>
+          <div className="space-y-5 text-lg text-gray-300 leading-relaxed">
+            <p>
+              We start with local search demand, buyer language, competitor density, CPC pressure, sales-cycle length, and the trust signals buyers
+              expect in {location.name}. From there, we decide which pages, ad groups, content assets, and conversion paths deserve priority.
+            </p>
+            <p>
+              The implementation includes crawlable landing pages, structured data, analytics events, lead source attribution, and internal links to
+              the services, industries, case studies, and tools most likely to help a buyer understand your offer.
+            </p>
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <h2 className="font-display text-4xl mb-8">Proof and Planning Assets</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {CASE_STUDIES.slice(0, 2).map((study) => (
+              <Link key={study.id} href={`/work/${study.id}`} className="rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:border-teal-400/50 transition-colors">
+                <p className="text-xs uppercase tracking-widest text-teal-400 mb-3">{study.industry}</p>
+                <h3 className="font-display text-2xl mb-3">{study.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{study.results?.[0] || study.summary}</p>
+              </Link>
+            ))}
+            {FREE_TOOLS.slice(0, 2).map((tool) => (
+              <Link key={tool.slug} href={`/free-tools/${tool.slug}`} className="rounded-xl border border-white/10 bg-black/40 p-5 hover:border-teal-400/50 transition-colors">
+                <p className="text-xs uppercase tracking-widest text-teal-400 mb-3">Free Tool</p>
+                <h3 className="font-display text-2xl mb-3">{tool.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{tool.description}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         <section>
           <h2 className="font-display text-4xl mb-8">Common Questions</h2>
           <div className="space-y-4">
             {[
               [`Do you need an office in ${location.name}?`, `No. This is a service-area page for companies targeting ${location.name}; we do not claim a physical office unless one exists.`],
               [`Can this page support Google Search Console indexing?`, 'Yes. It is statically generated with canonical metadata, schema, and sitemap inclusion.'],
-              [`What makes ${service.title} different by location?`, `Search intent, competitor density, CPC, local trust signals, and buyer language all change in ${location.name}.`]
+              [`What makes ${service.title} different by location?`, `Search intent, competitor density, CPC, local trust signals, and buyer language all change in ${location.name}.`],
+              [`Which industries can use this ${location.name} plan?`, `${location.marketFocus.join(', ')}, professional services, SaaS, ecommerce, healthcare, and local services can all use this structure.`],
+              [`How fast can the first leads arrive?`, 'Paid media and landing page tests can launch first, while organic and AI-search visibility build as the indexed page cluster expands.']
             ].map(([question, answer]) => (
               <div key={question} className="p-6 border border-white/10 rounded-xl bg-white/5">
                 <h3 className="font-bold text-white mb-2">{question}</h3>

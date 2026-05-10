@@ -60,8 +60,8 @@ export const CLIENT_LOGOS: ClientLogo[] = [
 ];
 
 export const ABOUT_DATA = {
-  mission: "To engineer the digital infrastructure of the future, enabling ambitious brands to dominate their categories through AI, speed, and aesthetic precision.",
-  vision: "A world where marketing is autonomous, beautiful, and hyper-personalized.",
+  mission: "To be the AI growth marketing partner ambitious companies call when they need qualified leads, stronger search visibility, better creative, and measurable revenue systems.",
+  vision: "A world where growth marketing is intelligent, beautifully designed, measurable, and built around real buyer trust.",
   values: [
     { title: "Radical Transparency", desc: "No black boxes. We share our code, our data, and our logic." },
     { title: "Speed as a Habit", desc: "We move faster than the market. Velocity is our primary currency." },
@@ -69,7 +69,7 @@ export const ABOUT_DATA = {
     { title: "Data Sovereignty", desc: "Your data is your asset. We build systems that you own and control." }
   ],
   stats: [
-    { label: "Full-Time Experts", value: "120+" },
+    { label: "AI Growth Leads", value: "7" },
     { label: "Revenue Generated", value: "$500M+" },
     { label: "Global Hubs", value: "12" },
     { label: "Client Retention", value: "94%" }

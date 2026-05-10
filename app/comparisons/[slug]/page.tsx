@@ -45,8 +45,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             If you need technical SEO, paid search, landing pages, content systems, AI search visibility, and faster implementation,
             Qognition is designed for that path.
           </p>
-          <Link href="/pricing" className="mt-8 inline-flex rounded-full bg-teal-400 px-8 py-4 font-display text-sm uppercase tracking-wider text-black hover:bg-white">
-            View Pricing Guide
+          <Link href="/lead-generation-roadmap" className="mt-8 inline-flex rounded-full bg-teal-400 px-8 py-4 font-display text-sm uppercase tracking-wider text-black hover:bg-white">
+            View Lead Roadmap
           </Link>
         </section>
       </main>

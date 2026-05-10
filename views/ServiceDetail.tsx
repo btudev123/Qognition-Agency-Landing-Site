@@ -2,15 +2,19 @@ import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from '../lib/routerCompat';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle, Quote, Layers, BarChart } from 'lucide-react';
-import { SERVICES, CALENDLY_LINK } from '../constants';
+import { SERVICES, CALENDLY_LINK, SERVICE_SUB_PAGES } from '../constants';
 import MagneticButton from '../components/MagneticButton';
 import AccordionItem from '../components/Accordion';
 import SEO from '../components/SEO';
+
+const subServiceSlug = (sub: { name: string; slug?: string }) =>
+  sub.slug || sub.name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 const ServiceDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const service = SERVICES.find(s => s.id === id);
+  const serviceSubPages = SERVICE_SUB_PAGES.filter((page) => page.serviceId === id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -85,13 +89,36 @@ const ServiceDetail: React.FC = () => {
                     <h2 className="font-display text-3xl mb-8 flex items-center gap-2"><Layers className="text-teal-400"/> Capabilities</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {service.subServices.map((sub, i) => (
-                            <div key={i} className="p-6 bg-white/5 border border-white/10 rounded-lg hover:border-teal-400/50 transition-colors">
+                            <Link
+                                key={i}
+                                to={`/services/${service.id}/${subServiceSlug(sub)}`}
+                                className="group block p-6 bg-white/5 border border-white/10 rounded-lg hover:border-teal-400/50 transition-colors"
+                            >
                                 <h3 className="font-bold text-xl mb-3">{sub.name}</h3>
                                 <p className="text-gray-400 text-sm">{sub.description}</p>
-                            </div>
+                                <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-teal-400 group-hover:text-white">
+                                  Explore sub-service <ArrowLeft size={14} className="rotate-180" />
+                                </span>
+                            </Link>
                         ))}
                     </div>
                 </div>
+
+                {serviceSubPages.length > 0 && (
+                    <div className="mb-16 p-8 rounded-xl border border-teal-400/20 bg-teal-400/5">
+                        <h2 className="font-display text-3xl mb-5">AI-Readable Service Map</h2>
+                        <p className="text-gray-300 leading-relaxed mb-6">
+                          Key takeaways: {service.title} works best when technical setup, content, creative, conversion tracking, and internal links all point toward the same lead outcome. These sub-pages explain the exact workflows, deliverables, FAQs, and related routes for crawlers, buyers, and AI answer engines.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {serviceSubPages.slice(0, 6).map((page) => (
+                            <Link key={page.slug} to={`/services/${page.serviceId}/${page.slug}`} className="rounded-lg border border-white/10 bg-black/40 p-4 text-sm text-gray-300 hover:border-teal-400/50 hover:text-white">
+                              {page.title}
+                            </Link>
+                          ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Process Section */}
                 <div className="mb-16">
@@ -162,7 +189,7 @@ const ServiceDetail: React.FC = () => {
                         Stop guessing. Start growing. Schedule a consultation with our {service.title} leads.
                     </p>
                     <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                        <MagneticButton className="w-full">Book Consultation</MagneticButton>
+                        <MagneticButton className="w-full">Book Strategy Call</MagneticButton>
                     </a>
                 </div>
             </div>

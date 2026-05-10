@@ -24,7 +24,11 @@ const CalculatorTool: React.FC<Props> = ({ tool }) => {
     keywordVolume: '12000',
     ctr: '8',
     pages: '5',
-    keyword: 'technical seo'
+    keyword: 'technical seo',
+    audience: 'B2B founders',
+    funnelStage: 'middle of funnel',
+    market: 'Dubai',
+    offer: 'free SEO audit'
   });
 
   const update = (key: keyof typeof values) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -76,11 +80,20 @@ const CalculatorTool: React.FC<Props> = ({ tool }) => {
     }
 
     if (tool === 'content-idea-generator') {
-      const seed = values.keyword || 'growth';
+      const seed = values.keyword.trim() || 'growth';
+      const audience = values.audience.trim() || 'buyers';
+      const funnelStage = values.funnelStage.trim() || 'middle of funnel';
+      const market = values.market.trim() || 'your target market';
+      const offer = values.offer.trim() || 'strategy call';
       return [
-        ['Blog Idea', `How to improve ${seed} without wasting budget`],
-        ['Comparison Idea', `${seed} agency vs in-house team`],
-        ['Lead Magnet Idea', `${seed} audit checklist for 2026`]
+        ['Pillar Page', `The ${new Date().getFullYear()} ${seed} playbook for ${audience}: strategy, channels, costs, timelines, and common mistakes.`],
+        ['MoFu Blog', `How to know if your ${seed} strategy is ready to scale in ${market}: 9 signals, benchmarks, and fixes.`],
+        ['Comparison Page', `${seed} agency vs in-house team: which model works best for ${audience} at the ${funnelStage} stage?`],
+        ['Case Study Angle', `How a ${market} team used ${seed} to turn search demand into qualified pipeline in 90 days.`],
+        ['LinkedIn Post', `The unpopular truth about ${seed}: more content is not the goal, clearer buyer proof is.`],
+        ['Lead Magnet', `${seed} audit checklist for ${audience}, gated behind ${offer}.`],
+        ['FAQ Cluster', `What does ${seed} cost, how long does it take, which KPIs matter, and when should a team hire help?`],
+        ['Internal Links', `Link this idea to /services, /industries, /locations/${market.toLowerCase().replace(/[^a-z0-9]+/g, '-')}, /resources, /work, and the tools directory.`]
       ];
     }
 
@@ -93,6 +106,8 @@ const CalculatorTool: React.FC<Props> = ({ tool }) => {
       ['Estimated Revenue', currency(revenueCreated)]
     ];
   }, [tool, values]);
+
+  const isContentIdeaTool = tool === 'content-idea-generator';
 
   const sharedFields = (
     <>
@@ -125,15 +140,13 @@ const CalculatorTool: React.FC<Props> = ({ tool }) => {
             <Field label="Gross Margin (%)" value={values.margin} onChange={update('margin')} />
           </>
         ) : tool === 'content-idea-generator' ? (
-          <label className="block">
-            <span className="text-xs uppercase tracking-widest text-gray-500">Seed Keyword</span>
-            <textarea
-              value={values.keyword}
-              onChange={update('keyword')}
-              rows={5}
-              className="mt-2 w-full resize-none rounded-lg border border-white/10 bg-black px-4 py-3 text-white outline-none focus:border-teal-400"
-            />
-          </label>
+          <>
+            <TextField label="Seed Keyword or Topic" value={values.keyword} onChange={update('keyword')} />
+            <TextField label="Audience" value={values.audience} onChange={update('audience')} />
+            <TextField label="Funnel Stage" value={values.funnelStage} onChange={update('funnelStage')} />
+            <TextField label="Target Market" value={values.market} onChange={update('market')} />
+            <TextField label="Lead Magnet or Offer" value={values.offer} onChange={update('offer')} />
+          </>
         ) : (
           <>
             <Field label="Monthly Organic Visits" value={values.traffic} onChange={update('traffic')} />
@@ -147,9 +160,9 @@ const CalculatorTool: React.FC<Props> = ({ tool }) => {
         <h2 className="font-display text-3xl mb-6">Estimate</h2>
         <div className="space-y-4">
           {result.map(([label, value]) => (
-            <div key={label} className="flex items-center justify-between border-b border-white/10 pb-4 last:border-0">
+            <div key={label} className={`${isContentIdeaTool ? 'space-y-2' : 'flex items-center justify-between'} border-b border-white/10 pb-4 last:border-0`}>
               <span className="text-gray-400">{label}</span>
-              <span className="font-display text-2xl text-white">{value}</span>
+              <span className={`${isContentIdeaTool ? 'block text-base leading-relaxed' : 'font-display text-2xl'} text-white`}>{value}</span>
             </div>
           ))}
         </div>
@@ -176,6 +189,25 @@ const Field = ({
       value={value}
       onChange={onChange}
       inputMode="decimal"
+      className="mt-2 w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white outline-none focus:border-teal-400"
+    />
+  </label>
+);
+
+const TextField = ({
+  label,
+  value,
+  onChange
+}: {
+  label: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) => (
+  <label className="block">
+    <span className="text-xs uppercase tracking-widest text-gray-500">{label}</span>
+    <input
+      value={value}
+      onChange={onChange}
       className="mt-2 w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white outline-none focus:border-teal-400"
     />
   </label>

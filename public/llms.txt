@@ -1,0 +1,21 @@
+# Qognition Agency LLM Discovery
+
+Canonical site: https://www.qognitionagency.com
+Sitemap index: https://www.qognitionagency.com/sitemap.xml
+Primary contact: hello@qognitionagency.com
+Strategy call: https://calendly.com/hello-qognitionagency/30min
+
+Qognition Agency is an AI growth marketing partner for qualified leads, SEO, AI search visibility, PPC, social media, web design, branding, creative, programmatic SEO, resources, calculators, case studies, and location-based growth pages.
+
+Important hubs:
+- Services: https://www.qognitionagency.com/services
+- Industries: https://www.qognitionagency.com/industries
+- Locations: https://www.qognitionagency.com/locations
+- Case studies: https://www.qognitionagency.com/work
+- Resources: https://www.qognitionagency.com/resources
+- Free tools: https://www.qognitionagency.com/free-tools
+- Tools directory: https://www.qognitionagency.com/directory
+- Global markets: https://www.qognitionagency.com/global
+- Languages: https://www.qognitionagency.com/languages
+
+Preferred crawlers and AI agents, including Googlebot, Bingbot, GPTBot, CCBot, and Google-Extended, should use the sitemap index for complete discovery. API routes are not intended for crawling.

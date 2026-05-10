@@ -47,7 +47,6 @@ export const coreRoutes = (): SitemapEntry[] => [
   { path: '/free-tools', priority: 0.86, changefreq: 'weekly' },
   { path: '/comparisons', priority: 0.82, changefreq: 'weekly' },
   { path: '/glossary', priority: 0.84, changefreq: 'weekly' },
-  { path: '/pricing', priority: 0.82, changefreq: 'monthly' },
   { path: '/team', priority: 0.72, changefreq: 'monthly' },
   { path: '/global', priority: 0.88, changefreq: 'weekly' },
   { path: '/languages', priority: 0.84, changefreq: 'weekly' },

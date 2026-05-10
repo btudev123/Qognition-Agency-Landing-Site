@@ -11,7 +11,7 @@ const About: React.FC = () => {
     <>
       <SEO 
         title="About Qognition | Your Digital Growth Partner"
-        description="Meet Qognition Agency - 120+ experts specializing in SEO, PPC & web development. Learn about our mission to deliver measurable results. Start your journey today!"
+        description="Meet Qognition Agency, an AI growth marketing partner for SEO, PPC, web design, creative, content, and AI search visibility."
         path="/about"
         schemaData={{
           type: "Organization",
@@ -33,10 +33,10 @@ const About: React.FC = () => {
           </motion.h1>
           <div className="text-xl md:text-3xl text-gray-300 leading-relaxed space-y-8">
             <p>
-              Qognition was founded on a simple premise: The old agency model is broken. Slow, bloated, and reactive.
+              Qognition was founded on a simple premise: growth marketing should feel intelligent, creative, measurable, and fast.
             </p>
             <p>
-              We built the anti-agency. A high-velocity collective of data scientists, creative directors, and full-stack engineers embedded directly into your growth stack.
+              We built Qognition as an AI growth marketing partner: strategy, SEO, paid media, content, design, web engineering, analytics, and AI visibility working as one system.
             </p>
           </div>
         </div>
@@ -53,7 +53,7 @@ const About: React.FC = () => {
                 We set out to change that. Our founders, with backgrounds in data science, engineering, and creative marketing, built Qognition as a new kind of agency—one that combines the analytical rigor of a consultancy with the creative excellence of a top-tier agency.
               </p>
               <p>
-                Today, we work with ambitious brands across the globe, from startups looking to establish their digital presence to enterprises seeking to dominate their industries. Our team has grown to over 120 professionals, but our core philosophy remains the same: deliver results that matter.
+                Today, we work with ambitious brands across the globe, from startups building their first acquisition system to established companies expanding into new markets. Our core philosophy remains the same: build beautiful growth systems that create qualified demand and can be measured honestly.
               </p>
             </div>
           </div>

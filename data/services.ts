@@ -35,9 +35,12 @@ export const SERVICES: Service[] = [
         }
     ],
     subServices: [
-        { name: 'Technical SEO', description: 'Crawlability, indexing, and core web vitals optimization. Javascript rendering audits.' },
-        { name: 'Content SEO', description: 'Semantic clustering and authority building via long-form expert content.' },
-        { name: 'Link Acquisition', description: 'High-DR backlink campaigns through digital PR and data journalism.' }
+        { name: 'Technical SEO', slug: 'technical-seo', description: 'Crawlability, indexing, Core Web Vitals, schema, canonicals, and JavaScript rendering audits.' },
+        { name: 'Content Strategy', slug: 'content-strategy', description: 'Buyer-intent topic clusters, editorial calendars, content briefs, refreshes, and internal link systems.' },
+        { name: 'Link Building', slug: 'link-building', description: 'Digital PR, authority assets, editorial outreach, and risk-controlled backlink acquisition.' },
+        { name: 'Local SEO', slug: 'local-seo', description: 'Google Business Profile, city pages, review systems, maps visibility, and local conversion paths.' },
+        { name: 'Programmatic SEO', slug: 'programmatic-seo', description: 'Crawlable service, industry, location, glossary, comparison, and directory page systems.' },
+        { name: 'E-E-A-T SEO', slug: 'eeat-seo', description: 'Author profiles, proof blocks, expert quotes, citations, reviews, and trust architecture for competitive niches.' }
     ],
     process: [
         { title: "Audit & Forensic Analysis", description: "Deep dive into log files, crawl budgets, and JS rendering issues." },
@@ -73,9 +76,12 @@ export const SERVICES: Service[] = [
         }
     ],
     subServices: [
-        { name: 'Strategy & Direction', description: 'Platform-specific content roadmaps and voice definition.' },
-        { name: 'Community Management', description: '24/7 engagement and growth. Crisis management protocols.' },
-        { name: 'Influencer Marketing', description: 'Global creator partnerships and campaign management.' }
+        { name: 'Social Strategy', slug: 'social-strategy', description: 'Platform-specific positioning, content pillars, posting cadence, and KPI systems.' },
+        { name: 'LinkedIn Thought Leadership', slug: 'linkedin-thought-leadership', description: 'Founder-led posts, executive POVs, B2B authority, and sales-support content.' },
+        { name: 'Short-Form Video', slug: 'short-form-video', description: 'Reels, TikTok, Shorts, hooks, scripts, edit direction, and performance feedback loops.' },
+        { name: 'Community Management', slug: 'community-management', description: 'Daily engagement, comment response, reputation handling, and community growth routines.' },
+        { name: 'Influencer Marketing', slug: 'influencer-marketing', description: 'Creator discovery, outreach, briefs, approvals, tracking, and campaign reporting.' },
+        { name: 'Social Analytics', slug: 'social-analytics', description: 'Channel dashboards, content scoring, audience insights, and conversion attribution.' }
     ],
     process: [
         { title: "Persona Development", description: "Identifying exactly who your audience is and where they live online." },
@@ -98,9 +104,12 @@ export const SERVICES: Service[] = [
     icon: 'Brain',
     kpis: ['SGE Visibility', 'Entity Authority', 'LLM Citations'],
     subServices: [
-        { name: 'Entity Optimization', description: 'Strengthening Knowledge Graph presence and schema markup.' },
-        { name: 'SGE Readiness', description: 'Formatting content for AI snapshots and direct answers.' },
-        { name: 'Voice Search', description: 'Conversational query optimization for natural language.' }
+        { name: 'AI Search Visibility', slug: 'ai-search-visibility', description: 'Optimize for ChatGPT, Gemini, Perplexity, AI Overviews, and answer-engine citations.' },
+        { name: 'LLM Optimization', slug: 'llm-optimization', description: 'llm.txt, entity summaries, structured content, and machine-readable source-of-truth pages.' },
+        { name: 'Entity Optimization', slug: 'entity-optimization', description: 'Strengthening Knowledge Graph clarity, schema markup, mentions, and proof consistency.' },
+        { name: 'AEO Strategy', slug: 'answer-engine-optimization', description: 'Direct-answer formatting, FAQ architecture, summaries, and extractable answer blocks.' },
+        { name: 'AI Content Governance', slug: 'ai-content-governance', description: 'Human review workflows, originality checks, evidence rules, and AI content quality controls.' },
+        { name: 'AI Search Monitoring', slug: 'ai-search-monitoring', description: 'Citation tracking, competitor answer audits, prompt demand mapping, and visibility reporting.' }
     ],
     process: [
         { title: "Entity Gap Analysis", description: "Determining missing nodes in your brand's knowledge graph." },
@@ -123,9 +132,12 @@ export const SERVICES: Service[] = [
     icon: 'Code',
     kpis: ['100 PageSpeed', '<1s Load Time', 'Award-Winning UI'],
     subServices: [
-        { name: 'Corporate Sites', description: 'Scalable marketing sites with enterprise-grade security.' },
-        { name: 'E-commerce', description: 'Shopify Plus & Headless Commerce implementations.' },
-        { name: 'WebGL Experiences', description: 'Immersive 3D interactions and scroll-telling.' }
+        { name: 'Next.js SEO', slug: 'nextjs-seo', description: 'App Router architecture, static generation, metadata, schema, sitemaps, and crawl checks.' },
+        { name: 'Conversion Websites', slug: 'conversion-websites', description: 'High-performance marketing sites built around offers, proof, forms, and booked calls.' },
+        { name: 'Landing Pages', slug: 'landing-pages', description: 'Campaign pages with message match, fast load times, proof blocks, and CRM-ready forms.' },
+        { name: 'Headless CMS', slug: 'headless-cms', description: 'Sanity, Contentful, and CMS workflows for publishing SEO pages without developer bottlenecks.' },
+        { name: 'E-commerce Web Design', slug: 'ecommerce-web-design', description: 'Shopify Plus, product storytelling, collection SEO, CRO, and checkout journey improvements.' },
+        { name: 'Web Performance', slug: 'web-performance', description: 'Lighthouse, Core Web Vitals, image delivery, hydration cost, and third-party script governance.' }
     ],
     process: [
         { title: "UX Discovery", description: "Wireframing and user journey mapping." },
@@ -141,6 +153,53 @@ export const SERVICES: Service[] = [
     ]
   },
   {
+    id: 'branding-creative',
+    title: 'Branding & Creative',
+    shortDescription: 'Identity, design systems, campaigns, and creative direction for brands that need to look as sharp as they perform.',
+    fullDescription: 'We turn strategy into a brand system people recognize, trust, and remember. Qognition blends positioning, visual identity, conversion copy, design systems, campaign creative, and AI-assisted production so every touchpoint feels premium and commercially useful.',
+    icon: 'Palette',
+    kpis: ['Clearer Positioning', '+38% CTA Lift', 'Launch-Ready Assets'],
+    expertQuote: {
+        author: 'Richa Sharma',
+        role: 'Creative Director',
+        quote: 'Strong creative is not decoration. It is the fastest way to make a buyer understand why you are different, why they should trust you, and why they should act now.'
+    },
+    deepDive: [
+        {
+            title: 'Positioning Before Pixels',
+            content: 'Creative work starts with the market, not the moodboard. We clarify audience, category, promise, proof, objections, tone, and conversion intent before designing a single asset.'
+        },
+        {
+            title: 'Design Systems That Scale',
+            content: 'A premium brand needs repeatable patterns. We build logo usage, type systems, color rules, landing page sections, social templates, ad modules, and content guidelines that can scale across channels.'
+        },
+        {
+            title: 'Creative That Supports Growth',
+            content: 'Campaign assets are judged by recall, clarity, engagement, click quality, landing page conversion, and sales usefulness. The goal is brand trust that turns into qualified demand.'
+        }
+    ],
+    subServices: [
+        { name: 'Brand Strategy', slug: 'brand-strategy', description: 'Positioning, messaging, category narrative, audience insight, and proof architecture.' },
+        { name: 'Visual Identity', slug: 'visual-identity', description: 'Logo systems, typography, color, layout, iconography, and brand guidelines.' },
+        { name: 'Creative Direction', slug: 'creative-direction', description: 'Campaign concepts, moodboards, content direction, art direction, and launch creative.' },
+        { name: 'Graphic Design', slug: 'graphic-design', description: 'Social assets, ad creatives, pitch visuals, one-pagers, carousels, and lead magnet design.' },
+        { name: 'Motion Design', slug: 'motion-design', description: 'Short-form motion, kinetic typography, product explainers, social cuts, and launch videos.' },
+        { name: 'Conversion Copywriting', slug: 'conversion-copywriting', description: 'Homepage, landing page, ad, email, and sales copy built around action and trust.' }
+    ],
+    process: [
+        { title: 'Positioning Sprint', description: 'Define the audience, promise, proof, category, and messaging hierarchy.' },
+        { title: 'Creative System', description: 'Build the identity, templates, asset rules, and channel-specific creative direction.' },
+        { title: 'Launch and Learn', description: 'Ship assets into ads, SEO pages, social, and sales workflows, then improve based on engagement and conversion data.' }
+    ],
+    techStack: ['Figma', 'Adobe Creative Cloud', 'Canva Enterprise', 'Midjourney', 'Firefly', 'Notion'],
+    relatedIndustries: ['SaaS', 'E-commerce', 'Professional Services'],
+    faqs: [
+        { question: 'Can branding improve lead generation?', answer: 'Yes. Better positioning and creative reduce confusion, increase trust, and make paid, SEO, social, and sales journeys easier to convert.' },
+        { question: 'Do you design full brand systems or only campaign assets?', answer: 'Both. Qognition can build a complete identity system or create campaign-specific assets inside an existing brand.' },
+        ...COMMON_FAQS
+    ]
+  },
+  {
     id: 'ppc',
     title: 'PPC & Performance',
     shortDescription: 'Paid acquisition with high ROAS.',
@@ -148,9 +207,12 @@ export const SERVICES: Service[] = [
     icon: 'Zap',
     kpis: ['-25% CPA', '3.5x ROAS', 'Scale to $1M+ Spend'],
     subServices: [
-        { name: 'Google Ads', description: 'Search, Display, and Shopping campaign management.' },
-        { name: 'Social Ads', description: 'Meta, LinkedIn, TikTok Ads for full-funnel growth.' },
-        { name: 'Retargeting', description: 'Cross-platform dynamic remarketing sequences.' }
+        { name: 'Google Ads Management', slug: 'google-ads-management', description: 'Search, Performance Max, Shopping, lead generation, and ROAS optimization.' },
+        { name: 'Landing Page CRO', slug: 'landing-page-cro', description: 'Message match, proof, forms, speed, offers, and conversion experimentation.' },
+        { name: 'Meta Ads', slug: 'meta-ads', description: 'Facebook and Instagram campaigns with creative testing, retargeting, and funnel reporting.' },
+        { name: 'LinkedIn Ads', slug: 'linkedin-ads', description: 'B2B targeting, ABM campaigns, lead gen forms, thought leadership ads, and pipeline tracking.' },
+        { name: 'Retargeting Systems', slug: 'retargeting-systems', description: 'Cross-platform remarketing journeys based on intent, page depth, CRM stage, and audience quality.' },
+        { name: 'Paid Media Analytics', slug: 'paid-media-analytics', description: 'GA4, Looker, offline conversions, CRM imports, UTMs, and executive ROAS reporting.' }
     ],
     process: [
         { title: "Audit & Opportunity", description: "Analyzing account history to find wasted spend." },

@@ -87,11 +87,11 @@ const CaseStudyDetail: React.FC = () => {
           <div className="md:col-span-4 space-y-12">
             <div className="p-8 border border-white/10 rounded-lg bg-white/5 backdrop-blur-sm sticky top-32">
               <h3 className="font-display text-2xl mb-8">Key Metrics</h3>
-              <div className="space-y-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 gap-4 md:gap-6">
                 {study.stats.map((stat, i) => (
-                  <div key={i} className="border-b border-white/10 pb-6 last:border-0 last:pb-0">
-                    <div className="text-4xl md:text-5xl font-bold text-teal-400 mb-2">{stat.value}</div>
-                    <div className="text-sm uppercase tracking-wider text-gray-400">{stat.label}</div>
+                  <div key={i} className="min-w-0 rounded-xl border border-white/10 bg-black/30 p-4">
+                    <div className="text-3xl lg:text-4xl font-bold text-teal-400 mb-2 break-words">{stat.value}</div>
+                    <div className="text-xs uppercase tracking-wider text-gray-400 leading-relaxed break-words">{stat.label}</div>
                   </div>
                 ))}
               </div>

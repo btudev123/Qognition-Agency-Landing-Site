@@ -114,36 +114,64 @@ export const locationSchema = (location: Location, path: string) => ({
 
 export const directoryProductSchema = (product: DirectoryProduct, path: string) => ({
   '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: product.name,
-  applicationCategory: product.category,
-  operatingSystem: 'Web',
-  description: product.shortDescription,
-  url: absoluteUrl(path),
-  offers: {
-    '@type': 'Offer',
-    price: product.pricing === 'Free' || product.pricing === 'Open Source' ? '0' : undefined,
-    priceCurrency: 'USD',
-    category: product.pricing
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: product.rating,
-    ratingCount: product.votesCount || 25
-  }
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      name: product.name,
+      applicationCategory: product.category,
+      operatingSystem: 'Web',
+      description: product.shortDescription,
+      url: absoluteUrl(path),
+      offers: {
+        '@type': 'Offer',
+        price: product.pricing === 'Free' || product.pricing === 'Open Source' ? '0' : undefined,
+        priceCurrency: 'USD',
+        category: product.pricing
+      },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: product.rating,
+        ratingCount: product.votesCount || 25
+      }
+    },
+    {
+      '@type': 'Product',
+      name: product.name,
+      description: product.shortDescription,
+      category: product.category,
+      brand: {
+        '@type': 'Brand',
+        name: product.name
+      },
+      review: {
+        '@type': 'Review',
+        author: {
+          '@type': 'Organization',
+          name: SITE_NAME
+        },
+        reviewBody: product.agencyVerdict,
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: product.rating,
+          bestRating: 5
+        }
+      },
+      url: absoluteUrl(path)
+    }
+  ]
 });
 
 export const getCoreMetadata = (path: string): Metadata => {
   const pages: Record<string, { title: string; description: string }> = {
     '/': {
-      title: 'Qognition | Future-Ready Digital Marketing Agency',
+      title: 'Qognition | AI Growth Marketing Partner',
       description:
-        "Scale your business with Qognition's ROI-focused digital marketing. Expert SEO, PPC, social media and web development."
+        "Scale qualified leads with Qognition's AI growth marketing across SEO, AI search visibility, PPC, SMM, web design, branding, and creative."
     },
     '/services': {
-      title: 'Digital Marketing Services | SEO, PPC & Web Development',
+      title: 'AI Growth Marketing Services | SEO, PPC, AI SEO & Web Design',
       description:
-        'Expert SEO, PPC, social media marketing and web development services. Drive growth with data-driven strategies.'
+        'SEO, SMM, AI SEO, web design, PPC, branding, and creative services for qualified leads and measurable revenue.'
     },
     '/industries': {
       title: 'Industries We Serve | Expert Digital Marketing',

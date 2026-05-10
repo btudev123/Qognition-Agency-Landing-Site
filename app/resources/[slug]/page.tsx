@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import SchemaScript from '../../SchemaScript';
 import HubSpotLeadForm from '../../../components/HubSpotLeadForm';
-import { RESOURCES } from '../../../data/seoExpansion';
+import { FREE_TOOLS, RESOURCES } from '../../../data/seoExpansion';
+import { SERVICES } from '../../../data/services';
 import { breadcrumbSchema, metadataFor, SITE_NAME, SITE_URL } from '../../../lib/seo';
 
 export const dynamicParams = false;
@@ -51,6 +53,17 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <div className="text-xs uppercase tracking-widest text-teal-400 mb-6">{resource.format} | {resource.readingTime}</div>
             <h1 className="font-display text-5xl md:text-8xl leading-none mb-8">{resource.title}</h1>
             <p className="text-xl md:text-2xl text-gray-300 leading-relaxed mb-10">{resource.description}</p>
+            <div className="mb-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                'TL;DR: this resource is designed to help a buyer make a clearer marketing decision before a sales call.',
+                'Use it with your analytics, CRM, search console, ad account, and sales feedback for the strongest result.',
+                'The page links into services, tools, and related resources so humans and AI crawlers can follow the topic cluster.'
+              ].map((item) => (
+                <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
+                  {item}
+                </div>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-3 mb-14">
               {resource.highlights.map((item) => (
                 <span key={item} className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-gray-300">
@@ -66,6 +79,21 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 </section>
               ))}
             </div>
+            <section className="mt-14 rounded-2xl border border-white/10 bg-white/[0.03] p-8">
+              <h2 className="font-display text-3xl md:text-4xl mb-5">Next Pages to Read</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {[
+                  ...SERVICES.slice(0, 3).map((service) => ({ label: service.title, href: `/services/${service.id}` })),
+                  ...FREE_TOOLS.slice(0, 2).map((tool) => ({ label: tool.title, href: `/free-tools/${tool.slug}` })),
+                  ...RESOURCES.filter((item) => item.slug !== resource.slug).slice(0, 2).map((item) => ({ label: item.title, href: `/resources/${item.slug}` })),
+                  { label: 'Growth Stack Directory', href: '/directory' }
+                ].map((item) => (
+                  <Link key={item.href} href={item.href} className="rounded-lg border border-white/10 bg-black/40 p-4 text-sm text-gray-300 hover:border-teal-400/50 hover:text-white">
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </section>
           </div>
           <aside className="lg:col-span-4">
             <div className="sticky top-32">

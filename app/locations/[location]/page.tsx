@@ -29,6 +29,20 @@ export default async function Page({ params }: { params: Promise<{ location: str
     {
       question: `Can you run SEO and PPC campaigns for ${location.name}?`,
       answer: `Yes. We build local search, paid media, landing page, analytics, and AI search visibility programs for companies targeting ${location.name}.`
+    },
+    {
+      question: `What industries do you prioritize in ${location.name}?`,
+      answer: `We prioritize ${location.marketFocus.join(', ')} in ${location.name}, plus B2B, professional services, ecommerce, healthcare, and local services when there is clear search demand.`
+    },
+    {
+      question: `Is this ${location.name} page useful for AI search engines?`,
+      answer:
+        'Yes. The page includes a concise summary, semantic sections, internal links, FAQ schema, location schema, and natural-language answers that AI systems can parse.'
+    },
+    {
+      question: `How fast can campaigns launch in ${location.name}?`,
+      answer:
+        'Paid media and landing page tests can move first, while SEO, resources, directory links, and AI search visibility compound as the page cluster is indexed.'
     }
   ];
 

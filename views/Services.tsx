@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '../lib/routerCompat';
-import { ArrowRight, Search, Globe, Brain, Code, Zap } from 'lucide-react';
+import { ArrowRight, Search, Globe, Brain, Code, Zap, Palette } from 'lucide-react';
 import { CALENDLY_LINK, CONTACT_MAILTO, SERVICES } from '../constants';
 import SEO from '../components/SEO';
 
@@ -12,14 +12,18 @@ const IconMap: { [key: string]: React.ElementType } = {
   'Brain': Brain,
   'Code': Code,
   'Zap': Zap,
+  'Palette': Palette,
 };
+
+const subServiceSlug = (sub: { name: string; slug?: string }) =>
+  sub.slug || sub.name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 const Services: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Digital Marketing Services | SEO, PPC & Web Development"
-        description="Expert SEO, PPC, social media marketing & web development services. Drive growth with data-driven strategies. Get your free marketing audit today!"
+        title="AI Growth Marketing Services | SEO, PPC, AI SEO & Web Design"
+        description="AI growth marketing services across SEO, SMM, AI SEO, web design, PPC, and branding creative. Build qualified leads, search visibility, and measurable revenue."
         path="/services"
         schemaData={{
           type: "Service",
@@ -39,17 +43,17 @@ const Services: React.FC = () => {
           </motion.div>
           <h1 className="font-display text-6xl md:text-8xl mb-8">Our Expertise</h1>
           <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
-            A comprehensive suite of digital growth services, engineered for enterprise scale and startup agility.
+            An AI growth marketing partner for companies that need qualified leads, stronger search visibility, better creative, and measurable revenue systems.
           </p>
         </header>
 
         {/* Introduction Content */}
         <div className="mb-20 max-w-4xl mx-auto text-center">
           <p className="text-lg text-gray-300 leading-relaxed mb-8">
-            In today's digital landscape, having a strong online presence is essential for business success. At Qognition Agency, we offer end-to-end digital marketing solutions designed to help your brand reach, engage, and convert your target audience. Our team of experts combines years of industry experience with cutting-edge technology to deliver results that matter.
+            Qognition builds the growth system around your buyer journey: technical SEO, AI search visibility, paid acquisition, social distribution, conversion websites, and brand creative all connected to measurable pipeline.
           </p>
           <p className="text-lg text-gray-300 leading-relaxed">
-            Whether you're looking to improve your search engine rankings, launch targeted advertising campaigns, build a new website, or establish your brand on social media, we have the expertise to help you achieve your goals. <Link to={CONTACT_MAILTO} className="text-teal-400 hover:underline">Contact us today</Link> for a free consultation and discover how we can transform your digital presence.
+            Whether you need to rank in Google, appear in AI answers, enter a new location, improve paid media efficiency, or turn a better brand into booked calls, our service pages below connect the strategy, sub-services, proof, tools, and next steps. <Link to={CONTACT_MAILTO} className="text-teal-400 hover:underline">Email us</Link> or book a strategy call when you are ready.
           </p>
         </div>
 
@@ -58,8 +62,8 @@ const Services: React.FC = () => {
                 const IconComponent = IconMap[service.icon] || Search;
                 
                 return (
-                  <Link to={`/services/${service.id}`} key={service.id} className="group block h-full">
-                      <motion.div 
+                  <motion.article
+                          key={service.id}
                           initial={{ opacity: 0, y: 20 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           whileHover="hover"
@@ -68,7 +72,7 @@ const Services: React.FC = () => {
                           variants={{
                             hover: { y: -8 }
                           }}
-                          className="h-full p-8 border border-white/10 rounded-xl bg-white/5 relative overflow-hidden transition-colors duration-500 hover:border-teal-400/40"
+                          className="group h-full p-8 border border-white/10 rounded-xl bg-white/5 relative overflow-hidden transition-colors duration-500 hover:border-teal-400/40"
                       >
                           <motion.div 
                             variants={{
@@ -104,21 +108,29 @@ const Services: React.FC = () => {
                           </div>
                           
                           <div className="relative z-10">
-                              <h3 className="font-display text-3xl mb-4 group-hover:text-teal-400 transition-colors">{service.title}</h3>
+                              <h2 className="font-display text-3xl mb-4 group-hover:text-teal-400 transition-colors">
+                                <Link to={`/services/${service.id}`}>{service.title.replace('Web Development', 'Web Design')}</Link>
+                              </h2>
                               <p className="text-gray-400 text-base leading-relaxed mb-8 group-hover:text-gray-300 transition-colors">
                                   {service.shortDescription}
                               </p>
                               
                               <div className="flex flex-wrap gap-2">
-                                  {service.subServices.slice(0, 3).map((sub, i) => (
-                                      <span key={i} className="text-xs px-2 py-1 bg-black/50 border border-white/10 rounded text-gray-500 group-hover:border-teal-400/30 group-hover:text-teal-200 transition-colors">
+                                  {service.subServices.slice(0, 6).map((sub, i) => (
+                                      <Link
+                                        key={i}
+                                        to={`/services/${service.id}/${subServiceSlug(sub)}`}
+                                        className="text-xs px-2 py-1 bg-black/50 border border-white/10 rounded text-gray-400 hover:border-teal-400/60 hover:text-teal-200 transition-colors"
+                                      >
                                           {sub.name}
-                                      </span>
+                                      </Link>
                                   ))}
                               </div>
+                              <Link to={`/services/${service.id}`} className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-teal-400 hover:text-white">
+                                View service <ArrowRight size={14} />
+                              </Link>
                           </div>
-                      </motion.div>
-                  </Link>
+                      </motion.article>
                 );
             })}
         </div>
@@ -128,7 +140,7 @@ const Services: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl mb-6">Why Choose Our Services?</h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              We don't just provide services - we deliver results that impact your bottom line.
+              We connect each channel to pipeline, attribution, search visibility, and the conversion actions your team can actually use.
             </p>
           </div>
           
@@ -139,9 +151,9 @@ const Services: React.FC = () => {
               <Link to="/work" className="text-teal-400 hover:underline">View our case studies →</Link>
             </div>
             <div className="p-8 border border-white/10 rounded-xl bg-white/5">
-              <h3 className="font-display text-2xl mb-4 text-teal-400">Dedicated Team</h3>
-              <p className="text-gray-400 mb-4">When you work with Qognition, you get a dedicated team of experts passionate about your success. Our account managers, strategists, and specialists work collaboratively to ensure your digital marketing efforts align with your business objectives.</p>
-              <Link to="/about" className="text-teal-400 hover:underline">Meet our team →</Link>
+              <h3 className="font-display text-2xl mb-4 text-teal-400">AI Growth Partner</h3>
+              <p className="text-gray-400 mb-4">When you work with Qognition, you get strategy, engineering, SEO, content, creative, and paid media leadership focused on the same revenue model instead of disconnected channel work.</p>
+              <Link to="/team" className="text-teal-400 hover:underline">Meet our team →</Link>
             </div>
             <div className="p-8 border border-white/10 rounded-xl bg-white/5">
               <h3 className="font-display text-2xl mb-4 text-teal-400">Transparent Reporting</h3>
@@ -161,7 +173,7 @@ const Services: React.FC = () => {
           <p className="text-xl text-gray-300 mb-8">Ready to transform your digital presence?</p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
-              Get Free Consultation
+              Book Strategy Call
             </a>
             <Link to="/work" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
               View Our Work

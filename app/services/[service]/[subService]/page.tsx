@@ -44,6 +44,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
   if (!page || !parent) notFound();
 
   const path = `/services/${page.serviceId}/${page.slug}`;
+  const siblingPages = SERVICE_SUB_PAGES.filter((item) => item.serviceId === page.serviceId && item.slug !== page.slug).slice(0, 6);
 
   return (
     <>
@@ -64,6 +65,18 @@ export default async function Page({ params }: { params: Promise<{ service: stri
           </Link>
           <h1 className="font-display text-5xl md:text-8xl leading-none mt-6 mb-8">{page.h1}</h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl leading-relaxed">{page.intro}</p>
+        </section>
+
+        <section className="max-w-7xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            `TL;DR: ${page.title} should connect strategy, execution, tracking, and proof to a measurable lead or revenue outcome.`,
+            `Qognition builds this as part of a wider ${parent.title} system, not as an isolated tactic or thin SEO page.`,
+            `The page includes service schema, FAQ schema, breadcrumbs, related links, and crawlable copy before JavaScript runs.`
+          ].map((item) => (
+            <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
+              {item}
+            </div>
+          ))}
         </section>
 
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 mt-20">
@@ -114,6 +127,22 @@ export default async function Page({ params }: { params: Promise<{ service: stri
             </div>
           </div>
         </section>
+
+        {siblingPages.length > 0 && (
+          <section className="max-w-7xl mx-auto mt-20 rounded-2xl border border-white/10 bg-white/[0.03] p-8">
+            <h2 className="font-display text-4xl mb-6">More {parent.title} Sub-Services</h2>
+            <p className="text-gray-300 leading-relaxed mb-6">
+              Internal links help buyers and crawlers understand how this service fits inside the wider AI growth marketing system.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {siblingPages.map((sibling) => (
+                <Link key={sibling.slug} href={`/services/${sibling.serviceId}/${sibling.slug}`} className="rounded-lg border border-white/10 bg-black/40 p-4 text-sm text-gray-300 hover:border-teal-400/50 hover:text-white">
+                  {sibling.title}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
     </>
   );

@@ -21,11 +21,11 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Qognition Agency | Future-Ready Digital Marketing Solutions',
+    default: 'Qognition Agency | AI Growth Marketing Partner',
     template: '%s | Qognition Agency'
   },
   description:
-    'Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions.',
+    'AI growth marketing partner for qualified leads, SEO, AI search visibility, PPC, social media, web design, branding, and creative systems.',
   alternates: {
     canonical: '/'
   },
@@ -33,16 +33,16 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Qognition Agency',
     url: SITE_URL,
-    title: 'Qognition Agency | Future-Ready Digital Marketing Solutions',
+    title: 'Qognition Agency | AI Growth Marketing Partner',
     description:
-      'Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions.',
+      'AI growth marketing partner for qualified leads, SEO, AI search visibility, PPC, social media, web design, branding, and creative systems.',
     images: ['/default-og.svg']
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Qognition Agency | Future-Ready Digital Marketing Solutions',
+    title: 'Qognition Agency | AI Growth Marketing Partner',
     description:
-      'Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions.',
+      'AI growth marketing partner for qualified leads, SEO, AI search visibility, PPC, social media, web design, branding, and creative systems.',
     images: ['/default-og.svg']
   },
   robots: {
@@ -74,9 +74,9 @@ const organizationSchema = {
   url: SITE_URL,
   logo: `${SITE_URL}/favicon.png`,
   description:
-    'Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions.',
+    'AI growth marketing partner for qualified leads, SEO, AI search visibility, PPC, social media, web design, branding, and creative systems.',
   areaServed: ['United States', 'Canada', 'United Kingdom', 'Europe', 'GCC', 'India', 'Australia', 'Global'],
-  serviceType: ['SEO Services', 'PPC Management', 'Social Media Marketing', 'Web Development', 'AI SEO'],
+  serviceType: ['SEO Services', 'PPC Management', 'Social Media Marketing', 'Web Design', 'AI SEO', 'Branding and Creative'],
   sameAs: [
     'https://www.linkedin.com/company/qognition-tech',
     'https://twitter.com/qognition_tech',
@@ -88,7 +88,7 @@ const organizationSchema = {
     '@type': 'ContactPoint',
     email: 'hello@qognitionagency.com',
     contactType: 'sales',
-    availableLanguage: ['English']
+    availableLanguage: ['English', 'Arabic', 'French', 'Spanish', 'Mandarin Chinese', 'Portuguese', 'Russian', 'Japanese']
   }
 };
 

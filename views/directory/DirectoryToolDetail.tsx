@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from '../../lib/routerCompat';
 import { ArrowLeft, ExternalLink, Star, ArrowRight, ShieldCheck, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { DIRECTORY_PRODUCTS, TOOLS, SERVICES } from '../../constants';
+import { DIRECTORY_PRODUCTS, TOOLS, SERVICES, FREE_TOOLS, RESOURCES, INDUSTRIES } from '../../constants';
 import MagneticButton from '../../components/MagneticButton';
 import SEO from '../../components/SEO';
 import { fetchToolDetails, fetchToolsByTopic } from '../../lib/productHunt';
@@ -192,6 +192,21 @@ const DirectoryToolDetail: React.FC = () => {
                     </section>
 
                     <section>
+                        <h2 className="font-display text-3xl mb-6">Key Takeaways</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {[
+                                `${tool.name} is most useful when it solves a real workflow constraint, not when it is added as another unused subscription.`,
+                                `For SEO and AI discovery, pair ${tool.name} with documented processes, human review, analytics, and clear ownership.`,
+                                `Before buying, compare integrations, reporting quality, data exports, team permissions, pricing at scale, and alternatives.`
+                            ].map((item) => (
+                                <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
+                                    {item}
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section>
                         <h2 className="font-display text-3xl mb-6">Overview</h2>
                         <p className="text-gray-400 text-lg leading-relaxed whitespace-pre-wrap">
                             {tool.fullDescription}
@@ -273,6 +288,23 @@ const DirectoryToolDetail: React.FC = () => {
                         </section>
                     )}
 
+                    <section>
+                        <h2 className="font-display text-3xl mb-6">How to Evaluate {tool.name}</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            {[
+                                ['Workflow fit', `Does ${tool.name} remove a bottleneck in research, production, publishing, reporting, sales handoff, or conversion tracking?`],
+                                ['Data quality', 'Can your team export, audit, and explain the data it creates, or does it become another black box?'],
+                                ['Team adoption', 'Will the person who owns the workflow use it weekly, and is there a simple operating procedure for handoff?'],
+                                ['SEO and AI value', 'Does it help you publish clearer, more useful, more structured content, or only generate more volume?']
+                            ].map(([title, copy]) => (
+                                <div key={title} className="rounded-xl border border-white/10 bg-white/[0.03] p-5">
+                                    <h3 className="font-display text-xl mb-3">{title}</h3>
+                                    <p className="text-sm text-gray-400 leading-relaxed">{copy}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
                     {directoryTool.seoNotes && (
                         <section className="border-l-2 border-teal-400 pl-6">
                             <h2 className="font-display text-3xl mb-4">SEO and AI Search Notes</h2>
@@ -306,6 +338,28 @@ const DirectoryToolDetail: React.FC = () => {
                             </div>
                         </section>
                     )}
+
+                    <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-8">
+                        <h2 className="font-display text-3xl mb-6">Related Qognition Pages</h2>
+                        <p className="text-gray-400 leading-relaxed mb-6">
+                            Internal links help users and crawlers connect this tool profile to the wider growth system: services, industries,
+                            resources, calculators, and implementation pages.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {[
+                                ...(relatedService ? [{ label: `${relatedService.title} Services`, path: `/services/${relatedService.id}` }] : []),
+                                ...INDUSTRIES.slice(0, 2).map((industry) => ({ label: `${industry.name} Marketing`, path: `/industries/${industry.id}` })),
+                                ...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, path: `/resources/${resource.slug}` })),
+                                ...FREE_TOOLS.slice(0, 2).map((freeTool) => ({ label: freeTool.title, path: `/free-tools/${freeTool.slug}` })),
+                                { label: 'Growth Stack Directory', path: '/directory' },
+                                { label: 'Book a Strategy Call', path: 'https://calendly.com/hello-qognitionagency/30min' }
+                            ].map((item) => (
+                                <Link key={item.path} to={item.path} className="rounded-lg border border-white/10 bg-black/40 p-4 text-sm text-gray-300 hover:border-teal-400/50 hover:text-white">
+                                    {item.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
 
                     <section>
                         <h2 className="font-display text-3xl mb-6">Tags</h2>
