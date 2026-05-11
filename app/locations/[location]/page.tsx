@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ location: str
     {
       question: `Does Qognition have an office in ${location.name}?`,
       answer:
-        'This is a service-area page. We only claim physical offices on hub pages where that is true, while this page focuses on marketing coverage and local demand.'
+        `Qognition supports companies targeting ${location.name} without pretending to have a local office where one does not exist. The focus is market coverage, demand generation, and measurable leads.`
     },
     {
       question: `Can you run SEO and PPC campaigns for ${location.name}?`,
@@ -37,12 +37,12 @@ export default async function Page({ params }: { params: Promise<{ location: str
     {
       question: `Is this ${location.name} page useful for AI search engines?`,
       answer:
-        'Yes. The page includes a concise summary, semantic sections, internal links, FAQ schema, location schema, and natural-language answers that AI systems can parse.'
+        'Yes. The page includes concise summaries, useful sections, internal links, FAQ schema, location schema, and natural-language answers that search and AI systems can understand.'
     },
     {
       question: `How fast can campaigns launch in ${location.name}?`,
       answer:
-        'Paid media and landing page tests can move first, while SEO, resources, directory links, and AI search visibility compound as the page cluster is indexed.'
+        'Paid media and landing page tests can move first, while SEO, resources, proof assets, and AI search visibility compound as the wider site earns visibility.'
     }
   ];
 

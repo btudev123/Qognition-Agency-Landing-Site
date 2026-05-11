@@ -31,11 +31,11 @@ export default async function Page({ params }: { params: Promise<{ location: str
     {
       question: `Is this ${service.title} page locally indexed for ${location.name}?`,
       answer:
-        'Yes. The page is statically rendered with a canonical URL, metadata, schema, and sitemap inclusion for Search Console discovery.'
+        'Yes. The page is statically rendered with useful content, a canonical URL, metadata, schema, and sitemap inclusion for search discovery.'
     },
     {
       question: `Do you claim a physical ${location.name} office here?`,
-      answer: 'No. This page describes service-area coverage and avoids false office or address claims.'
+      answer: `No. This page explains how Qognition supports companies targeting ${location.name}; we only claim a physical office where one exists.`
     },
     {
       question: `What makes ${service.title} different in ${location.name}?`,
@@ -44,12 +44,12 @@ export default async function Page({ params }: { params: Promise<{ location: str
     {
       question: `Which pages should link to this ${service.title} in ${location.name} page?`,
       answer:
-        'The strongest internal links come from the service hub, location hub, relevant industry pages, case studies, free tools, resources, blog posts, and directory pages.'
+        'The strongest internal links come from the service hub, location hub, relevant industry pages, case studies, free tools, resources, blog posts, and helpful directory pages.'
     },
     {
       question: `Can this create leads quickly?`,
       answer:
-        'Yes, especially when paid search, landing pages, and tracking launch first. SEO and AI-search visibility usually compound as the supporting content cluster grows.'
+        'Yes, especially when paid search, landing pages, and tracking launch first. SEO and AI-search visibility usually compound as supporting content, proof, and internal links improve.'
     }
   ];
 

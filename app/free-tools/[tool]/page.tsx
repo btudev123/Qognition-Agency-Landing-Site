@@ -69,7 +69,7 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
         </section>
         <section className="max-w-7xl mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            `TL;DR: use this tool to frame the business case before you spend budget or brief a team.`,
+            `Quick summary: use this tool to frame the business case before you spend budget or brief a team.`,
             `The output is directional, so pair it with CRM, analytics, search console, and margin data before making final budget calls.`,
             `Each result links back into Qognition service, industry, resource, and case-study pages so the next step is clear.`
           ].map((item) => (

@@ -34,7 +34,7 @@ export default function Page() {
 
         <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            'TL;DR: each industry page maps pain points, verticals, services, case studies, FAQs, and internal links into one crawlable cluster.',
+            'Quick summary: each industry page maps pain points, verticals, services, case studies, FAQs, and internal links into one useful decision cluster.',
             'We focus on qualified demand, not vanity traffic, so the content speaks to founders, CMOs, operators, and revenue teams.',
             'Industry pages connect to services, sub-services, locations, tools, resources, and case studies for Google, Bing, and AI discovery.'
           ].map((item) => (

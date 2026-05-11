@@ -182,7 +182,7 @@ const buildGeneratedStudy = (raw: (typeof blueprints)[number], index: number): C
       {
         title: 'Execution Model',
         content:
-          'The work was delivered in focused sprints. Technical fixes removed friction for crawlers and users, content updates aligned pages with buyer language, and conversion improvements made the next step obvious. Each sprint had a measurable owner, a quality bar, and a reporting view so momentum did not disappear into disconnected tasks.'
+          'The work was delivered in focused sprints. Technical fixes removed friction for search engines and users, content updates aligned pages with buyer language, and conversion improvements made the next step obvious. Each sprint had a measurable owner, a quality bar, and a reporting view so momentum did not disappear into disconnected tasks.'
       },
       {
         title: 'Measurement and Learning',

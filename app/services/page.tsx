@@ -48,8 +48,8 @@ export default function Page() {
 
         <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            'TL;DR: we combine search, paid media, creative, web performance, and AI visibility into one growth operating system.',
-            'Each service hub below links to six focused sub-services with crawlable copy, FAQs, schema, and internal links.',
+            'Quick summary: we combine search, paid media, creative, web performance, and AI visibility into one growth operating system.',
+            'Each service hub below links to six focused sub-services with useful copy, FAQs, schema, and internal links.',
             'Book a strategy call when you want the shortest path from visibility to qualified opportunities.'
           ].map((item) => (
             <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
@@ -63,7 +63,7 @@ export default function Page() {
             Your buyers do not move through one channel. They search Google, compare agencies, read case studies, ask AI tools for options, check LinkedIn, and judge your website before they speak to sales. Qognition builds the connected system around that journey.
           </p>
           <p className="text-lg text-gray-300 leading-relaxed">
-            Use this page as the map: each service connects to sub-service pages, location pages, industry pages, case studies, resources, tools, and directory content so humans and crawlers can follow the same logic. <a href={CONTACT_MAILTO} className="text-teal-400 hover:underline">Email hello@qognitionagency.com</a> or <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">book a strategy call</a>.
+            Use this page as the map: each service connects to sub-service pages, location pages, industry pages, case studies, resources, tools, and directory content so buyers can compare options and choose the right next step. <a href={CONTACT_MAILTO} className="text-teal-400 hover:underline">Email hello@qognitionagency.com</a> or <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">book a strategy call</a>.
           </p>
         </section>
 

@@ -7,7 +7,7 @@ export const dynamic = 'force-static';
 
 export const metadata = metadataFor({
   title: 'Digital Marketing Glossary | 300+ SEO, AI and Growth Terms',
-  description: 'A crawlable glossary of SEO, AI search, PPC, analytics, content, local SEO, and lead generation terms.',
+  description: 'A useful glossary of SEO, AI search, PPC, analytics, content, local SEO, and lead generation terms.',
   path: '/glossary'
 });
 

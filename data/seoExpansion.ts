@@ -101,7 +101,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     relatedLinks: [
       { label: 'Content Idea Generator', href: '/free-tools/content-idea-generator' },
       { label: 'Digital Marketing Glossary', href: '/glossary' },
-      { label: 'Programmatic SEO', href: '/glossary/programmatic-seo' }
+      { label: 'Scalable SEO Pages', href: '/glossary/programmatic-seo' }
     ]
   },
   {
@@ -145,7 +145,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     h1: 'AI Search Visibility for LLMs, AI Overviews, and Answer Engines',
     intro:
       'Search discovery now happens across Google, AI Overviews, ChatGPT, Gemini, Perplexity, and vertical answer engines. We help your brand become easier to cite, summarize, and trust.',
-    deliverables: ['Entity audit', 'LLM citation map', 'Answer-ready content briefs', 'AI crawler files and schema'],
+    deliverables: ['Entity audit', 'LLM citation map', 'Answer-ready content briefs', 'AI discovery files and schema'],
     sections: [
       {
         title: 'Entity and Evidence Layer',
@@ -174,7 +174,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     serviceId: 'ai-seo',
     slug: 'llm-optimization',
     title: 'LLM Optimization Services',
-    description: 'LLM discoverability, entity feeds, llm.txt, AI crawler readiness, and answer engine optimization.',
+    description: 'LLM discoverability, entity feeds, llm.txt, AI discovery readiness, and answer engine optimization.',
     h1: 'LLM Optimization for Discoverable Brand Knowledge',
     intro:
       'We organize your website so large language models can understand your services, markets, proof, expertise, and preferred source pages.',
@@ -183,7 +183,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
       {
         title: 'Machine-Readable Positioning',
         content:
-          'We create concise, accurate, crawlable summaries of your services, markets, leadership, case studies, pricing guidance, and resources.'
+          'We create concise, accurate summaries of your services, markets, leadership, case studies, pricing guidance, and resources.'
       },
       {
         title: 'Prompt Demand Mapping',
@@ -273,16 +273,16 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     serviceId: 'web-development',
     slug: 'nextjs-seo',
     title: 'Next.js SEO Development Services',
-    description: 'Next.js App Router SEO, static generation, schema, sitemaps, performance, and crawlable programmatic pages.',
+    description: 'Next.js App Router SEO, static generation, schema, sitemaps, performance, and scalable landing page architecture.',
     h1: 'Next.js SEO Development for Crawlable Growth Sites',
     intro:
-      'We build Next.js websites that are fast, indexable, structured, and ready for programmatic SEO without relying on client-side rendering for core content.',
+      'We build Next.js websites that are fast, indexable, structured, and ready for scalable SEO pages without relying on client-side rendering for core content.',
     deliverables: ['App Router architecture', 'Static params and metadata', 'Sitemap segmentation', 'Performance optimization'],
     sections: [
       {
         title: 'Server-First SEO',
         content:
-          'Important titles, descriptions, canonicals, H1s, body content, links, and JSON-LD are rendered before JavaScript so crawlers receive the page immediately.'
+          'Important titles, descriptions, canonicals, H1s, body content, links, and JSON-LD are rendered before JavaScript so search engines can understand the page immediately.'
       },
       {
         title: 'Programmatic Route Design',
@@ -320,7 +320,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
       {
         title: 'Design Without SEO Tradeoffs',
         content:
-          'The site keeps motion and brand polish, but not at the expense of readable content, crawlable links, mobile usability, or performance.'
+          'The site keeps motion and brand polish, but not at the expense of readable content, clear links, mobile usability, or performance.'
       },
       {
         title: 'Launch and Iteration',
@@ -809,7 +809,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     name: 'Manish Kunwar',
     role: 'CTO',
     focus: 'Next.js systems, automation, analytics, AI infrastructure',
-    bio: 'Manish owns the technical architecture behind crawlable Next.js sites, programmatic SEO systems, automation workflows, analytics, and the engineering layer that keeps growth measurable.'
+    bio: 'Manish owns the technical architecture behind fast Next.js sites, scalable SEO systems, automation workflows, analytics, and the engineering layer that keeps growth measurable.'
   },
   {
     slug: 'nimesh-shakya',
@@ -864,7 +864,7 @@ export const PRICING_PACKAGES = [
   {
     name: 'Enterprise Authority',
     price: 'Custom',
-    bestFor: 'Multi-market teams that need AI search, programmatic SEO, content operations, and executive reporting.',
-    includes: ['Programmatic SEO architecture', 'AI search visibility', 'Digital PR assets', 'Executive dashboards']
+    bestFor: 'Multi-market teams that need AI search, scalable SEO pages, content operations, and executive reporting.',
+    includes: ['Scalable SEO architecture', 'AI search visibility', 'Digital PR assets', 'Executive dashboards']
   }
 ];

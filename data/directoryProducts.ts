@@ -15,7 +15,7 @@ const PRODUCT_PROFILES = [
   ['ai-content-workflows', 'AI content workflows', 'teams building search-ready content systems'],
   ['seo-automation', 'SEO automation', 'growth teams automating technical and content SEO'],
   ['local-seo', 'local SEO', 'service businesses competing in local markets'],
-  ['programmatic-seo', 'programmatic SEO', 'companies launching scalable landing page systems'],
+  ['scalable-seo-pages', 'scalable SEO pages', 'companies launching useful landing page systems'],
   ['conversion-rate-optimization', 'conversion rate optimization', 'teams improving landing page performance'],
   ['b2b-lead-generation', 'B2B lead generation', 'sales teams building predictable pipeline'],
   ['saas-growth', 'SaaS growth', 'software teams scaling qualified demos'],
@@ -115,7 +115,7 @@ const buildProduct = (tool: Tool, profile: (typeof PRODUCT_PROFILES)[number]): D
       `Review quality weekly and retire workflows that do not create pipeline or visibility.`
     ],
     workflowExample: `A practical ${profileName} workflow starts with a weekly brief, uses ${tool.name} to accelerate research or production, pushes outputs into a review queue, and measures the impact in search visibility, qualified leads, or campaign efficiency.`,
-    seoNotes: `For SEO teams, ${tool.name} should support original content, better internal links, cleaner workflows, or stronger proof. Avoid publishing generic AI output or near-duplicate programmatic pages just because the tool makes them easy to produce.`,
+    seoNotes: `For SEO teams, ${tool.name} should support original content, better internal links, cleaner workflows, or stronger proof. Avoid publishing generic AI output or near-duplicate pages just because the tool makes them easy to produce.`,
     faqs: [
       {
         question: `Is ${tool.name} good for ${profileName}?`,

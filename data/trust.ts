@@ -37,7 +37,7 @@ export const TESTIMONIALS: Testimonial[] = [
     proof: "Founder testimonial"
   },
   {
-    quote: "The technical SEO sprint finally made our site crawlable and gave our sales team pages they were proud to send to prospects.",
+    quote: "The technical SEO sprint finally made our site discoverable and gave our sales team pages they were proud to send to prospects.",
     author: "Aarav Mehta",
     role: "VP Growth",
     company: "CloudPilot",

@@ -201,7 +201,7 @@ export const getCoreMetadata = (path: string): Metadata => {
     '/blog': {
       title: 'Blog | Qognition Agency',
       description:
-        'Insights on AI marketing, SEO strategy, programmatic SEO, local search, and digital transformation.'
+        'Insights on AI marketing, SEO strategy, local search, performance marketing, web design, and digital transformation.'
     },
     '/directory': {
       title: 'Growth Stack Directory | Qognition Agency',
@@ -298,8 +298,8 @@ export const getServiceIndustryMetadata = (serviceSlug: string, industrySlug: st
   const industry = INDUSTRIES.find((item) => item.id === industrySlug);
   if (!service || !industry) {
     return metadataFor({
-      title: 'Programmatic Page Not Found',
-      description: 'Programmatic page not found.',
+      title: 'Page Not Found',
+      description: 'Page not found.',
       path: `/services/${serviceSlug}/industries/${industrySlug}`,
       noIndex: true
     });
@@ -336,7 +336,7 @@ export const getBlogMetadata = (slug: string): Metadata => {
 export const getDirectoryCategoryMetadata = (category?: string): Metadata =>
   metadataFor({
     title: category ? `${category.replace(/-/g, ' ')} Tools Directory` : 'Growth Stack Directory',
-    description: `Browse crawlable software profiles for ${category || 'SEO, AI, marketing, development, design, and automation'} tools.`,
+    description: `Browse useful software profiles for ${category || 'SEO, AI, marketing, development, design, and automation'} tools.`,
     path: category ? `/directory/${category}` : '/directory'
   });
 

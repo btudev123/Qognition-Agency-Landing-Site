@@ -5,7 +5,7 @@ import { LocationsIndexView } from './ProgrammaticLocationView';
 
 export const metadata: Metadata = metadataFor({
   title: 'Locations | Digital Marketing Service Areas',
-  description: 'Browse Qognition service-area pages for major cities, states, countries, and revenue markets.',
+  description: 'Browse Qognition location pages for major cities, states, countries, and revenue markets.',
   path: '/locations'
 });
 

@@ -342,7 +342,7 @@ const DirectoryToolDetail: React.FC = () => {
                     <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-8">
                         <h2 className="font-display text-3xl mb-6">Related Qognition Pages</h2>
                         <p className="text-gray-400 leading-relaxed mb-6">
-                            Internal links help users and crawlers connect this tool profile to the wider growth system: services, industries,
+                            Internal links help users connect this tool profile to the wider growth system: services, industries,
                             resources, calculators, and implementation pages.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -62,7 +62,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
 
             <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                `TL;DR: ${industry.name} growth depends on matching channel strategy to buyer trust, compliance, sales cycle, and proof requirements.`,
+                `Quick summary: ${industry.name} growth depends on matching channel strategy to buyer trust, compliance, sales cycle, and proof requirements.`,
                 'Qognition connects industry pages to service pages, location pages, sub-verticals, case studies, resources, and FAQs.',
                 'The page is statically rendered with JSON-LD, semantic headings, and natural-language explanations for Google, Bing, and AI systems.'
               ].map((item) => (

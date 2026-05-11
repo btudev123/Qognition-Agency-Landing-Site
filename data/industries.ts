@@ -88,7 +88,7 @@ export const INDUSTRIES: Industry[] = [
     relatedServices: ['seo', 'ppc'],
     caseStudyRef: 'fintech-scale',
     faqs: [
-        { question: "Can you help us target high-net-worth individuals?", answer: "Yes, our PPC and programmatic strategies can specifically target wealth brackets and business owners." },
+        { question: "Can you help us target high-net-worth individuals?", answer: "Yes, our paid media and audience strategies can specifically target wealth brackets and business owners." },
         ...COMMON_FAQS
     ]
   },

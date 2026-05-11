@@ -33,7 +33,7 @@ const area = (
   region,
   type,
   marketFocus,
-  intro: `Qognition supports companies across ${name} with programmatic SEO, performance marketing, AI search optimization, and high-converting web experiences.`,
+  intro: `Qognition supports companies across ${name} with search visibility, performance marketing, AI search optimization, and high-converting web experiences built around real buyer demand.`,
   localModifiers: [`${name} digital marketing`, `${name} SEO services`, `${name} growth agency`],
   schemaType: type === 'country' ? 'Country' : type === 'city' ? 'City' : 'AdministrativeArea'
 });

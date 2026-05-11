@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Globe, MapPin, Search, TrendingUp } from 'lucide-react';
-import { CALENDLY_LINK } from '../../constants';
+import { CALENDLY_LINK } from '../../data/siteConfig';
 import { INDUSTRIES } from '../../data/industries';
 import { SERVICES } from '../../data/services';
 import { FREE_TOOLS, RESOURCES } from '../../data/seoExpansion';
@@ -77,9 +77,9 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
 
     <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
       {[
-        `TL;DR: Qognition helps companies target ${location.name} with SEO, paid media, AI search visibility, landing pages, and conversion tracking.`,
-        `We treat ${location.name} as a service-area market and do not claim a physical office unless an existing hub page states one.`,
-        `Every local plan links services, industries, case studies, resources, and FAQs so Google, Bing, and AI agents can understand the page.`
+        `Quick summary: Qognition helps companies grow in ${location.name} with SEO, paid media, AI search visibility, web design, and conversion tracking.`,
+        `The strategy is built around how buyers in ${location.name} compare providers, check proof, and decide who to contact.`,
+        `Use this page to choose priority services, review relevant industries and case studies, and plan a measurable path to qualified enquiries.`
       ].map((item) => (
         <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
           {item}
@@ -93,7 +93,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
           <h2 className="font-display text-4xl mb-6">Local Growth Strategy</h2>
           <p className="text-gray-300 text-lg leading-relaxed mb-8">
             We build search, ads, content, and conversion systems around how buyers in {location.name} evaluate vendors. Each page is
-            structured for crawlability, entity clarity, and commercial intent while avoiding false office claims.
+            built around clear offers, fast load times, local proof, and measurable conversion paths without implying an office that does not exist.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {['Local SEO architecture', 'Paid media testing', 'Conversion tracking'].map((item) => (
@@ -115,7 +115,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
             </p>
             <p>
               Qognition builds the page architecture, campaign tracking, and internal links that help a {location.name}-focused strategy become
-              discoverable. We connect service pages, industry pages, local proof, lead magnets, and tools so a founder, CMO, or procurement team can
+              discoverable and useful. We connect service pages, industry pages, local proof, lead magnets, and tools so a founder, CMO, or procurement team can
               move from research to booked call without hunting through the site.
             </p>
           </div>
@@ -172,7 +172,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
           <div className="space-y-4">
             {[
               [`Can Qognition help a company generate leads in ${location.name}?`, `Yes. We map local intent, build landing pages, connect analytics, and prioritize services that match buyer demand in ${location.name}.`],
-              [`Is this page written for Google and AI search?`, 'Yes. It uses a clear H1, semantic sections, canonical metadata, JSON-LD, internal links, and concise summaries at the top.'],
+              [`Will this strategy help with Google and AI search visibility?`, 'Yes. We use clear sections, useful FAQs, schema markup, strong internal links, and natural-language answers so buyers and search systems can understand the offer.'],
               [`Which industries work best in ${location.name}?`, `${location.marketFocus.join(', ')} are current priority segments, but we also support B2B, professional services, ecommerce, healthcare, and local services.`],
               [`What is the fastest channel for ${location.name}?`, 'Paid search and landing pages can create near-term tests, while SEO, resources, and AI search visibility compound over several months.']
             ].map(([question, answer]) => (
@@ -219,18 +219,18 @@ export const LocationServiceView = ({ location, service }: { location: Location;
 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
       <main className="lg:col-span-8">
-        <span className="text-teal-400 font-bold uppercase tracking-widest mb-4 block">Programmatic SEO Page</span>
+        <span className="text-teal-400 font-bold uppercase tracking-widest mb-4 block">Location Service Strategy</span>
         <h1 className="font-display text-5xl md:text-8xl mb-8">{service.title} in {location.name}</h1>
         <p className="text-xl md:text-2xl text-gray-300 leading-relaxed border-l-2 border-teal-400 pl-6 mb-16">
-          {service.shortDescription} Qognition adapts {service.title.toLowerCase()} for companies targeting {location.name}, with
-          local intent mapping, landing page systems, tracking, and technical SEO foundations.
+          {service.shortDescription} Qognition adapts {service.title.toLowerCase()} for companies targeting {location.name}, with clear offers,
+          fast pages, conversion tracking, and market-specific proof that helps the right buyers take action.
         </p>
 
         <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
           {[
-            `TL;DR: ${service.title} in ${location.name} should connect local intent, page speed, conversion tracking, and sales-qualified lead quality.`,
-            `This page is a service-area page. It avoids false office claims and focuses on the market you want to reach.`,
-            `Related service, industry, case-study, tool, and resource links are included so crawlers can discover the wider topic cluster.`
+            `Quick summary: ${service.title} in ${location.name} should make the offer obvious, load quickly, and turn local demand into booked calls.`,
+            `The plan is shaped around how ${location.name} buyers compare providers: search results, reviews, proof, pricing confidence, and follow-up speed.`,
+            `We connect the page to relevant services, industries, case studies, tools, and resources so visitors can move from research to decision.`
           ].map((item) => (
             <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
               {item}
@@ -259,7 +259,7 @@ export const LocationServiceView = ({ location, service }: { location: Location;
               expect in {location.name}. From there, we decide which pages, ad groups, content assets, and conversion paths deserve priority.
             </p>
             <p>
-              The implementation includes crawlable landing pages, structured data, analytics events, lead source attribution, and internal links to
+              The implementation includes fast landing pages, clear page sections, schema markup, analytics events, lead source attribution, and links to
               the services, industries, case studies, and tools most likely to help a buyer understand your offer.
             </p>
           </div>
@@ -289,11 +289,11 @@ export const LocationServiceView = ({ location, service }: { location: Location;
           <h2 className="font-display text-4xl mb-8">Common Questions</h2>
           <div className="space-y-4">
             {[
-              [`Do you need an office in ${location.name}?`, `No. This is a service-area page for companies targeting ${location.name}; we do not claim a physical office unless one exists.`],
-              [`Can this page support Google Search Console indexing?`, 'Yes. It is statically generated with canonical metadata, schema, and sitemap inclusion.'],
+              [`Do you need an office in ${location.name}?`, `No. Qognition can support companies targeting ${location.name} remotely or as a regional growth partner. We only claim a physical office where one exists.`],
+              [`Will this support Google discovery?`, 'Yes. The page is statically generated with useful content, metadata, schema, sitemap inclusion, and internal links.'],
               [`What makes ${service.title} different by location?`, `Search intent, competitor density, CPC, local trust signals, and buyer language all change in ${location.name}.`],
               [`Which industries can use this ${location.name} plan?`, `${location.marketFocus.join(', ')}, professional services, SaaS, ecommerce, healthcare, and local services can all use this structure.`],
-              [`How fast can the first leads arrive?`, 'Paid media and landing page tests can launch first, while organic and AI-search visibility build as the indexed page cluster expands.']
+              [`How fast can the first leads arrive?`, 'Paid media and landing page tests can launch first, while organic and AI-search visibility build as the supporting content and proof improve.']
             ].map(([question, answer]) => (
               <div key={question} className="p-6 border border-white/10 rounded-xl bg-white/5">
                 <h3 className="font-bold text-white mb-2">{question}</h3>

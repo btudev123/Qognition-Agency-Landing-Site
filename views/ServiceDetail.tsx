@@ -108,7 +108,7 @@ const ServiceDetail: React.FC = () => {
                     <div className="mb-16 p-8 rounded-xl border border-teal-400/20 bg-teal-400/5">
                         <h2 className="font-display text-3xl mb-5">AI-Readable Service Map</h2>
                         <p className="text-gray-300 leading-relaxed mb-6">
-                          Key takeaways: {service.title} works best when technical setup, content, creative, conversion tracking, and internal links all point toward the same lead outcome. These sub-pages explain the exact workflows, deliverables, FAQs, and related routes for crawlers, buyers, and AI answer engines.
+                          Key takeaways: {service.title} works best when technical setup, content, creative, conversion tracking, and internal links all point toward the same lead outcome. These sub-pages explain the workflows, deliverables, FAQs, and related pages a buyer needs before choosing a growth partner.
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {serviceSubPages.slice(0, 6).map((page) => (

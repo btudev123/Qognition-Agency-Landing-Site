@@ -39,7 +39,7 @@ export const SERVICES: Service[] = [
         { name: 'Content Strategy', slug: 'content-strategy', description: 'Buyer-intent topic clusters, editorial calendars, content briefs, refreshes, and internal link systems.' },
         { name: 'Link Building', slug: 'link-building', description: 'Digital PR, authority assets, editorial outreach, and risk-controlled backlink acquisition.' },
         { name: 'Local SEO', slug: 'local-seo', description: 'Google Business Profile, city pages, review systems, maps visibility, and local conversion paths.' },
-        { name: 'Programmatic SEO', slug: 'programmatic-seo', description: 'Crawlable service, industry, location, glossary, comparison, and directory page systems.' },
+        { name: 'Scalable SEO Pages', slug: 'programmatic-seo', description: 'Service, industry, location, glossary, comparison, and directory page systems with original content and strong internal links.' },
         { name: 'E-E-A-T SEO', slug: 'eeat-seo', description: 'Author profiles, proof blocks, expert quotes, citations, reviews, and trust architecture for competitive niches.' }
     ],
     process: [
@@ -132,7 +132,7 @@ export const SERVICES: Service[] = [
     icon: 'Code',
     kpis: ['100 PageSpeed', '<1s Load Time', 'Award-Winning UI'],
     subServices: [
-        { name: 'Next.js SEO', slug: 'nextjs-seo', description: 'App Router architecture, static generation, metadata, schema, sitemaps, and crawl checks.' },
+        { name: 'Next.js SEO', slug: 'nextjs-seo', description: 'App Router architecture, static generation, metadata, schema, sitemaps, and indexing checks.' },
         { name: 'Conversion Websites', slug: 'conversion-websites', description: 'High-performance marketing sites built around offers, proof, forms, and booked calls.' },
         { name: 'Landing Pages', slug: 'landing-pages', description: 'Campaign pages with message match, fast load times, proof blocks, and CRM-ready forms.' },
         { name: 'Headless CMS', slug: 'headless-cms', description: 'Sanity, Contentful, and CMS workflows for publishing SEO pages without developer bottlenecks.' },

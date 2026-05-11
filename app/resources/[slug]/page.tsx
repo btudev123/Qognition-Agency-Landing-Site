@@ -55,9 +55,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <p className="text-xl md:text-2xl text-gray-300 leading-relaxed mb-10">{resource.description}</p>
             <div className="mb-10 grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                'TL;DR: this resource is designed to help a buyer make a clearer marketing decision before a sales call.',
+                'Quick summary: this resource is designed to help a buyer make a clearer marketing decision before a sales call.',
                 'Use it with your analytics, CRM, search console, ad account, and sales feedback for the strongest result.',
-                'The page links into services, tools, and related resources so humans and AI crawlers can follow the topic cluster.'
+                'The page links into services, tools, and related resources so readers can keep moving through the topic without dead ends.'
               ].map((item) => (
                 <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
                   {item}

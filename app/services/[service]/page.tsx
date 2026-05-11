@@ -59,9 +59,9 @@ export default async function Page({ params }: { params: Promise<{ service: stri
 
             <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                `TL;DR: ${service.title} should create qualified pipeline, not just channel activity.`,
+                `Quick summary: ${service.title} should create qualified pipeline, not just channel activity.`,
                 'Qognition connects strategy, execution, analytics, creative, and AI-search discoverability in one operating model.',
-                'This page links to sub-services, industries, tools, case studies, FAQs, and strategy calls for clear crawl paths.'
+                'This page links to sub-services, industries, tools, case studies, FAQs, and strategy calls so buyers can find the right next step.'
               ].map((item) => (
                 <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
                   {item}

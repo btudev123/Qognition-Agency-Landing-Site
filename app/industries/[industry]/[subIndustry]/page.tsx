@@ -74,9 +74,9 @@ export default async function Page({ params }: { params: Promise<{ industry: str
 
             <section className="mb-16 grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                `TL;DR: ${subIndustry.name} marketing needs industry proof, precise intent mapping, and conversion paths built for real buyer questions.`,
+                `Quick summary: ${subIndustry.name} marketing needs industry proof, precise intent mapping, and conversion paths built for real buyer questions.`,
                 `This page links upward to ${industry.name}, sideways to services and proof, and downward to FAQs for AI and search clarity.`,
-                'Qognition builds these pages as useful service-area and vertical assets, not keyword-stuffed templates.'
+                'Qognition builds these pages as useful vertical growth assets with real buyer questions, proof, services, and next steps.'
               ].map((item) => (
                 <div key={item} className="rounded-xl border border-teal-400/20 bg-teal-400/5 p-5 text-sm leading-relaxed text-gray-300">
                   {item}

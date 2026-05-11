@@ -36,7 +36,7 @@ const faq = (market: string) => [
   {
     question: `Do you claim local offices in every country?`,
     answer:
-      'No. These are market and service-area pages. We avoid false office claims and focus on strategy, execution, and demand generation for the target market.'
+      'No. These pages explain how Qognition supports market expansion without pretending to have offices where we do not. The focus is strategy, execution, and demand generation for the target market.'
   }
 ];
 
