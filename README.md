@@ -8,7 +8,6 @@ Next.js App Router site for Qognition Agency with static SEO pages, audit funnel
 npm install
 npm run dev
 ```
-
 ## Build
 
 ```bash
