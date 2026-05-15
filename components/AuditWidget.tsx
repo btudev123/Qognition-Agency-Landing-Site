@@ -47,7 +47,7 @@ const AuditWidget: React.FC<Props> = ({ defaultType = 'seo', compact = false, so
   };
 
   return (
-    <div className={`rounded-2xl border border-teal-400/20 bg-black/75 p-5 md:p-6 shadow-2xl shadow-black/30 backdrop-blur-xl ${compact ? '' : 'max-w-4xl'}`}>
+    <div className={`mx-auto w-full rounded-2xl border border-teal-400/20 bg-black/75 p-5 shadow-2xl shadow-black/30 backdrop-blur-xl md:p-6 ${compact ? '' : 'max-w-4xl'}`}>
       <div className="mb-5">
         <p className="text-xs font-bold uppercase tracking-widest text-teal-300">{selectedOffer.eyebrow}</p>
         <h2 className="mt-2 font-display text-2xl md:text-3xl text-white">Get your instant Qognition audit</h2>

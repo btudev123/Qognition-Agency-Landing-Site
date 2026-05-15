@@ -251,7 +251,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             )}
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-end gap-3 justify-self-end md:gap-6">
             <div className="hidden md:block">
                 <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                    <MagneticButton variant="primary" className="scale-90 origin-right">
@@ -261,7 +261,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
             <button 
                 type="button"
-                className="lg:hidden z-[120] p-3 -mr-2 rounded-full text-white hover:text-teal-400 hover:bg-white/10 transition-colors"
+                className="z-[120] -mr-2 ml-auto rounded-full p-3 text-white transition-colors hover:bg-white/10 hover:text-teal-400 lg:hidden"
                 onClick={() => setIsMenuOpen((open) => !open)}
                 aria-label="Toggle Menu"
                 aria-controls="mobile-menu"
@@ -421,7 +421,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         href={WHATSAPP_LINK}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed right-4 top-24 z-[110] bg-[#25D366] hover:bg-[#20BD5A] text-white p-4 rounded-full shadow-2xl shadow-[#25D366]/30 transition-all duration-300 hover:scale-110 group"
+        className="fixed bottom-24 right-4 z-[110] rounded-full bg-[#25D366] p-4 text-white shadow-2xl shadow-[#25D366]/30 transition-all duration-300 hover:scale-110 hover:bg-[#20BD5A] md:bottom-auto md:top-24"
         aria-label="Chat on WhatsApp"
       >
         <svg width="28" height="28" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

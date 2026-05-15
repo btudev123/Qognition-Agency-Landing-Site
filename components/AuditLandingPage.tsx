@@ -9,12 +9,12 @@ type Props = {
 
 const AuditLandingPage = ({ offer }: Props) => (
   <main className="min-h-screen px-6 pb-28 pt-32 md:px-12">
-    <section className="mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
-      <div className="lg:col-span-7">
+    <section className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-4xl text-center">
         <span className="font-mono text-sm uppercase tracking-widest text-teal-400">{offer.eyebrow}</span>
         <h1 className="mt-6 font-display text-5xl leading-none text-white md:text-8xl">{offer.h1}</h1>
-        <p className="mt-8 max-w-3xl text-xl leading-relaxed text-gray-300">{offer.description}</p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <p className="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-gray-300">{offer.description}</p>
+        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <a href="#audit-widget" className="rounded-full bg-teal-400 px-8 py-4 text-center font-display text-sm uppercase tracking-wider text-black hover:bg-white">
             {offer.cta}
           </a>
@@ -23,7 +23,7 @@ const AuditLandingPage = ({ offer }: Props) => (
           </a>
         </div>
       </div>
-      <div id="audit-widget" className="lg:col-span-5">
+      <div id="audit-widget" className="mx-auto mt-12 w-full max-w-4xl scroll-mt-28">
         <AuditWidget defaultType={offer.type} source={`${offer.title} Landing Page`} />
       </div>
     </section>

@@ -10,7 +10,6 @@ import ParallaxImage from '../components/ParallaxImage';
 import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
 import HeroOrb from '../components/HeroOrb';
-import AuditWidget from '../components/AuditWidget';
 import { CALENDLY_LINK, CONTACT_MAILTO } from '../data/siteConfig';
 import { CASE_STUDIES } from '../data/work';
 import { REGIONS } from '../data/regions';
@@ -84,9 +83,6 @@ const Home: React.FC = () => {
                        </div>
                        <span className="text-sm font-bold uppercase tracking-wider">Get Free Audit</span>
                     </Link>
-                </div>
-                <div className="mt-8">
-                  <AuditWidget defaultType="seo" compact source="Homepage Above Fold" />
                 </div>
               </div>
             </div>
