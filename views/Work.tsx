@@ -25,13 +25,13 @@ const Work: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Our Work | Case Studies & Success Stories"
+        title="Case Studies | Qognition Agency"
         description="Explore our portfolio of successful digital marketing campaigns. See real results and case studies from work with ambitious brands. Discover how we deliver measurable growth."
-        path="/work"
+        path="/case-studies"
         schemaData={{
           type: "WebSite",
-          name: "Our Work",
-          url: "https://www.qognitionagency.com/work"
+          name: "Case Studies",
+          url: "https://www.qognitionagency.com/case-studies"
         }}
       />
 
@@ -42,7 +42,7 @@ const Work: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="font-display text-6xl md:text-9xl mb-8"
           >
-            Selected Work
+            Case Studies
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -67,7 +67,7 @@ const Work: React.FC = () => {
               variants={item}
               className={`group cursor-pointer ${index === 0 ? 'md:col-span-2' : ''}`}
             >
-              <Link to={`/work/${study.id}`} className="block">
+              <Link to={`/case-studies/${study.id}`} className="block">
                 <div className="relative overflow-hidden rounded-xl mb-8 aspect-video md:aspect-[16/10]">
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors z-10 duration-500"></div>
                   <div className="absolute top-4 right-4 z-20 w-12 h-12 bg-white rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">

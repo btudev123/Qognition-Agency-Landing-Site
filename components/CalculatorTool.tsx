@@ -93,7 +93,7 @@ const CalculatorTool: React.FC<Props> = ({ tool }) => {
         ['LinkedIn Post', `The unpopular truth about ${seed}: more content is not the goal, clearer buyer proof is.`],
         ['Lead Magnet', `${seed} audit checklist for ${audience}, gated behind ${offer}.`],
         ['FAQ Cluster', `What does ${seed} cost, how long does it take, which KPIs matter, and when should a team hire help?`],
-        ['Internal Links', `Link this idea to /services, /industries, /locations/${market.toLowerCase().replace(/[^a-z0-9]+/g, '-')}, /resources, /work, and the tools directory.`]
+        ['Internal Links', `Link this idea to /services, /industries, /locations/${market.toLowerCase().replace(/[^a-z0-9]+/g, '-')}, /resources, /case-studies, and the tools directory.`]
       ];
     }
 

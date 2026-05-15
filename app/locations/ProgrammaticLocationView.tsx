@@ -145,7 +145,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
           <h2 className="font-display text-4xl mb-6">Relevant Case Studies</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {CASE_STUDIES.slice(0, 4).map((study) => (
-              <Link key={study.id} href={`/work/${study.id}`} className="rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:border-teal-400/50 transition-colors">
+              <Link key={study.id} href={`/case-studies/${study.id}`} className="rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:border-teal-400/50 transition-colors">
                 <p className="text-xs uppercase tracking-widest text-teal-400 mb-3">{study.industry}</p>
                 <h3 className="font-display text-2xl mb-3">{study.client}</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">{study.summary || study.title}</p>
@@ -157,7 +157,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
         <section>
           <h2 className="font-display text-4xl mb-6">Resources for {location.name} Teams</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, href: `/resources/${resource.slug}`, note: resource.description })),
+            {[...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, href: resource.href || `/${resource.slug}`, note: resource.description })),
               ...FREE_TOOLS.slice(0, 2).map((tool) => ({ label: tool.title, href: `/free-tools/${tool.slug}`, note: tool.description }))].map((item) => (
               <Link key={item.href} href={item.href} className="rounded-xl border border-white/10 bg-black/40 p-5 hover:border-teal-400/50 transition-colors">
                 <h3 className="font-display text-xl mb-3">{item.label}</h3>
@@ -269,7 +269,7 @@ export const LocationServiceView = ({ location, service }: { location: Location;
           <h2 className="font-display text-4xl mb-8">Proof and Planning Assets</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {CASE_STUDIES.slice(0, 2).map((study) => (
-              <Link key={study.id} href={`/work/${study.id}`} className="rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:border-teal-400/50 transition-colors">
+              <Link key={study.id} href={`/case-studies/${study.id}`} className="rounded-xl border border-white/10 bg-white/[0.03] p-5 hover:border-teal-400/50 transition-colors">
                 <p className="text-xs uppercase tracking-widest text-teal-400 mb-3">{study.industry}</p>
                 <h3 className="font-display text-2xl mb-3">{study.title}</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">{study.results?.[0] || study.summary}</p>

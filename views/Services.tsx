@@ -148,7 +148,7 @@ const Services: React.FC = () => {
             <div className="p-8 border border-white/10 rounded-xl bg-white/5">
               <h3 className="font-display text-2xl mb-4 text-teal-400">Proven Results</h3>
               <p className="text-gray-400 mb-4">Our track record speaks for itself. We've helped hundreds of clients achieve significant growth in their digital presence. From increasing organic traffic by over 200% to generating qualified leads that convert at higher rates, our results-driven approach delivers measurable outcomes.</p>
-              <Link to="/work" className="text-teal-400 hover:underline">View our case studies →</Link>
+              <Link to="/case-studies" className="text-teal-400 hover:underline">View our case studies →</Link>
             </div>
             <div className="p-8 border border-white/10 rounded-xl bg-white/5">
               <h3 className="font-display text-2xl mb-4 text-teal-400">AI Growth Partner</h3>
@@ -175,8 +175,8 @@ const Services: React.FC = () => {
             <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-teal-400 text-black font-bold rounded-full hover:bg-teal-300 transition-colors">
               Book Strategy Call
             </a>
-            <Link to="/work" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
-              View Our Work
+            <Link to="/case-studies" className="px-8 py-4 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+              View Case Studies
             </Link>
           </div>
         </div>

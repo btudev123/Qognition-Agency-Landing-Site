@@ -77,7 +77,7 @@ const blueprints = [
   ['brightpath-education', 'BrightPath Academy', 'Education', 'Growing Admissions Demand With Content Clusters and Landing Pages', ['Content Strategy', 'SEO', 'Paid Social'], '+118%', '+47%', '+33%'],
   ['summit-hvac', 'Summit HVAC', 'Home Services', 'Lowering Paid Search Waste While Growing Organic Calls', ['PPC', 'Local SEO', 'CRO'], '+156%', '-31%', '+69%'],
   ['crown-realty', 'Crown Realty Partners', 'Real Estate', 'Creating a Location SEO System for Premium Property Markets', ['Location SEO', 'Content', 'Analytics'], '+173%', '+88%', '+42%'],
-  ['ledgerops', 'LedgerOps', 'FinOps SaaS', 'Building Comparison and Glossary Pages That Influenced Pipeline', ['Programmatic SEO', 'SaaS', 'Content'], '+204%', '+96%', '+55%'],
+  ['ledgerops', 'LedgerOps', 'FinOps SaaS', 'Building Comparison and Glossary Pages That Influenced Pipeline', ['Scalable SEO Pages', 'SaaS', 'Content'], '+204%', '+96%', '+55%'],
   ['greengrid-energy', 'GreenGrid Energy', 'Energy', 'Driving Enterprise Energy Leads With Authority Content', ['SEO', 'Digital PR', 'Lead Magnets'], '+137%', '+73%', '+28%'],
   ['urbanfit-studios', 'UrbanFit Studios', 'Fitness', 'Improving Local Discovery and Membership Conversions', ['Local SEO', 'Social', 'CRO'], '+192%', '+66%', '+37%'],
   ['falcon-cybersecurity', 'Falcon Cybersecurity', 'Cybersecurity', 'Turning Technical Trust Signals Into Enterprise Demo Requests', ['B2B SEO', 'E-E-A-T', 'Web Dev'], '+151%', '+89%', '+46%'],

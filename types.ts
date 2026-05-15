@@ -229,6 +229,9 @@ export interface ResourceLeadMagnet {
   audience: string;
   highlights: string[];
   sections: { title: string; content: string }[];
+  auditType?: AuditType;
+  href?: string;
+  ctaLabel?: string;
 }
 
 export interface FreeToolPage {
@@ -262,6 +265,74 @@ export interface GlossaryTerm {
   definition: string;
   category: string;
   relatedTerms: string[];
+}
+
+export type AuditType = 'seo' | 'ai' | 'branding' | 'social' | 'llm';
+
+export interface AuditOffer {
+  slug: string;
+  type: AuditType;
+  title: string;
+  shortTitle: string;
+  description: string;
+  h1: string;
+  eyebrow: string;
+  cta: string;
+  audience: string;
+  checks: string[];
+  outcomes: string[];
+  sections: { title: string; content: string }[];
+  faqs: FAQ[];
+}
+
+export interface AuditCheck {
+  id: string;
+  label: string;
+  status: 'pass' | 'warning' | 'fail';
+  score: number;
+  detail: string;
+}
+
+export interface AuditReport {
+  auditType: AuditType;
+  url: string;
+  normalizedUrl: string;
+  email: string;
+  score: number;
+  summary: string;
+  checks: AuditCheck[];
+  recommendations: string[];
+  generatedAt: string;
+}
+
+export interface AuditLeadPayload {
+  auditType: AuditType;
+  url: string;
+  email: string;
+  firstname?: string;
+  company?: string;
+}
+
+export interface B2BMoFuPage {
+  slug: string;
+  title: string;
+  description: string;
+  h1: string;
+  eyebrow: string;
+  summary: string;
+  sections: { title: string; content: string }[];
+  checklist: string[];
+  faqs: FAQ[];
+  relatedLinks: { label: string; href: string }[];
+}
+
+export interface BacklinkOpportunity {
+  category: string;
+  targetType: string;
+  exampleTargets: string[];
+  recommendedAsset: string;
+  outreachAngle: string;
+  qualityBar: string;
 }
 
 export interface TeamMember {

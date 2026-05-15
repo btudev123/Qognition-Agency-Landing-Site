@@ -480,5 +480,240 @@ We begin with an honest baseline audit, identify inherited technical or campaign
 ### What is the minimum commitment?
 
 Some clients begin with a focused audit or project. Others begin with a full-service retainer. The structure depends on the goals, current marketing situation, and growth timeline.`
+  },
+  {
+    id: 'how-to-check-law-firm-visible-on-chatgpt',
+    title: 'How to Check if Your Law Firm Is Visible on ChatGPT',
+    excerpt:
+      'Use a free AI visibility audit to check whether your law firm gives ChatGPT, Gemini, Perplexity, and AI Overviews enough clear proof to cite you.',
+    date: 'May 15, 2026',
+    readTime: '9 min read',
+    author: { name: 'Qognition', title: 'AI Search Team', avatar: '/qognition-mark.png' },
+    image: '/default-og.svg',
+    tags: ['AI SEO', 'Law Firm Marketing', 'LLM Visibility'],
+    category: 'AI Search',
+    content: `## Quick Answer
+
+To check whether your law firm is visible on ChatGPT and other AI search systems, review your service pages, attorney or leadership proof, case-study evidence, schema, robots.txt, llm.txt, FAQs, and local market pages. Then run Qognition's free AI audit to find the biggest blockers.
+
+## Why AI Visibility Matters for Law Firms
+
+High-value legal buyers increasingly research options through AI answers, Google AI Overviews, Perplexity, Gemini, and comparison-style searches. If your firm does not have clear service pages, local proof, authorship, and structured answers, AI systems have less reason to mention you.
+
+## What to Check First
+
+- Does the website clearly state practice areas and locations?
+- Are case outcomes, testimonials, attorney profiles, and credentials easy to find?
+- Does robots.txt allow major search and AI discovery bots?
+- Is there schema for Organization, LocalBusiness, FAQPage, Article, and Service where relevant?
+- Does the homepage explain who the firm helps and why it is credible in three seconds?
+
+## Use the Free AI Audit
+
+The free AI audit checks the page for basic AI readiness signals: metadata, headings, schema, robots access, llm.txt, internal links, and source-of-truth clarity.
+
+Run it here: [Free AI Audit](/free-ai-audit).
+
+## What to Do With the Results
+
+Fix blockers first. Then build proof-rich service pages, local pages, FAQs, attorney/leadership pages, comparison content, and case-study assets that answer the questions prospects ask before contacting a firm.
+
+## Frequently Asked Questions
+
+### Can ChatGPT guarantee leads for a law firm?
+
+No. AI visibility is one discovery layer. It works best when connected to SEO, local intent, paid search, strong landing pages, and fast follow-up.
+
+### Is this different from SEO?
+
+It builds on SEO. Clear technical structure, helpful content, schema, and authority help both Google and AI systems understand your firm.
+
+### Can Qognition help legal teams implement this?
+
+Yes. Qognition builds AI search, SEO, paid media, landing pages, and HubSpot tracking for professional services and legal firms.`
+  },
+  {
+    id: 'free-seo-audit-tool-guide',
+    title: 'How to Use a Free SEO Audit Tool Without Getting Bad Advice',
+    excerpt:
+      'Free SEO audit tools are useful when they prioritize real blockers. Learn what to trust, what to ignore, and what to fix first.',
+    date: 'May 15, 2026',
+    readTime: '8 min read',
+    author: { name: 'Qognition', title: 'SEO Strategy Team', avatar: '/qognition-mark.png' },
+    image: '/default-og.svg',
+    tags: ['SEO Audit', 'Technical SEO', 'Lead Generation'],
+    category: 'SEO',
+    content: `## Quick Answer
+
+A free SEO audit is useful when it checks the basics that stop pages from being indexed, understood, or trusted: metadata, headings, canonicals, robots.txt, sitemap access, schema, internal links, and HTTPS.
+
+## What a Free SEO Audit Should Tell You
+
+It should identify blockers, not overwhelm you with vanity scores. The best first-pass audits explain what is missing, why it matters, and which fixes should happen before you spend more on content or ads.
+
+## What to Ignore
+
+Ignore generic warnings that do not affect your buyer journey. A score means little unless the recommendation connects to rankings, qualified traffic, conversion rate, or lead quality.
+
+## Run the Audit
+
+Use Qognition's [Free SEO Audit](/free-seo-audit) to get a practical first-pass report. Then compare the findings with Search Console, analytics, CRM data, and competitor pages.
+
+## Fix Order
+
+1. Crawl/index blockers.
+2. Missing or weak metadata.
+3. H1 and heading clarity.
+4. Canonical and duplicate page issues.
+5. Internal links to priority services.
+6. Schema and proof content.
+7. Conversion CTA and lead capture.
+
+## Frequently Asked Questions
+
+### Does a free audit replace a full SEO audit?
+
+No. It is the starting point. Full audits add crawl data, keyword data, logs, competitors, page speed, analytics, and revenue prioritization.
+
+### How often should we run one?
+
+Run a quick audit after major page changes, migrations, redesigns, or new campaign launches.
+
+### Can Qognition fix the issues?
+
+Yes. We can prioritize and implement the fixes through an SEO sprint or ongoing growth program.`
+  },
+  {
+    id: 'llm-visibility-audit-checklist',
+    title: 'Free LLM Visibility Audit Checklist for B2B Brands',
+    excerpt:
+      'Check whether your site is understandable to LLMs with robots access, llm.txt, structured data, concise summaries, and proof-rich source pages.',
+    date: 'May 15, 2026',
+    readTime: '8 min read',
+    author: { name: 'Qognition', title: 'LLM Optimization Team', avatar: '/qognition-mark.png' },
+    image: '/default-og.svg',
+    tags: ['LLM Optimization', 'AI Discovery', 'Robots.txt'],
+    category: 'AI Search',
+    content: `## Quick Answer
+
+An LLM visibility audit checks whether AI systems can access, parse, and trust the facts on your website. Start with robots.txt, llm.txt, schema, canonical URLs, service pages, case studies, leadership proof, and concise summaries.
+
+## Why LLM Visibility Is Different
+
+Traditional SEO focuses heavily on ranking pages in search results. LLM visibility focuses on whether AI systems can summarize your brand accurately and cite the right source pages when buyers ask questions.
+
+## Checklist
+
+- AI/search bots are not blocked at the root.
+- Content Signals declare search and AI input preferences.
+- llm.txt lists the most important source pages.
+- Services and locations are described in plain language.
+- Case studies show proof, timelines, and outcomes.
+- FAQs answer natural-language questions.
+- Schema supports Organization, Article, FAQPage, Service, and BreadcrumbList.
+
+## Run the Audit
+
+Use Qognition's [Free LLM Audit](/free-llm-audit) to check the technical discovery layer, then use the report to build missing source-of-truth pages.
+
+## Frequently Asked Questions
+
+### Should we allow AI bots?
+
+If the goal is AI discovery, allow search and AI input while opting out of training where possible.
+
+### What if our claims are inconsistent?
+
+Fix them first. LLMs struggle when service pages, about pages, case studies, and schema describe the company differently.
+
+### Does Qognition build llm.txt?
+
+Yes. We build llm.txt, entity summaries, schema, and AI-ready content paths.`
+  },
+  {
+    id: 'branding-audit-for-b2b-websites',
+    title: 'Branding Audit for B2B Websites: What to Fix First',
+    excerpt:
+      'A practical branding audit for B2B websites covering positioning, proof, visual consistency, CTAs, and trust signals.',
+    date: 'May 15, 2026',
+    readTime: '7 min read',
+    author: { name: 'Qognition', title: 'Brand Strategy Team', avatar: '/qognition-mark.png' },
+    image: '/default-og.svg',
+    tags: ['Branding', 'B2B Website', 'Conversion'],
+    category: 'Branding',
+    content: `## Quick Answer
+
+A B2B branding audit should answer three questions: can buyers understand the offer quickly, do they believe the company can deliver, and is the next step obvious?
+
+## The Three-Second Test
+
+Above the fold, your page should say who you help, what outcome you create, and how the visitor can take the next step. Vague claims like "future-ready partner" need proof and specificity.
+
+## Proof Matters
+
+Use case studies, testimonials, client journey details, before/after metrics, screenshots, team profiles, certifications, and specific industry experience. High-ticket buyers need reassurance before they talk to sales.
+
+## Visual Consistency
+
+Design should make the company feel credible without hiding the offer. Typography, spacing, logo use, colors, button styles, and content hierarchy all affect trust.
+
+Run the [Branding Audit](/branding-audit) to identify the biggest clarity and trust gaps.
+
+## Frequently Asked Questions
+
+### Is branding measurable?
+
+Yes. Measure conversion rate, booked calls, form completion, sales feedback, branded search, and lead quality.
+
+### Should branding come before SEO?
+
+They should work together. SEO brings the buyer in; branding and proof help them convert.
+
+### Can Qognition handle brand and website execution?
+
+Yes. We connect positioning, creative direction, web design, SEO, and conversion tracking.`
+  },
+  {
+    id: 'social-media-audit-for-b2b-founders',
+    title: 'Social Media Audit for B2B Founders',
+    excerpt:
+      'Audit your founder-led social presence for positioning, proof, consistency, content pillars, profile clarity, and lead capture.',
+    date: 'May 15, 2026',
+    readTime: '7 min read',
+    author: { name: 'Qognition', title: 'Social Strategy Team', avatar: '/qognition-mark.png' },
+    image: '/default-og.svg',
+    tags: ['Social Media', 'Founder Led Content', 'LinkedIn'],
+    category: 'Social Media',
+    content: `## Quick Answer
+
+A B2B social media audit should check profile clarity, content consistency, founder POV, proof posts, offer CTAs, and whether attention is routed into a lead capture path.
+
+## Start With the Profile
+
+The profile should explain who you help, what outcome you create, why you are credible, and where people should go next. For many B2B founders, the LinkedIn profile is a landing page.
+
+## Audit the Content Mix
+
+Strong B2B social content usually includes education, contrarian lessons, client proof, behind-the-scenes process, market commentary, and direct offers. Too much generic advice gets ignored.
+
+## Connect Social to Lead Capture
+
+Send attention to a useful offer: a free audit, calculator, benchmark report, newsletter, webinar, or case study. Social media should not stop at impressions.
+
+Run the [Social Media Audit](/social-media-audit) to find your biggest gaps.
+
+## Frequently Asked Questions
+
+### Which platform matters most for B2B?
+
+LinkedIn is usually the strongest starting point, but short-form video and YouTube can support authority.
+
+### How often should founders post?
+
+Start with 3 to 5 strong posts per week and improve quality before increasing volume.
+
+### Can Qognition create the content?
+
+Yes. We build content pillars, post formats, creative templates, publishing workflows, and reporting.`
   }
 ];

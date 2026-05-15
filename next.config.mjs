@@ -38,6 +38,46 @@ const nextConfig = {
         source: '/locations/australia',
         destination: '/regions/australia',
         permanent: true
+      },
+      {
+        source: '/resources/2026-guide-ai-seo-sge',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
+      {
+        source: '/resources/technical-seo-audit-checklist-nextjs',
+        destination: '/free-seo-audit',
+        permanent: true
+      },
+      {
+        source: '/resources/free-seo-audit-checklist',
+        destination: '/free-seo-audit',
+        permanent: true
+      },
+      {
+        source: '/resources/free-seo-audit',
+        destination: '/free-seo-audit',
+        permanent: true
+      },
+      {
+        source: '/resources/free-ai-audit',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
+      {
+        source: '/resources/branding-audit',
+        destination: '/branding-audit',
+        permanent: true
+      },
+      {
+        source: '/resources/social-media-audit',
+        destination: '/social-media-audit',
+        permanent: true
+      },
+      {
+        source: '/resources/free-llm-audit',
+        destination: '/free-llm-audit',
+        permanent: true
       }
     ];
   }

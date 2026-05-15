@@ -199,7 +199,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 ))}
               </div>
               <div className="border-t border-white/10 pt-5 mb-8 space-y-3">
-                <Link href="/work" className="flex items-center justify-between text-sm text-gray-300 hover:text-white">
+                <Link href="/case-studies" className="flex items-center justify-between text-sm text-gray-300 hover:text-white">
                   Case studies <CheckCircle2 size={16} className="text-teal-400" />
                 </Link>
                 <Link href="/locations" className="flex items-center justify-between text-sm text-gray-300 hover:text-white">

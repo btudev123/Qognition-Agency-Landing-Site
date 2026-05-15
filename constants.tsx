@@ -27,7 +27,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Services', path: '/services' },
   { label: 'Industries', path: '/industries' },
   { label: 'Regions', path: '/regions' },
-  { label: 'Work', path: '/work' },
+  { label: 'Case Studies', path: '/case-studies' },
   { label: 'Resources', path: '/resources' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: CONTACT_MAILTO },

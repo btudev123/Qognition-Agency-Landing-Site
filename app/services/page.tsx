@@ -126,7 +126,7 @@ export default function Page() {
             <p className="text-gray-400 mb-4">
               Use our case studies, lead magnets, free tools, and location pages to see how the system fits your market before a call.
             </p>
-            <Link href="/work" className="text-teal-400 hover:underline">View case studies</Link>
+            <Link href="/case-studies" className="text-teal-400 hover:underline">View case studies</Link>
           </div>
         </section>
 

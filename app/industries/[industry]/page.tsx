@@ -144,7 +144,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
           <aside className="lg:col-span-4">
             <div className="sticky top-32 p-8 bg-white/5 border border-white/10 rounded-xl">
               <h2 className="font-display text-xl mb-6">Case Study Reference</h2>
-              <Link href={`/work/${relatedCaseStudy.id}`} className="block p-5 border border-white/20 rounded-xl hover:border-teal-400 transition-colors mb-8">
+              <Link href={`/case-studies/${relatedCaseStudy.id}`} className="block p-5 border border-white/20 rounded-xl hover:border-teal-400 transition-colors mb-8">
                 <p className="text-xs uppercase tracking-widest text-teal-400 mb-3">{relatedCaseStudy.industry}</p>
                 <h3 className="font-display text-2xl mb-3">{relatedCaseStudy.client}</h3>
                 <p className="text-sm text-gray-400">{relatedCaseStudy.summary || relatedCaseStudy.title}</p>

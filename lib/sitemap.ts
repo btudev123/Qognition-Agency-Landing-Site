@@ -1,4 +1,5 @@
 import { BLOG_POSTS } from '../data/blog';
+import { B2B_MOFU_PAGES } from '../data/b2bPages';
 import { DIRECTORY_PRODUCTS } from '../data/directoryProducts';
 import { GLOBAL_MARKETS, LANGUAGE_SEO_PAGES } from '../data/internationalSeo';
 import { INDUSTRIES } from '../data/industries';
@@ -41,9 +42,14 @@ export const coreRoutes = (): SitemapEntry[] => [
   { path: '/industries', priority: 0.95, changefreq: 'weekly' },
   { path: '/locations', priority: 0.95, changefreq: 'weekly' },
   { path: '/regions', priority: 0.85, changefreq: 'monthly' },
-  { path: '/work', priority: 0.85, changefreq: 'monthly' },
+  { path: '/case-studies', priority: 0.88, changefreq: 'monthly' },
   { path: '/directory', priority: 0.9, changefreq: 'weekly' },
   { path: '/resources', priority: 0.86, changefreq: 'weekly' },
+  { path: '/free-seo-audit', priority: 0.92, changefreq: 'weekly' },
+  { path: '/free-ai-audit', priority: 0.9, changefreq: 'weekly' },
+  { path: '/branding-audit', priority: 0.86, changefreq: 'weekly' },
+  { path: '/social-media-audit', priority: 0.86, changefreq: 'weekly' },
+  { path: '/free-llm-audit', priority: 0.9, changefreq: 'weekly' },
   { path: '/free-tools', priority: 0.86, changefreq: 'weekly' },
   { path: '/comparisons', priority: 0.82, changefreq: 'weekly' },
   { path: '/glossary', priority: 0.84, changefreq: 'weekly' },
@@ -51,11 +57,14 @@ export const coreRoutes = (): SitemapEntry[] => [
   { path: '/global', priority: 0.88, changefreq: 'weekly' },
   { path: '/languages', priority: 0.84, changefreq: 'weekly' },
   { path: '/lead-generation-roadmap', priority: 0.86, changefreq: 'monthly' },
+  { path: '/backlink-authority-roadmap', priority: 0.74, changefreq: 'monthly' },
+  { path: '/docs/api', priority: 0.42, changefreq: 'monthly' },
   { path: '/blog', priority: 0.8, changefreq: 'weekly' },
   { path: '/about', priority: 0.7, changefreq: 'monthly' },
   { path: '/contact', priority: 0.8, changefreq: 'monthly' },
   { path: '/llm', priority: 0.7, changefreq: 'monthly' },
   { path: '/sitemap', priority: 0.4, changefreq: 'monthly' },
+  ...B2B_MOFU_PAGES.map((page) => ({ path: `/${page.slug}`, priority: 0.84, changefreq: 'monthly' as const })),
   ...REGIONS.map((region) => ({ path: `/regions/${region.slug}`, priority: 0.75, changefreq: 'monthly' as const }))
 ];
 
@@ -104,10 +113,10 @@ export const blogRoutes = (): SitemapEntry[] =>
   BLOG_POSTS.map((post) => ({ path: `/blog/${post.id}`, priority: 0.7, changefreq: 'monthly' }));
 
 export const resourceRoutes = (): SitemapEntry[] =>
-  RESOURCES.map((resource) => ({ path: `/resources/${resource.slug}`, priority: 0.82, changefreq: 'monthly' }));
+  RESOURCES.map((resource) => ({ path: resource.href || `/${resource.slug}`, priority: 0.86, changefreq: 'monthly' }));
 
 export const caseStudyRoutes = (): SitemapEntry[] =>
-  CASE_STUDIES.map((study) => ({ path: `/work/${study.id}`, priority: 0.78, changefreq: 'monthly' }));
+  CASE_STUDIES.map((study) => ({ path: `/case-studies/${study.id}`, priority: 0.78, changefreq: 'monthly' }));
 
 export const glossaryRoutes = (): SitemapEntry[] =>
   GLOSSARY_TERMS.map((term) => ({ path: `/glossary/${term.slug}`, priority: 0.66, changefreq: 'monthly' }));

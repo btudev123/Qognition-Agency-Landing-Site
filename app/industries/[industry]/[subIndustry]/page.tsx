@@ -141,7 +141,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
             <div className="sticky top-32 rounded-2xl border border-white/10 bg-white/[0.03] p-8">
               <h2 className="font-display text-3xl mb-5">Related Proof</h2>
               {CASE_STUDIES.slice(0, 3).map((study) => (
-                <Link key={study.id} href={`/work/${study.id}`} className="mb-3 block rounded-xl border border-white/10 bg-black/40 p-4 hover:border-teal-400/50">
+                <Link key={study.id} href={`/case-studies/${study.id}`} className="mb-3 block rounded-xl border border-white/10 bg-black/40 p-4 hover:border-teal-400/50">
                   <p className="text-xs uppercase tracking-widest text-teal-400 mb-2">{study.industry}</p>
                   <h3 className="font-display text-xl">{study.client}</h3>
                 </Link>

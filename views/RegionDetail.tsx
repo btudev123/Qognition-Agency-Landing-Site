@@ -109,7 +109,7 @@ const RegionDetail: React.FC = () => {
                   <section className="mb-24 mt-24">
                      <div className="flex justify-between items-end mb-8">
                         <h2 className="font-display text-3xl md:text-4xl">Success in {region.name}</h2>
-                        <Link to="/work" className="text-teal-400 hover:text-white transition-colors text-sm uppercase tracking-wider hidden md:block">
+                        <Link to="/case-studies" className="text-teal-400 hover:text-white transition-colors text-sm uppercase tracking-wider hidden md:block">
                             View All Case Studies
                         </Link>
                      </div>
@@ -132,7 +132,7 @@ const RegionDetail: React.FC = () => {
                                  ))}
                               </div>
 
-                              <Link to={`/work/${regionCaseStudy.id}`} className="inline-flex items-center gap-2 text-white border-b border-white/20 pb-1 self-start hover:border-teal-400 hover:text-teal-400 transition-colors">
+                              <Link to={`/case-studies/${regionCaseStudy.id}`} className="inline-flex items-center gap-2 text-white border-b border-white/20 pb-1 self-start hover:border-teal-400 hover:text-teal-400 transition-colors">
                                  Read Full Story <ArrowRight size={16} />
                               </Link>
                            </div>

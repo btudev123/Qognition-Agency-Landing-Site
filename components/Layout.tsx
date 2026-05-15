@@ -9,6 +9,7 @@ import { INDUSTRIES } from '../data/industries';
 import { REGIONS } from '../data/regions';
 import { LOCATIONS } from '../data/locations';
 import { RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
+import { B2B_MOFU_PAGES } from '../data/b2bPages';
 import MagneticButton from './MagneticButton';
 import NeuronBackground from './NeuronBackground';
 
@@ -114,13 +115,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       ]
     },
     {
-      label: 'Work',
-      path: '/work',
+      label: 'Case Studies',
+      path: '/case-studies',
       columns: [
         {
           title: 'Proof',
           links: [
-            { label: 'Case Studies', path: '/work' },
+            { label: 'Case Studies', path: '/case-studies' },
             { label: 'Team and Leadership', path: '/team' },
             { label: 'Lead Generation Roadmap', path: '/lead-generation-roadmap' }
           ]
@@ -131,13 +132,18 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       label: 'Resources',
       path: '/resources',
       columns: [
-        { title: 'Lead Magnets', links: RESOURCES.map((resource) => ({ label: resource.title, path: `/resources/${resource.slug}` })) },
+        { title: 'Free Audits', links: RESOURCES.map((resource) => ({ label: resource.title, path: resource.href || `/${resource.slug}` })) },
+        {
+          title: 'B2B Guides',
+          links: B2B_MOFU_PAGES.map((page) => ({ label: page.title.replace('Best ', '').replace('Effective ', ''), path: `/${page.slug}` }))
+        },
         {
           title: 'Discovery Pages',
           links: [
             { label: 'Tools Directory', path: '/directory' },
             { label: 'Digital Marketing Glossary', path: '/glossary' },
             { label: 'Agency Comparisons', path: '/comparisons' },
+            { label: 'Backlink Roadmap', path: '/backlink-authority-roadmap' },
             { label: 'Lead Generation Roadmap', path: '/lead-generation-roadmap' },
             { label: 'Global Markets', path: '/global' },
             { label: 'Multilingual SEO', path: '/languages' },
@@ -372,7 +378,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <li><Link to="/industries" className="hover:text-white transition-colors">Industries</Link></li>
                 <li><Link to="/locations" className="hover:text-white transition-colors">Locations</Link></li>
                 <li><Link to="/regions" className="hover:text-white transition-colors">Global Hubs</Link></li>
-                <li><Link to="/work" className="hover:text-white transition-colors">Case Studies</Link></li>
+                <li><Link to="/case-studies" className="hover:text-white transition-colors">Case Studies</Link></li>
                 <li><Link to="/lead-generation-roadmap" className="hover:text-white transition-colors">Lead Roadmap</Link></li>
                 <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
               </ul>
@@ -382,7 +388,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <p className="font-mono text-xs font-bold text-teal-400 uppercase tracking-widest mb-8">Resources</p>
             <ul className="space-y-4 text-gray-400 text-sm">
               <li><Link to="/directory" className="hover:text-white transition-colors font-bold text-teal-200">Tools Directory</Link></li>
-              <li><Link to="/resources" className="hover:text-white transition-colors">Lead Magnets</Link></li>
+              <li><Link to="/resources" className="hover:text-white transition-colors">Free Audits</Link></li>
               <li><Link to="/free-tools" className="hover:text-white transition-colors">Free Tools</Link></li>
               <li><Link to="/glossary" className="hover:text-white transition-colors">Glossary</Link></li>
               <li><Link to="/comparisons" className="hover:text-white transition-colors">Comparisons</Link></li>
@@ -426,6 +432,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </svg>
         <span className="absolute right-0 top-0 w-3 h-3 bg-[#20BD5A] rounded-full border-2 border-black animate-pulse"></span>
       </a>
+      <Link
+        to="/free-seo-audit"
+        className="fixed bottom-4 left-4 right-4 z-[105] rounded-full bg-teal-400 px-5 py-3 text-center font-display text-xs font-bold uppercase tracking-widest text-black shadow-2xl shadow-teal-500/20 transition-colors hover:bg-white sm:left-auto sm:right-5 sm:w-auto"
+        aria-label="Get a free SEO and AI audit"
+      >
+        Get Free SEO + AI Audit
+      </Link>
     </div>
   );
 };

@@ -240,7 +240,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   {[
                     ...(relatedService ? [{ label: `${relatedService.title} Services`, path: `/services/${relatedService.id}` }] : []),
                     ...INDUSTRIES.slice(0, 2).map((industry) => ({ label: `${industry.name} Marketing`, path: `/industries/${industry.id}` })),
-                    ...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, path: `/resources/${resource.slug}` })),
+                    ...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, path: resource.href || `/${resource.slug}` })),
                     ...FREE_TOOLS.slice(0, 2).map((freeTool) => ({ label: freeTool.title, path: `/free-tools/${freeTool.slug}` })),
                     { label: 'Growth Stack Directory', path: '/directory' }
                   ].map((item) => (

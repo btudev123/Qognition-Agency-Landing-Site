@@ -114,7 +114,7 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
               {[
                 ...SERVICES.slice(0, 3).map((service) => ({ label: service.title, href: `/services/${service.id}` })),
                 ...INDUSTRIES.slice(0, 2).map((industry) => ({ label: `${industry.name} Marketing`, href: `/industries/${industry.id}` })),
-                ...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, href: `/resources/${resource.slug}` })),
+                ...RESOURCES.slice(0, 2).map((resource) => ({ label: resource.title, href: resource.href || `/${resource.slug}` })),
                 { label: 'Book a Strategy Call', href: CALENDLY_LINK }
               ].map((item) => (
                 <Link key={item.href} href={item.href} className="rounded-lg border border-white/10 bg-black/40 p-4 text-sm text-gray-300 hover:border-teal-400/50 hover:text-white">

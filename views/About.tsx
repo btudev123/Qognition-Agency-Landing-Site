@@ -171,9 +171,9 @@ const About: React.FC = () => {
                     <a href="/services" className="text-teal-400 hover:underline">Explore services →</a>
                 </div>
                 <div className="p-6 border border-white/10 rounded-xl">
-                    <h3 className="font-display text-xl mb-3">Our Work</h3>
+                    <h3 className="font-display text-xl mb-3">Case Studies</h3>
                     <p className="text-gray-400 text-sm mb-4">See the results we've delivered for our clients.</p>
-                    <a href="/work" className="text-teal-400 hover:underline">View case studies →</a>
+                    <a href="/case-studies" className="text-teal-400 hover:underline">View case studies →</a>
                 </div>
                 <div className="p-6 border border-white/10 rounded-xl">
                     <h3 className="font-display text-xl mb-3">Industries</h3>

@@ -20,7 +20,7 @@ const CaseStudyDetail: React.FC = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <h2 className="text-2xl mb-4">Case Study Not Found</h2>
-        <MagneticButton onClick={() => navigate('/work')}>Back to Work</MagneticButton>
+        <MagneticButton onClick={() => navigate('/case-studies')}>Back to Case Studies</MagneticButton>
       </div>
     );
   }
@@ -30,19 +30,19 @@ const CaseStudyDetail: React.FC = () => {
       <SEO 
         title={`${study.title} | Case Study - Qognition Agency`}
         description={`${study.title} - ${study.client} case study. See how Qognition Agency delivered measurable results with ${study.stats.map(s => s.value + ' ' + s.label).join(', ')}. Read the full success story and get similar results!`}
-        path={`/work/${study.id}`}
+        path={`/case-studies/${study.id}`}
         schemaData={{
           type: "Article",
           name: study.title,
-          url: `https://www.qognitionagency.com/work/${study.id}`
+          url: `https://www.qognitionagency.com/case-studies/${study.id}`
         }}
       />
 
       <article className="min-h-screen pt-24 md:pt-32">
         {/* Header */}
         <div className="px-6 md:px-12 max-w-8xl mx-auto mb-16 md:mb-24">
-          <Link to="/work" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8 group">
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform"/> Back to Work
+          <Link to="/case-studies" className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8 group">
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform"/> Back to Case Studies
           </Link>
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
@@ -249,11 +249,11 @@ const CaseStudyDetail: React.FC = () => {
 
         {/* Next Project (Simple Navigation) */}
         <div className="border-t border-white/10">
-          <Link to="/work" className="block py-24 px-6 md:px-12 hover:bg-white/5 transition-colors group">
+          <Link to="/case-studies" className="block py-24 px-6 md:px-12 hover:bg-white/5 transition-colors group">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
               <div>
                 <span className="text-sm text-gray-500 uppercase tracking-widest mb-2 block">Next Project</span>
-                <span className="font-display text-4xl md:text-6xl group-hover:text-teal-400 transition-colors">View All Work</span>
+                <span className="font-display text-4xl md:text-6xl group-hover:text-teal-400 transition-colors">View All Case Studies</span>
               </div>
               <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
                  <ArrowRight size={24} />

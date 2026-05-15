@@ -10,6 +10,7 @@ import ParallaxImage from '../components/ParallaxImage';
 import ClientLogos from '../components/ClientLogos';
 import Testimonials from '../components/Testimonials';
 import HeroOrb from '../components/HeroOrb';
+import AuditWidget from '../components/AuditWidget';
 import { CALENDLY_LINK, CONTACT_MAILTO } from '../data/siteConfig';
 import { CASE_STUDIES } from '../data/work';
 import { REGIONS } from '../data/regions';
@@ -72,17 +73,20 @@ const Home: React.FC = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-                    <Link to="/resources/free-seo-audit-checklist">
+                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
                       <MagneticButton variant="primary" className="px-8 py-4 text-base w-full sm:w-auto min-w-[180px]">
-                          Get Free Growth Audit
+                          Book Strategy Call
                       </MagneticButton>
-                    </Link>
-                    <a href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
+                    </a>
+                    <Link to="/free-seo-audit" className="group flex items-center justify-center gap-4 px-8 py-4 rounded-full border border-white/20 hover:border-white transition-all w-full sm:w-auto">
                        <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center">
                           <Play size={12} fill="currentColor" />
                        </div>
-                       <span className="text-sm font-bold uppercase tracking-wider">Book Strategy Call</span>
-                    </a>
+                       <span className="text-sm font-bold uppercase tracking-wider">Get Free Audit</span>
+                    </Link>
+                </div>
+                <div className="mt-8">
+                  <AuditWidget defaultType="seo" compact source="Homepage Above Fold" />
                 </div>
               </div>
             </div>
@@ -365,12 +369,12 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Featured Work / Case Studies */}
+      {/* Featured Case Studies */}
       <section className="py-32 px-6 md:px-12 bg-black relative">
         <div className="max-w-8xl mx-auto">
           <div className="flex justify-between items-end mb-24">
-            <h2 className="font-display text-5xl md:text-7xl text-white">Selected Work</h2>
-            <Link to="/work">
+            <h2 className="font-display text-5xl md:text-7xl text-white">Selected Case Studies</h2>
+            <Link to="/case-studies">
                <MagneticButton variant="outline">All Case Studies</MagneticButton>
             </Link>
           </div>
@@ -381,7 +385,7 @@ const Home: React.FC = () => {
                 <div
                   className="w-full md:w-3/5 overflow-hidden rounded-2xl cursor-pointer shadow-2xl shadow-teal-900/10"
                 >
-                  <Link to={`/work/${study.id}`}>
+                  <Link to={`/case-studies/${study.id}`}>
                      <ParallaxImage src={study.image} alt={study.title} />
                   </Link>
                 </div>
@@ -391,7 +395,7 @@ const Home: React.FC = () => {
                     <span className="w-2 h-2 rounded-full bg-teal-400"></span>
                     {study.industry} • {study.client}
                   </div>
-                  <Link to={`/work/${study.id}`}>
+                  <Link to={`/case-studies/${study.id}`}>
                     <h3 className="font-display text-4xl md:text-6xl mb-8 text-white hover:text-teal-400 transition-colors leading-[1.1]">{study.title}</h3>
                   </Link>
                   <div className="grid grid-cols-2 gap-8 mb-10 border-t border-white/10 pt-8">
@@ -402,7 +406,7 @@ const Home: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                  <Link to={`/work/${study.id}`} className="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-white hover:gap-4 transition-all duration-300 border-b border-white/30 pb-1 hover:border-teal-400 hover:text-teal-400">
+                  <Link to={`/case-studies/${study.id}`} className="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-white hover:gap-4 transition-all duration-300 border-b border-white/30 pb-1 hover:border-teal-400 hover:text-teal-400">
                     View Case Study <ArrowRight size={16} />
                   </Link>
                 </div>

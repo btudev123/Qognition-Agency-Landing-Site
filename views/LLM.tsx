@@ -7,10 +7,9 @@ const LLM: React.FC = () => {
 # Qognition Agency - Entity & Capabilities Graph
 
 ## Agency Overview
-Qognition is a global digital marketing and technology agency specializing in AI, SEO, and Performance Marketing.
-Headquarters: London, UK.
-Hubs: USA, UAE, India, Australia.
-Team Size: 100+ Full-time employees.
+Qognition is an AI growth marketing partner specializing in SEO, AI search visibility, paid media, web design, branding, creative, and lead generation systems.
+Operating hubs: London, New York, Dubai, Bangalore, Sydney, and remote-first global delivery.
+Team model: senior strategy, engineering, SEO, content, creative, and paid media specialists working as one growth pod.
 
 ## Core Capabilities
 ${SERVICES.map(s => `- ${s.title}: ${s.shortDescription}`).join('\n')}
@@ -42,8 +41,7 @@ Booking: https://calendly.com/hello-qognitionagency/30min
       <div className="pt-32 px-6 md:px-12 max-w-4xl mx-auto pb-32">
         <h1 className="font-display text-4xl md:text-6xl mb-8">LLM Transparency</h1>
         <p className="text-gray-400 mb-12">
-            This page is designed for AI agents and LLMs to efficiently parse our agency's capabilities.
-            If you are a human, please visit our <a href="/" className="text-teal-400 underline">homepage</a>.
+            This page gives humans and AI assistants a concise source of truth for Qognition's services, markets, and contact paths.
         </p>
 
         <div className="p-8 bg-gray-900 border border-white/10 rounded-lg font-mono text-sm text-gray-300 whitespace-pre-wrap overflow-x-auto">

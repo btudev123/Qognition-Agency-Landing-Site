@@ -11,6 +11,7 @@ import {
 import { INDUSTRIES } from './industries';
 import { LOCATIONS } from './locations';
 import { SERVICES } from './services';
+import { RESOURCES_FROM_AUDITS } from './auditOffers';
 
 export const slugify = (value: string) =>
   value
@@ -68,7 +69,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     relatedLinks: [
       { label: 'Next.js SEO', href: '/services/web-development/nextjs-seo' },
       { label: 'AI Search Visibility', href: '/services/ai-seo/ai-search-visibility' },
-      { label: 'Technical SEO Checklist', href: '/resources/technical-seo-audit-checklist-nextjs' }
+      { label: 'Free SEO Audit', href: '/free-seo-audit' }
     ]
   },
   {
@@ -133,7 +134,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     faqs: serviceFaq('Link Building'),
     relatedLinks: [
       { label: 'SEO ROI Calculator', href: '/free-tools/seo-roi-calculator' },
-      { label: 'Case Studies', href: '/work' },
+      { label: 'Case Studies', href: '/case-studies' },
       { label: 'Digital PR', href: '/glossary/digital-pr' }
     ]
   },
@@ -165,7 +166,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     ],
     faqs: serviceFaq('AI Search Visibility'),
     relatedLinks: [
-      { label: '2026 AI SEO Guide', href: '/resources/2026-guide-ai-seo-sge' },
+      { label: 'Free AI Audit', href: '/free-ai-audit' },
       { label: 'LLM Transparency', href: '/llm' },
       { label: 'E-E-A-T', href: '/glossary/e-e-a-t' }
     ]
@@ -298,7 +299,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     faqs: serviceFaq('Next.js SEO'),
     relatedLinks: [
       { label: 'Technical SEO', href: '/services/seo/technical-seo' },
-      { label: 'Next.js Audit Checklist', href: '/resources/technical-seo-audit-checklist-nextjs' },
+      { label: 'Free SEO Audit', href: '/free-seo-audit' },
       { label: 'Website Traffic Estimator', href: '/free-tools/website-traffic-estimator' }
     ]
   },
@@ -332,7 +333,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     relatedLinks: [
       { label: 'Lead Generation Roadmap', href: '/lead-generation-roadmap' },
       { label: 'Landing Page CRO', href: '/services/ppc/landing-page-cro' },
-      { label: 'Case Studies', href: '/work' }
+      { label: 'Case Studies', href: '/case-studies' }
     ]
   },
   {
@@ -423,7 +424,7 @@ const buildGeneratedServiceSubPage = (service: Service, subService: SubService):
     faqs: serviceFaq(subService.name),
     relatedLinks: [
       { label: service.title, href: `/services/${service.id}` },
-      { label: 'Case Studies', href: '/work' },
+      { label: 'Case Studies', href: '/case-studies' },
       { label: 'Locations', href: '/locations' },
       { label: 'Industries', href: '/industries' },
       { label: 'Tools Directory', href: '/directory' },
@@ -449,92 +450,7 @@ export const getServiceSubPage = (serviceId: string, slug: string) =>
 export const getServiceSubPages = (serviceId: string) =>
   SERVICE_SUB_PAGES.filter((page) => page.serviceId === serviceId);
 
-export const RESOURCES: ResourceLeadMagnet[] = [
-  {
-    slug: '2026-guide-ai-seo-sge',
-    title: 'The 2026 Guide to AI SEO and SGE',
-    description:
-      'A practical guide to ranking in AI Overviews, answer engines, ChatGPT-style discovery, Gemini, and Perplexity.',
-    format: 'PDF and checklist',
-    readingTime: '34 min',
-    gated: true,
-    audience: 'CMOs, founders, SEO leads, and B2B growth teams',
-    highlights: ['AI search ranking factors', 'Entity and citation checklist', 'Prompt demand mapping', 'LLM-ready content formats'],
-    sections: [
-      {
-        title: 'What Changed',
-        content:
-          'AI search rewards pages that are easy to summarize, cite, and verify. Brand entities, original proof, structured answers, and credible authorship matter more than generic keyword repetition.'
-      },
-      {
-        title: 'What to Build',
-        content:
-          'The highest-return assets are service pages, comparison pages, glossary pages, case studies, original tools, and expert-led guides that answer specific buying questions.'
-      },
-      {
-        title: 'How to Measure',
-        content:
-          'Track branded search, AI referral traffic, citation presence, assisted conversions, keyword movement, and sales calls where prospects mention AI tools or answer engines.'
-      }
-    ]
-  },
-  {
-    slug: 'technical-seo-audit-checklist-nextjs',
-    title: 'Technical SEO Audit Checklist for Next.js Websites',
-    description:
-      'A launch checklist for Next.js App Router sites covering metadata, static params, canonicals, JSON-LD, sitemaps, robots, and Core Web Vitals.',
-    format: 'Checklist',
-    readingTime: '22 min',
-    gated: true,
-    audience: 'Founders, marketers, and engineering teams shipping SEO-critical Next.js sites',
-    highlights: ['App Router metadata checks', 'Static generation QA', 'Schema checklist', 'Curl-based pre-JavaScript checks'],
-    sections: [
-      {
-        title: 'Rendering Checks',
-        content:
-          'Use curl and view-source checks to confirm that title, meta description, canonical, H1, primary body copy, internal links, and JSON-LD exist before JavaScript.'
-      },
-      {
-        title: 'Indexing Checks',
-        content:
-          'Validate sitemap coverage, robots rules, canonical host consistency, duplicate route handling, noindex usage, and 404 behavior for generated params.'
-      },
-      {
-        title: 'Performance Checks',
-        content:
-          'Review LCP assets, font loading, image sizing, route payloads, cumulative layout shift, hydration cost, and third-party scripts.'
-      }
-    ]
-  },
-  {
-    slug: 'free-seo-audit-checklist',
-    title: 'Free SEO Audit Checklist',
-    description:
-      'A founder-friendly SEO checklist for finding technical, content, authority, local, and conversion gaps before hiring an agency.',
-    format: 'Checklist and spreadsheet',
-    readingTime: '18 min',
-    gated: true,
-    audience: 'SMBs, consultants, clinics, law firms, accounting firms, and B2B service companies',
-    highlights: ['Technical SEO triage', 'Content gap review', 'Local SEO checklist', 'Lead capture audit'],
-    sections: [
-      {
-        title: 'Technical Baseline',
-        content:
-          'Check whether search engines can crawl and index your priority pages, understand your page templates, and access a current XML sitemap.'
-      },
-      {
-        title: 'Content Baseline',
-        content:
-          'Identify missing service pages, thin location pages, weak blog coverage, unsupported claims, and pages with unclear search intent.'
-      },
-      {
-        title: 'Conversion Baseline',
-        content:
-          'Review CTAs, forms, lead magnets, testimonials, pricing guidance, case studies, and analytics events.'
-      }
-    ]
-  }
-];
+export const RESOURCES: ResourceLeadMagnet[] = RESOURCES_FROM_AUDITS;
 
 export const FREE_TOOLS: FreeToolPage[] = [
   {
@@ -707,7 +623,7 @@ const coreTerms = [
   'Open Graph',
   'Organic CTR',
   'Page Speed',
-  'Programmatic SEO',
+  'Scalable SEO Pages',
   'Rank Tracking',
   'Redirect Chain',
   'Return on Ad Spend',

@@ -108,7 +108,7 @@ const IndustryDetail: React.FC = () => {
                     <h3 className="font-display text-xl mb-6">Case Study Reference</h3>
                     <div className="mb-8">
                         <p className="text-gray-400 mb-4">See how we helped a client in this space:</p>
-                        <Link to={`/work/${industry.caseStudyRef}`} className="block p-4 border border-white/20 rounded hover:border-teal-400 transition-colors">
+                        <Link to={`/case-studies/${industry.caseStudyRef}`} className="block p-4 border border-white/20 rounded hover:border-teal-400 transition-colors">
                             <span className="text-teal-400 font-bold">View Case Study &rarr;</span>
                         </Link>
                     </div>

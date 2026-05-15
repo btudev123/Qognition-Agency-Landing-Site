@@ -183,8 +183,13 @@ export const getCoreMetadata = (path: string): Metadata => {
       description:
         'Qognition delivers local digital marketing strategy across the US, UK, UAE, India, Australia, Europe, GCC, and global revenue markets.'
     },
+    '/case-studies': {
+      title: 'Case Studies | Digital Marketing Results',
+      description:
+        'Explore successful digital marketing campaigns, SEO growth, web development, and performance marketing case studies.'
+    },
     '/work': {
-      title: 'Our Work | Case Studies & Success Stories',
+      title: 'Case Studies | Digital Marketing Results',
       description:
         'Explore successful digital marketing campaigns, SEO growth, web development, and performance marketing case studies.'
     },
@@ -313,11 +318,11 @@ export const getServiceIndustryMetadata = (serviceSlug: string, industrySlug: st
 
 export const getCaseStudyMetadata = (id: string): Metadata => {
   const study = CASE_STUDIES.find((item) => item.id === id);
-  if (!study) return metadataFor({ title: 'Case Study Not Found', description: 'Case study not found.', path: `/work/${id}`, noIndex: true });
+  if (!study) return metadataFor({ title: 'Case Study Not Found', description: 'Case study not found.', path: `/case-studies/${id}`, noIndex: true });
   return metadataFor({
     title: `${study.title} | Case Study`,
     description: `${study.title} for ${study.client}. See how Qognition delivered measurable digital growth.`,
-    path: `/work/${study.id}`,
+    path: `/case-studies/${study.id}`,
     image: study.image
   });
 };

@@ -1,9 +1,5 @@
-import type { Metadata } from 'next';
-import ViewRenderer from '../ViewRenderer';
-import { getCoreMetadata } from '../../lib/seo';
-
-export const metadata: Metadata = getCoreMetadata('/work');
+import { permanentRedirect } from 'next/navigation';
 
 export default function Page() {
-  return <ViewRenderer view="work" />;
+  permanentRedirect('/case-studies');
 }

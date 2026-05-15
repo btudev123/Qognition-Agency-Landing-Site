@@ -5,6 +5,7 @@ import React from 'react';
 import ClientLayout from './ClientLayout';
 import './globals.css';
 import { SITE_URL } from '../lib/seo';
+import WebMCPProvider from '../components/WebMCPProvider';
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -150,6 +151,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         )}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+        <WebMCPProvider />
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

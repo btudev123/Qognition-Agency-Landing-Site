@@ -44,7 +44,7 @@ export default async function Page({ params }: { params: Promise<{ language: str
           <h1 className="font-display text-5xl md:text-8xl leading-none mt-6 mb-8">{page.title}</h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-4xl leading-relaxed">{page.intro}</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <Link href="/resources/free-seo-audit-checklist" className="rounded-full bg-teal-400 px-8 py-4 text-center font-display text-sm uppercase tracking-wider text-black hover:bg-white">
+            <Link href="/free-seo-audit" className="rounded-full bg-teal-400 px-8 py-4 text-center font-display text-sm uppercase tracking-wider text-black hover:bg-white">
               Get Free Localization Audit
             </Link>
             <Link href="/global/china-market-entry" className="rounded-full border border-white/20 px-8 py-4 text-center font-display text-sm uppercase tracking-wider text-white hover:border-teal-400 hover:text-teal-400">
