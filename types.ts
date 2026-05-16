@@ -293,6 +293,12 @@ export interface AuditCheck {
   detail: string;
 }
 
+export interface AuditCategoryScore {
+  label: string;
+  score: number;
+  detail: string;
+}
+
 export interface AuditReport {
   auditType: AuditType;
   url: string;
@@ -301,7 +307,9 @@ export interface AuditReport {
   score: number;
   summary: string;
   checks: AuditCheck[];
+  categoryScores?: AuditCategoryScore[];
   recommendations: string[];
+  pdfFilename?: string;
   generatedAt: string;
 }
 

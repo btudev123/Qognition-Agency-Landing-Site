@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AUDIT_OFFERS } from '../../../data/auditOffers';
 import { submitHubSpotLead, sendResendEmail } from '../../../lib/leadDelivery';
+import { buildAuditReportPdf } from '../../../lib/auditPdf';
+import { checkAuditRateLimit, getAuditDeviceCookie, recordAuditRateLimit } from '../../../lib/auditRateLimit';
 import { AuditCheck, AuditReport, AuditType } from '../../../types';
 
 export const dynamic = 'force-dynamic';
@@ -37,6 +39,7 @@ const normalizeTargetUrl = (value: string) => {
 const fetchText = async (url: string, timeoutMs = 8000) => {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const startedAt = Date.now();
   try {
     const response = await fetch(url, {
       headers: { 'User-Agent': USER_AGENT, Accept: 'text/html,text/plain,application/xml;q=0.8,*/*;q=0.5' },
@@ -50,7 +53,8 @@ const fetchText = async (url: string, timeoutMs = 8000) => {
       ok: response.ok,
       status: response.status,
       contentType,
-      text: text.slice(0, MAX_HTML_BYTES)
+      text: text.slice(0, MAX_HTML_BYTES),
+      durationMs: Date.now() - startedAt
     };
   } finally {
     clearTimeout(timer);
@@ -89,18 +93,102 @@ const makeCheck = (id: string, label: string, passed: boolean, detail: string, w
   detail
 });
 
+const stripHtml = (html: string) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const countMatches = (value: string, regex: RegExp) => (value.match(regex) || []).length;
+
+const averageChecks = (checks: AuditCheck[], ids: string[]) => {
+  const selected = checks.filter((check) => ids.includes(check.id));
+  if (!selected.length) return 0;
+  return Math.round((selected.reduce((total, check) => total + check.score, 0) / (selected.length * 10)) * 100);
+};
+
+const getReportSummary = (auditType: AuditType, score: number, host: string, offerTitle: string) => {
+  const baseline =
+    score >= 82
+      ? `The ${host} audit shows a strong foundation.`
+      : score >= 62
+        ? `The ${host} audit shows a workable foundation with clear growth gaps.`
+        : `The ${host} audit found blockers that should be fixed before scaling spend or content.`;
+
+  const focus: Record<AuditType, string> = {
+    seo: 'SEO priority: improve crawlability, intent-matched content depth, structured data, internal links, and conversion paths that turn organic traffic into qualified leads.',
+    ai: 'AI visibility priority: make the page easier for answer engines to parse, cite, and trust with clear summaries, proof, FAQs, schema, and entity signals.',
+    branding: 'Branding priority: sharpen the first-screen message, proof, visual trust signals, social credibility, and CTA clarity so buyers understand why they should choose you.',
+    social: 'Social media priority: strengthen share metadata, social proof, founder or team authority, content handoff, and lead capture from attention into CRM follow-up.',
+    llm: 'LLM priority: expose machine-readable discovery signals, AI crawler access, llm.txt, Content Signals, schema, concise summaries, and source-of-truth pages.'
+  };
+
+  return `${offerTitle} for ${host}. ${baseline} ${focus[auditType]}`;
+};
+
+const buildCategoryScores = (auditType: AuditType, checks: AuditCheck[]) => {
+  const common = {
+    seo: [
+      { label: 'Technical SEO', ids: ['https', 'title', 'description', 'h1', 'canonical', 'robots', 'sitemap'], detail: 'Indexability, metadata, headings, canonicals, robots, and sitemap access.' },
+      { label: 'Content Depth', ids: ['headings', 'content-depth', 'schema', 'links'], detail: 'Depth, structure, schema, and internal discovery paths.' },
+      { label: 'Lead Readiness', ids: ['cta', 'proof', 'tracking'], detail: 'Conversion prompts, proof, and measurement signals.' }
+    ],
+    ai: [
+      { label: 'Answer Readiness', ids: ['summary', 'faq', 'headings', 'content-depth'], detail: 'Clear summaries, questions, headings, and substantial context.' },
+      { label: 'Entity Trust', ids: ['schema', 'proof', 'about', 'canonical'], detail: 'Structured data, proof, source-of-truth pages, and canonical clarity.' },
+      { label: 'AI Access', ids: ['ai-bots', 'llm', 'links'], detail: 'Crawler access, llm.txt, and internal links for machine discovery.' }
+    ],
+    branding: [
+      { label: 'Positioning', ids: ['title', 'h1', 'description', 'cta'], detail: 'First-screen clarity, offer language, and next-step clarity.' },
+      { label: 'Trust', ids: ['proof', 'case-study', 'social-links', 'contact'], detail: 'Proof, social presence, case-study access, and contact confidence.' },
+      { label: 'Creative System', ids: ['logo', 'image-alt', 'og', 'tracking'], detail: 'Brand assets, visual accessibility, social previews, and measurement.' }
+    ],
+    social: [
+      { label: 'Share Readiness', ids: ['og', 'twitter-card', 'share-image', 'title', 'description'], detail: 'Metadata that controls previews on LinkedIn, X, Slack, and social feeds.' },
+      { label: 'Social Trust', ids: ['social-links', 'proof', 'video', 'case-study'], detail: 'Profiles, proof content, video signals, and market credibility.' },
+      { label: 'Conversion Handoff', ids: ['cta', 'tracking', 'links'], detail: 'Routing social attention into useful next steps and attribution.' }
+    ],
+    llm: [
+      { label: 'Crawler Access', ids: ['ai-bots', 'robots', 'content-signal', 'llm'], detail: 'AI bot access, robots rules, Content Signals, and llm.txt discovery.' },
+      { label: 'Machine Context', ids: ['schema', 'summary', 'faq', 'headings'], detail: 'Structured answers, schema, headings, and parseable page structure.' },
+      { label: 'Authority Signals', ids: ['about', 'proof', 'canonical', 'links'], detail: 'Entity proof, canonical source-of-truth, and internal relationship signals.' }
+    ]
+  }[auditType];
+
+  return common.map((category) => ({
+    label: category.label,
+    score: averageChecks(checks, category.ids),
+    detail: category.detail
+  }));
+};
+
 const reportEmailHtml = (report: AuditReport) => `
   <div style="font-family:Inter,Arial,sans-serif;background:#050505;color:#f7f7f7;padding:32px;border-radius:18px">
-    <p style="color:#19d3bd;text-transform:uppercase;letter-spacing:2px;font-size:12px">Qognition Audit Report</p>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:42px;height:42px;border-radius:12px;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px">Q</div>
+      <p style="color:#19d3bd;text-transform:uppercase;letter-spacing:2px;font-size:12px;margin:0">Qognition Audit Report</p>
+    </div>
     <h1 style="font-size:32px;margin:8px 0 12px">Your audit score is ${report.score}/100</h1>
     <p style="color:#c8c8c8;line-height:1.6">${escapeHtml(report.summary)}</p>
     <p><strong>URL:</strong> ${escapeHtml(report.normalizedUrl)}</p>
+    ${
+      report.categoryScores?.length
+        ? `<h2 style="margin-top:28px">Category scores</h2><ul>${report.categoryScores
+            .map((category) => `<li style="margin:8px 0"><strong>${escapeHtml(category.label)}:</strong> ${category.score}/100 - ${escapeHtml(category.detail)}</li>`)
+            .join('')}</ul>`
+        : ''
+    }
     <h2 style="margin-top:28px">Top recommendations</h2>
     <ul>${report.recommendations.map((item) => `<li style="margin:8px 0">${escapeHtml(item)}</li>`).join('')}</ul>
     <h2 style="margin-top:28px">Checks</h2>
     <ul>${report.checks
       .map((check) => `<li style="margin:8px 0"><strong>${escapeHtml(check.label)}:</strong> ${escapeHtml(check.status)} - ${escapeHtml(check.detail)}</li>`)
       .join('')}</ul>
+    <p style="color:#c8c8c8;line-height:1.6">A branded PDF copy is attached for your team.</p>
     <p style="margin-top:28px"><a href="https://calendly.com/hello-qognitionagency/30min" style="background:#19d3bd;color:#000;padding:12px 18px;border-radius:999px;text-decoration:none;font-weight:700">Book a strategy call</a></p>
   </div>
 `;
@@ -118,6 +206,27 @@ export async function POST(request: NextRequest) {
     }
 
     const targetUrl = normalizeTargetUrl(urlValue);
+    const rateLimit = await checkAuditRateLimit(request, email);
+    if (!rateLimit.allowed) {
+      const response = NextResponse.json(
+        {
+          error: 'You already requested an audit from this email, IP, or device today. Please try again tomorrow or book a strategy call.',
+          retryAfterSeconds: rateLimit.retryAfterSeconds
+        },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rateLimit.retryAfterSeconds) }
+        }
+      );
+      response.cookies.set(getAuditDeviceCookie(), rateLimit.deviceId, {
+        maxAge: 60 * 60 * 24 * 365,
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/'
+      });
+      return response;
+    }
     const origin = targetUrl.origin;
     const htmlResponse = await fetchText(targetUrl.toString()).catch(() => null);
     if (!htmlResponse) {
@@ -156,29 +265,78 @@ export async function POST(request: NextRequest) {
       .then((response) => response.ok)
       .catch(() => false);
     const hasContentSignal = /content-signal:\s*ai-train=/i.test(robots);
+    const bodyText = stripHtml(html);
+    const wordCount = bodyText ? bodyText.split(/\s+/).length : 0;
+    const h2Count = countMatches(html, /<h2[\s>]/gi);
+    const h3Count = countMatches(html, /<h3[\s>]/gi);
+    const hasOg = lowerHtml.includes('property="og:') || lowerHtml.includes("property='og:");
+    const hasTwitterCard = lowerHtml.includes('name="twitter:card"') || lowerHtml.includes("name='twitter:card'");
+    const hasShareImage = /property=["']og:image["']|name=["']twitter:image["']/i.test(html);
+    const imageCount = countMatches(html, /<img[\s>]/gi);
+    const imageAltCount = countMatches(html, /<img[^>]+alt=["'][^"']+["']/gi);
+    const hasCta = /\b(book|schedule|contact|get started|get audit|demo|quote|call|consultation|strategy)\b/i.test(bodyText);
+    const hasProof = /\b(case stud|testimonial|client|review|result|roi|revenue|award|certified|partner|portfolio)\b/i.test(bodyText);
+    const hasCaseStudy = /case-stud|\/case-studies|\/work\b/i.test(lowerHtml);
+    const hasSocialLinks = /(linkedin\.com|instagram\.com|facebook\.com|youtube\.com|x\.com|twitter\.com|tiktok\.com|pinterest\.com)/i.test(html);
+    const hasTracking = /(googletagmanager|gtag\(|google-analytics|hubspot|hs-scripts|clarity|hotjar|fbq\()/i.test(html);
+    const hasLogoSignal = /logo|brand|favicon|apple-touch-icon/i.test(html);
+    const hasContactSignal = /(mailto:|tel:|\/contact|contact us|book a call|strategy call)/i.test(html);
+    const hasVideoSignal = /(youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|video|reels|shorts)/i.test(html);
+    const hasFaqSignal = /\?|faq|frequently asked|question/i.test(bodyText) && countMatches(bodyText, /\?/g) >= 2;
+    const hasSummarySignal = /tl;dr|summary|key takeaways|quick answer|in short|what you need to know/i.test(bodyText);
+    const hasAboutSignal = /(\/about|\/team|leadership|founder|author|expert|experience|credentials)/i.test(html);
+    const responseIsFast = htmlResponse.durationMs <= 2500;
 
-    const checks: AuditCheck[] = [
-      makeCheck('https', 'HTTPS', targetUrl.protocol === 'https:', 'The audited URL should use HTTPS for trust and browser security.'),
-      makeCheck('title', 'Title tag', title.length >= 20 && title.length <= 70, title ? `Found "${title.slice(0, 80)}"` : 'No title tag found.', Boolean(title)),
-      makeCheck('description', 'Meta description', description.length >= 70 && description.length <= 170, description ? `Found ${description.length} characters.` : 'No meta description found.', Boolean(description)),
-      makeCheck('h1', 'Single H1', h1s.length === 1, `Found ${h1s.length} H1 tag${h1s.length === 1 ? '' : 's'}.`, h1s.length > 0),
-      makeCheck('canonical', 'Canonical URL', canonical.length > 0, canonical ? `Canonical points to ${canonical}.` : 'No canonical link found.'),
-      makeCheck('robots', 'Robots.txt', robotsResponse.ok, robotsResponse.ok ? 'robots.txt is reachable.' : 'robots.txt could not be reached.'),
-      makeCheck('sitemap', 'XML sitemap', sitemapResponse.ok && /<urlset|<sitemapindex/i.test(sitemapResponse.text), sitemapResponse.ok ? 'sitemap.xml is reachable.' : 'sitemap.xml could not be reached.', sitemapResponse.ok),
-      makeCheck('ai-bots', 'AI bot access', aiBotsAllowed, aiBotsAllowed ? 'Major AI/search bots are not blocked at the root.' : 'One or more AI/search bots may be blocked in robots.txt.', Boolean(robots)),
-      makeCheck('llm', 'LLM discovery file', hasLlmTxt, hasLlmTxt ? 'llm.txt is available.' : 'llm.txt was not found.', false),
-      makeCheck('content-signal', 'Content Signals', hasContentSignal, hasContentSignal ? 'Content-Signal preferences are declared.' : 'No Content-Signal directive found.', false),
-      makeCheck('schema', 'JSON-LD schema', jsonLdCount > 0, jsonLdCount ? `Found ${jsonLdCount} JSON-LD block${jsonLdCount === 1 ? '' : 's'}.` : 'No JSON-LD schema found.'),
-      makeCheck('links', 'Internal links', sameHostLinks >= 10, `Found ${sameHostLinks} same-host link${sameHostLinks === 1 ? '' : 's'} in the page HTML.`, sameHostLinks > 0),
-      makeCheck('og', 'Open Graph tags', lowerHtml.includes('property="og:') || lowerHtml.includes("property='og:"), 'Open Graph tags help social and AI previews understand the page.', false)
-    ];
+    const commonChecks: Record<string, AuditCheck> = {
+      https: makeCheck('https', 'HTTPS', targetUrl.protocol === 'https:', 'The audited URL should use HTTPS for trust and browser security.'),
+      title: makeCheck('title', 'Title tag', title.length >= 20 && title.length <= 70, title ? `Found "${title.slice(0, 80)}"` : 'No title tag found.', Boolean(title)),
+      description: makeCheck('description', 'Meta description', description.length >= 70 && description.length <= 170, description ? `Found ${description.length} characters.` : 'No meta description found.', Boolean(description)),
+      h1: makeCheck('h1', 'Single H1', h1s.length === 1, `Found ${h1s.length} H1 tag${h1s.length === 1 ? '' : 's'}.`, h1s.length > 0),
+      canonical: makeCheck('canonical', 'Canonical URL', canonical.length > 0, canonical ? `Canonical points to ${canonical}.` : 'No canonical link found.'),
+      robots: makeCheck('robots', 'Robots.txt', robotsResponse.ok, robotsResponse.ok ? 'robots.txt is reachable.' : 'robots.txt could not be reached.'),
+      sitemap: makeCheck('sitemap', 'XML sitemap', sitemapResponse.ok && /<urlset|<sitemapindex/i.test(sitemapResponse.text), sitemapResponse.ok ? 'sitemap.xml is reachable.' : 'sitemap.xml could not be reached.', sitemapResponse.ok),
+      'ai-bots': makeCheck('ai-bots', 'AI bot access', aiBotsAllowed, aiBotsAllowed ? 'Major AI/search bots are not blocked at the root.' : 'One or more AI/search bots may be blocked in robots.txt.', Boolean(robots)),
+      llm: makeCheck('llm', 'LLM discovery file', hasLlmTxt, hasLlmTxt ? 'llm.txt is available.' : 'llm.txt was not found.', false),
+      'content-signal': makeCheck('content-signal', 'Content Signals', hasContentSignal, hasContentSignal ? 'Content-Signal preferences are declared.' : 'No Content-Signal directive found.', false),
+      schema: makeCheck('schema', 'JSON-LD schema', jsonLdCount > 0, jsonLdCount ? `Found ${jsonLdCount} JSON-LD block${jsonLdCount === 1 ? '' : 's'}.` : 'No JSON-LD schema found.'),
+      links: makeCheck('links', 'Internal links', sameHostLinks >= 10, `Found ${sameHostLinks} same-host link${sameHostLinks === 1 ? '' : 's'} in the page HTML.`, sameHostLinks > 0),
+      og: makeCheck('og', 'Open Graph tags', hasOg, 'Open Graph tags help social and AI previews understand the page.', false),
+      'twitter-card': makeCheck('twitter-card', 'Twitter/X card', hasTwitterCard, hasTwitterCard ? 'Twitter card metadata is present.' : 'No Twitter/X card metadata found.', false),
+      'share-image': makeCheck('share-image', 'Share image', hasShareImage, hasShareImage ? 'A share preview image is defined.' : 'No social share image found.', false),
+      headings: makeCheck('headings', 'Heading structure', h2Count >= 2 && h3Count >= 1, `Found ${h2Count} H2 and ${h3Count} H3 headings.`, h2Count >= 1),
+      'content-depth': makeCheck('content-depth', 'Content depth', wordCount >= 650, `Found roughly ${wordCount} visible words in the HTML response.`, wordCount >= 300),
+      cta: makeCheck('cta', 'Conversion CTA', hasCta, hasCta ? 'The page includes direct conversion language.' : 'No clear book/contact/demo/audit CTA language found.'),
+      proof: makeCheck('proof', 'Proof signals', hasProof, hasProof ? 'Proof language such as case studies, clients, results, testimonials, or awards appears on the page.' : 'No strong proof language found.'),
+      tracking: makeCheck('tracking', 'Tracking signals', hasTracking, hasTracking ? 'Analytics, CRM, or tracking scripts were detected.' : 'No analytics or CRM tracking signal found.', false),
+      logo: makeCheck('logo', 'Logo and brand assets', hasLogoSignal, hasLogoSignal ? 'Logo/favicon/brand asset signals were found.' : 'Logo or favicon signals were not obvious in the HTML.', false),
+      'image-alt': makeCheck('image-alt', 'Image alt text', imageCount === 0 || imageAltCount / imageCount >= 0.7, imageCount ? `${imageAltCount} of ${imageCount} image tags include alt text.` : 'No image tags found.', imageAltCount > 0),
+      'case-study': makeCheck('case-study', 'Case-study access', hasCaseStudy, hasCaseStudy ? 'Case-study or work links are visible.' : 'No obvious case-study or work link found.', false),
+      'social-links': makeCheck('social-links', 'Social profile links', hasSocialLinks, hasSocialLinks ? 'Social profile links were found.' : 'No major social profile links found.', false),
+      contact: makeCheck('contact', 'Contact path', hasContactSignal, hasContactSignal ? 'Contact, booking, email, or phone signal found.' : 'No obvious contact path found.'),
+      video: makeCheck('video', 'Video/social content signals', hasVideoSignal, hasVideoSignal ? 'Video or social content signals were found.' : 'No obvious video or social content signal found.', false),
+      faq: makeCheck('faq', 'FAQ or Q&A structure', hasFaqSignal, hasFaqSignal ? 'Question-and-answer style content appears on the page.' : 'No clear FAQ or Q&A structure found.', false),
+      summary: makeCheck('summary', 'Concise summary', hasSummarySignal, hasSummarySignal ? 'A summary, TL;DR, quick answer, or key takeaways signal was found.' : 'No concise summary signal found.', false),
+      about: makeCheck('about', 'Entity and author proof', hasAboutSignal, hasAboutSignal ? 'About, team, leadership, founder, author, or expertise signals appear in the HTML.' : 'No strong entity or author proof signal found.', false),
+      speed: makeCheck('speed', 'HTML response speed', responseIsFast, `HTML fetched in ${htmlResponse.durationMs}ms from the audit server.`, htmlResponse.durationMs <= 5000)
+    };
 
+    const auditCheckIds: Record<AuditType, string[]> = {
+      seo: ['https', 'title', 'description', 'h1', 'canonical', 'robots', 'sitemap', 'headings', 'content-depth', 'schema', 'links', 'cta', 'proof', 'tracking', 'speed'],
+      ai: ['title', 'h1', 'description', 'summary', 'faq', 'headings', 'content-depth', 'schema', 'proof', 'about', 'canonical', 'links', 'ai-bots', 'llm'],
+      branding: ['title', 'h1', 'description', 'logo', 'cta', 'proof', 'case-study', 'social-links', 'contact', 'image-alt', 'og', 'tracking'],
+      social: ['og', 'twitter-card', 'share-image', 'title', 'description', 'social-links', 'proof', 'video', 'case-study', 'cta', 'tracking', 'links'],
+      llm: ['ai-bots', 'robots', 'llm', 'content-signal', 'schema', 'summary', 'faq', 'headings', 'content-depth', 'about', 'proof', 'canonical', 'links']
+    };
+
+    const checks = auditCheckIds[offer.type].map((id) => commonChecks[id]);
     const score = Math.round(checks.reduce((total, check) => total + check.score, 0) / (checks.length * 10) * 100);
     const failedChecks = checks.filter((check) => check.status !== 'pass');
     const recommendations = failedChecks.slice(0, 5).map((check) => `${check.label}: ${check.detail}`);
     if (recommendations.length === 0) {
       recommendations.push('The first-pass audit looks strong. Next, compare page intent, competitors, conversion tracking, and CRM lead quality.');
     }
+    const categoryScores = buildCategoryScores(offer.type, checks);
+    const pdfFilename = `qognition-${offer.slug}-${targetUrl.hostname.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-audit.pdf`;
 
     const report: AuditReport = {
       auditType: offer.type,
@@ -186,14 +344,11 @@ export async function POST(request: NextRequest) {
       normalizedUrl: targetUrl.toString(),
       email,
       score,
-      summary:
-        score >= 80
-          ? `${offer.shortTitle} found a strong baseline. The next wins are likely content depth, proof, conversion testing, and authority.`
-          : score >= 55
-            ? `${offer.shortTitle} found a workable foundation with clear gaps to prioritize before scaling traffic.`
-            : `${offer.shortTitle} found meaningful blockers. Fix the technical, content, and trust issues before pushing more traffic to this page.`,
+      summary: getReportSummary(offer.type, score, targetUrl.hostname, offer.shortTitle),
       checks,
+      categoryScores,
       recommendations,
+      pdfFilename,
       generatedAt: new Date().toISOString()
     };
 
@@ -218,13 +373,24 @@ export async function POST(request: NextRequest) {
 
     const notifyEmail = process.env.AUDIT_NOTIFY_EMAIL;
     const to = notifyEmail && notifyEmail !== email ? [email, notifyEmail] : email;
+    const pdfContent = buildAuditReportPdf(report, offer);
     const resend = await sendResendEmail({
       to,
       subject: `Your Qognition ${offer.shortTitle} report: ${score}/100`,
-      html: reportEmailHtml(report)
+      html: reportEmailHtml(report),
+      attachments: [{ filename: pdfFilename, content: pdfContent }]
     });
 
-    return NextResponse.json({ ok: true, report, delivery: { hubSpot, resend } });
+    await recordAuditRateLimit(rateLimit.keys);
+    const response = NextResponse.json({ ok: true, report, delivery: { hubSpot, resend }, rateLimit: { allowed: true, nextAuditAfterSeconds: 86400 } });
+    response.cookies.set(getAuditDeviceCookie(), rateLimit.deviceId, {
+      maxAge: 60 * 60 * 24 * 365,
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/'
+    });
+    return response;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to run audit.';
     const isValidation = /URL|email|Private|local|HTTP/i.test(message);

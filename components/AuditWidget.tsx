@@ -39,7 +39,7 @@ const AuditWidget: React.FC<Props> = ({ defaultType = 'seo', compact = false, so
       }
       setReport(data.report);
       setStatus('success');
-      setMessage('Your audit is ready. We also sent the report details by email when email delivery is configured.');
+      setMessage('Your audit is ready. If email delivery is configured, we sent a branded PDF report to your inbox.');
     } catch (error) {
       setStatus('error');
       setMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
@@ -62,8 +62,9 @@ const AuditWidget: React.FC<Props> = ({ defaultType = 'seo', compact = false, so
             value={url}
             onChange={(event) => setUrl(event.target.value)}
             required
-            type="url"
-            placeholder="https://yourcompany.com"
+            type="text"
+            inputMode="url"
+            placeholder="yourcompany.com"
             className="h-12 w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 text-white outline-none transition-colors placeholder:text-gray-500 focus:border-teal-400"
           />
         </label>
@@ -118,6 +119,17 @@ const AuditWidget: React.FC<Props> = ({ defaultType = 'seo', compact = false, so
             </a>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-gray-300">{report.summary}</p>
+          {report.categoryScores?.length ? (
+            <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+              {report.categoryScores.map((category) => (
+                <div key={category.label} className="rounded-lg border border-teal-400/20 bg-teal-400/5 p-3">
+                  <p className="text-xs uppercase tracking-widest text-teal-300">{category.label}</p>
+                  <p className="mt-2 font-display text-3xl text-white">{category.score}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-gray-400">{category.detail}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
           <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
             {report.checks.slice(0, 6).map((check) => (
               <div key={check.id} className="rounded-lg border border-white/10 bg-black/40 p-3">

@@ -6,8 +6,10 @@ When a visitor requests an audit, the API:
 
 1. Runs the fast website audit.
 2. Sends the lead and report summary to HubSpot.
-3. Sends the branded report email through Resend.
+3. Sends the branded report email through Resend with a Qognition PDF attachment.
 4. Returns the report JSON immediately so the page can show results without waiting for email delivery.
+
+Audit requests are rate-limited to one successful report per day by email, IP, and device cookie. This protects Resend, HubSpot, and the audit endpoint from repeated automated submissions. Local development uses an in-memory limiter; production should set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` for a persistent limiter across deployments.
 
 ## Required Environment Variables
 
@@ -19,6 +21,8 @@ HUBSPOT_LEAD_FORM_GUID=
 RESEND_API_KEY=
 RESEND_FROM=Qognition Agency <hello@qognitionagency.com>
 AUDIT_NOTIFY_EMAIL=hello@qognitionagency.com
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
 ```
 
 Do not commit `.env.local`.
@@ -79,4 +83,3 @@ Expected result:
 - `delivery.hubSpot.ok` is `true` when HubSpot is configured correctly.
 - `delivery.resend.ok` is `true` when Resend is configured correctly.
 - `delivery.*.skipped` is `true` only when the matching env vars are missing.
-

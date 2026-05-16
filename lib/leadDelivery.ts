@@ -143,11 +143,13 @@ export const submitHubSpotLead = async (payload: LeadSubmission, request?: NextR
 export const sendResendEmail = async ({
   to,
   subject,
-  html
+  html,
+  attachments
 }: {
   to: string | string[];
   subject: string;
   html: string;
+  attachments?: { filename: string; content: string }[];
 }) => {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM;
@@ -162,7 +164,7 @@ export const sendResendEmail = async ({
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ from, to, subject, html }),
+    body: JSON.stringify({ from, to, subject, html, attachments }),
     cache: 'no-store'
   });
 

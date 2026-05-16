@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from '../lib/routerCompat';
 import { Menu, X, Instagram, Linkedin, Twitter, Youtube, Facebook, Dribbble, ChevronDown } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { CALENDLY_LINK, CONTACT_MAILTO, WHATSAPP_LINK } from '../data/siteConfig';
 import { TOOL_CATEGORIES } from '../data/toolCategories';
 import { SERVICES } from '../data/services';
@@ -43,6 +44,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [hoveredPath, setHoveredPath] = useState<string | null>(null);
   const [activeMega, setActiveMega] = useState<string | null>(null);
   const [activeMobileGroup, setActiveMobileGroup] = useState('Services');
+  const [activeMobileColumn, setActiveMobileColumn] = useState('Services:SEO & Organic Growth');
   const location = useLocation();
 
   useEffect(() => {
@@ -170,6 +172,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }
   ];
 
+  const activeMobileNav = navGroups.find((group) => group.label === activeMobileGroup) || navGroups[0];
+  const activeMobileColumnKey = activeMobileColumn || `${activeMobileNav.label}:${activeMobileNav.columns[0]?.title || ''}`;
+  const activeMobileColumnData =
+    activeMobileNav.columns.find((column) => `${activeMobileNav.label}:${column.title}` === activeMobileColumnKey) || activeMobileNav.columns[0];
+
   return (
     <div className="min-h-screen relative font-sans text-white selection:bg-teal-500/30">
       <NeuronBackground />
@@ -229,17 +236,23 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               );
             })}
           </div>
-            {activeMega && (
-              <div
-                className="absolute left-1/2 top-full w-[min(1180px,calc(100vw-48px))] -translate-x-1/2 pt-3"
-              >
-                <div className="grid max-h-[72vh] grid-cols-3 gap-5 overflow-y-auto rounded-2xl border border-white/10 bg-black/95 p-6 shadow-2xl shadow-black/60 backdrop-blur-xl">
+            <AnimatePresence>
+              {activeMega && (
+                <motion.div
+                  key={activeMega}
+                  initial={{ opacity: 0, y: 14, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute left-1/2 top-full w-[min(1120px,calc(100vw-48px))] -translate-x-1/2 pt-3"
+                >
+                <div className="grid max-h-[72vh] grid-cols-1 gap-4 overflow-y-auto rounded-2xl border border-white/10 bg-black/95 p-5 shadow-2xl shadow-black/60 backdrop-blur-xl md:grid-cols-2 xl:grid-cols-3">
                   {navGroups.find((group) => group.label === activeMega)?.columns.map((column) => (
-                    <div key={column.title} className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                    <div key={column.title} className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-teal-400/30">
                       <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-teal-400">{column.title}</h3>
                       <div className="space-y-2">
                         {column.links.map((link) => (
-                          <Link key={link.path} to={link.path} className="block rounded-lg px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">
+                          <Link key={link.path} to={link.path} className="block rounded-lg px-3 py-2 text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white">
                             {link.label}
                           </Link>
                         ))}
@@ -247,8 +260,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="flex items-center justify-end gap-3 justify-self-end md:gap-6">
@@ -274,31 +288,55 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </nav>
 
       {/* Mobile Menu */}
+        <AnimatePresence>
         {isMenuOpen && (
-          <div
+          <motion.div
             id="mobile-menu"
-            className="fixed inset-0 z-[90] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-start border-b border-white/10 overflow-y-auto px-6 pt-28 pb-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[90] flex flex-col items-center justify-start overflow-y-auto border-b border-white/10 bg-black/95 px-5 pb-12 pt-28 backdrop-blur-3xl"
           >
-            <div className="w-full max-w-2xl space-y-4 text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-2xl space-y-3 text-left"
+            >
               {navGroups.map((item) => (
                 <div
                   key={item.path}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors"
                 >
                   <button
                     type="button"
                     className="flex w-full items-center justify-between gap-4 py-1 text-left"
-                    onClick={() => setActiveMobileGroup((current) => (current === item.label ? '' : item.label))}
+                    onClick={() => {
+                      const nextGroup = activeMobileGroup === item.label ? '' : item.label;
+                      setActiveMobileGroup(nextGroup);
+                      if (nextGroup) {
+                        setActiveMobileColumn(`${item.label}:${item.columns[0]?.title || ''}`);
+                      }
+                    }}
                     aria-expanded={activeMobileGroup === item.label}
                   >
-                    <span className="font-display text-3xl sm:text-4xl font-light">{item.label}</span>
+                    <span className="font-display text-2xl font-light sm:text-3xl">{item.label}</span>
                     <ChevronDown
                       size={22}
                       className={`text-teal-400 transition-transform ${activeMobileGroup === item.label ? 'rotate-180' : ''}`}
                     />
                   </button>
+                    <AnimatePresence>
                     {activeMobileGroup === item.label && (
-                      <div className="overflow-hidden">
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
                         <Link 
                           to={item.path} 
                           className="mt-4 block rounded-xl bg-teal-400 px-4 py-3 text-center text-sm font-bold uppercase tracking-widest text-black"
@@ -306,27 +344,43 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                         >
                           {item.label} Overview
                         </Link>
-                        <div className="mt-4 grid grid-cols-1 gap-4">
+                        <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
                           {item.columns.map((column) => (
-                            <div key={column.title}>
-                              <p className="mb-2 text-xs font-bold uppercase tracking-widest text-teal-400">{column.title}</p>
-                              <div className="grid grid-cols-1 gap-2">
-                                {column.links.map((link) => (
-                                  <Link
-                                    key={link.path}
-                                    to={link.path}
-                                    className="block rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-gray-300 hover:border-teal-400/50 hover:text-white"
-                                    onClick={() => setIsMenuOpen(false)}
-                                  >
-                                    {link.label}
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
+                            <button
+                              key={column.title}
+                              type="button"
+                              onClick={() => setActiveMobileColumn(`${item.label}:${column.title}`)}
+                              className={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors ${
+                                activeMobileColumn === `${item.label}:${column.title}`
+                                  ? 'border-teal-400 bg-teal-400 text-black'
+                                  : 'border-white/10 bg-black/40 text-gray-300'
+                              }`}
+                            >
+                              {column.title}
+                            </button>
                           ))}
                         </div>
-                      </div>
+                        <motion.div
+                          key={activeMobileColumnData?.title}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.18 }}
+                          className="mt-4 grid grid-cols-1 gap-2"
+                        >
+                          {activeMobileColumnData?.links.map((link) => (
+                            <Link
+                              key={link.path}
+                              to={link.path}
+                              className="block rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-gray-300 transition-colors hover:border-teal-400/50 hover:text-white"
+                              onClick={() => setIsMenuOpen(false)}
+                            >
+                              {link.label}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      </motion.div>
                     )}
+                    </AnimatePresence>
                 </div>
               ))}
               <div className="mt-6">
@@ -334,9 +388,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     <MagneticButton variant="primary">Book Strategy Call</MagneticButton>
                   </a>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
       <main className="relative z-10 min-h-screen">
         {children}
@@ -416,29 +471,19 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </div>
       </footer>
 
-{/* WhatsApp Floating Button */}
+      {/* WhatsApp Floating Button */}
       <a 
         href={WHATSAPP_LINK}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-24 right-4 z-[110] rounded-full bg-[#25D366] p-4 text-white shadow-2xl shadow-[#25D366]/30 transition-all duration-300 hover:scale-110 hover:bg-[#20BD5A] md:bottom-auto md:top-24"
+        className="fixed bottom-5 right-5 z-[110] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl shadow-[#25D366]/30 ring-1 ring-white/20 transition-all duration-300 hover:scale-110 hover:bg-[#20BD5A] focus:outline-none focus:ring-2 focus:ring-white"
         aria-label="Chat on WhatsApp"
       >
-        <svg width="28" height="28" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M16.02 3.2A12.68 12.68 0 0 0 5.07 22.25L3.6 28.8l6.72-1.42A12.66 12.66 0 1 0 16.02 3.2Zm0 2.45a10.22 10.22 0 0 1 8.65 15.67 10.2 10.2 0 0 1-13.95 3.72l-.46-.24-3.44.73.75-3.32-.28-.5A10.22 10.22 0 0 1 16.02 5.65Zm-4.02 5.32c-.23 0-.6.09-.92.43-.32.35-1.21 1.19-1.21 2.9s1.24 3.36 1.42 3.59c.17.23 2.44 3.73 5.91 5.22.83.36 1.47.57 1.97.73.83.26 1.58.22 2.18.13.66-.1 2.03-.83 2.32-1.63.29-.8.29-1.49.2-1.63-.09-.15-.32-.23-.66-.4-.35-.17-2.03-1-2.35-1.12-.32-.12-.55-.17-.78.17-.23.35-.9 1.12-1.1 1.35-.2.23-.41.26-.75.09-.35-.17-1.46-.54-2.78-1.72-1.03-.92-1.72-2.05-1.92-2.4-.2-.35-.02-.54.15-.71.16-.16.35-.41.52-.61.17-.2.23-.35.35-.58.12-.23.06-.43-.03-.6-.09-.17-.78-1.88-1.07-2.58-.28-.68-.57-.59-.78-.6h-.66Z" />
+        <svg width="30" height="30" viewBox="0 0 448 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32 101 32 1 132 1 254.9c0 39.1 10.2 77.3 29.6 111L0 480l116.9-30.7c32.5 17.7 69 27 106.9 27h.1c122.8 0 222.8-100 222.8-222.9 0-59.4-23.1-115.2-65.8-156.3zM223.9 438.6h-.1c-33.7 0-66.8-9.1-95.7-26.2l-6.9-4.1-69.3 18.2 18.5-67.6-4.5-7c-18.9-30-28.9-64.8-28.9-100.7 0-103.2 83.9-187.1 187.1-187.1 50 0 97 19.5 132.4 54.9 35.9 35.9 55.6 83.3 55.6 133.9 0 103.2-84 187.7-188.2 187.7zm101.9-140.2c-5.6-2.8-33.1-16.3-38.2-18.2-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18.2-17.5 21.9-3.2 3.7-6.5 4.2-12.1 1.4-33.1-16.5-54.8-29.5-76.6-66.8-5.8-10 5.8-9.3 16.5-30.9 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2s-9.7 1.4-14.8 6.9c-5.1 5.6-19.4 19-19.4 46.3s19.9 53.7 22.7 57.4c2.8 3.7 39.1 59.7 94.8 83.7 13.2 5.7 23.5 9.1 31.5 11.7 13.2 4.2 25.3 3.6 34.8 2.2 10.6-1.6 33.1-13.5 37.8-26.6 4.7-13.1 4.7-24.3 3.2-26.6-1.4-2.4-5.1-3.8-10.7-6.6z" />
         </svg>
-        <svg className="hidden" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17.498 14.382C17.256 14.258 16.832 14.058 15.974 13.858C15.916 13.848 15.858 13.838 15.79 13.838C15.336 13.838 14.842 14.258 14.842 14.258L14.842 14.248L14.532 14.488C14.532 14.488 14.312 14.708 14.072 14.708L13.652 14.988C13.652 14.988 13.552 15.048 13.472 15.048C13.392 15.048 13.292 14.988 13.292 14.988C11.172 14.198 10.012 12.768 10.012 12.768C10.012 12.768 10.002 12.748 9.992 12.728L9.982 12.718C9.982 12.718 9.602 12.328 9.602 11.928C9.602 11.928 9.542 11.768 9.662 11.648L9.932 11.378C9.932 11.378 10.212 10.958 10.772 10.958L10.952 10.698C10.952 10.698 11.012 10.568 11.142 10.438C11.142 10.438 11.252 10.328 11.372 10.328L11.432 10.308C11.432 10.308 11.572 10.258 11.712 10.258C11.852 10.258 12.002 10.318 12.002 10.318L12.002 10.298C12.002 10.298 12.322 10.468 13.242 11.388C14.162 12.308 15.552 13.698 15.552 13.698L15.472 13.818C15.472 13.818 16.092 14.508 16.972 14.508C17.852 14.508 18.292 14.128 18.292 14.128L18.212 14.248C18.212 14.248 18.732 14.768 19.332 14.768L19.212 14.628C19.042 14.458 18.722 14.358 18.722 14.358C18.722 14.358 18.522 14.268 18.492 14.428L18.112 15.768C18.112 15.768 17.902 16.438 16.962 16.438L16.502 16.568C16.502 16.568 16.392 16.628 16.302 16.628C16.212 16.628 16.112 16.568 16.112 16.568C16.112 16.568 15.812 16.368 15.812 16.008C15.812 16.008 15.812 15.848 16.112 15.848L16.292 15.618C16.292 15.618 17.762 14.778 17.762 14.778C17.762 14.778 17.672 14.738 17.498 14.382ZM12.002 22C6.852 22 2.502 17.65 2.502 12.5C2.502 7.35 6.852 2 12.002 2C17.152 2 21.502 7.35 21.502 12.5C21.502 17.65 17.152 22 12.002 22ZM12.002 3.5C7.532 3.5 3.852 7.18 3.852 11.65C3.852 14.77 5.822 17.53 8.662 18.83L7.552 22L11.052 20.17C11.442 20.37 11.852 20.5 12.272 20.5C12.702 20.5 13.132 20.36 13.532 20.17L17.832 22.75L20.172 18.5C20.262 18.37 20.342 18.23 20.412 18.09C21.552 15.97 21.552 13.13 20.412 11.01C19.272 8.89 16.432 8.89 15.292 11.01L15.272 11.04C14.132 13.16 11.292 13.16 10.152 11.04C9.012 8.92 6.172 8.92 5.032 11.04L5.022 11.01C3.882 13.13 3.882 15.97 5.022 18.09L5.032 18.08C6.172 20.2 9.012 20.2 10.152 18.08L10.162 18.07C11.302 15.95 14.142 15.95 15.282 18.07L15.292 18.08C15.572 17.55 16.722 16.28 16.722 16.28C17.342 15.52 17.702 14.53 17.702 13.48C17.702 12.43 17.342 11.44 16.722 10.68L16.382 10.27C16.122 9.95 15.762 9.71 15.352 9.58L15.292 9.56C15.112 9.51 14.922 9.5 14.732 9.5C14.542 9.5 14.352 9.51 14.172 9.56L13.872 9.68C13.872 9.68 12.002 10.76 12.002 10.76L11.682 9.94C11.402 9.47 10.832 9.25 10.282 9.25L9.692 9.69C9.442 9.84 9.242 10.06 9.022 10.28L8.782 10.52C8.782 10.52 7.592 11.63 7.592 11.63L8.752 12.79C8.752 12.79 9.602 13.64 9.602 13.64L9.862 14.47C9.862 14.47 10.002 15.22 9.582 15.64C8.402 16.82 7.782 17.32 7.782 17.32L7.292 17.81C7.292 17.81 6.662 18.44 6.092 18.44L5.772 18.68C5.772 18.68 5.272 19.18 4.582 18.49C2.672 16.58 2.672 13.68 2.672 13.68L2.502 12.5L2.662 11.31C2.662 11.31 2.662 8.41 4.572 6.5L4.852 6.22L4.282 5.65C4.282 5.65 3.652 5.02 3.652 4.33L3.902 3.51C4.602 2.82 5.602 2.82 6.292 3.51L6.582 3.8C6.582 3.8 7.682 4.9 7.682 4.9L8.242 5.46C8.242 5.46 8.782 5.92 9.502 5.92L10.322 6.17C10.322 6.17 11.072 6.31 11.802 5.89L12.622 6.24C12.622 6.24 13.362 5.89 14.112 5.89C14.862 5.89 15.602 6.24 15.602 6.24L16.422 6.59C16.422 6.59 17.262 6.93 17.812 5.89L18.202 5.23C18.202 5.23 19.002 4.06 20.662 4.06C22.322 4.06 22.322 5.89 22.322 5.89L22.102 7.55C20.442 7.55 17.582 7.55 15.722 9.41L15.542 9.59C13.682 11.45 13.682 14.31 13.682 14.31C13.682 14.31 14.922 14.918 16.592 14.918C18.262 14.918 19.502 14.31 19.502 14.31L19.322 14.488C19.322 14.488 20.762 16.128 20.762 17.948C20.762 19.768 19.402 21.128 17.582 21.128C15.762 21.128 14.182 20.488 12.742 19.048L12.562 18.868C10.942 17.248 10.942 14.378 10.942 14.378C10.942 14.378 12.002 13.318 12.002 13.318L11.742 12.758C11.742 12.758 11.742 12.508 11.742 12.248C11.742 11.988 11.632 11.798 11.632 11.798L11.462 11.368C11.462 11.368 11.352 11.128 11.352 10.858C11.352 10.588 11.532 10.228 11.532 10.228L11.732 9.688C11.732 9.688 12.002 9.5 12.002 9.5L12.002 3.5Z" fill="currentColor"/>
-        </svg>
-        <span className="absolute right-0 top-0 w-3 h-3 bg-[#20BD5A] rounded-full border-2 border-black animate-pulse"></span>
+        <span className="absolute right-1.5 top-1.5 h-3 w-3 rounded-full border-2 border-black bg-[#20BD5A] animate-pulse"></span>
       </a>
-      <Link
-        to="/free-seo-audit"
-        className="fixed bottom-4 left-4 right-4 z-[105] rounded-full bg-teal-400 px-5 py-3 text-center font-display text-xs font-bold uppercase tracking-widest text-black shadow-2xl shadow-teal-500/20 transition-colors hover:bg-white sm:left-auto sm:right-5 sm:w-auto"
-        aria-label="Get a free SEO and AI audit"
-      >
-        Get Free SEO + AI Audit
-      </Link>
     </div>
   );
 };

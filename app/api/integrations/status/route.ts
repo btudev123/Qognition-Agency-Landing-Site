@@ -12,6 +12,8 @@ export function GET() {
   const resendKey = process.env.RESEND_API_KEY;
   const resendFrom = process.env.RESEND_FROM;
   const notifyEmail = process.env.AUDIT_NOTIFY_EMAIL;
+  const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
 
   return Response.json({
     ok: true,
@@ -34,6 +36,11 @@ export function GET() {
       notifyEmail: notifyEmail || null,
       requiredEnv: ['RESEND_API_KEY', 'RESEND_FROM'],
       optionalEnv: ['AUDIT_NOTIFY_EMAIL']
+    },
+    rateLimit: {
+      configured: Boolean(redisUrl && redisToken),
+      storage: redisUrl && redisToken ? 'upstash-redis' : 'in-memory-local-fallback',
+      requiredEnv: ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']
     }
   });
 }
