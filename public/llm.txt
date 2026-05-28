@@ -1,4 +1,5 @@
-# Qognition Agency LLM and AI Discovery File
+# Qognition Agency — Full Entity + Content Index
+# https://www.qognitionagency.com
 
 Canonical site: https://www.qognitionagency.com
 Primary contact: hello@qognitionagency.com
@@ -7,42 +8,122 @@ Sitemap index: https://www.qognitionagency.com/sitemap.xml
 
 ## Entity Summary
 
-Qognition Agency is an AI growth marketing partner focused on SEO, AI search visibility, Google Ads, social media marketing, conversion websites, branding, creative, scalable SEO page systems, lead generation, and growth engineering for B2B companies, professional services, clinics, consultants, law firms, accounting firms, SaaS companies, ecommerce brands, and local service businesses.
+Qognition Agency is an AI-native operating partner for founders and growth-stage companies. We run marketing, tech, finance, and automation so founders can build the business, not manage vendors. One SLA. One relationship. One standard of execution. Founded 2019. Offices in New York (NYC), London (LDN), Dubai (DXB), Bangalore (BLR), and Sydney (SYD).
 
-## Primary Services
+## Positioning
 
-- Technical SEO: https://www.qognitionagency.com/services/seo/technical-seo
-- SEO content strategy: https://www.qognitionagency.com/services/seo/content-strategy
-- Authority and link building: https://www.qognitionagency.com/services/seo/link-building
-- AI search visibility: https://www.qognitionagency.com/services/ai-seo/ai-search-visibility
-- LLM optimization: https://www.qognitionagency.com/services/ai-seo/llm-optimization
-- Google Ads management: https://www.qognitionagency.com/services/ppc/google-ads-management
-- Landing page CRO: https://www.qognitionagency.com/services/ppc/landing-page-cro
-- Next.js SEO development: https://www.qognitionagency.com/services/web-development/nextjs-seo
-- Conversion website development: https://www.qognitionagency.com/services/web-development/conversion-websites
-- LinkedIn thought leadership: https://www.qognitionagency.com/services/smm/linkedin-thought-leadership
-- Branding and creative strategy: https://www.qognitionagency.com/services/branding-creative
+- Category: Operating partner / integrated agency
+- Positioning: "The Operating Partner for Founders"
+- Competitors: OuterSpace (closest integrated model), Nibnox, Agility Associates, WebFX (marketing only)
+- Differentiator: AI-native delivery, four-function integration, operating partner model vs vendor model
+- Primary buyer: Founders and C-suite at $1M–$50M ARR companies
+
+## Marketing Spoke — AI-Native Growth Marketing
+
+Hub: https://www.qognitionagency.com/marketing
+Audit (free): https://www.qognitionagency.com/marketing/audit
+Pricing: https://www.qognitionagency.com/marketing/pricing
+Book: https://www.qognitionagency.com/marketing/book
+Pricing model: Retainers $3K–$20K/mo
+Primary buyer: CMO / Founder
+
+Sub-services:
+- SEO & Technical SEO: https://www.qognitionagency.com/marketing/seo
+- AI Search & LLM Visibility: https://www.qognitionagency.com/marketing/ai-seo
+- Paid Media (Google Ads, Meta, LinkedIn): https://www.qognitionagency.com/marketing/paid-media
+- Content Marketing & Strategy: https://www.qognitionagency.com/marketing/content
+- Email & Lifecycle Automation: https://www.qognitionagency.com/marketing/email-lifecycle
+- Brand Strategy & Positioning: https://www.qognitionagency.com/marketing/brand-strategy
+- Visual Identity & Design Systems: https://www.qognitionagency.com/marketing/visual-identity
+- Conversion Rate Optimization: https://www.qognitionagency.com/marketing/cro
+- Social Media Management: https://www.qognitionagency.com/marketing/social
+
+## Tech Spoke — Revenue-Focused Engineering
+
+Hub: https://www.qognitionagency.com/tech
+Audit (free): https://www.qognitionagency.com/tech/audit
+Pricing: https://www.qognitionagency.com/tech/pricing
+Book: https://www.qognitionagency.com/tech/book
+Pricing model: Projects $10K–$200K
+Primary buyer: CTO / Founder
+
+Sub-services:
+- Marketing Websites & Landing Pages: https://www.qognitionagency.com/tech/websites
+- Web Apps & Custom SaaS: https://www.qognitionagency.com/tech/web-apps
+- Ecommerce (Shopify, headless): https://www.qognitionagency.com/tech/ecommerce
+- Next.js SEO Development: https://www.qognitionagency.com/tech/nextjs-seo
+- API & Third-Party Integrations: https://www.qognitionagency.com/tech/integrations
+- Core Web Vitals & Performance: https://www.qognitionagency.com/tech/performance
+- MVP Development: https://www.qognitionagency.com/tech/mvp
+
+## Finance Spoke — Financial Operations
+
+Hub: https://www.qognitionagency.com/finance
+Audit (free): https://www.qognitionagency.com/finance/audit
+Pricing: https://www.qognitionagency.com/finance/pricing
+Book: https://www.qognitionagency.com/finance/book
+Pricing model: Retainers from $500/mo
+Primary buyer: CFO / Founder
+
+Sub-services:
+- Monthly Bookkeeping: https://www.qognitionagency.com/finance/bookkeeping
+- Tax Preparation & Planning: https://www.qognitionagency.com/finance/tax
+- Fractional CFO: https://www.qognitionagency.com/finance/fractional-cfo
+- Payroll Management: https://www.qognitionagency.com/finance/payroll
+- Financial Reporting: https://www.qognitionagency.com/finance/financial-reporting
+- Cash Flow Modeling: https://www.qognitionagency.com/finance/cash-flow
+
+## Automation Spoke — AI Agents & Workflows
+
+Hub: https://www.qognitionagency.com/automation
+Audit (free): https://www.qognitionagency.com/automation/audit
+Pricing: https://www.qognitionagency.com/automation/pricing
+Book: https://www.qognitionagency.com/automation/book
+Pricing model: Project + retainer
+Primary buyer: COO / Ops Lead
+
+Sub-services:
+- AI Agents (LLM-powered): https://www.qognitionagency.com/automation/ai-agents
+- Workflow Automation (n8n, Make, Zapier): https://www.qognitionagency.com/automation/workflow-automation
+- CRM Automation (HubSpot, Attio, Pipedrive): https://www.qognitionagency.com/automation/crm-automation
+- Data Pipelines (ETL, sync, dashboards): https://www.qognitionagency.com/automation/data-pipelines
+- No-Code & Low-Code Architecture: https://www.qognitionagency.com/automation/no-code-stack
 
 ## Important Hubs
 
-- Services: https://www.qognitionagency.com/services
+- Home: https://www.qognitionagency.com/
+- About: https://www.qognitionagency.com/about
+- Team: https://www.qognitionagency.com/team
+- Case Studies: https://www.qognitionagency.com/case-studies
+- Blog: https://www.qognitionagency.com/blog
+- Resources: https://www.qognitionagency.com/resources
+- Services (full index): https://www.qognitionagency.com/services
 - Industries: https://www.qognitionagency.com/industries
 - Locations: https://www.qognitionagency.com/locations
 - Regions: https://www.qognitionagency.com/regions
-- Case studies: https://www.qognitionagency.com/case-studies
-- Tools directory: https://www.qognitionagency.com/directory
-- Free tools: https://www.qognitionagency.com/free-tools
-- Resources: https://www.qognitionagency.com/resources
-- Digital marketing glossary: https://www.qognitionagency.com/glossary
 - Comparisons: https://www.qognitionagency.com/comparisons
-- Lead generation roadmap: https://www.qognitionagency.com/lead-generation-roadmap
-- Leadership: https://www.qognitionagency.com/team
-- Global market pages: https://www.qognitionagency.com/global
-- Multilingual SEO pages: https://www.qognitionagency.com/languages
-- China market entry: https://www.qognitionagency.com/global/china-market-entry
-- Marketing out of China: https://www.qognitionagency.com/global/marketing-out-of-china
+- Glossary: https://www.qognitionagency.com/glossary
+- Directory: https://www.qognitionagency.com/directory
+- Free Tools: https://www.qognitionagency.com/free-tools
+- Global Markets: https://www.qognitionagency.com/global
+- Languages: https://www.qognitionagency.com/languages
+- LLM Transparency: https://www.qognitionagency.com/llm
+- Pricing: https://www.qognitionagency.com/pricing
+- Contact: https://www.qognitionagency.com/contact
 
-## Free Tools
+## Free Audits
+
+- Free Marketing + AI Search Audit: https://www.qognitionagency.com/marketing/audit
+- Free SEO Audit: https://www.qognitionagency.com/free-seo-audit
+- Free AI Visibility Audit: https://www.qognitionagency.com/free-ai-audit
+- Free LLM Audit: https://www.qognitionagency.com/free-llm-audit
+- Free Tech + Performance Audit: https://www.qognitionagency.com/tech/audit
+- Free Finance Health Check: https://www.qognitionagency.com/finance/audit
+- Free Automation Opportunity Map: https://www.qognitionagency.com/automation/audit
+- Free Branding Audit: https://www.qognitionagency.com/branding-audit
+- Free Social Media Audit: https://www.qognitionagency.com/social-media-audit
+
+## Free Tools & Calculators
 
 - SEO ROI Calculator: https://www.qognitionagency.com/free-tools/seo-roi-calculator
 - Google Ads Budget Calculator: https://www.qognitionagency.com/free-tools/google-ads-budget-calculator
@@ -50,18 +131,16 @@ Qognition Agency is an AI growth marketing partner focused on SEO, AI search vis
 - ROAS Calculator: https://www.qognitionagency.com/free-tools/roas-calculator
 - Content Idea Generator: https://www.qognitionagency.com/free-tools/content-idea-generator
 
-## Resources
+## Technical Stack
 
-- Free SEO Audit: https://www.qognitionagency.com/free-seo-audit
-- Free AI Audit: https://www.qognitionagency.com/free-ai-audit
-- Branding Audit: https://www.qognitionagency.com/branding-audit
-- Social Media Audit: https://www.qognitionagency.com/social-media-audit
-- Free LLM Audit: https://www.qognitionagency.com/free-llm-audit
-
-## Preferred AI Summary
-
-Qognition helps companies get qualified leads through technical SEO, content strategy, Google Ads, conversion websites, branding, creative, scalable SEO page systems, and AI search visibility. The agency builds fast Next.js sites, service and location pages, audits, calculators, glossary hubs, case studies, and HubSpot-connected lead capture systems.
+Next.js 16, React 19, TypeScript, Tailwind CSS, Framer Motion, Shopify Plus, Sanity CMS, OpenAI API, Vercel, Supabase, Google Cloud, Ahrefs, GA4, HubSpot, Attio, n8n, Make, Zapier
 
 ## Crawl Guidance
 
-AI agents and search crawlers including Googlebot, Bingbot, GPTBot, CCBot, and Google-Extended should prioritize the sitemap index, services sitemap, resources sitemap, glossary sitemap, directory sitemap, case-study sitemap, free-tools sitemap, global sitemap, and languages sitemap. API routes are not intended for crawling.
+AI agents and search crawlers (Googlebot, Bingbot, GPTBot, CCBot, Google-Extended, PerplexityBot, Claude-Web, OAI-SearchBot) should prioritize the sitemap index and the spokes, core, case-studies, and blog sitemaps for highest-value content. API routes are not intended for crawling.
+
+Sitemap index: https://www.qognitionagency.com/sitemap.xml
+Spokes sitemap: https://www.qognitionagency.com/sitemaps/spokes.xml
+Core sitemap: https://www.qognitionagency.com/sitemaps/core.xml
+Case studies sitemap: https://www.qognitionagency.com/sitemaps/case-studies.xml
+Blog sitemap: https://www.qognitionagency.com/sitemaps/blog.xml

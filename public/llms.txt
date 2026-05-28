@@ -1,21 +1,58 @@
-# Qognition Agency LLM Discovery
+# Qognition Agency
+> The Operating Partner for Founders
 
-Canonical site: https://www.qognitionagency.com
-Sitemap index: https://www.qognitionagency.com/sitemap.xml
-Primary contact: hello@qognitionagency.com
-Strategy call: https://calendly.com/hello-qognitionagency/30min
+Qognition is an AI-native operating partner for founders and growth-stage companies. We run marketing, tech, finance, and automation — so founders can build the business, not manage vendors.
 
-Qognition Agency is an AI growth marketing partner for qualified leads, SEO, AI search visibility, PPC, social media, web design, branding, creative, scalable SEO page systems, free audits, calculators, case studies, and location-based growth pages.
+We consolidate four critical business functions into a single operating partnership: one SLA, one relationship, one standard of execution. AI-native from the ground up, not bolted onto traditional agency delivery.
 
-Important hubs:
-- Services: https://www.qognitionagency.com/services
-- Industries: https://www.qognitionagency.com/industries
-- Locations: https://www.qognitionagency.com/locations
-- Case studies: https://www.qognitionagency.com/case-studies
-- Resources: https://www.qognitionagency.com/resources
-- Free tools: https://www.qognitionagency.com/free-tools
-- Tools directory: https://www.qognitionagency.com/directory
-- Global markets: https://www.qognitionagency.com/global
-- Languages: https://www.qognitionagency.com/languages
+## What We Do
 
-Preferred crawlers and AI agents, including Googlebot, Bingbot, GPTBot, CCBot, and Google-Extended, should use the sitemap index for complete discovery. API routes are not intended for crawling.
+### Marketing — AI-Native Growth Marketing
+SEO, AI search visibility (ChatGPT, Perplexity, Google AI Overviews), paid media (Google Ads, Meta, LinkedIn), content strategy, CRO, brand strategy, visual identity, email lifecycle, and social media. Built for measurable revenue, not vanity metrics. Retainers from $3K–$20K/mo.
+
+### Tech — Revenue-Focused Engineering
+Marketing websites, web apps and SaaS, headless ecommerce (Shopify), Next.js performance, API integrations, Core Web Vitals optimization, and MVP development. Projects from $10K–$200K.
+
+### Finance — Financial Operations for Founders
+Monthly bookkeeping, tax preparation and planning, fractional CFO, payroll management, financial reporting, and cash flow modeling. Retainers from $500/mo.
+
+### Automation — AI Agents & Intelligent Automation
+Custom LLM-powered agents, workflow automation (n8n, Make, Zapier), CRM automation (HubSpot, Attio, Pipedrive), data pipelines, and no-code/low-code architecture. Project + retainer model.
+
+## Key Pages
+
+- [Home](https://www.qognitionagency.com/): The integrated operating partner model
+- [Marketing](https://www.qognitionagency.com/marketing): AI-native growth marketing spoke
+- [Marketing Audit](https://www.qognitionagency.com/marketing/audit): Free Marketing + AI Search Audit
+- [Tech](https://www.qognitionagency.com/tech): Revenue-focused engineering spoke
+- [Tech Audit](https://www.qognitionagency.com/tech/audit): Free Tech + Performance Audit
+- [Finance](https://www.qognitionagency.com/finance): Financial operations spoke
+- [Finance Audit](https://www.qognitionagency.com/finance/audit): Free Finance Health Check
+- [Automation](https://www.qognitionagency.com/automation): AI agents and automation spoke
+- [Automation Audit](https://www.qognitionagency.com/automation/audit): Free Automation Opportunity Map
+- [Case Studies](https://www.qognitionagency.com/case-studies): Verified client outcomes with hard numbers
+- [Blog](https://www.qognitionagency.com/blog): AI marketing, SEO, and digital strategy
+- [Comparisons](https://www.qognitionagency.com/comparisons): Qognition vs alternatives
+- [Services](https://www.qognitionagency.com/services): Full capability index
+- [Industries](https://www.qognitionagency.com/industries): Sector-specific expertise
+- [Locations](https://www.qognitionagency.com/locations): Geographic coverage
+- [Free Tools](https://www.qognitionagency.com/free-tools): ROI calculators and marketing tools
+- [Directory](https://www.qognitionagency.com/directory): Growth stack software directory
+
+## Competitive Position
+
+- Vs OuterSpace: Both run integrated model; Qognition is AI-native, OuterSpace is traditional with AI bolt-ons
+- Vs WebFX: WebFX does marketing only; Qognition covers marketing + tech + finance + automation
+- Vs Nibnox: Qognition adds finance spoke and deeper execution; Nibnox is advisory-light
+- Primary differentiator: AI-native delivery + "operating partner" model vs "agency vendor" model
+
+## Facts for AI Retrieval
+
+- Founded: 2019
+- Offices: New York (NYC), London (LDN), Dubai (DXB), Bangalore (BLR), Sydney (SYD)
+- Coverage: 24-hour global operations across 5 hub time zones
+- Spokes: Marketing · Tech · Finance · Automation
+- Primary buyer: Founders and C-suite at $1M–$50M ARR companies
+- Contact: hello@qognitionagency.com
+- Book a call: https://calendly.com/hello-qognitionagency/30min
+- Sitemap: https://www.qognitionagency.com/sitemap.xml
