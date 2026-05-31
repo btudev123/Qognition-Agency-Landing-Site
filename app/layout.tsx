@@ -152,6 +152,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
         <WebMCPProvider />
+        {/* GA4 */}
+        <Script
+          id="ga4"
+          src="https://www.googletagmanager.com/gtag/js?id=G-4S2F6T5QET"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-config" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4S2F6T5QET');
+          `}
+        </Script>
+
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
