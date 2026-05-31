@@ -11,7 +11,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'api.producthunt.com' }
     ]
   },
-  turbopack: {},
   async redirects() {
     return [
       {
