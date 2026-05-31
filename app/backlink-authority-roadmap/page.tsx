@@ -1,64 +1,74 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BACKLINK_OPPORTUNITIES } from '../../data/backlinkOpportunities';
-import { metadataFor, SITE_URL } from '../../lib/seo';
-import SchemaScript from '../SchemaScript';
+import Heading from '../../components/ui/Heading';
+import Badge from '../../components/ui/Badge';
 
-export const metadata: Metadata = metadataFor({
-  title: 'White-Hat Backlink and Authority Roadmap',
+export const metadata: Metadata = {
+  title: 'White-Hat Backlink and Authority Roadmap | Qognition',
   description: 'A white-hat backlink and citation roadmap for Qognition built around audits, case studies, B2B guides, directories, partner citations, and digital PR.',
-  path: '/backlink-authority-roadmap'
-});
+  alternates: { canonical: '/backlink-authority-roadmap' },
+};
 
 export default function Page() {
   return (
     <>
-      <SchemaScript
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'Article',
-          headline: 'White-Hat Backlink and Authority Roadmap',
-          description: 'A practical backlink execution asset for legitimate citations, outreach, partner pages, resource links, podcasts, and digital PR.',
-          author: { '@type': 'Organization', name: 'Qognition Agency', url: SITE_URL },
-          publisher: { '@type': 'Organization', name: 'Qognition Agency', url: SITE_URL },
-          url: `${SITE_URL}/backlink-authority-roadmap`
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Article',
+              headline: 'White-Hat Backlink and Authority Roadmap',
+              description: 'A practical backlink execution asset for legitimate citations, outreach, partner pages, resource links, podcasts, and digital PR.',
+              author: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              publisher: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              url: 'https://qognition.com/backlink-authority-roadmap',
+            },
+          ]),
         }}
       />
-      <main className="min-h-screen px-6 pb-28 pt-32 md:px-12">
-        <section className="mx-auto max-w-7xl">
-          <span className="font-mono text-sm uppercase tracking-widest text-teal-400">Authority Building</span>
-          <h1 className="mt-6 font-display text-5xl leading-none text-white md:text-8xl">White-Hat Backlink Roadmap</h1>
-          <p className="mt-8 max-w-3xl text-xl leading-relaxed text-gray-300">
+      <main className="min-h-screen pt-36 pb-20 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <Badge className="mb-4">Authority Building</Badge>
+          <Heading level="h1" className="mb-6">White-Hat Backlink Roadmap</Heading>
+          <p className="text-xl text-[var(--text-muted)] max-w-3xl leading-relaxed">
             This is the safe execution plan for authority: legitimate citations, useful resources, partner ecosystems, original data, and editorial outreach. No link farms, no fake 1,000-link blasts.
           </p>
-        </section>
-        <section className="mx-auto mt-16 grid max-w-7xl grid-cols-1 gap-6">
-          {BACKLINK_OPPORTUNITIES.map((item) => (
-            <article key={item.category} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-                <div className="lg:col-span-4">
-                  <p className="text-xs uppercase tracking-widest text-teal-400">{item.category}</p>
-                  <h2 className="mt-3 font-display text-3xl text-white">{item.targetType}</h2>
+
+          <div className="mt-16 grid grid-cols-1 gap-6">
+            {BACKLINK_OPPORTUNITIES.map((item) => (
+              <article key={item.category} className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+                  <div className="lg:col-span-4">
+                    <p className="text-xs uppercase tracking-widest text-[var(--accent)]">{item.category}</p>
+                    <h2 className="mt-3 text-2xl font-semibold text-[var(--text)]">{item.targetType}</h2>
+                  </div>
+                  <div className="space-y-4 text-[var(--text-muted)] lg:col-span-8">
+                    <p><strong className="text-[var(--text)]">Targets:</strong> {item.exampleTargets.join(', ')}</p>
+                    <p><strong className="text-[var(--text)]">Asset:</strong> {item.recommendedAsset}</p>
+                    <p><strong className="text-[var(--text)]">Outreach angle:</strong> {item.outreachAngle}</p>
+                    <p><strong className="text-[var(--text)]">Quality bar:</strong> {item.qualityBar}</p>
+                  </div>
                 </div>
-                <div className="space-y-4 text-gray-300 lg:col-span-8">
-                  <p><strong className="text-white">Targets:</strong> {item.exampleTargets.join(', ')}</p>
-                  <p><strong className="text-white">Asset:</strong> {item.recommendedAsset}</p>
-                  <p><strong className="text-white">Outreach angle:</strong> {item.outreachAngle}</p>
-                  <p><strong className="text-white">Quality bar:</strong> {item.qualityBar}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </section>
-        <section className="mx-auto mt-16 flex max-w-7xl flex-col gap-4 rounded-2xl border border-teal-400/20 bg-teal-400/5 p-8 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="font-display text-3xl text-white">Use linkable assets first</h2>
-            <p className="mt-2 text-gray-300">The audits, B2B guides, glossary, calculators, and case studies are the pages worth pitching.</p>
+              </article>
+            ))}
           </div>
-          <Link href="/free-seo-audit" className="rounded-full bg-teal-400 px-6 py-3 text-center text-sm font-bold uppercase tracking-widest text-black hover:bg-white">
-            Open Free Audit
-          </Link>
-        </section>
+
+          <div className="mt-16 flex flex-col gap-4 rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8 md:flex-row md:items-center md:justify-between">
+            <div>
+              <Heading level="h2">Use linkable assets first</Heading>
+              <p className="mt-2 text-[var(--text-muted)]">The audits, B2B guides, glossary, calculators, and case studies are the pages worth pitching.</p>
+            </div>
+            <Link
+              href="/free-seo-audit"
+              className="rounded-lg bg-[var(--accent)] px-6 py-3 text-center text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all shrink-0"
+            >
+              Open Free Audit
+            </Link>
+          </div>
+        </div>
       </main>
     </>
   );

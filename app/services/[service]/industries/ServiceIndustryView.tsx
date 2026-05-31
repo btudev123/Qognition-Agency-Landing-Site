@@ -1,56 +1,58 @@
 import Link from 'next/link';
 import { ArrowRight, BarChart3, CheckCircle, Layers } from 'lucide-react';
-import { CALENDLY_LINK } from '../../../../constants';
 import { Industry, Service } from '../../../../types';
+import Heading from '../../../../components/ui/Heading';
 
 const ServiceIndustryView = ({ service, industry }: { service: Service; industry: Industry }) => (
-  <div className="pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-32">
-    <div className="flex items-center gap-2 text-sm text-gray-500 mb-8 uppercase tracking-wider font-mono">
-      <Link href="/services" className="hover:text-teal-400">Services</Link>
+  <div className="pt-36 pb-20 px-4 sm:px-6 max-w-7xl mx-auto">
+    <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] mb-8 uppercase tracking-wider">
+      <Link href="/services" className="hover:text-[var(--accent)] transition-colors">Services</Link>
       <span>/</span>
-      <Link href={`/services/${service.id}`} className="hover:text-teal-400">{service.title}</Link>
+      <Link href={`/services/${service.id}`} className="hover:text-[var(--accent)] transition-colors">{service.title}</Link>
       <span>/</span>
-      <Link href={`/industries/${industry.id}`} className="hover:text-teal-400">{industry.name}</Link>
+      <Link href={`/industries/${industry.id}`} className="hover:text-[var(--accent)] transition-colors">{industry.name}</Link>
     </div>
 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
       <main className="lg:col-span-8">
-        <span className="text-teal-400 font-bold uppercase tracking-widest mb-4 block">Service + Industry</span>
-        <h1 className="font-display text-5xl md:text-8xl mb-8">{service.title} for {industry.name}</h1>
-        <p className="text-xl md:text-2xl text-gray-300 leading-relaxed border-l-2 border-teal-400 pl-6 mb-16">
+        <span className="text-[var(--accent)] font-semibold uppercase tracking-widest mb-4 block text-xs">Service + Industry</span>
+        <Heading level="h1" className="mb-6">{service.title} for {industry.name}</Heading>
+        <p className="text-xl text-[var(--text-muted)] leading-relaxed border-l-2 border-[var(--accent)] pl-6 mb-16">
           {service.shortDescription} For {industry.name}, we tailor strategy around buyer trust, compliance, search demand, and conversion paths.
         </p>
 
         <section className="mb-16">
-          <h2 className="font-display text-4xl mb-8 flex items-center gap-3"><Layers className="text-teal-400" /> Industry-Specific Execution</h2>
+          <Heading level="h2" className="mb-8 flex items-center gap-3">
+            <Layers className="text-[var(--accent)]" /> Industry-Specific Execution
+          </Heading>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {service.process.map((step, index) => (
-              <div key={step.title} className="p-6 bg-white/5 border border-white/10 rounded-xl">
-                <span className="text-teal-400 font-mono">0{index + 1}</span>
-                <h3 className="font-display text-2xl my-3">{step.title}</h3>
-                <p className="text-gray-400">{step.description}</p>
+              <div key={step.title} className="p-6 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl">
+                <span className="text-[var(--accent)] font-mono">0{index + 1}</span>
+                <h3 className="text-xl font-semibold text-[var(--text)] my-3">{step.title}</h3>
+                <p className="text-sm text-[var(--text-muted)]">{step.description}</p>
               </div>
             ))}
           </div>
         </section>
 
         <section className="mb-16">
-          <h2 className="font-display text-4xl mb-8">Pain Points We Solve</h2>
+          <Heading level="h2" className="mb-8">Pain Points We Solve</Heading>
           <div className="space-y-4">
             {industry.painPoints.map((pain) => (
-              <div key={pain} className="flex gap-4 p-5 border border-white/10 bg-white/5 rounded-xl">
-                <BarChart3 className="text-teal-400 shrink-0" />
-                <p className="text-gray-300">{pain}</p>
+              <div key={pain} className="flex gap-4 p-5 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl">
+                <BarChart3 className="text-[var(--accent)] shrink-0" />
+                <p className="text-[var(--text-muted)]">{pain}</p>
               </div>
             ))}
           </div>
         </section>
 
         <section>
-          <h2 className="font-display text-4xl mb-8">Recommended Stack</h2>
+          <Heading level="h2" className="mb-8">Recommended Stack</Heading>
           <div className="flex flex-wrap gap-3">
             {service.techStack.map((item) => (
-              <span key={item} className="px-4 py-2 bg-black border border-white/10 rounded-full text-gray-300">
+              <span key={item} className="px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-full text-sm text-[var(--text-muted)]">
                 {item}
               </span>
             ))}
@@ -59,19 +61,23 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
       </main>
 
       <aside className="lg:col-span-4">
-        <div className="sticky top-32 p-8 bg-teal-900/10 border border-teal-500/20 rounded-2xl">
-          <CheckCircle className="text-teal-400 mb-6" size={40} />
-          <h2 className="font-display text-3xl mb-4">Built for {industry.name}</h2>
-          <p className="text-gray-400 mb-8">{industry.description}</p>
+        <div className="sticky top-28 p-8 border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] rounded-2xl">
+          <CheckCircle className="text-[var(--accent)] mb-6" size={40} />
+          <Heading level="h2" className="mb-4">Built for {industry.name}</Heading>
+          <p className="text-[var(--text-muted)] mb-8">{industry.description}</p>
           <div className="space-y-3 mb-8">
-            <Link href={`/industries/${industry.id}`} className="block text-teal-400 hover:text-white">View industry strategy</Link>
-            <Link href={`/services/${service.id}`} className="block text-teal-400 hover:text-white">View service details</Link>
+            <Link href={`/industries/${industry.id}`} className="block text-sm text-[var(--accent)] hover:text-[var(--text)] transition-colors">
+              View industry strategy
+            </Link>
+            <Link href={`/services/${service.id}`} className="block text-sm text-[var(--accent)] hover:text-[var(--text)] transition-colors">
+              View service details
+            </Link>
           </div>
           <a
-            href={CALENDLY_LINK}
+            href="https://cal.com/hello-qognitionagency/30min"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-full bg-teal-400 text-black font-bold px-6 py-4 hover:bg-white transition-colors"
+            className="flex items-center justify-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-4 hover:brightness-110 transition-all text-sm"
           >
             Book Strategy Call <ArrowRight size={16} />
           </a>

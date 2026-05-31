@@ -1,54 +1,74 @@
-import SchemaScript from '../SchemaScript';
+import type { Metadata } from 'next';
 import { TEAM_MEMBERS } from '../../data/seoExpansion';
-import { breadcrumbSchema, metadataFor, SITE_NAME, SITE_URL } from '../../lib/seo';
+import { breadcrumbSchema } from '../../lib/schema';
+import Section from '../../components/ui/Section';
+import Heading from '../../components/ui/Heading';
+import Badge from '../../components/ui/Badge';
 
 export const dynamic = 'force-static';
 
-export const metadata = metadataFor({
-  title: 'Meet the Team | Qognition Leadership',
-  description: 'Meet the strategy, SEO, performance, and engineering leaders behind Qognition Agency.',
-  path: '/team'
-});
+export const metadata: Metadata = {
+  title: 'Meet the Team | Qognition',
+  description: 'Meet the strategy, SEO, performance, and engineering leaders behind Qognition.',
+  alternates: { canonical: '/team' },
+};
 
 export default function Page() {
   return (
     <>
-      <SchemaScript
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: SITE_NAME,
-          url: SITE_URL,
-          employee: TEAM_MEMBERS.map((member) => ({
-            '@type': 'Person',
-            name: member.name,
-            jobTitle: member.role,
-            description: member.focus
-          }))
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Qognition',
+              url: 'https://qognition.com',
+              employee: TEAM_MEMBERS.map((member) => ({
+                '@type': 'Person',
+                name: member.name,
+                jobTitle: member.role,
+                description: member.focus,
+              })),
+            },
+            breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Team', path: '/team' }]),
+          ]),
         }}
       />
-      <SchemaScript data={breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Team', path: '/team' }])} />
-      <main className="min-h-screen pt-32 px-6 md:px-12 pb-28">
-        <section className="max-w-7xl mx-auto">
-          <span className="text-teal-400 font-mono text-sm uppercase tracking-widest">Leadership</span>
-          <h1 className="font-display text-5xl md:text-8xl leading-none mt-6 mb-8">Meet the Team Behind the Strategy</h1>
-          <p className="text-xl text-gray-300 max-w-4xl leading-relaxed">
-            Enterprise buyers want to know who is accountable for strategy. Qognition combines senior growth strategy, SEO systems, paid media, and engineering leadership.
-          </p>
-        </section>
-        <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
-          {TEAM_MEMBERS.map((member) => (
-            <article key={member.slug} className="rounded-2xl border border-white/10 bg-white/[0.03] p-8">
-              <div className="mb-8 h-20 w-20 rounded-2xl border border-white/10 bg-white/[0.05] flex items-center justify-center font-display text-3xl text-teal-300">
-                {member.name.split(' ').map((part) => part[0]).join('').slice(0, 2)}
-              </div>
-              <h2 className="font-display text-3xl mb-2">{member.name}</h2>
-              <p className="text-teal-400 mb-4">{member.role}</p>
-              <p className="text-sm uppercase tracking-widest text-gray-500 mb-5">{member.focus}</p>
-              <p className="text-gray-300 leading-relaxed">{member.bio}</p>
-            </article>
-          ))}
-        </section>
+      <main className="min-h-screen pt-36 pb-20 px-4 sm:px-6">
+        <Section spacing="lg">
+          <div className="max-w-3xl">
+            <Badge className="mb-4">Leadership</Badge>
+            <Heading level="h1" className="mb-4">Meet the Team Behind the Strategy</Heading>
+            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-3xl">
+              Enterprise buyers want to know who is accountable for strategy. Qognition combines senior growth strategy, SEO systems, paid media, and engineering leadership.
+            </p>
+          </div>
+        </Section>
+
+        <Section spacing="lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {TEAM_MEMBERS.map((member) => (
+              <article
+                key={member.slug}
+                className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8"
+              >
+                <div className="mb-8 h-20 w-20 rounded-2xl border border-[var(--border)] bg-[var(--surface)] flex items-center justify-center text-3xl font-bold text-[var(--accent)]">
+                  {member.name
+                    .split(' ')
+                    .map((part) => part[0])
+                    .join('')
+                    .slice(0, 2)}
+                </div>
+                <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">{member.name}</h2>
+                <p className="text-[var(--accent)] mb-4">{member.role}</p>
+                <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-5">{member.focus}</p>
+                <p className="text-[var(--text-muted)] leading-relaxed">{member.bio}</p>
+              </article>
+            ))}
+          </div>
+        </Section>
       </main>
     </>
   );

@@ -512,6 +512,30 @@ export const FREE_TOOLS: FreeToolPage[] = [
     outputs: ['Blog ideas', 'Comparison angles', 'Glossary terms', 'Lead magnet concepts'],
     useCases: ['Build editorial calendars', 'Repurpose LinkedIn posts', 'Find internal link targets'],
     faqs: serviceFaq('Content Ideation')
+  },
+  {
+    slug: 'automation-roi-calculator',
+    title: 'Automation ROI Calculator',
+    description: 'Calculate how much time and money automation can save your business. Input manual hours, labor cost, and setup budget.',
+    h1: 'Automation ROI Calculator',
+    intro:
+      'Estimate the ROI of automating manual workflows. See hours saved, cost reduction, and payback period for your automation investment.',
+    inputs: ['Hours spent on manual tasks per week', 'Hourly cost of person doing the work', 'Automation setup cost'],
+    outputs: ['Hours saved per year', 'Annual cost savings', '3-year ROI multiple', 'Payback period in months'],
+    useCases: ['Build a business case for automation', 'Prioritize which processes to automate first', 'Compare build vs buy decisions'],
+    faqs: serviceFaq('Automation ROI')
+  },
+  {
+    slug: 'finance-health-score',
+    title: 'Finance Health Score',
+    description: 'Quick 6-question self-assessment of your financial operations. Get a score and personalized recommendations.',
+    h1: 'Finance Health Score',
+    intro:
+      'Assess your financial operations across bookkeeping, tax strategy, cash flow, reporting, payroll, and CFO access.',
+    inputs: ['6 yes/no/partial questions'],
+    outputs: ['Score out of 100', 'Category breakdown', 'Top gaps identified', 'Personalized recommendations'],
+    useCases: ['Audit your finance function', 'Prepare for fundraising due diligence', 'Identify the biggest risk areas'],
+    faqs: serviceFaq('Finance Health Check')
   }
 ];
 

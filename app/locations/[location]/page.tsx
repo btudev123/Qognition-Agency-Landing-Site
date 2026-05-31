@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import SchemaScript from '../../SchemaScript';
 import { getLocationBySlug, LOCATIONS } from '../../../data/locations';
-import { breadcrumbSchema, faqSchema, getLocationMetadata, locationSchema } from '../../../lib/seo';
+import { getLocationMetadata } from '../../../lib/seo';
+import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import { LocationOverviewView } from '../ProgrammaticLocationView';
 
 export const dynamicParams = false;
@@ -48,14 +48,34 @@ export default async function Page({ params }: { params: Promise<{ location: str
 
   return (
     <>
-      <SchemaScript data={locationSchema(location, path)} />
-      <SchemaScript data={faqSchema(faqs)} />
-      <SchemaScript
-        data={breadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'Locations', path: '/locations' },
-          { name: location.name, path }
-        ])}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Service',
+              name: `Digital Marketing Services in ${location.name}`,
+              description: location.intro,
+              provider: {
+                '@type': 'Organization',
+                name: 'Qognition',
+                url: 'https://qognition.com',
+              },
+              areaServed: {
+                '@type': location.schemaType,
+                name: location.name,
+              },
+              url: `https://qognition.com${path}`,
+            },
+            ...(faqs.length ? [faqSchema(faqs)] : []),
+            breadcrumbSchema([
+              { name: 'Home', path: '/' },
+              { name: 'Locations', path: '/locations' },
+              { name: location.name, path },
+            ]),
+          ]),
+        }}
       />
       <LocationOverviewView location={location} />
     </>
