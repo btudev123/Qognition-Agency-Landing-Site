@@ -12,12 +12,12 @@ const column1 = [
 ];
 
 const column2 = [
-  { label: 'AI Search & SGE', href: '/services/seo' },
-  { label: 'SEO & Organic', href: '/services/seo' },
-  { label: 'PPC & Performance', href: '/services/ppc' },
-  { label: 'Web Build', href: '/services/web-development' },
-  { label: 'Brand', href: '/services/branding-creative' },
-  { label: 'Social', href: '/services/smm' },
+  { label: 'Marketing', href: '/marketing' },
+  { label: 'Tech', href: '/tech' },
+  { label: 'Finance', href: '/finance' },
+  { label: 'Automation', href: '/automation' },
+  { label: 'AI Search & SGE', href: '/marketing/ai-seo' },
+  { label: 'AI Agents', href: '/automation/ai-agents' },
 ];
 
 const column3 = [

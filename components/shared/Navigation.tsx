@@ -7,12 +7,12 @@ import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Services', href: '/services' },
-  { label: 'Industries', href: '/industries' },
+  { label: 'Marketing', href: '/marketing' },
+  { label: 'Tech', href: '/tech' },
+  { label: 'Finance', href: '/finance' },
+  { label: 'Automation', href: '/automation' },
   { label: 'Work', href: '/case-studies' },
   { label: 'About', href: '/about' },
-  { label: 'Locations', href: '/locations' },
-  { label: 'Audit', href: '/free-seo-audit' },
   { label: 'Contact', href: '/contact' },
 ];
 
