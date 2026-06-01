@@ -21,8 +21,8 @@ export default function Hero3D() {
   const smoothX = useSpring(mouseX, { stiffness: 55, damping: 20, restDelta: 0.001 });
   const smoothY = useSpring(mouseY, { stiffness: 55, damping: 20, restDelta: 0.001 });
 
-  const rotateY = useTransform(smoothX, [0, 1], [-15, 15]);
-  const rotateX = useTransform(smoothY, [0, 1], [-8, 8]);
+  const rotateY = useTransform(smoothX, [0, 1], [-22, 22]);
+  const rotateX = useTransform(smoothY, [0, 1], [-12, 12]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -71,23 +71,23 @@ export default function Hero3D() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 pointer-events-none overflow-hidden hidden lg:flex items-center justify-end"
+      className="absolute inset-0 pointer-events-none overflow-hidden hidden md:flex items-center justify-end"
       aria-hidden="true"
     >
-      {/* Ambient glow */}
+      {/* Ambient glow — larger on dark bg */}
       <div
-        className="absolute right-[8%] top-1/2 -translate-y-1/2 w-[480px] h-[480px] rounded-full"
+        className="absolute right-[6%] top-1/2 -translate-y-1/2 w-[640px] h-[640px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(0,194,168,0.18) 0%, transparent 68%)',
-          filter: 'blur(48px)',
+          background: 'radial-gradient(circle, rgba(0,255,209,0.12) 0%, rgba(124,58,237,0.06) 45%, transparent 70%)',
+          filter: 'blur(60px)',
           pointerEvents: 'none',
         }}
       />
 
       {/* 3D perspective container */}
       <div
-        className="relative mr-[7%]"
-        style={{ perspective: '1100px', width: 520, height: 520 }}
+        className="relative mr-[6%]"
+        style={{ perspective: '1100px', width: 580, height: 580 }}
       >
         <motion.div
           style={{
@@ -105,8 +105,8 @@ export default function Hero3D() {
               position: 'absolute',
               inset: '14px',
               transform: 'translateZ(-64px)',
-              background: 'rgba(10,10,10,0.04)',
-              border: '1px solid var(--border)',
+              background: 'rgba(0,255,209,0.03)',
+              border: '1px solid rgba(0,255,209,0.08)',
             }}
           />
 
@@ -116,10 +116,10 @@ export default function Hero3D() {
               position: 'absolute',
               inset: '7px',
               transform: 'translateZ(-28px)',
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
+              background: '#0d0c0b',
+              border: '1px solid rgba(255,255,255,0.06)',
               backgroundImage:
-                'radial-gradient(circle, rgba(10,10,10,0.065) 1px, transparent 1px)',
+                'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
               backgroundSize: '22px 22px',
             }}
           />
@@ -131,19 +131,19 @@ export default function Hero3D() {
               position: 'absolute',
               inset: 0,
               transform: 'translateZ(22px)',
-              background: 'var(--surface)',
-              border: '1px solid rgba(10,10,10,0.09)',
+              background: '#141412',
+              border: '1px solid rgba(255,255,255,0.08)',
               boxShadow:
-                '0 2px 4px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06), 0 32px 80px rgba(0,0,0,0.09)',
+                '0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,0,0,0.8), 0 0 120px rgba(0,255,209,0.07)',
             } as React.CSSProperties}
           >
-            {/* Mouse spotlight */}
+            {/* Mouse spotlight — teal-tinted */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'radial-gradient(circle at var(--sx, 50%) var(--sy, 50%), rgba(255,255,255,0.16) 0%, transparent 52%)',
+                  'radial-gradient(circle at var(--sx, 50%) var(--sy, 50%), rgba(0,255,209,0.07) 0%, transparent 55%)',
                 pointerEvents: 'none',
                 zIndex: 1,
               }}
@@ -181,7 +181,7 @@ export default function Hero3D() {
                     fontWeight: 500,
                     letterSpacing: '-0.045em',
                     lineHeight: 1,
-                    color: 'var(--ink)',
+                    color: '#FAFAF8',
                   }}
                 >
                   Qognition
@@ -215,20 +215,30 @@ export default function Hero3D() {
                     key={spoke.label}
                     style={{
                       padding: '18px',
-                      border: '1px solid var(--border)',
-                      background: 'var(--bg)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      background: '#1a1918',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
                       minHeight: 100,
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}
                   >
+                    {/* Subtle spoke color bleed */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: `radial-gradient(circle at 0% 100%, ${spoke.accent}14 0%, transparent 60%)`,
+                      pointerEvents: 'none',
+                    }} />
                     <div
                       style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: 8,
                         marginBottom: 12,
+                        position: 'relative',
                       }}
                     >
                       <div
@@ -238,6 +248,7 @@ export default function Hero3D() {
                           borderRadius: '50%',
                           background: spoke.accent,
                           flexShrink: 0,
+                          boxShadow: `0 0 8px ${spoke.accent}80`,
                         }}
                       />
                       <span
@@ -245,19 +256,19 @@ export default function Hero3D() {
                           fontSize: 12,
                           fontWeight: 500,
                           letterSpacing: '-0.01em',
-                          color: 'var(--ink)',
+                          color: '#FAFAF8',
                         }}
                       >
                         {spoke.label}
                       </span>
                     </div>
-                    <div>
+                    <div style={{ position: 'relative' }}>
                       <div
                         style={{
                           fontSize: 22,
                           fontWeight: 500,
                           letterSpacing: '-0.03em',
-                          color: 'var(--ink)',
+                          color: '#FAFAF8',
                           lineHeight: 1,
                           fontFeatureSettings: '"tnum"',
                         }}
@@ -284,7 +295,7 @@ export default function Hero3D() {
               {/* Footer */}
               <div
                 style={{
-                  borderTop: '1px solid var(--border)',
+                  borderTop: '1px solid rgba(255,255,255,0.06)',
                   paddingTop: 14,
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -317,7 +328,7 @@ export default function Hero3D() {
             </div>
           </div>
 
-          {/* Floating accent ring — foreground */}
+          {/* Floating accent ring — foreground, glowing */}
           <div
             style={{
               position: 'absolute',
@@ -328,7 +339,8 @@ export default function Hero3D() {
               transform: 'translateZ(82px)',
               border: '1px solid var(--accent)',
               borderRadius: '50%',
-              opacity: 0.45,
+              opacity: 0.55,
+              boxShadow: '0 0 20px rgba(0,255,209,0.3)',
             }}
           />
 
@@ -343,7 +355,7 @@ export default function Hero3D() {
               transform: 'translateZ(64px)',
               border: '1px solid var(--accent)',
               borderRadius: '50%',
-              opacity: 0.22,
+              opacity: 0.28,
             }}
           />
 
@@ -357,7 +369,7 @@ export default function Hero3D() {
               display: 'grid',
               gridTemplateColumns: 'repeat(5, 1fr)',
               gap: 5,
-              opacity: 0.35,
+              opacity: 0.3,
             }}
           >
             {Array.from({ length: 25 }).map((_, i) => (
@@ -367,7 +379,7 @@ export default function Hero3D() {
                   width: 3,
                   height: 3,
                   borderRadius: '50%',
-                  background: 'var(--ink)',
+                  background: 'var(--accent)',
                 }}
               />
             ))}
@@ -383,11 +395,11 @@ export default function Hero3D() {
               display: 'flex',
               flexDirection: 'column',
               gap: 4,
-              opacity: 0.25,
+              opacity: 0.3,
             }}
           >
-            <div style={{ width: 48, height: 1, background: 'var(--ink)' }} />
-            <div style={{ width: 28, height: 1, background: 'var(--ink)' }} />
+            <div style={{ width: 48, height: 1, background: 'rgba(255,255,255,0.4)' }} />
+            <div style={{ width: 28, height: 1, background: 'rgba(255,255,255,0.4)' }} />
           </div>
         </motion.div>
       </div>

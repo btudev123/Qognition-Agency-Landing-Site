@@ -6,6 +6,8 @@ import Navigation from '../components/shared/Navigation';
 import Footer from '../components/shared/Footer';
 import StickyCTA from '../components/shared/StickyCTA';
 import ExitIntentPopup from '../components/shared/ExitIntentPopup';
+import CustomCursor from '../components/CustomCursor';
+import NoiseLayer from '../components/NoiseLayer';
 
 const geist = Geist({
   subsets: ['latin'],
@@ -59,7 +61,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#F3F0EA',
+  themeColor: '#080808',
 };
 
 const organizationSchema = {
@@ -114,6 +116,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
+        <CustomCursor />
+        <NoiseLayer />
         <Navigation />
         <main className="min-h-screen bg-[var(--bg)]">{children}</main>
         <Footer />

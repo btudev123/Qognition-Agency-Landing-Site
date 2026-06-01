@@ -46,7 +46,7 @@ export default function Navigation() {
       <header
         className="fixed top-0 left-0 right-0 z-[100] transition-all duration-500"
         style={{
-          background: scrolled ? 'rgba(248, 248, 246, 0.82)' : 'transparent',
+          background: scrolled ? 'rgba(8, 8, 8, 0.88)' : 'transparent',
           backdropFilter: scrolled ? 'blur(20px) saturate(1.2)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(1.2)' : 'none',
           borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
@@ -160,7 +160,7 @@ export default function Navigation() {
                   className="flex items-center px-4 py-4 text-base font-medium transition-colors"
                   style={{
                     color: active ? 'var(--accent)' : 'var(--ink)',
-                    background: active ? 'rgba(0,194,168,0.05)' : 'transparent',
+                    background: active ? 'rgba(0,255,209,0.05)' : 'transparent',
                     borderLeft: active ? '2px solid var(--accent)' : '2px solid transparent',
                   }}
                 >

@@ -34,6 +34,29 @@ export default {
         marquee: { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(-50%)' } },
         pulse: { '0%, 100%': { opacity: '1' }, '50%': { opacity: '0.4' } },
         'fade-up': { '0%': { transform: 'translateY(24px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+        'orb-drift': {
+          '0%, 100%': { transform: 'translate(0%, 0%) scale(1)' },
+          '33%': { transform: 'translate(4%, -6%) scale(1.08)' },
+          '66%': { transform: 'translate(-3%, 5%) scale(0.96)' },
+        },
+        'orb-drift-b': {
+          '0%, 100%': { transform: 'translate(0%, 0%) scale(1)' },
+          '33%': { transform: 'translate(-5%, 4%) scale(1.06)' },
+          '66%': { transform: 'translate(6%, -3%) scale(0.94)' },
+        },
+        'orb-drift-c': {
+          '0%, 100%': { transform: 'translate(0%, 0%) scale(1)' },
+          '33%': { transform: 'translate(3%, 7%) scale(0.98)' },
+          '66%': { transform: 'translate(-4%, -5%) scale(1.10)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-18px)' },
+        },
+        glow: {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.9' },
+        },
       },
       animation: {
         'slide-up': 'slide-up 0.3s ease-out',
@@ -42,6 +65,11 @@ export default {
         'marquee-slow': 'marquee 80s linear infinite',
         pulse: 'pulse 2s ease infinite',
         'fade-up': 'fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
+        'orb-drift-a': 'orb-drift 18s ease-in-out infinite',
+        'orb-drift-b': 'orb-drift-b 24s ease-in-out infinite 4s',
+        'orb-drift-c': 'orb-drift-c 30s ease-in-out infinite 10s',
+        float: 'float 6s ease-in-out infinite',
+        glow: 'glow 3s ease-in-out infinite',
       },
     },
   },

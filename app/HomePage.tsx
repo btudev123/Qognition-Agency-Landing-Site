@@ -1,18 +1,24 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import ScrollReveal from '../components/shared/ScrollReveal';
 import MaskReveal from '../components/shared/MaskReveal';
-import CountUp from '../components/shared/CountUp';
-import Hero3D from '../components/Hero3D';
+import MagneticBtn from '../components/shared/MagneticBtn';
 import { WorkCard, WorkCardFeatured } from '../components/shared/WorkCard';
 import { CASE_STUDIES } from '../data/work';
 import { SPOKES, type SpokeConfig } from '../lib/spokes';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 
-const CLIENT_LOGOS = ['Opal', 'NovaPay', 'Aurelius', 'Helio', 'Daraz', 'Noon', 'Accent Group', 'Rakuten'];
+const AI_ENGINES = [
+  { name: 'ChatGPT', color: '#10a37f' },
+  { name: 'Claude', color: '#d97706' },
+  { name: 'Gemini', color: '#4285F4' },
+  { name: 'Perplexity', color: '#1fb8cd' },
+  { name: 'Google AI', color: '#EA4335' },
+];
 
 const TECH_STACK = ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind', 'Framer Motion', 'Shopify Plus', 'Sanity CMS', 'OpenAI', 'Vercel', 'Supabase', 'Ahrefs', 'GA4'];
 
@@ -24,11 +30,11 @@ const METHOD_DATA = [
 ];
 
 const HUBS = [
-  { code: 'NYC', city: 'New York', region: 'Americas', tz: 'UTC−5' },
-  { code: 'LDN', city: 'London', region: 'Europe', tz: 'UTC+0' },
-  { code: 'DXB', city: 'Dubai', region: 'MEA', tz: 'UTC+4' },
-  { code: 'BLR', city: 'Bangalore', region: 'India', tz: 'UTC+5:30' },
-  { code: 'SYD', city: 'Sydney', region: 'APAC', tz: 'UTC+10' },
+  { code: 'NYC', city: 'New York', tz: 'UTC−5' },
+  { code: 'LDN', city: 'London', tz: 'UTC+0' },
+  { code: 'DXB', city: 'Dubai', tz: 'UTC+4' },
+  { code: 'BLR', city: 'Bangalore', tz: 'UTC+5:30' },
+  { code: 'SYD', city: 'Sydney', tz: 'UTC+10' },
 ];
 
 const INDUSTRIES_DATA = [
@@ -42,18 +48,20 @@ const INDUSTRIES_DATA = [
   { name: 'Industrial & Trade', note: 'Digital transformation for the backbone.', tags: ['Trade', 'Logistics', 'Heavy', 'Energy'] },
 ];
 
-const SPOKE_LIST = [
-  SPOKES.marketing,
-  SPOKES.tech,
-  SPOKES.finance,
-  SPOKES.automation,
-];
+const SPOKE_LIST = [SPOKES.marketing, SPOKES.tech, SPOKES.finance, SPOKES.automation];
 
 const SPOKE_SERVICES: Record<string, string[]> = {
   marketing: ['AI Search & SGE', 'SEO & Technical', 'Paid Media', 'Content Strategy', 'CRO'],
   tech: ['Marketing Websites', 'Web Apps & SaaS', 'Next.js + Performance', 'Integrations', 'MVP Development'],
   finance: ['Bookkeeping', 'Tax & Planning', 'Fractional CFO', 'Payroll', 'Cash Flow Modeling'],
   automation: ['AI Agents', 'Workflow Automation', 'CRM Automation', 'Data Pipelines', 'No-Code Stack'],
+};
+
+const SPOKE_RGB: Record<string, string> = {
+  marketing: '124, 58, 237',
+  tech: '37, 99, 235',
+  finance: '5, 150, 105',
+  automation: '245, 158, 11',
 };
 
 // ── PRIMITIVES ────────────────────────────────────────────────────────────────
@@ -76,28 +84,63 @@ function Btn({ children, variant = 'solid', href }: {
   variant?: 'solid' | 'ghost' | 'accent' | 'onDark';
   href?: string;
 }) {
+  const [hover, setHover] = React.useState(false);
+
   const styles: Record<string, React.CSSProperties> = {
-    solid: { background: 'var(--ink)', color: 'var(--bg)', border: '1px solid var(--ink)' },
-    ghost: { background: 'transparent', color: 'var(--ink)', border: '1px solid var(--ink)' },
-    accent: { background: 'var(--accent)', color: 'var(--accent-deep)', border: '1px solid var(--accent)' },
-    onDark: { background: 'transparent', color: '#F8F8F6', border: '1px solid rgba(255,255,255,0.25)' },
+    solid: {
+      background: hover ? 'var(--accent)' : 'var(--ink)',
+      color: hover ? '#fff' : 'var(--bg)',
+      border: `1px solid ${hover ? 'var(--accent)' : 'var(--ink)'}`,
+    },
+    ghost: {
+      background: hover ? 'rgba(0,0,0,0.05)' : 'transparent',
+      color: 'var(--ink)',
+      border: '1px solid var(--border-strong)',
+    },
+    accent: {
+      background: 'var(--accent)',
+      color: '#fff',
+      border: '1px solid var(--accent)',
+      boxShadow: hover ? '0 0 28px rgba(124,58,237,0.4)' : 'none',
+    },
+    onDark: {
+      background: hover ? 'rgba(255,255,255,0.1)' : 'transparent',
+      color: '#FAFAF8',
+      border: '1px solid rgba(255,255,255,0.18)',
+    },
   };
+
   const base: React.CSSProperties = {
-    padding: '15px 24px', fontFamily: 'inherit', fontSize: 14, fontWeight: 500,
+    padding: '15px 28px', fontFamily: 'inherit', fontSize: 14, fontWeight: 500,
     letterSpacing: '-0.005em', borderRadius: 0, display: 'inline-flex',
-    alignItems: 'center', gap: 10, transition: 'all 0.3s ease',
-    cursor: 'pointer', textDecoration: 'none',
+    alignItems: 'center', gap: 10, transition: 'all 0.25s ease',
+    cursor: 'none', textDecoration: 'none',
     ...styles[variant],
   };
-  if (href) return <Link href={href} style={base}>{children}</Link>;
-  return <button style={base}>{children}</button>;
+
+  const props = {
+    style: base,
+    onMouseEnter: () => setHover(true),
+    onMouseLeave: () => setHover(false),
+  };
+
+  if (href) return <Link href={href} {...props}>{children}</Link>;
+  return <button {...props}>{children}</button>;
 }
 
 function WordMarquee({ items, speed = 60, size = 22, dark = false }: {
   items: string[]; speed?: number; size?: number; dark?: boolean;
 }) {
   return (
-    <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', padding: '14px 0' }}>
+    <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', padding: '14px 0', position: 'relative' }}>
+      <div style={{
+        position: 'absolute', left: 0, top: 0, bottom: 0, width: 80, zIndex: 2,
+        background: 'linear-gradient(to right, var(--bg), transparent)', pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', right: 0, top: 0, bottom: 0, width: 80, zIndex: 2,
+        background: 'linear-gradient(to left, var(--bg), transparent)', pointerEvents: 'none',
+      }} />
       <div style={{ display: 'inline-flex', gap: 56, animation: `rf-marquee ${speed}s linear infinite` }}>
         {[0, 1].map((loop) => (
           <div key={loop} style={{ display: 'inline-flex', gap: 56, alignItems: 'center' }}>
@@ -105,9 +148,9 @@ function WordMarquee({ items, speed = 60, size = 22, dark = false }: {
               <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 56 }}>
                 <span style={{
                   fontFamily: 'inherit', fontSize: size, fontWeight: 500, letterSpacing: '-0.015em',
-                  color: dark ? '#F8F8F6' : 'var(--ink)', opacity: 0.85,
+                  color: dark ? '#F8F8F6' : 'var(--ink)', opacity: 0.8,
                 }}>{t}</span>
-                <span style={{ color: 'var(--accent)', fontSize: size * 0.6 }}>·</span>
+                <span style={{ color: 'var(--accent)', fontSize: size * 0.6, opacity: 0.7 }}>·</span>
               </span>
             ))}
           </div>
@@ -117,117 +160,263 @@ function WordMarquee({ items, speed = 60, size = 22, dark = false }: {
   );
 }
 
+// ── GRADIENT MESH — used in dark CTA section ──────────────────────────────────
+
+function GradientMesh({ className }: { className?: string }) {
+  return (
+    <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className || ''}`} aria-hidden="true">
+      <div style={{
+        position: 'absolute', top: '-10%', right: '-5%', width: '55%', height: '70%',
+        background: 'radial-gradient(circle, rgba(124,58,237,0.13) 0%, transparent 65%)',
+        filter: 'blur(40px)', animation: 'rf-orb-drift 18s ease-in-out infinite', willChange: 'transform',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '-15%', left: '-8%', width: '50%', height: '65%',
+        background: 'radial-gradient(circle, rgba(99,58,237,0.09) 0%, transparent 65%)',
+        filter: 'blur(50px)', animation: 'rf-orb-drift-b 24s ease-in-out infinite 4s', willChange: 'transform',
+      }} />
+      <div style={{
+        position: 'absolute', top: '30%', left: '30%', width: '40%', height: '50%',
+        background: 'radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 65%)',
+        filter: 'blur(60px)', animation: 'rf-orb-drift-c 30s ease-in-out infinite 10s', willChange: 'transform',
+      }} />
+    </div>
+  );
+}
+
+// ── HERO SINE WAVES ───────────────────────────────────────────────────────────
+
+function HeroWaves() {
+  return (
+    <svg
+      aria-hidden="true"
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <defs>
+        <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#7C3AED" stopOpacity="0" />
+          <stop offset="22%" stopColor="#7C3AED" stopOpacity="0.65" />
+          <stop offset="58%" stopColor="#A78BFA" stopOpacity="0.75" />
+          <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="wg2" x1="100%" y1="0%" x2="0%" y2="0%">
+          <stop offset="0%" stopColor="#7C3AED" stopOpacity="0" />
+          <stop offset="22%" stopColor="#7C3AED" stopOpacity="0.5" />
+          <stop offset="58%" stopColor="#C4B5FD" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#059669" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="wg3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0" />
+          <stop offset="38%" stopColor="#7C3AED" stopOpacity="0.28" />
+          <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+
+      {/* Wave 1 — main crossing arc, left→right, crosses at center */}
+      <path
+        d="M -120 740 C 160 60 520 40 720 450 C 920 860 1280 840 1560 160"
+        stroke="url(#wg1)"
+        strokeWidth="1.8"
+        fill="none"
+        style={{ animation: 'hero-wave-1 20s ease-in-out infinite', transformOrigin: '50% 50%' }}
+      />
+
+      {/* Wave 2 — mirror arc, right→left, crosses at center */}
+      <path
+        d="M 1560 740 C 1280 60 920 40 720 450 C 520 860 160 840 -120 160"
+        stroke="url(#wg2)"
+        strokeWidth="1.8"
+        fill="none"
+        style={{ animation: 'hero-wave-2 26s ease-in-out infinite', transformOrigin: '50% 50%' }}
+      />
+
+      {/* Wave 3 — subtler offset arc for depth */}
+      <path
+        d="M -120 520 C 360 200 620 700 900 300 C 1100 -20 1320 480 1560 360"
+        stroke="url(#wg3)"
+        strokeWidth="1.2"
+        fill="none"
+        style={{ animation: 'hero-wave-3 34s ease-in-out infinite', transformOrigin: '50% 50%' }}
+      />
+    </svg>
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
-// 1. HERO
+// 1. HERO — centered, propeller-inspired, AI-native
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function Hero() {
   return (
-    <section className="relative pt-6 sm:pt-8 pb-16 sm:pb-20 overflow-hidden">
-      <Hero3D />
+    <section
+      className="relative flex flex-col items-center justify-center overflow-hidden"
+      style={{ minHeight: '100vh', background: 'var(--bg)', paddingTop: 80, paddingBottom: 64 }}
+    >
+      {/* SVG sine wave curves */}
+      <HeroWaves />
 
-      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10">
+      {/* Radial glow — bottom center */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute', bottom: '-8%', left: '50%', transform: 'translateX(-50%)',
+          width: 'min(80vw, 1000px)', height: '52vh',
+          background: 'radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.14) 0%, rgba(124,58,237,0.05) 42%, transparent 70%)',
+          filter: 'blur(40px)', pointerEvents: 'none',
+        }}
+      />
+
+      {/* Top accent glow */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute', top: '14%', left: '50%', transform: 'translateX(-50%)',
+          width: 'min(48vw, 600px)', height: '30vh',
+          background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.06) 0%, transparent 70%)',
+          filter: 'blur(48px)', pointerEvents: 'none',
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 text-center">
+
+        {/* Eyebrow pill */}
+        <ScrollReveal className="mb-8 sm:mb-10">
+          <div className="inline-flex items-center gap-3">
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '7px 16px',
+              border: '1px solid var(--border-strong)',
+              background: 'rgba(124,58,237,0.07)',
+              borderRadius: 100,
+            }}>
+              <div style={{
+                width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
+                animation: 'rf-pulse 2s ease-in-out infinite',
+              }} />
+              <span style={{
+                fontFamily: 'JetBrains Mono, monospace', fontSize: 11,
+                letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)',
+              }}>
+                AI-Native Operating Partner
+              </span>
+            </div>
+          </div>
+        </ScrollReveal>
+
         {/* Headline */}
-        <div className="max-w-[56rem]">
-          <ScrollReveal className="mb-6">
-            <Eyebrow>Operating Partner for Founders</Eyebrow>
-          </ScrollReveal>
+        <h1
+          className="font-sans font-medium m-0 leading-[0.88] tracking-[-0.048em]"
+          style={{ fontSize: 'clamp(50px, 10vw, 168px)', color: 'var(--ink)' }}
+        >
+          <MaskReveal>The Operating</MaskReveal>
+          <br />
+          <MaskReveal delay={0.1}>
+            <span className="rf-gradient-text">Partner</span>
+          </MaskReveal>
+          <br />
+          <MaskReveal delay={0.2}>for Founders.</MaskReveal>
+        </h1>
 
-          <h1
-            className="font-sans font-medium m-0 leading-[0.88] tracking-[-0.05em]"
+        {/* Sub copy */}
+        <ScrollReveal stagger={4} className="mt-8 sm:mt-10">
+          <p
+            className="text-lg sm:text-[22px] leading-relaxed tracking-[-0.005em] max-w-[580px] mx-auto m-0"
+            style={{ color: 'var(--ink-soft)' }}
+          >
+            We run{' '}
+            <strong style={{ color: 'var(--ink)' }}>marketing</strong>,{' '}
+            <strong style={{ color: 'var(--ink)' }}>tech</strong>,{' '}
+            <strong style={{ color: 'var(--ink)' }}>finance</strong>, and{' '}
+            <strong style={{ color: 'var(--ink)' }}>automation</strong>{' '}
+            so founders can build the business — not manage vendors.
+          </p>
+        </ScrollReveal>
+
+        {/* CTAs */}
+        <ScrollReveal stagger={5} className="mt-9 sm:mt-11">
+          <div className="flex flex-wrap gap-3 justify-center">
+            <MagneticBtn>
+              <Btn variant="solid" href="/contact">Book strategy call →</Btn>
+            </MagneticBtn>
+            <MagneticBtn>
+              <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
+            </MagneticBtn>
+          </div>
+        </ScrollReveal>
+
+        {/* Metrics strip — frosted glass */}
+        <ScrollReveal stagger={6} className="mt-14 sm:mt-16">
+          <div
+            className="inline-flex flex-wrap justify-center"
             style={{
-              color: 'var(--ink)',
-              fontSize: 'clamp(52px, 9.5vw, 168px)',
+              border: '1px solid var(--border)',
+              background: 'rgba(255,255,255,0.55)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
             }}
           >
-            <MaskReveal>The</MaskReveal><br />
-            <MaskReveal delay={0.10}>Operating</MaskReveal><br />
-            <MaskReveal delay={0.20}>Partner</MaskReveal><br />
-            <span className="inline-flex items-baseline gap-4 sm:gap-6 flex-wrap">
-              <MaskReveal delay={0.30}>for Founders.</MaskReveal>
-            </span>
-          </h1>
-        </div>
-
-        {/* Sub copy + CTAs */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-20 mt-14 sm:mt-16 items-end">
-          <div className="lg:col-span-7">
-            <ScrollReveal stagger={4}>
-              <p className="text-lg sm:text-[22px] leading-relaxed tracking-[-0.005em] max-w-[600px] m-0" style={{ color: 'var(--ink-soft)' }}>
-                We run{' '}
-                <strong style={{ color: 'var(--ink)' }}>marketing</strong>,{' '}
-                <strong style={{ color: 'var(--ink)' }}>tech</strong>,{' '}
-                <strong style={{ color: 'var(--ink)' }}>finance</strong>, and{' '}
-                <strong style={{ color: 'var(--ink)' }}>automation</strong>{' '}
-                so founders can build the business — not manage vendors.
-              </p>
-              <div className="flex flex-wrap gap-3 mt-8 sm:mt-9">
-                <Btn variant="accent" href="/contact">Book strategy call →</Btn>
-                <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
-              </div>
-            </ScrollReveal>
-          </div>
-
-          <ScrollReveal stagger={5} className="lg:col-span-5">
-            <div className="grid gap-3 font-mono text-xs tracking-[0.08em]" style={{ color: 'var(--text-muted)' }}>
-              <div className="h-px" style={{ background: 'var(--border)' }} />
-              {[
-                ['ONE SLA', 'Marketing · Tech · Finance · Automation'],
-                ['HUBS', 'LDN · NYC · DXB · BLR · SYD · 24h coverage'],
-                ['MODEL', 'Retainers · Projects · Operating partner'],
-              ].map(([k, v]) => (
-                <div key={k} className="grid gap-4 pb-3" style={{ gridTemplateColumns: '90px 1fr', borderBottom: '1px solid var(--border)' }}>
-                  <span style={{ color: 'var(--accent)' }}>{k}</span>
-                  <span style={{ color: 'var(--ink)' }}>{v}</span>
-                </div>
-              ))}
-            </div>
-          </ScrollReveal>
-        </div>
-
-        {/* Metrics band */}
-        <div className="mt-20 sm:mt-24 pt-6 sm:pt-8" style={{ borderTop: '1px solid var(--border)' }}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-baseline mb-8 gap-2">
-            <Eyebrow>Live impact</Eyebrow>
-            <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em]" style={{ color: 'var(--text-faint)' }}>
-              UPDATED · 29 MAY 2026
-            </span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3">
             {[
-              { to: 500, prefix: '$', suffix: 'M+', label: 'Revenue driven' },
-              { to: 4.2, suffix: '×', decimals: 1, label: 'Avg. ROAS' },
-              { to: 142, suffix: '', label: 'Campaigns shipped' },
-            ].map((d, i) => (
-              <ScrollReveal
+              { n: '$500M+', label: 'Revenue driven' },
+              { n: '4.2×', label: 'Avg. ROAS' },
+              { n: '142', label: 'Campaigns shipped' },
+            ].map((m, i) => (
+              <div
                 key={i}
-                stagger={i + 1}
-                className="py-8 px-0 sm:px-8"
-                style={{ borderLeft: i > 0 ? '1px solid var(--border)' : 'none' }}
+                className="text-center px-8 sm:px-12 py-5"
+                style={{
+                  borderLeft: i > 0 ? '1px solid var(--border)' : 'none',
+                }}
               >
-                <div className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase" style={{ color: 'var(--text-muted)' }}>
-                  {String(i + 1).padStart(2, '0')} · {d.label}
+                <div
+                  className="font-sans font-medium leading-none tracking-[-0.04em]"
+                  style={{ fontSize: 'clamp(26px, 3.2vw, 42px)', color: 'var(--ink)' }}
+                >
+                  {m.n}
                 </div>
                 <div
-                  className="font-sans font-medium leading-none mt-5 tracking-[-0.045em]"
-                  style={{ color: 'var(--ink)', fontSize: 'clamp(40px, 5vw, 88px)', fontFeatureSettings: '"tnum"' }}
+                  className="font-mono text-[10px] tracking-[0.12em] uppercase mt-2"
+                  style={{ color: 'var(--text-muted)' }}
                 >
-                  <CountUp to={d.to} prefix={d.prefix} suffix={d.suffix} decimals={d.decimals || 0} />
+                  {m.label}
                 </div>
-              </ScrollReveal>
+              </div>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
 
-        {/* Logo marquee */}
-        <div className="mt-16 sm:mt-20 pt-8" style={{ borderTop: '1px solid var(--border)' }}>
-          <div className="grid grid-cols-[90px_1fr] sm:grid-cols-[140px_1fr] gap-6 items-center">
-            <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase" style={{ color: 'var(--text-muted)' }}>
-              Trusted by
+        {/* AI engines strip */}
+        <ScrollReveal stagger={7} className="mt-9 sm:mt-11">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-7">
+            <span
+              className="font-mono text-[10px] tracking-[0.16em] uppercase"
+              style={{ color: 'var(--text-faint)' }}
+            >
+              We optimize for
             </span>
-            <WordMarquee items={CLIENT_LOGOS} size={22} />
+            {AI_ENGINES.map((ai) => (
+              <div key={ai.name} className="inline-flex items-center gap-1.5" style={{ opacity: 0.72 }}>
+                <div style={{ width: 5, height: 5, borderRadius: '50%', background: ai.color, flexShrink: 0 }} />
+                <span className="font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-soft)' }}>
+                  {ai.name}
+                </span>
+              </div>
+            ))}
           </div>
-        </div>
+        </ScrollReveal>
+      </div>
+
+      {/* Scroll cue */}
+      <div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2"
+        aria-hidden="true"
+      >
+        <span className="font-mono text-[9px] tracking-[0.18em] uppercase" style={{ color: 'var(--text-faint)' }}>
+          Scroll
+        </span>
+        <div style={{ width: 1, height: 36, background: 'linear-gradient(to bottom, var(--text-faint), transparent)' }} />
       </div>
     </section>
   );
@@ -238,30 +427,62 @@ function Hero() {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function FourSpokes() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+
   return (
-    <section className="py-24 sm:py-32" style={{ background: 'var(--ink)', color: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10">
-        {/* Header */}
+    <section
+      ref={sectionRef}
+      className="py-24 sm:py-32 relative overflow-hidden"
+      style={{ background: '#050505', color: '#FAFAF8', borderTop: '1px solid var(--border)' }}
+    >
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div style={{
+          position: 'absolute', top: 0, right: 0, width: '40%', height: '100%',
+          background: 'radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.07) 0%, transparent 60%)',
+          filter: 'blur(40px)',
+        }} />
+      </div>
+
+      <motion.div
+        style={{ y: bgY }}
+        className="absolute inset-0 flex items-center pointer-events-none overflow-hidden"
+        aria-hidden="true"
+      >
+        <span style={{
+          fontSize: 'clamp(120px, 22vw, 320px)', fontWeight: 700,
+          letterSpacing: '-0.07em', lineHeight: 1,
+          color: 'rgba(255,255,255,0.02)', whiteSpace: 'nowrap',
+          userSelect: 'none', paddingLeft: '5%',
+        }}>
+          FOUR SPOKES
+        </span>
+      </motion.div>
+
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-24 mb-16 sm:mb-20 items-end">
           <ScrollReveal className="lg:col-span-5">
             <Eyebrow color="var(--accent)">The operating system</Eyebrow>
             <h2
               className="font-sans font-medium leading-[0.96] tracking-[-0.04em] m-0 mt-4"
-              style={{ fontSize: 'clamp(40px, 5vw, 80px)', color: 'var(--bg)' }}
+              style={{ fontSize: 'clamp(40px, 5vw, 80px)', color: '#FAFAF8' }}
             >
               <MaskReveal>Four functions.</MaskReveal><br />
               <MaskReveal delay={0.1}>One partner.</MaskReveal>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-7">
-            <p className="text-base sm:text-[17px] leading-relaxed max-w-[500px] ml-auto text-left lg:text-right m-0" style={{ color: '#a8a294' }}>
+            <p className="text-base sm:text-[17px] leading-relaxed max-w-[500px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.45)' }}>
               Founders waste 40% of their time coordinating vendors. We consolidate four functions into one operating partnership — one SLA, one relationship, one standard of execution.
             </p>
           </ScrollReveal>
         </div>
 
-        {/* Spokes grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ borderTop: '1px solid #2a2520', borderLeft: '1px solid #2a2520' }}>
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderLeft: '1px solid rgba(255,255,255,0.06)' }}
+        >
           {SPOKE_LIST.map((spoke, i) => (
             <ScrollReveal key={spoke.id} stagger={(i % 2) + 1}>
               <SpokeCard spoke={spoke} index={i} />
@@ -276,72 +497,74 @@ function FourSpokes() {
 function SpokeCard({ spoke, index }: { spoke: SpokeConfig; index: number }) {
   const [hover, setHover] = React.useState(false);
   const services = SPOKE_SERVICES[spoke.id] || [];
+  const rgb = SPOKE_RGB[spoke.id] || '255,255,255';
 
   return (
     <Link
       href={`/${spoke.id}`}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="flex flex-col text-left cursor-pointer relative overflow-hidden p-8 sm:p-10 min-h-[380px] transition-colors duration-300"
+      className="rf-spoke-glow flex flex-col text-left cursor-none relative overflow-hidden p-8 sm:p-10 min-h-[380px]"
       style={{
-        borderRight: '1px solid #2a2520',
-        borderBottom: '1px solid #2a2520',
-        background: hover ? '#0f0f0d' : 'transparent',
-        textDecoration: 'none',
-        color: 'var(--bg)',
-      }}
+        '--spoke-glow': `rgba(${rgb}, 0.12)`,
+        borderRight: '1px solid rgba(255,255,255,0.06)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        background: hover ? 'rgba(255,255,255,0.025)' : 'transparent',
+        textDecoration: 'none', color: '#FAFAF8',
+        transition: 'background 0.5s ease, box-shadow 0.5s ease',
+        boxShadow: hover ? `inset 0 0 80px rgba(${rgb}, 0.06)` : 'none',
+      } as React.CSSProperties}
     >
-      {/* Spoke indicator */}
-      <div className="flex justify-between items-start mb-10">
+      <div className="flex justify-between items-start mb-10" style={{ position: 'relative', zIndex: 1 }}>
         <div className="flex items-center gap-3">
           <div
             className="w-2.5 h-2.5 rounded-full transition-all duration-500"
-            style={{ background: hover ? spoke.accent : 'rgba(255,255,255,0.3)' }}
+            style={{ background: hover ? spoke.accent : 'rgba(255,255,255,0.2)', boxShadow: hover ? `0 0 12px ${spoke.accent}80` : 'none' }}
           />
-          <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: hover ? spoke.accent : '#6a6660' }}>
+          <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: hover ? spoke.accent : 'rgba(255,255,255,0.3)' }}>
             {spoke.primaryBuyer}
           </span>
         </div>
         <span
           className="font-mono text-sm transition-all duration-300"
-          style={{ color: '#6a6660', transform: hover ? 'translateX(6px)' : 'translateX(0)' }}
+          style={{ color: 'rgba(255,255,255,0.3)', transform: hover ? 'translateX(6px)' : 'translateX(0)' }}
         >
           →
         </span>
       </div>
 
-      {/* Spoke name */}
       <h3
         className="font-sans font-medium tracking-[-0.035em] leading-none m-0"
-        style={{ fontSize: 'clamp(32px, 4vw, 52px)', color: 'var(--bg)' }}
+        style={{ fontSize: 'clamp(32px, 4vw, 52px)', color: '#FAFAF8', position: 'relative', zIndex: 1 }}
       >
         {spoke.label}
       </h3>
 
-      {/* Description */}
-      <p className="text-sm leading-relaxed mt-4 mb-0 max-w-[360px] flex-1" style={{ color: '#a8a294' }}>
+      <p className="text-sm leading-relaxed mt-4 mb-0 max-w-[360px] flex-1" style={{ color: 'rgba(255,255,255,0.4)', position: 'relative', zIndex: 1 }}>
         {spoke.description}
       </p>
 
-      {/* Services list */}
-      <div className="mt-8 grid gap-2">
-        {services.map((s) => (
+      <div className="mt-8 grid gap-2" style={{ position: 'relative', zIndex: 1 }}>
+        {services.map((s, idx) => (
           <div
             key={s}
-            className="flex items-center gap-3 transition-all duration-500"
-            style={{ opacity: hover ? 1 : 0.5, transform: hover ? 'translateX(0)' : 'translateX(-4px)' }}
+            className="flex items-center gap-3"
+            style={{
+              opacity: hover ? 1 : 0.35,
+              transform: hover ? 'translateX(0)' : 'translateX(-4px)',
+              transition: `opacity 0.4s ease ${idx * 0.04}s, transform 0.4s ease ${idx * 0.04}s`,
+            }}
           >
             <div className="w-1 h-1 rounded-full" style={{ background: spoke.accent }} />
-            <span className="font-mono text-[10px] tracking-[0.10em] uppercase" style={{ color: '#d0cec8' }}>
+            <span className="font-mono text-[10px] tracking-[0.10em] uppercase" style={{ color: 'rgba(255,255,255,0.7)' }}>
               {s}
             </span>
           </div>
         ))}
       </div>
 
-      {/* Pricing model */}
-      <div className="mt-8 pt-5" style={{ borderTop: '1px solid #2a2520' }}>
-        <span className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: hover ? spoke.accent : '#6a6660' }}>
+      <div className="mt-8 pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', position: 'relative', zIndex: 1 }}>
+        <span className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: hover ? spoke.accent : 'rgba(255,255,255,0.25)' }}>
           {spoke.pricingModel}
         </span>
       </div>
@@ -354,9 +577,28 @@ function SpokeCard({ spoke, index }: { spoke: SpokeConfig; index: number }) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function Methodology() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const bgTextY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+
   return (
-    <section className="py-24 sm:py-32" style={{ borderTop: '1px solid var(--border)' }}>
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10">
+    <section ref={sectionRef} className="py-24 sm:py-32 relative overflow-hidden" style={{ borderTop: '1px solid var(--border)' }}>
+      <motion.div
+        style={{ y: bgTextY }}
+        className="absolute inset-0 flex items-center pointer-events-none overflow-hidden"
+        aria-hidden="true"
+      >
+        <span style={{
+          fontSize: 'clamp(100px, 20vw, 280px)', fontWeight: 700,
+          letterSpacing: '-0.07em', lineHeight: 1,
+          color: 'rgba(0,0,0,0.028)', whiteSpace: 'nowrap',
+          userSelect: 'none', paddingLeft: '3%',
+        }}>
+          PROCESS
+        </span>
+      </motion.div>
+
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-24 mb-20">
           <ScrollReveal className="lg:col-span-5">
             <Eyebrow>The methodology</Eyebrow>
@@ -375,7 +617,17 @@ function Methodology() {
         </div>
 
         <div className="relative">
-          <div className="absolute left-0 right-0 top-14 h-px hidden lg:block" style={{ background: 'var(--border)' }} />
+          <div className="absolute left-0 right-0 top-14 hidden lg:block overflow-hidden" style={{ height: 1 }}>
+            <div
+              className="h-full"
+              style={{
+                background: 'linear-gradient(to right, var(--accent), var(--border))',
+                transformOrigin: 'left',
+                animation: 'rf-page-in 1.5s cubic-bezier(0.22,1,0.36,1) both',
+                animationDelay: '0.5s',
+              }}
+            />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {METHOD_DATA.map((m, i) => (
               <ScrollReveal key={m.n} stagger={i + 1}>
@@ -384,9 +636,18 @@ function Methodology() {
                     className="absolute top-12 lg:top-[50px] left-0 w-3.5 h-3.5 rounded-full"
                     style={{
                       background: 'var(--bg)',
-                      border: `2px solid ${i === 0 ? 'var(--accent)' : 'var(--ink)'}`,
+                      border: `2px solid ${i === 0 ? 'var(--accent)' : 'rgba(0,0,0,0.15)'}`,
+                      boxShadow: i === 0 ? '0 0 16px rgba(124,58,237,0.35)' : 'none',
                     }}
                   />
+                  <div style={{
+                    position: 'absolute', top: -10, left: 0,
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: 80, fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 1,
+                    color: 'rgba(0,0,0,0.038)', userSelect: 'none', pointerEvents: 'none',
+                  }}>
+                    {m.n}
+                  </div>
                   <div className="font-mono text-[11px] tracking-[0.14em]" style={{ color: 'var(--text-muted)' }}>
                     {m.n} · {m.timeline}
                   </div>
@@ -403,7 +664,6 @@ function Methodology() {
           </div>
         </div>
 
-        {/* Tech ticker */}
         <ScrollReveal className="mt-24 pt-8" style={{ borderTop: '1px solid var(--border)' }}>
           <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[160px_1fr] gap-8 items-center">
             <Eyebrow>Powered by</Eyebrow>
@@ -424,21 +684,32 @@ function SelectedWorks() {
   const gridWorks = CASE_STUDIES.slice(1, 5);
 
   return (
-    <section className="py-24 sm:py-32" style={{ background: 'var(--ink)', color: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10">
+    <section
+      className="py-24 sm:py-32 relative overflow-hidden"
+      style={{ background: '#050505', color: '#FAFAF8', borderTop: '1px solid var(--border)' }}
+    >
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, width: '50%', height: '60%',
+          background: 'radial-gradient(ellipse at 20% 80%, rgba(124,58,237,0.05) 0%, transparent 60%)',
+          filter: 'blur(50px)',
+        }} />
+      </div>
+
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-24 mb-16 items-end">
           <ScrollReveal className="lg:col-span-5">
             <Eyebrow color="var(--accent)">Selected works</Eyebrow>
             <h2
               className="font-sans font-medium leading-[0.96] tracking-[-0.04em] m-0 mt-4"
-              style={{ fontSize: 'clamp(40px, 5vw, 80px)', color: 'var(--bg)' }}
+              style={{ fontSize: 'clamp(40px, 5vw, 80px)', color: '#FAFAF8' }}
             >
               <MaskReveal>Receipts,</MaskReveal><br />
               <MaskReveal delay={0.1}>not promises.</MaskReveal>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-7">
-            <p className="text-base sm:text-[17px] leading-relaxed max-w-[480px] ml-auto text-left lg:text-right m-0" style={{ color: '#a8a294' }}>
+            <p className="text-base sm:text-[17px] leading-relaxed max-w-[480px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.4)' }}>
               Real work, real numbers. Each engagement ships with measurable outcomes — picked for the gap between starting point and result.
             </p>
             <div className="text-left lg:text-right mt-6">
@@ -461,13 +732,13 @@ function SelectedWorks() {
           ))}
         </div>
 
-        <ScrollReveal className="mt-16 pt-12" style={{ borderTop: '1px solid #2a2520' }}>
+        <ScrollReveal className="mt-16 pt-12" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
             <div className="lg:col-span-3">
               <div className="font-mono text-[11px] tracking-[0.14em] uppercase" style={{ color: 'var(--accent)' }}>
                 From our clients
               </div>
-              <div className="mt-2 text-sm" style={{ color: '#a8a294' }}>
+              <div className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 Sarah Jenkins<br />
                 Global CMO, Noon Group
               </div>
@@ -475,7 +746,7 @@ function SelectedWorks() {
             <div className="lg:col-span-9">
               <blockquote
                 className="font-sans font-normal m-0 leading-[1.1] tracking-[-0.03em]"
-                style={{ fontSize: 'clamp(24px, 3vw, 48px)', color: 'var(--bg)' }}
+                style={{ fontSize: 'clamp(24px, 3vw, 48px)', color: '#FAFAF8' }}
               >
                 &quot;Qognition&apos;s architectural approach to SEO is simply unrivaled. They didn&apos;t just optimize our site —{' '}
                 <span style={{ color: 'var(--accent)' }}>they restructured our entire digital footprint for the AI era.&quot;</span>
@@ -494,8 +765,8 @@ function SelectedWorks() {
 
 function Coverage() {
   return (
-    <section className="py-24 sm:py-32" style={{ borderTop: '1px solid var(--border)' }}>
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10">
+    <section className="py-24 sm:py-32 relative overflow-hidden" style={{ borderTop: '1px solid var(--border)' }}>
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10">
         <ScrollReveal>
           <Eyebrow>Coverage</Eyebrow>
           <h2
@@ -509,7 +780,10 @@ function Coverage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mt-14">
           <div className="lg:col-span-7">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px" style={{ background: 'var(--border)', border: '1px solid var(--border)' }}>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-px"
+              style={{ background: 'var(--border)', border: '1px solid var(--border)' }}
+            >
               {INDUSTRIES_DATA.map((ind, i) => (
                 <ScrollReveal key={ind.name} stagger={(i % 2) + 1}>
                   <IndustryCell ind={ind} i={i} />
@@ -557,11 +831,12 @@ function IndustryCell({ ind, i }: { ind: typeof INDUSTRIES_DATA[0]; i: number })
       href="/industries"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="flex flex-col justify-between text-left cursor-pointer p-6 sm:p-8 min-h-[180px] transition-colors duration-400"
+      className="flex flex-col justify-between text-left cursor-none p-6 sm:p-8 min-h-[180px]"
       style={{
-        background: hover ? 'var(--ink)' : 'var(--bg)',
-        color: hover ? 'var(--bg)' : 'var(--ink)',
+        background: hover ? '#0f0e0c' : 'var(--bg)',
+        color: hover ? '#FAFAF8' : 'var(--ink)',
         textDecoration: 'none',
+        transition: 'background 0.4s ease',
       }}
     >
       <div>
@@ -571,11 +846,13 @@ function IndustryCell({ ind, i }: { ind: typeof INDUSTRIES_DATA[0]; i: number })
         <h3 className="font-sans text-lg sm:text-xl font-medium tracking-[-0.02em] leading-tight mt-4 mb-1.5">
           {ind.name}
         </h3>
-        <div className="text-[13px] leading-relaxed" style={{ color: hover ? '#a8a294' : 'var(--text-muted)' }}>{ind.note}</div>
+        <div className="text-[13px] leading-relaxed" style={{ color: hover ? 'rgba(255,255,255,0.5)' : 'var(--text-muted)' }}>
+          {ind.note}
+        </div>
       </div>
       <div className="font-mono text-[11px] tracking-[0.14em] mt-5 flex justify-between" style={{ color: hover ? 'var(--accent)' : 'var(--text-muted)' }}>
         <span>{ind.tags[0]} · {ind.tags[1]}</span>
-        <span className="transition-transform duration-400" style={{ transform: hover ? 'translateX(6px)' : 'translateX(0)' }}>↗</span>
+        <span style={{ display: 'inline-block', transition: 'transform 0.4s ease', transform: hover ? 'translateX(6px)' : 'translateX(0)' }}>↗</span>
       </div>
     </Link>
   );
@@ -583,28 +860,33 @@ function IndustryCell({ ind, i }: { ind: typeof INDUSTRIES_DATA[0]; i: number })
 
 function HubMap() {
   const hubs = [
-    { name: 'New York', code: 'NYC', x: 285, y: 225, region: 'Americas' },
-    { name: 'London', code: 'LDN', x: 500, y: 185, region: 'Europe' },
-    { name: 'Dubai', code: 'DXB', x: 615, y: 255, region: 'MEA' },
-    { name: 'Bangalore', code: 'BLR', x: 705, y: 295, region: 'India' },
-    { name: 'Sydney', code: 'SYD', x: 875, y: 420, region: 'APAC' },
+    { name: 'New York', code: 'NYC', x: 285, y: 225 },
+    { name: 'London', code: 'LDN', x: 500, y: 185 },
+    { name: 'Dubai', code: 'DXB', x: 615, y: 255 },
+    { name: 'Bangalore', code: 'BLR', x: 705, y: 295 },
+    { name: 'Sydney', code: 'SYD', x: 875, y: 420 },
   ];
   return (
     <svg viewBox="0 0 1000 520" width="100%" preserveAspectRatio="xMidYMid meet" style={{ display: 'block' }}>
-      <g fill="var(--border)">
-        {[[200, 130, 110, 90], [240, 250, 90, 110], [510, 170, 75, 60], [560, 280, 130, 130], [680, 200, 160, 110], [820, 230, 80, 60], [880, 400, 60, 40]].map(([cx, cy, rx, ry], i) => (
-          <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry} fill="rgba(10,10,10,0.04)" />
+      <g>
+        {[[200,130,110,90],[240,250,90,110],[510,170,75,60],[560,280,130,130],[680,200,160,110],[820,230,80,60],[880,400,60,40]].map(([cx,cy,rx,ry],i) => (
+          <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry} fill="rgba(0,0,0,0.03)" />
         ))}
       </g>
       {hubs.map((h) => (
         <g key={h.code}>
-          <circle cx={h.x} cy={h.y} r="12" fill="var(--accent)" opacity="0.12">
-            <animate attributeName="r" values="10;22;10" dur="2.4s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0.2;0;0.2" dur="2.4s" repeatCount="indefinite" />
+          <circle cx={h.x} cy={h.y} r="16" fill="none" stroke="rgba(124,58,237,0.18)">
+            <animate attributeName="r" values="10;36;10" dur="2.8s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" repeatCount="indefinite" />
+          </circle>
+          <circle cx={h.x} cy={h.y} r="8" fill="none" stroke="rgba(124,58,237,0.38)">
+            <animate attributeName="r" values="6;20;6" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
           </circle>
           <circle cx={h.x} cy={h.y} r="4" fill="var(--accent)" />
-          <text x={h.x + 14} y={h.y + 4} fill="var(--ink)" fontFamily="JetBrains Mono, monospace" fontSize="11" fontWeight="600">{h.code}</text>
-          <text x={h.x + 14} y={h.y + 20} fill="var(--text-muted)" fontFamily="JetBrains Mono, monospace" fontSize="9">{h.name}</text>
+          <circle cx={h.x} cy={h.y} r="8" fill="rgba(124,58,237,0.12)" />
+          <text x={h.x+14} y={h.y+4} fill="#0D0C0A" fontFamily="JetBrains Mono, monospace" fontSize="11" fontWeight="600">{h.code}</text>
+          <text x={h.x+14} y={h.y+20} fill="#9B9790" fontFamily="JetBrains Mono, monospace" fontSize="9">{h.name}</text>
         </g>
       ))}
     </svg>
@@ -617,25 +899,37 @@ function HubMap() {
 
 function FinalCTA() {
   return (
-    <section className="py-24 sm:py-32" style={{ background: 'var(--accent)' }}>
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-10">
+    <section
+      className="py-24 sm:py-36 relative overflow-hidden"
+      style={{ background: '#050505', borderTop: '1px solid var(--border)' }}
+    >
+      <GradientMesh />
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-end">
           <ScrollReveal className="lg:col-span-7">
             <h2
               className="font-sans font-medium leading-[0.9] tracking-[-0.045em] m-0"
-              style={{ fontSize: 'clamp(48px, 7vw, 128px)', color: 'var(--ink)' }}
+              style={{ fontSize: 'clamp(56px, 9vw, 180px)' }}
             >
-              <MaskReveal>Ready</MaskReveal><br />
-              <MaskReveal delay={0.1}>to build?</MaskReveal>
+              <MaskReveal>
+                <span className="rf-gradient-text-dark">Ready</span>
+              </MaskReveal><br />
+              <MaskReveal delay={0.1}>
+                <span style={{ color: '#FAFAF8' }}>to build?</span>
+              </MaskReveal>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-5">
-            <p className="text-lg leading-relaxed m-0" style={{ color: 'var(--accent-deep)' }}>
+            <p className="text-lg leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Start with a free audit. No pitch. No commitment. A real analysis of where you are and what to do next — delivered within 48 hours.
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
-              <Btn variant="solid" href="/contact">Book strategy call →</Btn>
-              <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
+              <MagneticBtn>
+                <Btn variant="accent" href="/contact">Book strategy call →</Btn>
+              </MagneticBtn>
+              <MagneticBtn>
+                <Btn variant="onDark" href="/free-seo-audit">Get free audit</Btn>
+              </MagneticBtn>
             </div>
           </ScrollReveal>
         </div>
@@ -650,7 +944,7 @@ function FinalCTA() {
 
 export default function HomePage() {
   return (
-    <main className="rf-page-wrap" style={{ paddingTop: 80 }}>
+    <main className="rf-page-wrap" style={{ paddingTop: 0 }}>
       <Hero />
       <FourSpokes />
       <Methodology />
