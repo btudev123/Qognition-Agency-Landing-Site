@@ -8,6 +8,7 @@ import { SERVICES } from '../../../data/services';
 import { getServiceMetadata } from '../../../lib/seo';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import Heading from '../../../components/ui/Heading';
+import CrossLinks from '../../../components/shared/CrossLinks';
 
 export const dynamicParams = false;
 
@@ -266,7 +267,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 Stop guessing. Start growing. Schedule a consultation with our {service.title} leads.
               </p>
               <a
-                href="https://cal.com/hello-qognitionagency/30min"
+                href="https://calendly.com/hello-qognitionagency/30min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"
@@ -276,6 +277,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
             </div>
           </aside>
         </div>
+        <CrossLinks serviceId={service.id} exclude={{ type: 'service', id: service.id }} />
       </main>
     </>
   );

@@ -30,7 +30,7 @@ export default function Page() {
     '',
     '## Contact',
     'Email: hello@qognitionagency.com',
-    'Booking: https://cal.com/hello-qognitionagency/30min',
+    'Booking: https://calendly.com/hello-qognitionagency/30min',
   ].join('\n');
 
   return (

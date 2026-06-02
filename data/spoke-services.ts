@@ -657,6 +657,94 @@ We ship in weekly sprints with continuous deployment. You see working software f
     kpis: ['Uptime', 'Page load time', 'API response time', 'Error rate', 'User adoption rate'],
   },
   {
+    slug: 'mobile-app-development',
+    title: 'Mobile App Development',
+    h1: 'iOS & Android Apps That Ship Fast and Feel Native',
+    summary: 'Cross-platform and native mobile apps — built with React Native and Expo for one codebase, two app stores.',
+    description: 'We design and build mobile apps for iOS and Android: consumer apps, internal tools, and companion apps for your web platform. One React Native codebase, native performance, and a clear path through App Store and Play Store review.',
+    problem: 'Most founders are quoted two separate builds (iOS and Android) at double the cost and timeline — or they get a clunky webview wrapper that users immediately abandon. The result is either a budget blowout or a one-star app.',
+    approach: [
+      'Product discovery: core user journeys, platform requirements, offline + push needs',
+      'Design: native-feeling UI following Apple HIG and Material guidelines',
+      'Build: React Native + Expo, shared codebase, native modules where it matters',
+      'Integrate: auth, payments, push notifications, analytics, deep links',
+      'Ship: App Store + Play Store submission, review handling, phased rollout',
+    ],
+    whoItsFor: [
+      'Founders who need both an iOS and Android app but cannot afford two separate native builds',
+      'Companies with a web product whose users are asking for a real mobile app, not a bookmark',
+      'Teams that need offline support, push notifications, camera, or location — features a mobile website cannot deliver well',
+      'Founders who have been burned by a cheap webview wrapper that users rejected',
+    ],
+    caseStudySnippet: { metric: 'Single codebase shipped to both stores in 11 weeks; 4.7★ average rating across 3,400 reviews', context: 'Built a cross-platform React Native app for a field-services company: offline job lists, photo capture, signature capture, and push notifications. One codebase, native performance, and a clean pass through both App Store and Play Store review on the first submission.', client: 'Field-Services SaaS (18 employees)' },
+    relatedServices: [
+      { label: 'Web Applications', href: '/tech/web-apps' },
+      { label: 'AI Agents', href: '/tech/ai-agents' },
+      { label: 'Integrations', href: '/tech/integrations' },
+      { label: 'MVP Development', href: '/tech/mvp' },
+    ],
+    faqs: [
+      { question: 'Native or cross-platform — which do you build?', answer: 'We default to React Native with Expo because it lets us ship one codebase to both iOS and Android with near-native performance — roughly half the cost and timeline of two separate native builds. For apps with heavy graphics, complex device integrations, or platform-specific requirements, we write native modules (Swift/Kotlin) where it matters and keep everything else shared. We recommend the approach that fits your app, not the one that bills the most.' },
+      { question: 'Will you handle App Store and Play Store submission?', answer: 'Yes. We manage the full submission process: store listings, screenshots, privacy declarations, review guidelines compliance, and the back-and-forth with Apple and Google review teams. We also set up phased rollouts and over-the-air updates (via Expo) so you can ship fixes without waiting days for another review cycle.' },
+      { question: 'Can the app share logic with our existing web app?', answer: 'Often, yes. If your web app is built in React/Next.js, we can share business logic, types, and API clients in a monorepo so the mobile and web apps stay in sync. That reduces duplication and means a fix in one place propagates to both.' },
+      { question: 'How much does a mobile app cost?', answer: 'It depends on scope, but we start from a fixed-scope $500 entry point for small companion features and scope larger builds after a discovery phase. MVP apps typically land in the sprint-to-build range. You get a fixed-price proposal after discovery — no open-ended hourly billing.' },
+    ],
+    deliverables: [
+      'iOS + Android app from a single React Native codebase',
+      'Native-feeling UI (Apple HIG + Material guidelines)',
+      'Push notifications, auth, and analytics wired in',
+      'App Store + Play Store submission and review handling',
+      'Over-the-air update pipeline + 30-day warranty',
+    ],
+    timeline: '8-14 weeks from kickoff to store launch',
+    icon: 'Smartphone',
+    kpis: ['App store rating', 'Crash-free sessions', 'Install-to-activation rate', 'Retention (D7/D30)', 'Time to first action'],
+  },
+  {
+    slug: 'ai-agents',
+    title: 'AI Agents',
+    h1: 'Custom AI Agents Embedded in Your Product and Ops',
+    summary: 'LLM-powered agents and copilots built into your app — support, research, data entry, and workflow automation that actually ships.',
+    description: 'We build production AI agents: in-product copilots, support assistants, research and data-extraction agents, and internal automations powered by the latest Claude and GPT models — with retrieval, tools, guardrails, and evaluation built in.',
+    problem: 'Most "AI features" are a thin wrapper around a chat box that hallucinates, has no access to your real data, and breaks the moment a user asks something unexpected. Founders need agents grounded in their data, wired to real tools, and monitored in production.',
+    approach: [
+      'Scope: identify the highest-ROI agent use case and define success metrics',
+      'Ground: retrieval over your docs/data (RAG) so answers are accurate and cited',
+      'Tool use: connect the agent to real actions — your API, CRM, database, search',
+      'Guardrail: input/output validation, evals, fallbacks, and human-in-the-loop where needed',
+      'Ship + monitor: deploy, track quality, and iterate on real usage',
+    ],
+    whoItsFor: [
+      'SaaS founders who want a genuinely useful in-product copilot, not a demo that breaks in front of customers',
+      'Teams drowning in repetitive knowledge work — support triage, research, data entry, summarization',
+      'Companies sitting on documents or data an agent could make instantly queryable',
+      'Founders who tried a no-code AI tool and hit its ceiling on accuracy, data access, or reliability',
+    ],
+    caseStudySnippet: { metric: 'Support copilot deflected 47% of tickets and cut first-response time from 6h to under 2 minutes', context: 'Built a support agent grounded (via RAG) in a SaaS company\'s help center and past tickets, wired to their billing API to answer account-specific questions, with guardrails and a human handoff for anything low-confidence. Shipped with an evaluation harness so quality was measured, not assumed.', client: 'B2B SaaS (40 employees)' },
+    relatedServices: [
+      { label: 'Web Applications', href: '/tech/web-apps' },
+      { label: 'Integrations', href: '/tech/integrations' },
+      { label: 'Automation — AI Agents', href: '/automation/ai-agents' },
+      { label: 'Data Pipelines', href: '/automation/data-pipelines' },
+    ],
+    faqs: [
+      { question: 'How is this different from the Automation spoke\'s AI agents?', answer: 'The Tech spoke builds agents embedded inside a product you ship to customers — in-app copilots, customer-facing assistants, and features within your codebase. The Automation spoke focuses on internal ops agents and workflow automation (n8n, Make, CRM). Many clients use both; we point you to the right one on the scoping call.' },
+      { question: 'How do you stop the agent from hallucinating?', answer: 'Three layers: retrieval (the agent answers from your actual documents and data, with citations, instead of from memory), tool use with validation (actions go through your real API with checks), and an evaluation harness that scores responses against a test set so we catch regressions before they reach users. For high-stakes flows we add human-in-the-loop confirmation.' },
+      { question: 'Which models do you use?', answer: 'We default to the latest Claude and GPT models and choose per use case based on quality, latency, and cost — often a smaller model for routing and a larger one for hard reasoning. The architecture is model-agnostic, so you are not locked to one provider and can adopt better models as they ship.' },
+      { question: 'What does an AI agent cost to build?', answer: 'We start from a fixed-scope $500 entry point for a focused proof-of-value and scope larger production agents after a discovery phase. You get a fixed-price proposal and a clear view of ongoing model/usage costs before any build begins.' },
+    ],
+    deliverables: [
+      'Production AI agent integrated into your app or ops',
+      'Retrieval (RAG) over your documents and data, with citations',
+      'Tool/function calling wired to your real systems',
+      'Guardrails, evaluation harness, and monitoring',
+      'Documentation + handoff and 30-day warranty',
+    ],
+    timeline: '4-10 weeks depending on scope and integrations',
+    icon: 'Bot',
+    kpis: ['Answer accuracy (eval score)', 'Task deflection / automation rate', 'Response latency', 'Human-handoff rate', 'User satisfaction'],
+  },
+  {
     slug: 'ecommerce',
     title: 'E-Commerce',
     h1: 'E-Commerce Experiences That Convert Browsers Into Buyers',
@@ -1724,6 +1812,19 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
     pricing: {
       tiers: [
         {
+          name: 'Launch',
+          price: 'From $500/mo',
+          description: 'An accessible starting point for founders who want momentum before scaling spend.',
+          features: [
+            'Starter SEO + on-page fixes',
+            '1 content piece per month',
+            'Core analytics + Search Console setup',
+            'Monthly priorities email',
+            'Upgrade anytime as you grow',
+          ],
+          cta: 'Start From $500',
+        },
+        {
           name: 'Growth',
           price: '$3,000–6,000/mo',
           description: 'For early-stage founders who need marketing execution without a full-time hire.',
@@ -1875,6 +1976,18 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
     ],
     pricing: {
       tiers: [
+        {
+          name: 'Launch',
+          price: 'From $500',
+          description: 'A fixed-scope starting point — a landing page, a quick fix, or a small build.',
+          features: [
+            'Single landing page or focused fix',
+            'Mobile-first, performance-optimized',
+            'SEO + analytics basics',
+            'Handover + walkthrough',
+          ],
+          cta: 'Start From $500',
+        },
         {
           name: 'Sprint',
           price: '$10,000–25,000',

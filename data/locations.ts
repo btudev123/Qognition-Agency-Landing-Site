@@ -139,6 +139,176 @@ export const STATE_AND_REGION_LOCATIONS: Location[] = [
   ...continentHubs.map((name) => area(name, 'Global', name, 'continent', ['SEO', 'Performance Marketing', 'AI Search']))
 ];
 
-export const LOCATIONS: Location[] = [...LAUNCH_CITIES, ...STATE_AND_REGION_LOCATIONS];
+// ── EXPANSION: comprehensive city coverage ──────────────────────────────────
+// [name, country, region, marketFocus]
+const expansionCityData: [string, string, string, string[]][] = [
+  // United States
+  ['Atlanta', 'United States', 'North America', ['B2B', 'Media', 'Logistics']],
+  ['Phoenix', 'United States', 'North America', ['Real Estate', 'Healthcare', 'Local Services']],
+  ['Philadelphia', 'United States', 'North America', ['Healthcare', 'Education', 'Professional Services']],
+  ['San Diego', 'United States', 'North America', ['Biotech', 'Tourism', 'Defense']],
+  ['San Jose', 'United States', 'North America', ['SaaS', 'Hardware', 'AI']],
+  ['Austin', 'United States', 'North America', ['SaaS', 'Startups', 'Music']],
+  ['Denver', 'United States', 'North America', ['B2B', 'Energy', 'Outdoor']],
+  ['Nashville', 'United States', 'North America', ['Healthcare', 'Music', 'Hospitality']],
+  ['Charlotte', 'United States', 'North America', ['Finance', 'B2B', 'Real Estate']],
+  ['Columbus', 'United States', 'North America', ['Insurance', 'Retail', 'Logistics']],
+  ['Indianapolis', 'United States', 'North America', ['Manufacturing', 'Healthcare', 'Sports']],
+  ['Detroit', 'United States', 'North America', ['Automotive', 'Manufacturing', 'B2B']],
+  ['Portland', 'United States', 'North America', ['E-commerce', 'Outdoor', 'Creative']],
+  ['Las Vegas', 'United States', 'North America', ['Hospitality', 'Entertainment', 'Real Estate']],
+  ['Minneapolis', 'United States', 'North America', ['Retail', 'Healthcare', 'B2B']],
+  ['Sacramento', 'United States', 'North America', ['Government', 'Healthcare', 'Local Services']],
+  ['Kansas City', 'United States', 'North America', ['Logistics', 'B2B', 'Agritech']],
+  ['Orlando', 'United States', 'North America', ['Hospitality', 'Tourism', 'Real Estate']],
+  ['Tampa', 'United States', 'North America', ['Finance', 'Healthcare', 'Real Estate']],
+  ['Pittsburgh', 'United States', 'North America', ['Healthcare', 'Robotics', 'Education']],
+  ['Cincinnati', 'United States', 'North America', ['Consumer Goods', 'B2B', 'Healthcare']],
+  ['Cleveland', 'United States', 'North America', ['Healthcare', 'Manufacturing', 'B2B']],
+  ['St Louis', 'United States', 'North America', ['Healthcare', 'Agritech', 'B2B']],
+  ['Salt Lake City', 'United States', 'North America', ['SaaS', 'Outdoor', 'Fintech']],
+  ['Raleigh', 'United States', 'North America', ['Technology', 'Biotech', 'Education']],
+  ['San Antonio', 'United States', 'North America', ['Healthcare', 'Military', 'Tourism']],
+  ['Jacksonville', 'United States', 'North America', ['Logistics', 'Finance', 'Healthcare']],
+  ['Memphis', 'United States', 'North America', ['Logistics', 'Healthcare', 'B2B']],
+  ['Baltimore', 'United States', 'North America', ['Healthcare', 'Government', 'Biotech']],
+  ['Milwaukee', 'United States', 'North America', ['Manufacturing', 'B2B', 'Healthcare']],
+  ['Oklahoma City', 'United States', 'North America', ['Energy', 'Local Services', 'B2B']],
+  ['Louisville', 'United States', 'North America', ['Logistics', 'Healthcare', 'Manufacturing']],
+  ['Buffalo', 'United States', 'North America', ['Healthcare', 'Education', 'Local Services']],
+  // Canada
+  ['Calgary', 'Canada', 'North America', ['Energy', 'B2B', 'Real Estate']],
+  ['Ottawa', 'Canada', 'North America', ['Government', 'Technology', 'Defense']],
+  ['Edmonton', 'Canada', 'North America', ['Energy', 'Local Services', 'B2B']],
+  ['Winnipeg', 'Canada', 'North America', ['Agritech', 'Logistics', 'B2B']],
+  ['Quebec City', 'Canada', 'North America', ['Tourism', 'Government', 'Professional Services']],
+  // Europe
+  ['Madrid', 'Spain', 'Europe', ['Finance', 'Tourism', 'B2B']],
+  ['Barcelona', 'Spain', 'Europe', ['Startups', 'Tourism', 'Creative']],
+  ['Valencia', 'Spain', 'Europe', ['Logistics', 'Tourism', 'Agritech']],
+  ['Seville', 'Spain', 'Europe', ['Tourism', 'Local Services', 'Trade']],
+  ['Rome', 'Italy', 'Europe', ['Tourism', 'Government', 'Luxury']],
+  ['Milan', 'Italy', 'Europe', ['Luxury', 'Finance', 'Fashion']],
+  ['Naples', 'Italy', 'Europe', ['Tourism', 'Logistics', 'Local Services']],
+  ['Turin', 'Italy', 'Europe', ['Automotive', 'Manufacturing', 'B2B']],
+  ['Amsterdam', 'Netherlands', 'Europe', ['Fintech', 'SaaS', 'Logistics']],
+  ['Rotterdam', 'Netherlands', 'Europe', ['Logistics', 'Trade', 'B2B']],
+  ['Brussels', 'Belgium', 'Europe', ['Government', 'Professional Services', 'B2B']],
+  ['Antwerp', 'Belgium', 'Europe', ['Logistics', 'Luxury', 'Trade']],
+  ['Zurich', 'Switzerland', 'Europe', ['Finance', 'Luxury', 'B2B']],
+  ['Geneva', 'Switzerland', 'Europe', ['Finance', 'Luxury', 'Government']],
+  ['Vienna', 'Austria', 'Europe', ['Finance', 'Tourism', 'B2B']],
+  ['Stockholm', 'Sweden', 'Europe', ['SaaS', 'Fintech', 'Startups']],
+  ['Gothenburg', 'Sweden', 'Europe', ['Automotive', 'Logistics', 'B2B']],
+  ['Oslo', 'Norway', 'Europe', ['Energy', 'Maritime', 'B2B']],
+  ['Copenhagen', 'Denmark', 'Europe', ['SaaS', 'Design', 'Green Energy']],
+  ['Helsinki', 'Finland', 'Europe', ['SaaS', 'Gaming', 'B2B']],
+  ['Dublin', 'Ireland', 'Europe', ['SaaS', 'Fintech', 'Pharma']],
+  ['Lisbon', 'Portugal', 'Europe', ['Startups', 'Tourism', 'SaaS']],
+  ['Porto', 'Portugal', 'Europe', ['Tourism', 'B2B', 'Trade']],
+  ['Warsaw', 'Poland', 'Europe', ['SaaS', 'B2B', 'Logistics']],
+  ['Krakow', 'Poland', 'Europe', ['Technology', 'Tourism', 'B2B']],
+  ['Prague', 'Czech Republic', 'Europe', ['Technology', 'Tourism', 'B2B']],
+  ['Athens', 'Greece', 'Europe', ['Tourism', 'Maritime', 'Local Services']],
+  ['Budapest', 'Hungary', 'Europe', ['Technology', 'Tourism', 'B2B']],
+  ['Bucharest', 'Romania', 'Europe', ['SaaS', 'B2B', 'Outsourcing']],
+  ['Cologne', 'Germany', 'Europe', ['Media', 'B2B', 'Logistics']],
+  ['Stuttgart', 'Germany', 'Europe', ['Automotive', 'Manufacturing', 'Enterprise']],
+  ['Dusseldorf', 'Germany', 'Europe', ['B2B', 'Fashion', 'Trade']],
+  ['Nice', 'France', 'Europe', ['Tourism', 'Luxury', 'Tech']],
+  ['Bordeaux', 'France', 'Europe', ['Luxury', 'Tourism', 'Agritech']],
+  ['Edinburgh', 'United Kingdom', 'Europe', ['Fintech', 'Tourism', 'Education']],
+  ['Glasgow', 'United Kingdom', 'Europe', ['B2B', 'Local Services', 'Education']],
+  ['Leeds', 'United Kingdom', 'Europe', ['Finance', 'B2B', 'Healthcare']],
+  ['Liverpool', 'United Kingdom', 'Europe', ['Tourism', 'Local Services', 'Trade']],
+  ['Bristol', 'United Kingdom', 'Europe', ['Technology', 'Creative', 'Aerospace']],
+  // Middle East
+  ['Kuwait City', 'Kuwait', 'Middle East', ['Government', 'Finance', 'Retail']],
+  ['Manama', 'Bahrain', 'Middle East', ['Finance', 'Fintech', 'B2B']],
+  ['Muscat', 'Oman', 'Middle East', ['Energy', 'Tourism', 'Government']],
+  ['Sharjah', 'United Arab Emirates', 'Middle East', ['Manufacturing', 'Education', 'Trade']],
+  ['Dammam', 'Saudi Arabia', 'Middle East', ['Energy', 'Industrial', 'Logistics']],
+  ['Mecca', 'Saudi Arabia', 'Middle East', ['Hospitality', 'Tourism', 'Local Services']],
+  ['Medina', 'Saudi Arabia', 'Middle East', ['Hospitality', 'Tourism', 'Local Services']],
+  ['Amman', 'Jordan', 'Middle East', ['SaaS', 'Tourism', 'B2B']],
+  ['Beirut', 'Lebanon', 'Middle East', ['Creative', 'Banking', 'Trade']],
+  ['Istanbul', 'Turkey', 'Middle East', ['E-commerce', 'Manufacturing', 'Tourism']],
+  ['Ankara', 'Turkey', 'Middle East', ['Government', 'Defense', 'B2B']],
+  ['Tel Aviv', 'Israel', 'Middle East', ['SaaS', 'Cybersecurity', 'Fintech']],
+  // Australia & New Zealand
+  ['Adelaide', 'Australia', 'Oceania', ['Defense', 'Wine', 'Healthcare']],
+  ['Gold Coast', 'Australia', 'Oceania', ['Tourism', 'Real Estate', 'Local Services']],
+  ['Canberra', 'Australia', 'Oceania', ['Government', 'Education', 'Professional Services']],
+  ['Newcastle', 'Australia', 'Oceania', ['Energy', 'Industrial', 'B2B']],
+  ['Hobart', 'Australia', 'Oceania', ['Tourism', 'Agritech', 'Local Services']],
+  ['Darwin', 'Australia', 'Oceania', ['Mining', 'Defense', 'Logistics']],
+  ['Wellington', 'New Zealand', 'Oceania', ['Government', 'Creative', 'SaaS']],
+  ['Christchurch', 'New Zealand', 'Oceania', ['Agritech', 'Tourism', 'B2B']],
+  // India
+  ['Kolkata', 'India', 'Asia Pacific', ['B2B', 'Education', 'Manufacturing']],
+  ['Pune', 'India', 'Asia Pacific', ['SaaS', 'Automotive', 'Education']],
+  ['Ahmedabad', 'India', 'Asia Pacific', ['Manufacturing', 'Textiles', 'B2B']],
+  ['Surat', 'India', 'Asia Pacific', ['Textiles', 'Diamonds', 'Trade']],
+  ['Jaipur', 'India', 'Asia Pacific', ['Tourism', 'Handicrafts', 'Local Services']],
+  ['Lucknow', 'India', 'Asia Pacific', ['Government', 'Education', 'Local Services']],
+  ['Nagpur', 'India', 'Asia Pacific', ['Logistics', 'Agritech', 'B2B']],
+  ['Indore', 'India', 'Asia Pacific', ['Education', 'Manufacturing', 'Startups']],
+  ['Coimbatore', 'India', 'Asia Pacific', ['Manufacturing', 'Textiles', 'SaaS']],
+  ['Kochi', 'India', 'Asia Pacific', ['Tourism', 'IT', 'Maritime']],
+  ['Chandigarh', 'India', 'Asia Pacific', ['Government', 'Education', 'IT']],
+  ['Gurugram', 'India', 'Asia Pacific', ['SaaS', 'Startups', 'B2B']],
+  ['Noida', 'India', 'Asia Pacific', ['IT', 'Manufacturing', 'B2B']],
+  ['Visakhapatnam', 'India', 'Asia Pacific', ['Maritime', 'Energy', 'B2B']],
+];
+
+const EXPANSION_CITIES: Location[] = expansionCityData.map(([name, country, region, focus]) =>
+  city(name, country, region, focus)
+);
+
+const indiaStates = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
+  'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra',
+  'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim',
+  'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+];
+
+const spainRegions = [
+  'Catalonia', 'Community of Madrid', 'Andalusia', 'Valencian Community', 'Basque Country', 'Galicia',
+];
+
+const italyRegions = [
+  'Lombardy', 'Lazio', 'Veneto', 'Campania', 'Piedmont', 'Tuscany', 'Sicily', 'Emilia Romagna',
+];
+
+const europeanCountries = [
+  'Spain', 'Italy', 'Netherlands', 'Belgium', 'Switzerland', 'Austria', 'Sweden', 'Norway',
+  'Denmark', 'Finland', 'Ireland', 'Portugal', 'Poland', 'Czech Republic', 'Greece', 'Hungary',
+  'Romania', 'Luxembourg',
+];
+
+const middleEastCountries = ['Kuwait', 'Bahrain', 'Oman', 'Jordan', 'Lebanon', 'Turkey', 'Israel', 'Qatar'];
+
+const EXPANSION_AREAS: Location[] = [
+  ...indiaStates.map((name) => area(name, 'India', 'Asia Pacific', 'state', ['Local SEO', 'PPC', 'Web Development'])),
+  ...spainRegions.map((name) => area(name, 'Spain', 'Europe', 'region', ['Tourism', 'Retail', 'B2B'])),
+  ...italyRegions.map((name) => area(name, 'Italy', 'Europe', 'region', ['Luxury', 'Manufacturing', 'Tourism'])),
+  ...europeanCountries.map((name) => area(name, name, 'Europe', 'country', ['SEO', 'Performance Marketing', 'B2B'])),
+  ...middleEastCountries.map((name) => area(name, name, 'Middle East', 'country', ['Real Estate', 'Luxury', 'Government'])),
+];
+
+const ALL_LOCATIONS: Location[] = [
+  ...LAUNCH_CITIES,
+  ...STATE_AND_REGION_LOCATIONS,
+  ...EXPANSION_CITIES,
+  ...EXPANSION_AREAS,
+];
+
+// De-duplicate by slug so generateStaticParams never produces conflicting paths.
+const seenSlugs = new Set<string>();
+export const LOCATIONS: Location[] = ALL_LOCATIONS.filter((location) => {
+  if (seenSlugs.has(location.slug)) return false;
+  seenSlugs.add(location.slug);
+  return true;
+});
 
 export const getLocationBySlug = (slug: string) => LOCATIONS.find((location) => location.slug === slug);

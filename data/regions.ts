@@ -134,5 +134,109 @@ export const REGIONS: Region[] = [
         { question: "Do you handle Asian markets from Aus?", answer: "Yes, our Sydney team coordinates strategies for SEA and ANZ." },
         ...COMMON_FAQS
     ]
+  },
+  {
+    id: 'europe',
+    name: 'Europe',
+    slug: 'europe',
+    description: 'Pan-European growth programs across the UK, DACH, Nordics, Iberia, and beyond — multilingual and GDPR-first.',
+    marketFocus: ['SaaS', 'Fintech', 'Manufacturing'],
+    localStrategy: 'Multilingual SEO and localized creative tuned to each market, unified under one cross-border strategy.',
+    officeCoordinates: '52.5200° N, 13.4050° E',
+    relatedCaseStudy: 'fintech-scale',
+    marketDynamics: 'Europe is not one market but dozens. Language, regulation, and buying culture differ sharply between regions, so a single English campaign rarely travels well.',
+    competitiveLandscape: 'Fragmented and sophisticated. Local incumbents are strong, so differentiation and native-language content win.',
+    localInsights: [
+        'GDPR & consent: server-side tracking and consent-mode compliance are mandatory across the EU and UK.',
+        'Localization over translation: native copywriters per market consistently outperform machine-translated pages.'
+    ],
+    stats: [
+        { label: 'Markets Served', value: '20+' },
+        { label: 'Languages', value: '12' },
+        { label: 'EU Leads/Mo', value: '30k+' },
+        { label: 'Avg ROAS', value: '4.1x' }
+    ],
+    faqs: [
+        { question: 'Do you run multilingual campaigns?', answer: 'Yes — native-language SEO, ads, and content across all major European languages.' },
+        ...COMMON_FAQS
+    ]
+  },
+  {
+    id: 'middle-east',
+    name: 'Middle East',
+    slug: 'middle-east',
+    description: 'Growth across the GCC and Levant — Arabic-first creative, WhatsApp commerce, and Vision 2030-aligned strategy.',
+    marketFocus: ['Real Estate', 'Government', 'Luxury Retail'],
+    localStrategy: 'Bilingual Arabic/English programs, mobile-first video, and WhatsApp-led conversion journeys.',
+    officeCoordinates: '25.2048° N, 55.2708° E',
+    relatedCaseStudy: 'retail-ai',
+    marketDynamics: 'High smartphone penetration and social usage. TikTok and Snapchat dominate in KSA; WhatsApp is the default business channel.',
+    competitiveLandscape: 'Fast-digitizing economies with major government and infrastructure investment driving demand.',
+    localInsights: [
+        'Dialect nuance: native Arabic copy (Khaleeji vs. Levantine) materially lifts engagement.',
+        'WhatsApp commerce: chatbots and CRM integrated into the WhatsApp Business API drive conversions.'
+    ],
+    stats: [
+        { label: 'Regional Spend', value: '$50M+' },
+        { label: 'Arabic Campaigns', value: '200+' },
+        { label: 'Leads/Mo', value: '50k+' },
+        { label: 'Growth YoY', value: '120%' }
+    ],
+    faqs: [
+        { question: 'Do you create Arabic content?', answer: 'Yes, with a fully bilingual team across Dubai and Riyadh.' },
+        ...COMMON_FAQS
+    ]
+  },
+  {
+    id: 'canada',
+    name: 'Canada',
+    slug: 'canada',
+    description: 'Coast-to-coast Canadian growth from Toronto, Vancouver, and Montreal — bilingual where it counts.',
+    marketFocus: ['SaaS', 'Finance', 'Professional Services'],
+    localStrategy: 'English and French-Canadian campaigns with privacy-compliant tracking (PIPEDA, Law 25).',
+    officeCoordinates: '43.6532° N, 79.3832° W',
+    relatedCaseStudy: 'saas-brand',
+    marketDynamics: 'A concentrated population along the US border with strong B2B and SaaS demand and high digital maturity.',
+    competitiveLandscape: 'Competitive but less saturated than the US — disciplined SEO and paid media compound quickly.',
+    localInsights: [
+        'Quebec French: Law 25 and French-first requirements make native Québécois content essential in QC.',
+        'US spillover: messaging must distinguish Canadian offers from US competitors bidding on the same terms.'
+    ],
+    stats: [
+        { label: 'Canadian Clients', value: '30+' },
+        { label: 'Provinces Covered', value: '10' },
+        { label: 'Leads/Mo', value: '12k+' },
+        { label: 'Avg Retention', value: '3.1 Yrs' }
+    ],
+    faqs: [
+        { question: 'Do you run French-Canadian campaigns?', answer: 'Yes — native Québécois copywriting and Law 25-compliant tracking.' },
+        ...COMMON_FAQS
+    ]
+  },
+  {
+    id: 'singapore',
+    name: 'Singapore & SEA',
+    slug: 'singapore-sea',
+    description: 'APAC growth hub serving Singapore and Southeast Asia — fintech, SaaS, and cross-border B2B.',
+    marketFocus: ['Fintech', 'SaaS', 'B2B'],
+    localStrategy: 'English-first regional strategy with localized expansion into ID, MY, TH, VN, and PH.',
+    officeCoordinates: '1.3521° N, 103.8198° E',
+    relatedCaseStudy: 'fintech-scale',
+    marketDynamics: 'Singapore is the regional HQ market for APAC. Mobile-first, super-app ecosystems, and high English proficiency.',
+    competitiveLandscape: 'Dense and well-funded. Speed, performance creative, and clean attribution separate winners.',
+    localInsights: [
+        'Super-apps: Grab, Shopee, and WhatsApp/Telegram shape discovery and conversion paths.',
+        'Cross-border: a Singapore base is the launchpad for regulated expansion into the wider ASEAN bloc.'
+    ],
+    stats: [
+        { label: 'APAC Markets', value: '6' },
+        { label: 'SaaS Clients', value: '25+' },
+        { label: 'Leads/Mo', value: '18k+' },
+        { label: 'Avg ROAS', value: '4.3x' }
+    ],
+    faqs: [
+        { question: 'Do you cover the wider ASEAN region?', answer: 'Yes — Singapore is our hub for Indonesia, Malaysia, Thailand, Vietnam, and the Philippines.' },
+        ...COMMON_FAQS
+    ]
   }
 ];

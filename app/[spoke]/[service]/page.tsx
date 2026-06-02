@@ -15,7 +15,7 @@ export function generateStaticParams() {
     // Import dynamically to avoid circular deps — we hardcode the known slugs
     const slugsBySpoke: Record<string, string[]> = {
       marketing: ['seo', 'ai-seo', 'paid-media', 'content', 'email-lifecycle', 'brand-strategy', 'visual-identity', 'cro', 'social', 'audit'],
-      tech: ['websites', 'web-apps', 'ecommerce', 'nextjs-seo', 'integrations', 'performance', 'mvp', 'audit'],
+      tech: ['websites', 'web-apps', 'mobile-app-development', 'ai-agents', 'ecommerce', 'nextjs-seo', 'integrations', 'performance', 'mvp', 'audit'],
       finance: ['bookkeeping', 'tax', 'fractional-cfo', 'payroll', 'financial-reporting', 'cash-flow', 'audit'],
       automation: ['ai-agents', 'workflow-automation', 'integrations', 'data-pipelines', 'crm-automation', 'no-code-stack', 'audit'],
     };

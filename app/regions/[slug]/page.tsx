@@ -7,6 +7,7 @@ import { getRegionMetadata } from '../../../lib/seo';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import Heading from '../../../components/ui/Heading';
 import Badge from '../../../components/ui/Badge';
+import CrossLinks from '../../../components/shared/CrossLinks';
 
 export const dynamicParams = false;
 
@@ -152,7 +153,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <Heading level="h3" className="text-base">{region.name} Strategy</Heading>
                 <p className="text-sm text-[var(--text-muted)]">{region.localStrategy || region.description}</p>
                 <a
-                  href="https://cal.com/hello-qognitionagency/30min"
+                  href="https://calendly.com/hello-qognitionagency/30min"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
@@ -163,6 +164,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </aside>
           </div>
         </div>
+        <CrossLinks exclude={{ type: 'region', id: region.id }} />
       </main>
     </>
   );

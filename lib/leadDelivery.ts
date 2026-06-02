@@ -31,7 +31,7 @@ function leadNotificationHtml(lead: LeadPayload): string {
 
   return `
 <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
-  <div style="background:#7C3AED;padding:24px 32px">
+  <div style="background:#14B8A6;padding:24px 32px">
     <span style="color:#fff;font-size:20px;font-weight:700">Qognition</span>
     <span style="color:rgba(255,255,255,0.7);font-size:14px;margin-left:8px">New Lead</span>
   </div>
@@ -43,10 +43,10 @@ function leadNotificationHtml(lead: LeadPayload): string {
       </tr>
       <tr>
         <td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Email</td>
-        <td style="padding:8px 12px;font-size:15px"><a href="mailto:${escapeHtml(lead.contact.email)}" style="color:#7C3AED">${escapeHtml(lead.contact.email)}</a></td>
+        <td style="padding:8px 12px;font-size:15px"><a href="mailto:${escapeHtml(lead.contact.email)}" style="color:#14B8A6">${escapeHtml(lead.contact.email)}</a></td>
       </tr>
       ${lead.contact.company ? `<tr><td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Company</td><td style="padding:8px 12px;font-size:15px">${escapeHtml(lead.contact.company)}</td></tr>` : ''}
-      ${lead.contact.company_url ? `<tr><td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Website</td><td style="padding:8px 12px;font-size:15px"><a href="${escapeHtml(lead.contact.company_url)}" style="color:#7C3AED">${escapeHtml(lead.contact.company_url)}</a></td></tr>` : ''}
+      ${lead.contact.company_url ? `<tr><td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Website</td><td style="padding:8px 12px;font-size:15px"><a href="${escapeHtml(lead.contact.company_url)}" style="color:#14B8A6">${escapeHtml(lead.contact.company_url)}</a></td></tr>` : ''}
       ${lead.contact.phone ? `<tr><td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Phone</td><td style="padding:8px 12px;font-size:15px">${escapeHtml(lead.contact.phone)}</td></tr>` : ''}
       <tr>
         <td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Spoke</td>
@@ -63,7 +63,7 @@ function leadNotificationHtml(lead: LeadPayload): string {
     </table>
     ${lead.contact.message ? `<div style="background:#f9fafb;padding:16px;border-radius:8px;margin-bottom:24px"><p style="color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin:0 0 8px">Message</p><p style="margin:0;font-size:14px;line-height:1.6">${escapeHtml(lead.contact.message)}</p></div>` : ''}
     ${lead.utm?.source ? `<div style="font-size:12px;color:#9ca3af;margin-bottom:16px">UTM: ${escapeHtml([lead.utm.source, lead.utm.medium, lead.utm.campaign, lead.utm.term, lead.utm.content].filter(Boolean).join(' / '))}</div>` : ''}
-    <a href="mailto:${escapeHtml(lead.contact.email)}" style="display:inline-block;background:#7C3AED;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px">Reply to ${escapeHtml(lead.contact.name.split(' ')[0])}</a>
+    <a href="mailto:${escapeHtml(lead.contact.email)}" style="display:inline-block;background:#14B8A6;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px">Reply to ${escapeHtml(lead.contact.name.split(' ')[0])}</a>
   </div>
 </div>`;
 }
@@ -76,7 +76,7 @@ function leadConfirmationHtml(lead: LeadPayload): string {
   return `
 <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
   <div style="padding:40px 32px 24px;text-align:center">
-    <div style="background:#7C3AED;width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:24px;margin-bottom:16px">Q</div>
+    <div style="background:#14B8A6;width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:24px;margin-bottom:16px">Q</div>
     <h1 style="font-size:22px;margin:0 0 8px;color:#111827">${isAudit ? 'Your audit request is in motion' : 'We received your message'}</h1>
     <p style="color:#6b7280;font-size:15px;line-height:1.6;margin:0 0 24px">
       ${isAudit
@@ -91,7 +91,7 @@ function leadConfirmationHtml(lead: LeadPayload): string {
           : '<li>Your message lands in the right team inbox</li><li>A team member reads and reviews your situation</li><li>You get a personal response within one business day</li>'}
       </ol>
     </div>
-    ${isAudit ? `<a href="https://cal.com/hello-qognitionagency/30min" style="display:inline-block;background:#7C3AED;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px">Book a strategy call now</a>` : ''}
+    ${isAudit ? `<a href="https://calendly.com/hello-qognitionagency/30min" style="display:inline-block;background:#14B8A6;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px">Book a strategy call now</a>` : ''}
     <p style="color:#9ca3af;font-size:12px;margin-top:24px">Qognition Agency &mdash; The operating partner for founders.</p>
   </div>
 </div>`;

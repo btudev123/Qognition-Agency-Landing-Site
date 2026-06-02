@@ -7,8 +7,11 @@ import ScrollReveal from '../components/shared/ScrollReveal';
 import MaskReveal from '../components/shared/MaskReveal';
 import MagneticBtn from '../components/shared/MagneticBtn';
 import { WorkCard, WorkCardFeatured } from '../components/shared/WorkCard';
+import { HeroAurora, HeroDashboard } from '../components/HeroAurora';
+import ClientPartners from '../components/shared/ClientPartners';
 import { CASE_STUDIES } from '../data/work';
 import { SPOKES, type SpokeConfig } from '../lib/spokes';
+import { CALENDLY_LINK } from '../data/siteConfig';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 
@@ -58,7 +61,7 @@ const SPOKE_SERVICES: Record<string, string[]> = {
 };
 
 const SPOKE_RGB: Record<string, string> = {
-  marketing: '124, 58, 237',
+  marketing: '20, 184, 166',
   tech: '37, 99, 235',
   finance: '5, 150, 105',
   automation: '245, 158, 11',
@@ -79,10 +82,11 @@ function Eyebrow({ children, color }: { children: React.ReactNode; color?: strin
   );
 }
 
-function Btn({ children, variant = 'solid', href }: {
+function Btn({ children, variant = 'solid', href, external = false }: {
   children: React.ReactNode;
   variant?: 'solid' | 'ghost' | 'accent' | 'onDark';
   href?: string;
+  external?: boolean;
 }) {
   const [hover, setHover] = React.useState(false);
 
@@ -101,7 +105,7 @@ function Btn({ children, variant = 'solid', href }: {
       background: 'var(--accent)',
       color: '#fff',
       border: '1px solid var(--accent)',
-      boxShadow: hover ? '0 0 28px rgba(124,58,237,0.4)' : 'none',
+      boxShadow: hover ? '0 0 28px rgba(20,184,166,0.4)' : 'none',
     },
     onDark: {
       background: hover ? 'rgba(255,255,255,0.1)' : 'transparent',
@@ -124,6 +128,7 @@ function Btn({ children, variant = 'solid', href }: {
     onMouseLeave: () => setHover(false),
   };
 
+  if (href && external) return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>;
   if (href) return <Link href={href} {...props}>{children}</Link>;
   return <button {...props}>{children}</button>;
 }
@@ -167,7 +172,7 @@ function GradientMesh({ className }: { className?: string }) {
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className || ''}`} aria-hidden="true">
       <div style={{
         position: 'absolute', top: '-10%', right: '-5%', width: '55%', height: '70%',
-        background: 'radial-gradient(circle, rgba(124,58,237,0.13) 0%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(20,184,166,0.13) 0%, transparent 65%)',
         filter: 'blur(40px)', animation: 'rf-orb-drift 18s ease-in-out infinite', willChange: 'transform',
       }} />
       <div style={{
@@ -184,239 +189,104 @@ function GradientMesh({ className }: { className?: string }) {
   );
 }
 
-// ── HERO SINE WAVES ───────────────────────────────────────────────────────────
-
-function HeroWaves() {
-  return (
-    <svg
-      aria-hidden="true"
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
-      viewBox="0 0 1440 900"
-      preserveAspectRatio="xMidYMid slice"
-    >
-      <defs>
-        <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#7C3AED" stopOpacity="0" />
-          <stop offset="22%" stopColor="#7C3AED" stopOpacity="0.65" />
-          <stop offset="58%" stopColor="#A78BFA" stopOpacity="0.75" />
-          <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="wg2" x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop offset="0%" stopColor="#7C3AED" stopOpacity="0" />
-          <stop offset="22%" stopColor="#7C3AED" stopOpacity="0.5" />
-          <stop offset="58%" stopColor="#C4B5FD" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="#059669" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="wg3" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0" />
-          <stop offset="38%" stopColor="#7C3AED" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-
-      {/* Wave 1 — main crossing arc, left→right, crosses at center */}
-      <path
-        d="M -120 740 C 160 60 520 40 720 450 C 920 860 1280 840 1560 160"
-        stroke="url(#wg1)"
-        strokeWidth="1.8"
-        fill="none"
-        style={{ animation: 'hero-wave-1 20s ease-in-out infinite', transformOrigin: '50% 50%' }}
-      />
-
-      {/* Wave 2 — mirror arc, right→left, crosses at center */}
-      <path
-        d="M 1560 740 C 1280 60 920 40 720 450 C 520 860 160 840 -120 160"
-        stroke="url(#wg2)"
-        strokeWidth="1.8"
-        fill="none"
-        style={{ animation: 'hero-wave-2 26s ease-in-out infinite', transformOrigin: '50% 50%' }}
-      />
-
-      {/* Wave 3 — subtler offset arc for depth */}
-      <path
-        d="M -120 520 C 360 200 620 700 900 300 C 1100 -20 1320 480 1560 360"
-        stroke="url(#wg3)"
-        strokeWidth="1.2"
-        fill="none"
-        style={{ animation: 'hero-wave-3 34s ease-in-out infinite', transformOrigin: '50% 50%' }}
-      />
-    </svg>
-  );
-}
-
 // ═══════════════════════════════════════════════════════════════════════════════
-// 1. HERO — centered, propeller-inspired, AI-native
+// 1. HERO — aurora mesh + floating glass operating-system dashboard
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function Hero() {
   return (
     <section
-      className="relative flex flex-col items-center justify-center overflow-hidden"
-      style={{ minHeight: '100vh', background: 'var(--bg)', paddingTop: 80, paddingBottom: 64 }}
+      className="relative flex items-center overflow-hidden"
+      style={{ minHeight: '100vh', background: 'var(--bg)', paddingTop: 104, paddingBottom: 72 }}
     >
-      {/* SVG sine wave curves */}
-      <HeroWaves />
+      {/* Animated teal aurora / mesh background */}
+      <HeroAurora />
 
-      {/* Radial glow — bottom center */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute', bottom: '-8%', left: '50%', transform: 'translateX(-50%)',
-          width: 'min(80vw, 1000px)', height: '52vh',
-          background: 'radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.14) 0%, rgba(124,58,237,0.05) 42%, transparent 70%)',
-          filter: 'blur(40px)', pointerEvents: 'none',
-        }}
-      />
+      {/* Content — copy left, glass dashboard right (stacks on mobile/tablet) */}
+      <div className="relative z-10 w-full max-w-[1320px] mx-auto px-5 sm:px-10 grid items-center gap-12 lg:gap-16 lg:grid-cols-[1.05fr_0.95fr]">
 
-      {/* Top accent glow */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute', top: '14%', left: '50%', transform: 'translateX(-50%)',
-          width: 'min(48vw, 600px)', height: '30vh',
-          background: 'radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.06) 0%, transparent 70%)',
-          filter: 'blur(48px)', pointerEvents: 'none',
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 text-center">
-
-        {/* Eyebrow pill */}
-        <ScrollReveal className="mb-8 sm:mb-10">
-          <div className="inline-flex items-center gap-3">
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '7px 16px',
-              border: '1px solid var(--border-strong)',
-              background: 'rgba(124,58,237,0.07)',
-              borderRadius: 100,
-            }}>
+        {/* Left — copy */}
+        <div className="text-center lg:text-left">
+          <ScrollReveal className="mb-7 sm:mb-9">
+            <div className="inline-flex items-center gap-3">
               <div style={{
-                width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)',
-                animation: 'rf-pulse 2s ease-in-out infinite',
-              }} />
-              <span style={{
-                fontFamily: 'JetBrains Mono, monospace', fontSize: 11,
-                letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent)',
+                display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 16px',
+                border: '1px solid var(--border-strong)', background: 'rgba(20,184,166,0.08)', borderRadius: 100,
               }}>
-                AI-Native Operating Partner
-              </span>
-            </div>
-          </div>
-        </ScrollReveal>
-
-        {/* Headline */}
-        <h1
-          className="font-sans font-medium m-0 leading-[0.88] tracking-[-0.048em]"
-          style={{ fontSize: 'clamp(50px, 10vw, 168px)', color: 'var(--ink)' }}
-        >
-          <MaskReveal>The Operating</MaskReveal>
-          <br />
-          <MaskReveal delay={0.1}>
-            <span className="rf-gradient-text">Partner</span>
-          </MaskReveal>
-          <br />
-          <MaskReveal delay={0.2}>for Founders.</MaskReveal>
-        </h1>
-
-        {/* Sub copy */}
-        <ScrollReveal stagger={4} className="mt-8 sm:mt-10">
-          <p
-            className="text-lg sm:text-[22px] leading-relaxed tracking-[-0.005em] max-w-[580px] mx-auto m-0"
-            style={{ color: 'var(--ink-soft)' }}
-          >
-            We run{' '}
-            <strong style={{ color: 'var(--ink)' }}>marketing</strong>,{' '}
-            <strong style={{ color: 'var(--ink)' }}>tech</strong>,{' '}
-            <strong style={{ color: 'var(--ink)' }}>finance</strong>, and{' '}
-            <strong style={{ color: 'var(--ink)' }}>automation</strong>{' '}
-            so founders can build the business — not manage vendors.
-          </p>
-        </ScrollReveal>
-
-        {/* CTAs */}
-        <ScrollReveal stagger={5} className="mt-9 sm:mt-11">
-          <div className="flex flex-wrap gap-3 justify-center">
-            <MagneticBtn>
-              <Btn variant="solid" href="/contact">Book strategy call →</Btn>
-            </MagneticBtn>
-            <MagneticBtn>
-              <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
-            </MagneticBtn>
-          </div>
-        </ScrollReveal>
-
-        {/* Metrics strip — frosted glass */}
-        <ScrollReveal stagger={6} className="mt-14 sm:mt-16">
-          <div
-            className="inline-flex flex-wrap justify-center"
-            style={{
-              border: '1px solid var(--border)',
-              background: 'rgba(255,255,255,0.55)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-            }}
-          >
-            {[
-              { n: '$500M+', label: 'Revenue driven' },
-              { n: '4.2×', label: 'Avg. ROAS' },
-              { n: '142', label: 'Campaigns shipped' },
-            ].map((m, i) => (
-              <div
-                key={i}
-                className="text-center px-8 sm:px-12 py-5"
-                style={{
-                  borderLeft: i > 0 ? '1px solid var(--border)' : 'none',
-                }}
-              >
-                <div
-                  className="font-sans font-medium leading-none tracking-[-0.04em]"
-                  style={{ fontSize: 'clamp(26px, 3.2vw, 42px)', color: 'var(--ink)' }}
-                >
-                  {m.n}
-                </div>
-                <div
-                  className="font-mono text-[10px] tracking-[0.12em] uppercase mt-2"
-                  style={{ color: 'var(--text-muted)' }}
-                >
-                  {m.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
-
-        {/* AI engines strip */}
-        <ScrollReveal stagger={7} className="mt-9 sm:mt-11">
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-7">
-            <span
-              className="font-mono text-[10px] tracking-[0.16em] uppercase"
-              style={{ color: 'var(--text-faint)' }}
-            >
-              We optimize for
-            </span>
-            {AI_ENGINES.map((ai) => (
-              <div key={ai.name} className="inline-flex items-center gap-1.5" style={{ opacity: 0.72 }}>
-                <div style={{ width: 5, height: 5, borderRadius: '50%', background: ai.color, flexShrink: 0 }} />
-                <span className="font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-soft)' }}>
-                  {ai.name}
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', animation: 'rf-pulse 2s ease-in-out infinite' }} />
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)' }}>
+                  AI-Native Operating Partner
                 </span>
               </div>
-            ))}
-          </div>
-        </ScrollReveal>
-      </div>
+            </div>
+          </ScrollReveal>
 
-      {/* Scroll cue */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2"
-        aria-hidden="true"
-      >
-        <span className="font-mono text-[9px] tracking-[0.18em] uppercase" style={{ color: 'var(--text-faint)' }}>
-          Scroll
-        </span>
-        <div style={{ width: 1, height: 36, background: 'linear-gradient(to bottom, var(--text-faint), transparent)' }} />
+          {/* Headline */}
+          <h1
+            className="font-sans font-medium m-0 leading-[0.9] tracking-[-0.045em]"
+            style={{ fontSize: 'clamp(44px, 7.2vw, 116px)', color: 'var(--ink)' }}
+          >
+            <MaskReveal>THE OPERATING</MaskReveal>
+            <br />
+            <MaskReveal delay={0.1}>
+              <span className="rf-gradient-text">SYSTEM</span>
+            </MaskReveal>
+          </h1>
+
+          <ScrollReveal stagger={3} className="mt-6 sm:mt-8">
+            <p className="font-sans font-medium tracking-[-0.02em] leading-[1.05]" style={{ fontSize: 'clamp(22px, 3vw, 34px)', color: 'var(--ink)' }}>
+              Four functions. One partner.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal stagger={4} className="mt-5">
+            <p
+              className="text-base sm:text-[19px] leading-relaxed tracking-[-0.005em] max-w-[540px] mx-auto lg:mx-0 m-0"
+              style={{ color: 'var(--ink-soft)' }}
+            >
+              We run{' '}
+              <strong style={{ color: 'var(--ink)' }}>marketing</strong>,{' '}
+              <strong style={{ color: 'var(--ink)' }}>tech</strong>,{' '}
+              <strong style={{ color: 'var(--ink)' }}>finance</strong>, and{' '}
+              <strong style={{ color: 'var(--ink)' }}>automation</strong>{' '}
+              so founders can build the business — not manage vendors.
+            </p>
+          </ScrollReveal>
+
+          {/* CTAs */}
+          <ScrollReveal stagger={5} className="mt-8 sm:mt-10">
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+              <MagneticBtn>
+                <Btn variant="solid" href={CALENDLY_LINK} external>Book a call →</Btn>
+              </MagneticBtn>
+              <MagneticBtn>
+                <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
+              </MagneticBtn>
+            </div>
+          </ScrollReveal>
+
+          {/* AI engines strip */}
+          <ScrollReveal stagger={6} className="mt-9 sm:mt-11">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-6">
+              <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: 'var(--text-muted)' }}>
+                We optimize for
+              </span>
+              {AI_ENGINES.map((ai) => (
+                <div key={ai.name} className="inline-flex items-center gap-1.5">
+                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: ai.color, flexShrink: 0 }} />
+                  <span className="font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-soft)' }}>
+                    {ai.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
+        </div>
+
+        {/* Right — floating glass dashboard */}
+        <ScrollReveal stagger={4}>
+          <HeroDashboard />
+        </ScrollReveal>
       </div>
     </section>
   );
@@ -440,7 +310,7 @@ function FourSpokes() {
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div style={{
           position: 'absolute', top: 0, right: 0, width: '40%', height: '100%',
-          background: 'radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.07) 0%, transparent 60%)',
+          background: 'radial-gradient(ellipse at 80% 50%, rgba(20,184,166,0.07) 0%, transparent 60%)',
           filter: 'blur(40px)',
         }} />
       </div>
@@ -473,7 +343,7 @@ function FourSpokes() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-7">
-            <p className="text-base sm:text-[17px] leading-relaxed max-w-[500px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-base sm:text-[17px] leading-relaxed max-w-[500px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.78)' }}>
               Founders waste 40% of their time coordinating vendors. We consolidate four functions into one operating partnership — one SLA, one relationship, one standard of execution.
             </p>
           </ScrollReveal>
@@ -521,13 +391,13 @@ function SpokeCard({ spoke, index }: { spoke: SpokeConfig; index: number }) {
             className="w-2.5 h-2.5 rounded-full transition-all duration-500"
             style={{ background: hover ? spoke.accent : 'rgba(255,255,255,0.2)', boxShadow: hover ? `0 0 12px ${spoke.accent}80` : 'none' }}
           />
-          <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: hover ? spoke.accent : 'rgba(255,255,255,0.3)' }}>
+          <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: hover ? spoke.accent : 'rgba(255,255,255,0.58)' }}>
             {spoke.primaryBuyer}
           </span>
         </div>
         <span
           className="font-mono text-sm transition-all duration-300"
-          style={{ color: 'rgba(255,255,255,0.3)', transform: hover ? 'translateX(6px)' : 'translateX(0)' }}
+          style={{ color: 'rgba(255,255,255,0.58)', transform: hover ? 'translateX(6px)' : 'translateX(0)' }}
         >
           →
         </span>
@@ -540,7 +410,7 @@ function SpokeCard({ spoke, index }: { spoke: SpokeConfig; index: number }) {
         {spoke.label}
       </h3>
 
-      <p className="text-sm leading-relaxed mt-4 mb-0 max-w-[360px] flex-1" style={{ color: 'rgba(255,255,255,0.4)', position: 'relative', zIndex: 1 }}>
+      <p className="text-sm leading-relaxed mt-4 mb-0 max-w-[360px] flex-1" style={{ color: 'rgba(255,255,255,0.74)', position: 'relative', zIndex: 1 }}>
         {spoke.description}
       </p>
 
@@ -637,7 +507,7 @@ function Methodology() {
                     style={{
                       background: 'var(--bg)',
                       border: `2px solid ${i === 0 ? 'var(--accent)' : 'rgba(0,0,0,0.15)'}`,
-                      boxShadow: i === 0 ? '0 0 16px rgba(124,58,237,0.35)' : 'none',
+                      boxShadow: i === 0 ? '0 0 16px rgba(20,184,166,0.35)' : 'none',
                     }}
                   />
                   <div style={{
@@ -691,7 +561,7 @@ function SelectedWorks() {
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div style={{
           position: 'absolute', bottom: 0, left: 0, width: '50%', height: '60%',
-          background: 'radial-gradient(ellipse at 20% 80%, rgba(124,58,237,0.05) 0%, transparent 60%)',
+          background: 'radial-gradient(ellipse at 20% 80%, rgba(20,184,166,0.05) 0%, transparent 60%)',
           filter: 'blur(50px)',
         }} />
       </div>
@@ -709,7 +579,7 @@ function SelectedWorks() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-7">
-            <p className="text-base sm:text-[17px] leading-relaxed max-w-[480px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            <p className="text-base sm:text-[17px] leading-relaxed max-w-[480px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.74)' }}>
               Real work, real numbers. Each engagement ships with measurable outcomes — picked for the gap between starting point and result.
             </p>
             <div className="text-left lg:text-right mt-6">
@@ -738,7 +608,7 @@ function SelectedWorks() {
               <div className="font-mono text-[11px] tracking-[0.14em] uppercase" style={{ color: 'var(--accent)' }}>
                 From our clients
               </div>
-              <div className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              <div className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.74)' }}>
                 Sarah Jenkins<br />
                 Global CMO, Noon Group
               </div>
@@ -846,7 +716,7 @@ function IndustryCell({ ind, i }: { ind: typeof INDUSTRIES_DATA[0]; i: number })
         <h3 className="font-sans text-lg sm:text-xl font-medium tracking-[-0.02em] leading-tight mt-4 mb-1.5">
           {ind.name}
         </h3>
-        <div className="text-[13px] leading-relaxed" style={{ color: hover ? 'rgba(255,255,255,0.5)' : 'var(--text-muted)' }}>
+        <div className="text-[13px] leading-relaxed" style={{ color: hover ? 'rgba(255,255,255,0.8)' : 'var(--text-muted)' }}>
           {ind.note}
         </div>
       </div>
@@ -875,16 +745,16 @@ function HubMap() {
       </g>
       {hubs.map((h) => (
         <g key={h.code}>
-          <circle cx={h.x} cy={h.y} r="16" fill="none" stroke="rgba(124,58,237,0.18)">
+          <circle cx={h.x} cy={h.y} r="16" fill="none" stroke="rgba(20,184,166,0.18)">
             <animate attributeName="r" values="10;36;10" dur="2.8s" repeatCount="indefinite" />
             <animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" repeatCount="indefinite" />
           </circle>
-          <circle cx={h.x} cy={h.y} r="8" fill="none" stroke="rgba(124,58,237,0.38)">
+          <circle cx={h.x} cy={h.y} r="8" fill="none" stroke="rgba(20,184,166,0.38)">
             <animate attributeName="r" values="6;20;6" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
             <animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
           </circle>
           <circle cx={h.x} cy={h.y} r="4" fill="var(--accent)" />
-          <circle cx={h.x} cy={h.y} r="8" fill="rgba(124,58,237,0.12)" />
+          <circle cx={h.x} cy={h.y} r="8" fill="rgba(20,184,166,0.12)" />
           <text x={h.x+14} y={h.y+4} fill="#0D0C0A" fontFamily="JetBrains Mono, monospace" fontSize="11" fontWeight="600">{h.code}</text>
           <text x={h.x+14} y={h.y+20} fill="#9B9790" fontFamily="JetBrains Mono, monospace" fontSize="9">{h.name}</text>
         </g>
@@ -920,12 +790,12 @@ function FinalCTA() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-5">
-            <p className="text-lg leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-lg leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.8)' }}>
               Start with a free audit. No pitch. No commitment. A real analysis of where you are and what to do next — delivered within 48 hours.
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
               <MagneticBtn>
-                <Btn variant="accent" href="/contact">Book strategy call →</Btn>
+                <Btn variant="accent" href={CALENDLY_LINK} external>Book a call →</Btn>
               </MagneticBtn>
               <MagneticBtn>
                 <Btn variant="onDark" href="/free-seo-audit">Get free audit</Btn>
@@ -946,6 +816,7 @@ export default function HomePage() {
   return (
     <main className="rf-page-wrap" style={{ paddingTop: 0 }}>
       <Hero />
+      <ClientPartners />
       <FourSpokes />
       <Methodology />
       <SelectedWorks />

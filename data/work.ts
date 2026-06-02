@@ -1,13 +1,49 @@
 import { CaseStudy } from '../types';
 
+const U = (id: string) => `https://images.unsplash.com/photo-${id}?q=80&w=1600&auto=format&fit=crop`;
+
+// Generic business fallbacks (known-good) used only if an industry has no mapping.
 const images = [
-  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2070&auto=format&fit=crop'
+  U('1551288049-bebda4e38f71'),
+  U('1460925895917-afdab827c52f'),
+  U('1556742049-0cfed4f7a07d'),
+  U('1551434678-e076c223a692'),
+  U('1554224155-6726b3ff858f'),
+  U('1497366754035-f200968a6e72'),
 ];
+
+// Relevant, high-quality imagery per industry.
+const IMAGE_BY_INDUSTRY: Record<string, string> = {
+  'Professional Services': U('1542744173-8e7e53415bb0'),
+  'Legal': U('1589829545856-d10d557cf95f'),
+  'FinTech': U('1559526324-4b87b5e36e44'),
+  'SaaS': U('1551434678-e076c223a692'),
+  'AI SaaS': U('1677442136019-21780ecad995'),
+  'FinOps SaaS': U('1460925895917-afdab827c52f'),
+  'E-commerce': U('1556742049-0cfed4f7a07d'),
+  'Retail': U('1607082348824-0a96f2a4b9da'),
+  'Healthcare': U('1576091160550-2173dba999ef'),
+  'Accounting': U('1454165804606-c3d57bc86b40'),
+  'Logistics': U('1586528116311-ad8dd3c8310d'),
+  'Real Estate': U('1560518883-ce09059eeffa'),
+  'Manufacturing': U('1565793298595-6a879b1d9492'),
+  'Financial Services': U('1611974789855-9c2a0a7236a3'),
+  'Home Services': U('1581578731548-c64695cc6952'),
+  'Education': U('1523050854058-8df90110c9f1'),
+  'Energy': U('1466611653911-95081537e5b7'),
+  'Fitness': U('1571019613454-1cb2f99b2d8b'),
+  'Cybersecurity': U('1550751827-4bd374c3f58b'),
+  'Hospitality': U('1566073771259-6a8506099945'),
+  'Insurance': U('1450101499163-c8848c66ca85'),
+};
+
+// Distinct images for case studies that share an industry, so no two repeat.
+const IMAGE_BY_ID: Record<string, string> = {
+  'wellspring-clinics': U('1631217868264-e5b90bb7e133'),
+  'crown-realty': U('1568605114967-8130f3a36994'),
+  'summit-hvac': U('1504328345606-18bbc8c9d7d1'),
+  'quantum-retail': U('1441986300917-64674bd600d8'),
+};
 
 const blueprints = [
   {
@@ -110,7 +146,7 @@ const buildGeneratedStudy = (raw: (typeof blueprints)[number], index: number): C
 
   return {
     ...item,
-    image: images[index % images.length],
+    image: IMAGE_BY_ID[item.id] || IMAGE_BY_INDUSTRY[item.industry] || images[index % images.length],
     summary:
       item.challenge ||
       `${item.client} needed a clearer growth engine in ${industryLower}: stronger search visibility, better landing pages, cleaner tracking, and a path from traffic to qualified pipeline.`,

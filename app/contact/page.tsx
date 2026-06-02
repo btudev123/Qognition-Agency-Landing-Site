@@ -4,6 +4,7 @@ import { organizationSchema, breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
 import LeadForm from '../../components/shared/LeadForm';
 import CalendlyEmbed from '../../components/shared/CalendlyEmbed';
+import { WHATSAPP_LINK, WHATSAPP_DISPLAY } from '../../data/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Contact Qognition | Book a Strategy Call',
@@ -44,8 +45,8 @@ export default function Page() {
               <div>
                 <h3 className="text-[var(--text)] font-bold mb-2">WhatsApp</h3>
                 <p className="text-[var(--text-muted)] mb-2">Chat with us instantly</p>
-                <a href="https://wa.me/447123456789" target="_blank" rel="noopener noreferrer" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors text-lg">
-                  +44 7123 456789
+                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors text-lg">
+                  {WHATSAPP_DISPLAY}
                 </a>
               </div>
               <div>
@@ -75,7 +76,7 @@ export default function Page() {
               <p className="text-sm text-[var(--text-muted)] mb-6">
                 Book a 30-minute strategy call directly. Pick a time that works for you — no back-and-forth.
               </p>
-              <CalendlyEmbed url="https://cal.com/hello-qognitionagency/30min" />
+              <CalendlyEmbed url="https://calendly.com/hello-qognitionagency/30min" />
             </div>
           </div>
 

@@ -62,7 +62,7 @@ export default async function Page({ params }: { params: Promise<{ market: strin
               Get Free Market Audit
             </Link>
             <a
-              href="https://cal.com/hello-qognitionagency/30min"
+              href="https://calendly.com/hello-qognitionagency/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex px-6 py-3 text-sm font-medium border border-[var(--border)] text-[var(--text)] rounded-lg hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"

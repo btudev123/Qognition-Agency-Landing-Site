@@ -22,14 +22,14 @@ const bookingOptions = [
   {
     title: 'Marketing Strategy Call',
     description: '30-minute call to discuss SEO, paid media, content, CRO, or AI search visibility. We will tell you what is worth fixing first.',
-    href: 'https://cal.com/hello-qognitionagency/30min',
+    href: 'https://calendly.com/hello-qognitionagency/30min',
     cta: 'Book Call',
     external: true,
   },
   {
     title: 'Tech Scoping Call',
     description: '30-minute call to discuss a website, web app, integration, or performance project. We will scope timeline and ballpark cost.',
-    href: 'https://cal.com/hello-qognitionagency/30min',
+    href: 'https://calendly.com/hello-qognitionagency/30min',
     cta: 'Book Call',
     external: true,
   },
@@ -91,7 +91,7 @@ export default function Page() {
           {/* Inline Calendly */}
           <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8">
             <Heading level="h2" className="text-center mb-8">Or Jump Right Into Our Calendar</Heading>
-            <CalendlyEmbed url="https://cal.com/hello-qognitionagency/30min" />
+            <CalendlyEmbed url="https://calendly.com/hello-qognitionagency/30min" />
           </div>
         </div>
       </main>

@@ -8,6 +8,7 @@ import { CASE_STUDIES } from '../../../data/work';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import Section from '../../../components/ui/Section';
 import Heading from '../../../components/ui/Heading';
+import CrossLinks from '../../../components/shared/CrossLinks';
 
 export const dynamicParams = false;
 
@@ -251,7 +252,7 @@ export default async function Page({
                 </div>
 
                 <a
-                  href="https://cal.com/hello-qognitionagency/30min"
+                  href="https://calendly.com/hello-qognitionagency/30min"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
@@ -262,6 +263,7 @@ export default async function Page({
             </aside>
           </div>
         </Section>
+        <CrossLinks exclude={{ type: 'industry', id: industry.id }} />
       </main>
     </>
   );

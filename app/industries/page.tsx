@@ -140,7 +140,7 @@ export default function Page() {
               Bring your industry, location, offer, sales cycle, and current traffic. We will map the fastest route to qualified demand.
             </p>
             <a
-              href="https://cal.com/hello-qognitionagency/30min"
+              href="https://calendly.com/hello-qognitionagency/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex px-6 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"

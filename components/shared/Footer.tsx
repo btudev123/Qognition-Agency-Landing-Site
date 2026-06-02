@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import { WHATSAPP_DISPLAY, WHATSAPP_LINK, CONTACT_EMAIL } from '../../data/siteConfig';
 
 const column1 = [
   { label: 'Services', href: '/services' },
   { label: 'Industries', href: '/industries' },
   { label: 'Work', href: '/case-studies' },
-  { label: 'About', href: '/about' },
-  { label: 'Hubs', href: '/regions' },
+  { label: 'Regions', href: '/regions' },
+  { label: 'Locations', href: '/locations' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -24,7 +25,9 @@ const column3 = [
   { label: 'Free audit', href: '/free-seo-audit' },
   { label: 'Glossary', href: '/glossary' },
   { label: 'Comparisons', href: '/comparisons' },
+  { label: 'Directory', href: '/directory' },
   { label: 'Free tools', href: '/free-tools' },
+  { label: 'Languages', href: '/languages' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Blog', href: '/blog' },
 ];
@@ -39,10 +42,10 @@ const column4 = [
 ];
 
 const contactInfo = [
-  ['Email', 'hello@qognitionagency.com'],
+  ['Email', CONTACT_EMAIL],
   ['London', '+44 20 4577 2200'],
   ['New York', '+1 646 880 0240'],
-  ['WhatsApp', '+91 921 712 9349'],
+  ['WhatsApp', WHATSAPP_DISPLAY],
 ];
 
 const socialLinks = [
@@ -118,17 +121,19 @@ export default function Footer() {
               And see how<br />we&apos;d drive<br />results for you.
             </h2>
             <div className="flex flex-wrap gap-3 mt-10">
-              <Link
-                href="/contact"
+              <a
+                href="https://calendly.com/hello-qognitionagency/30min"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-6 py-4 text-sm font-medium transition-colors"
                 style={{
                   background: 'var(--accent)',
-                  color: 'var(--accent-deep)',
+                  color: '#04221E',
                   border: '1px solid var(--accent)',
                 }}
               >
-                Book strategy call →
-              </Link>
+                Book a call →
+              </a>
               <Link
                 href="/free-seo-audit"
                 className="inline-flex items-center gap-2.5 px-6 py-4 text-sm font-medium transition-colors"
@@ -168,7 +173,13 @@ export default function Footer() {
                   }}>
                     {k}
                   </span>
-                  <span style={{ fontSize: 16, color: 'var(--bg)' }}>{v}</span>
+                  {k === 'WhatsApp' ? (
+                    <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" style={{ fontSize: 16, color: 'var(--bg)' }}>{v}</a>
+                  ) : k === 'Email' ? (
+                    <a href={`mailto:${v}`} style={{ fontSize: 16, color: 'var(--bg)' }}>{v}</a>
+                  ) : (
+                    <span style={{ fontSize: 16, color: 'var(--bg)' }}>{v}</span>
+                  )}
                 </div>
               ))}
             </div>

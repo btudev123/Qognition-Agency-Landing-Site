@@ -4,14 +4,24 @@ import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
+import { CALENDLY_LINK } from '../../data/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Transparent Pricing | Qognition',
-  description: 'Clear, upfront pricing for SEO, paid media, content, web development, and growth marketing services. Retainers from $3K/mo, projects from $10K.',
+  description: 'Clear, upfront pricing for marketing, tech, finance, and automation. Retainers and projects start from just $500 — every engagement begins with a free audit.',
   alternates: { canonical: '/pricing' },
 };
 
 const tiers = [
+  {
+    name: 'Launch',
+    price: 'From $500/mo',
+    description: 'An accessible entry point for founders who want momentum without a big upfront commitment.',
+    features: ['Starter SEO + on-page fixes', '1 content piece per month', 'Core analytics setup', 'Search Console monitoring', 'Monthly priorities email'],
+    cta: 'Start From $500',
+    href: '/free-seo-audit',
+    highlight: false,
+  },
   {
     name: 'Growth',
     price: '$3K–$6K/mo',
@@ -26,8 +36,8 @@ const tiers = [
     price: '$6K–$15K/mo',
     description: 'For growth-stage companies that need full-funnel marketing execution.',
     features: ['Full SEO + content strategy', 'Paid media management (Google/Meta)', 'Landing page design + CRO', 'Weekly analytics + attribution', 'CRM/lead tracking setup', '5 content pieces per month', 'Competitor monitoring', 'Biweekly strategy calls'],
-    cta: 'Book Strategy Call',
-    href: 'https://cal.com/hello-qognitionagency/30min',
+    cta: 'Book a Call',
+    href: CALENDLY_LINK,
     highlight: true,
   },
   {
@@ -35,13 +45,19 @@ const tiers = [
     price: '$15K–$20K+/mo',
     description: 'For established companies scaling across multiple channels and markets.',
     features: ['Everything in Scale', 'Multi-channel paid media', 'AI search / LLM visibility', 'Custom dashboards + BI', 'Dedicated growth lead', 'Programmatic SEO', 'International SEO', 'Weekly executive updates'],
-    cta: 'Book Strategy Call',
-    href: 'https://cal.com/hello-qognitionagency/30min',
+    cta: 'Book a Call',
+    href: CALENDLY_LINK,
     highlight: false,
   },
 ];
 
 const projectTiers = [
+  {
+    name: 'Launch',
+    price: 'From $500',
+    description: 'A focused, fixed-scope starting point — a landing page, a quick fix, or a small automation.',
+    features: ['Single landing page or fix', 'Performance + SEO basics', 'Mobile-first build', 'Handover + walkthrough'],
+  },
   {
     name: 'Sprint',
     price: '$10K–$30K',
@@ -86,7 +102,7 @@ export default function Page() {
           {/* Retainer Tiers */}
           <section className="mb-24">
             <Heading level="h2" className="text-center mb-12">Marketing Retainers</Heading>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {tiers.map((tier) => (
                 <div
                   key={tier.name}
@@ -120,7 +136,7 @@ export default function Page() {
           {/* Project Tiers */}
           <section className="mb-24">
             <Heading level="h2" className="text-center mb-12">Project & Build Pricing</Heading>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {projectTiers.map((tier) => (
                 <div key={tier.name} className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
                   <h3 className="text-2xl font-semibold text-[var(--text)] mb-2">{tier.name}</h3>

@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 const SPOKES_VISUAL = [
-  { label: 'Marketing', accent: '#7C3AED', stat: '$500M+', note: 'Revenue driven' },
+  { label: 'Marketing', accent: '#14B8A6', stat: '$500M+', note: 'Revenue driven' },
   { label: 'Tech', accent: '#2563EB', stat: '200+', note: 'Products shipped' },
   { label: 'Finance', accent: '#059669', stat: '$50M+', note: 'Assets managed' },
   { label: 'Automation', accent: '#F59E0B', stat: '1,000+', note: 'Workflows built' },
@@ -78,7 +78,7 @@ export default function Hero3D() {
       <div
         className="absolute right-[6%] top-1/2 -translate-y-1/2 w-[640px] h-[640px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(0,255,209,0.12) 0%, rgba(124,58,237,0.06) 45%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(20,184,166,0.12) 0%, rgba(20,184,166,0.06) 45%, transparent 70%)',
           filter: 'blur(60px)',
           pointerEvents: 'none',
         }}
@@ -105,8 +105,8 @@ export default function Hero3D() {
               position: 'absolute',
               inset: '14px',
               transform: 'translateZ(-64px)',
-              background: 'rgba(0,255,209,0.03)',
-              border: '1px solid rgba(0,255,209,0.08)',
+              background: 'rgba(20,184,166,0.03)',
+              border: '1px solid rgba(20,184,166,0.08)',
             }}
           />
 
@@ -134,7 +134,7 @@ export default function Hero3D() {
               background: '#141412',
               border: '1px solid rgba(255,255,255,0.08)',
               boxShadow:
-                '0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,0,0,0.8), 0 0 120px rgba(0,255,209,0.07)',
+                '0 0 0 1px rgba(255,255,255,0.04), 0 8px 40px rgba(0,0,0,0.8), 0 0 120px rgba(20,184,166,0.07)',
             } as React.CSSProperties}
           >
             {/* Mouse spotlight — teal-tinted */}
@@ -143,7 +143,7 @@ export default function Hero3D() {
                 position: 'absolute',
                 inset: 0,
                 background:
-                  'radial-gradient(circle at var(--sx, 50%) var(--sy, 50%), rgba(0,255,209,0.07) 0%, transparent 55%)',
+                  'radial-gradient(circle at var(--sx, 50%) var(--sy, 50%), rgba(20,184,166,0.07) 0%, transparent 55%)',
                 pointerEvents: 'none',
                 zIndex: 1,
               }}
@@ -340,7 +340,7 @@ export default function Hero3D() {
               border: '1px solid var(--accent)',
               borderRadius: '50%',
               opacity: 0.55,
-              boxShadow: '0 0 20px rgba(0,255,209,0.3)',
+              boxShadow: '0 0 20px rgba(20,184,166,0.3)',
             }}
           />
 

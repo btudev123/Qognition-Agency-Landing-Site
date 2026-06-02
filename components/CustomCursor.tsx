@@ -79,7 +79,7 @@ export default function CustomCursor() {
           width: ringSize,
           height: ringSize,
           border: isHovering
-            ? '1.5px solid rgba(0, 255, 209, 0.9)'
+            ? '1.5px solid rgba(20,184,166, 0.9)'
             : '1.5px solid rgba(250, 250, 248, 0.5)',
           opacity: isHovering ? 1 : 0.65,
         }}

@@ -59,7 +59,7 @@ export default function Page() {
 
           <div className="mt-16 text-center">
             <a
-              href="https://cal.com/hello-qognitionagency/30min"
+              href="https://calendly.com/hello-qognitionagency/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 text-sm hover:brightness-110 transition-all"

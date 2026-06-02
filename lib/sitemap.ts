@@ -89,7 +89,7 @@ export const coreRoutes = (): SitemapEntry[] => [
 export const spokeRoutes = (): SitemapEntry[] => {
   const spokeSubServices: Record<string, string[]> = {
     marketing: ['seo', 'ai-seo', 'paid-media', 'content', 'email-lifecycle', 'brand-strategy', 'visual-identity', 'cro', 'social'],
-    tech: ['websites', 'web-apps', 'ecommerce', 'nextjs-seo', 'integrations', 'performance', 'mvp'],
+    tech: ['websites', 'web-apps', 'mobile-app-development', 'ai-agents', 'ecommerce', 'nextjs-seo', 'integrations', 'performance', 'mvp'],
     finance: ['bookkeeping', 'tax', 'fractional-cfo', 'payroll', 'financial-reporting', 'cash-flow'],
     automation: ['ai-agents', 'workflow-automation', 'integrations', 'data-pipelines', 'crm-automation', 'no-code-stack'],
   };

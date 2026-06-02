@@ -263,7 +263,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
               ))}
             </div>
             <a
-              href="https://cal.com/hello-qognitionagency/30min"
+              href="https://calendly.com/hello-qognitionagency/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
@@ -438,7 +438,7 @@ export const LocationServiceView = ({
               {location.name} Digital Marketing
             </Link>
             <a
-              href="https://cal.com/hello-qognitionagency/30min"
+              href="https://calendly.com/hello-qognitionagency/30min"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"

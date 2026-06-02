@@ -72,7 +72,7 @@ const HeroOrb: React.FC = () => {
             const alpha = (depthAlpha - 0.5) * 2;
             ctx.beginPath();
             ctx.arc(x2D, y2D, 1.8 * scale, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 255, 209, ${0.75 * alpha})`;
+            ctx.fillStyle = `rgba(20,184,166, ${0.75 * alpha})`;
             ctx.fill();
           } else if (depthAlpha > 0.1) {
             // Back hemisphere — dimmer, slightly purple tint

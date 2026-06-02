@@ -79,7 +79,7 @@ export default function Page() {
             <p className="text-lg text-[var(--text-muted)] leading-relaxed">
               Use this page as the map: each service connects to sub-service pages, location pages, industry pages, case studies, resources, tools, and directory content so buyers can compare options and choose the right next step.{' '}
               <a href="mailto:hello@qognitionagency.com" className="text-[var(--accent)] hover:underline">Email hello@qognitionagency.com</a> or{' '}
-              <a href="https://cal.com/hello-qognitionagency/30min" target="_blank" rel="noopener noreferrer" className="text-[var(--accent)] hover:underline">book a strategy call</a>.
+              <a href="https://calendly.com/hello-qognitionagency/30min" target="_blank" rel="noopener noreferrer" className="text-[var(--accent)] hover:underline">book a strategy call</a>.
             </p>
           </div>
         </Section>
@@ -164,7 +164,7 @@ export default function Page() {
             <p className="text-xl text-[var(--text)] mb-8">Ready to turn visibility into pipeline?</p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <a
-                href="https://cal.com/hello-qognitionagency/30min"
+                href="https://calendly.com/hello-qognitionagency/30min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-4 bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all text-sm font-medium"

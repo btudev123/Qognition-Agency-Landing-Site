@@ -3,23 +3,30 @@
 @tailwind utilities;
 
 :root {
-  /* Pearl / light theme — active */
-  --accent: #7C3AED;
-  --accent-deep: #5B21B6;
-  --accent-pale: rgba(124, 58, 237, 0.10);
-  --accent-light: rgba(124, 58, 237, 0.10);
-  --accent-rgb: 124, 58, 237;
+  /* Pearl / light theme — active. Brand accent: teal. */
+  --accent: #14B8A6;
+  --accent-deep: #0F766E;
+  --accent-pale: rgba(20, 184, 166, 0.10);
+  --accent-light: rgba(20, 184, 166, 0.10);
+  --accent-rgb: 20, 184, 166;
+  --accent-glow: #2DD4BF;
 
   --bg: #F8F5EF;
   --bg-warm: #F0EDE4;
   --surface: #FFFFFF;
 
+  /* Dark section tokens — for inverted (dark-bg) sections */
+  --dark-bg: #0B0B0C;
+  --dark-surface: #141416;
+  --on-dark: #F3F0EA;
+  --on-dark-soft: #C9C5BD;
+
   --ink: #0D0C0A;
   --ink-soft: #3A3835;
 
   --text: #0D0C0A;
-  --text-muted: #9B9790;
-  --text-faint: #C5C2BC;
+  --text-muted: #6B6760;
+  --text-faint: #8E8A82;
 
   --border: rgba(0, 0, 0, 0.07);
   --border-strong: rgba(0, 0, 0, 0.14);

@@ -11,6 +11,15 @@ export const CLIENT_LOGOS: ClientLogo[] = [
   { name: "Rakuten", url: "/brand-logos/rakuten.svg" }
 ];
 
+// Platform / ad partners we run campaigns and certified work across.
+export const PARTNER_LOGOS: ClientLogo[] = [
+  { name: "Google", url: "/brand-logos/google.svg" },
+  { name: "Meta", url: "/brand-logos/meta.svg" },
+  { name: "TikTok", url: "/brand-logos/tiktok.svg" },
+  { name: "Snapchat", url: "/brand-logos/snapchat.svg" },
+  { name: "LinkedIn", url: "/brand-logos/linkedin.svg" }
+];
+
 export const TESTIMONIALS: Testimonial[] = [
   {
     quote: "Qognition's architectural approach to SEO is simply unrivaled. They didn't just optimize our site; they restructured our entire digital footprint for the AI era.",

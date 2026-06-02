@@ -10,7 +10,7 @@ interface CalendlyEmbedProps {
   className?: string;
 }
 
-const DEFAULT_CALENDLY = 'https://cal.com/hello-qognitionagency/30min';
+const DEFAULT_CALENDLY = 'https://calendly.com/hello-qognitionagency/30min';
 
 export default function CalendlyEmbed({ spoke, url, className = '' }: CalendlyEmbedProps) {
   const [loaded, setLoaded] = useState(false);

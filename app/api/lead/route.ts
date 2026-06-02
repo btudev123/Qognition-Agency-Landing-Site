@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         ? 'Audit request received. Expect results within 48 hours.'
         : 'Message received. Expect a response within one business day.',
       nextStep: isAudit
-        ? { calendly: 'https://cal.com/hello-qognitionagency/30min' }
+        ? { calendly: 'https://calendly.com/hello-qognitionagency/30min' }
         : undefined,
     });
 
