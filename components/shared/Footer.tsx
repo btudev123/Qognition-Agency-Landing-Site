@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { WHATSAPP_DISPLAY, WHATSAPP_LINK, CONTACT_EMAIL } from '../../data/siteConfig';
+import { WHATSAPP_DISPLAY, WHATSAPP_LINK, CONTACT_EMAIL, PHONE_DISPLAY, PHONE_LINK, BOOKING_LINK } from '../../data/siteConfig';
+import { SERVICES } from '../../data/services';
 
 const column1 = [
   { label: 'Services', href: '/services' },
@@ -12,14 +13,7 @@ const column1 = [
   { label: 'Contact', href: '/contact' },
 ];
 
-const column2 = [
-  { label: 'Marketing', href: '/marketing' },
-  { label: 'Tech', href: '/tech' },
-  { label: 'Finance', href: '/finance' },
-  { label: 'Automation', href: '/automation' },
-  { label: 'AI Search & SGE', href: '/marketing/ai-seo' },
-  { label: 'AI Agents', href: '/automation/ai-agents' },
-];
+const column2 = SERVICES.map((s) => ({ label: s.title, href: `/services/${s.id}` }));
 
 const column3 = [
   { label: 'Free audit', href: '/free-seo-audit' },
@@ -43,8 +37,7 @@ const column4 = [
 
 const contactInfo = [
   ['Email', CONTACT_EMAIL],
-  ['London', '+44 20 4577 2200'],
-  ['New York', '+1 646 880 0240'],
+  ['Phone', PHONE_DISPLAY],
   ['WhatsApp', WHATSAPP_DISPLAY],
 ];
 
@@ -122,7 +115,7 @@ export default function Footer() {
             </h2>
             <div className="flex flex-wrap gap-3 mt-10">
               <a
-                href="https://calendly.com/hello-qognitionagency/30min"
+                href={BOOKING_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-6 py-4 text-sm font-medium transition-colors"
@@ -175,6 +168,8 @@ export default function Footer() {
                   </span>
                   {k === 'WhatsApp' ? (
                     <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" style={{ fontSize: 16, color: 'var(--bg)' }}>{v}</a>
+                  ) : k === 'Phone' ? (
+                    <a href={PHONE_LINK} style={{ fontSize: 16, color: 'var(--bg)' }}>{v}</a>
                   ) : k === 'Email' ? (
                     <a href={`mailto:${v}`} style={{ fontSize: 16, color: 'var(--bg)' }}>{v}</a>
                   ) : (
@@ -203,10 +198,13 @@ export default function Footer() {
               AI growth marketing partner for companies that need qualified leads, better search visibility, sharper creative, and measurable revenue systems.
             </p>
             <div className="flex gap-2.5 flex-wrap">
-              {socialLinks.map(([k]) => (
+              {socialLinks.map(([k, url]) => (
                 <a
                   key={k}
-                  href="#"
+                  href={url}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={k}
                   className="w-[38px] h-[38px] inline-flex items-center justify-center font-mono text-[10px] tracking-wider transition-colors"
                   style={{
                     border: '1px solid #2a2520',

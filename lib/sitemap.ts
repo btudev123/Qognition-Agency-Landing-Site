@@ -6,7 +6,7 @@ import { INDUSTRIES } from '../data/industries';
 import { LOCATIONS } from '../data/locations';
 import { REGIONS } from '../data/regions';
 import { COMPARISONS, FREE_TOOLS, GLOSSARY_TERMS, RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
-import { SERVICES } from '../data/services';
+import { SERVICES, LOCATION_MATRIX_SERVICES } from '../data/services';
 import { CASE_STUDIES } from '../data/work';
 import { TOOL_CATEGORIES } from '../constants';
 import { SITE_URL } from './seo';
@@ -168,7 +168,7 @@ export const locationRoutes = (): SitemapEntry[] =>
 
 export const programmaticRoutes = (): SitemapEntry[] => [
   ...LOCATIONS.flatMap((location) =>
-    SERVICES.map((service) => ({
+    LOCATION_MATRIX_SERVICES.map((service) => ({
       path: `/locations/${location.slug}/${service.id}`,
       priority: 0.80,
       changefreq: 'weekly' as const,

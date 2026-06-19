@@ -10,36 +10,32 @@ import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } fro
 
 export function HeroAurora() {
   const reduce = useReducedMotion();
-  const drift = (anim: string) => (reduce ? {} : { animation: anim, willChange: 'transform' });
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* faint blueprint grid */}
+      {/* faint blueprint grid — fades out toward the edges */}
       <div
         style={{
           position: 'absolute', inset: 0,
           backgroundImage:
-            'linear-gradient(rgba(20,184,166,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(20,184,166,0.05) 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
-          maskImage: 'radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at 50% 40%, #000 0%, transparent 78%)',
+            'linear-gradient(rgba(13,12,10,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(13,12,10,0.045) 1px, transparent 1px)',
+          backgroundSize: '72px 72px',
+          maskImage: 'radial-gradient(ellipse at 50% 38%, #000 0%, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at 50% 38%, #000 0%, transparent 75%)',
         }}
       />
-      {/* teal mesh orbs */}
+      {/* single, restrained accent halo — sits behind the headline, no heavy blobs */}
       <div style={{
-        position: 'absolute', top: '-10%', left: '8%', width: 'min(46vw, 620px)', height: 'min(46vw, 620px)',
-        background: 'radial-gradient(circle, rgba(20,184,166,0.30) 0%, transparent 64%)',
-        filter: 'blur(72px)', ...drift('rf-orb-drift 26s ease-in-out infinite'),
+        position: 'absolute', top: '34%', left: '50%', transform: 'translate(-50%, -50%)',
+        width: 'min(78vw, 1100px)', height: 'min(54vw, 720px)',
+        background: 'radial-gradient(ellipse at center, rgba(20,184,166,0.10) 0%, rgba(20,184,166,0.04) 38%, transparent 70%)',
+        filter: 'blur(36px)',
+        ...(reduce ? {} : { animation: 'rf-pulse 9s ease-in-out infinite', willChange: 'opacity' }),
       }} />
+      {/* soft bottom fade into the page */}
       <div style={{
-        position: 'absolute', top: '4%', right: '4%', width: 'min(42vw, 560px)', height: 'min(42vw, 560px)',
-        background: 'radial-gradient(circle, rgba(45,212,191,0.24) 0%, transparent 66%)',
-        filter: 'blur(80px)', ...drift('rf-orb-drift-b 32s ease-in-out infinite 4s'),
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '-14%', left: '50%', transform: 'translateX(-50%)', width: 'min(70vw, 980px)', height: '52vh',
-        background: 'radial-gradient(ellipse at 50% 100%, rgba(15,118,110,0.22) 0%, rgba(20,184,166,0.06) 44%, transparent 72%)',
-        filter: 'blur(46px)', ...drift('rf-orb-drift-c 36s ease-in-out infinite 8s'),
+        position: 'absolute', left: 0, right: 0, bottom: 0, height: '32%',
+        background: 'linear-gradient(to top, var(--bg) 0%, transparent 100%)',
       }} />
     </div>
   );

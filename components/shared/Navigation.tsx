@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { TOP_NAV, SPOKE_MENUS, INDUSTRY_MENU, type TopNavItem } from '../../data/navigation';
-import { CALENDLY_LINK } from '../../data/siteConfig';
+import { BOOKING_LINK } from '../../data/siteConfig';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -13,6 +13,7 @@ export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [annoDismissed, setAnnoDismissed] = useState(true); // default hidden until mount (avoids flash)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -21,6 +22,16 @@ export default function Navigation() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    setAnnoDismissed(localStorage.getItem('anno-dismissed') === '1');
+  }, []);
+  const annoVisible = !annoDismissed;
+  const dismissAnno = () => {
+    localStorage.setItem('anno-dismissed', '1');
+    setAnnoDismissed(true);
+  };
+  const ANNO_H = 34;
 
   useEffect(() => {
     setMobileOpen(false);
@@ -37,9 +48,9 @@ export default function Navigation() {
     return pathname === href || pathname.startsWith(href + '/') || pathname.startsWith(href + '?');
   };
 
-  // Header is "solid/dark" when scrolled OR a mega-menu is open. In that state,
-  // nav text must be light to stay readable on the dark bar (fixes the contrast bug).
-  const solid = scrolled || openMenu !== null;
+  // Header goes solid/dark only on scroll. The menu now opens as a compact
+  // floating dropdown, so hovering no longer flips the whole bar (smoother).
+  const solid = scrolled;
   const navTextColor = (active: boolean) =>
     solid
       ? (active ? '#FFFFFF' : 'rgba(243,240,234,0.72)')
@@ -59,9 +70,30 @@ export default function Navigation() {
 
   return (
     <>
+      {/* Announcement strip — free-audit offers, dismissible */}
+      {annoVisible && (
+        <div
+          className="fixed top-0 left-0 right-0 z-[101] flex items-center justify-center gap-4 px-4"
+          style={{ height: ANNO_H, background: 'var(--accent)', color: '#04221E' }}
+        >
+          <Link
+            href="/free-ai-audit?lm=ai-readiness"
+            className="flex items-center gap-2 text-[12px] sm:text-[13px] font-semibold whitespace-nowrap hover:opacity-80 transition-opacity"
+          >
+            <span aria-hidden="true">⚡</span>
+            Discover Your AI Readiness Score
+            <span className="opacity-60 hidden sm:inline">— Free 3-Minute Audit</span>
+            <span aria-hidden="true">→</span>
+          </Link>
+          <button onClick={dismissAnno} aria-label="Dismiss announcement" className="absolute right-3 p-1" style={{ color: '#04221E' }}>
+            <X size={15} />
+          </button>
+        </div>
+      )}
       <header
-        className="fixed top-0 left-0 right-0 z-[100] transition-all duration-500"
+        className="fixed left-0 right-0 z-[100] transition-all duration-500"
         style={{
+          top: annoVisible ? ANNO_H : 0,
           background: solid ? 'rgba(8, 8, 8, 0.92)' : 'transparent',
           backdropFilter: solid ? 'blur(20px) saturate(1.2)' : 'none',
           WebkitBackdropFilter: solid ? 'blur(20px) saturate(1.2)' : 'none',
@@ -112,6 +144,17 @@ export default function Navigation() {
                       <ChevronDown size={13} className="transition-transform duration-300" style={{ transform: isOpen ? 'rotate(180deg)' : 'none', opacity: 0.6 }} />
                     )}
                   </Link>
+
+                  {/* Compact floating dropdown */}
+                  {menued && isOpen && (
+                    <div
+                      className="absolute top-full left-1/2 -translate-x-1/2 pt-3"
+                      onMouseEnter={() => openNow(item.label)}
+                      onMouseLeave={scheduleClose}
+                    >
+                      <DropdownPanel label={item.label} />
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -120,7 +163,7 @@ export default function Navigation() {
           {/* CTA */}
           <div className="hidden xl:flex items-center">
             <a
-              href={CALENDLY_LINK}
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2.5 text-[13px] font-medium tracking-tight transition-colors duration-300"
@@ -128,14 +171,14 @@ export default function Navigation() {
               onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent-deep)'; e.currentTarget.style.color = '#fff'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--accent)'; e.currentTarget.style.color = '#04221E'; }}
             >
-              Book a call →
+              Book a Free Strategy Call →
             </a>
           </div>
 
           {/* Mobile toggle */}
           <div className="flex xl:hidden items-center justify-end gap-3">
             <a
-              href={CALENDLY_LINK}
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-2 text-xs font-medium"
@@ -156,30 +199,6 @@ export default function Navigation() {
           </div>
         </div>
 
-        {/* Desktop mega-menu panel */}
-        {openMenu && (
-          <div
-            className="hidden xl:block absolute left-0 right-0 top-full"
-            onMouseEnter={() => openNow(openMenu)}
-            onMouseLeave={scheduleClose}
-          >
-            <div
-              className="border-t"
-              style={{
-                background: 'rgba(10,10,11,0.97)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                borderColor: 'rgba(255,255,255,0.08)',
-                boxShadow: '0 40px 80px rgba(0,0,0,0.5)',
-                animation: 'rf-page-in 0.35s cubic-bezier(0.22,1,0.36,1) both',
-              }}
-            >
-              <div className="max-w-[1440px] mx-auto px-10 py-10">
-                <MegaPanel label={openMenu} />
-              </div>
-            </div>
-          </div>
-        )}
       </header>
 
       {/* Mobile drawer with accordion */}
@@ -227,13 +246,13 @@ export default function Navigation() {
               );
             })}
             <a
-              href={CALENDLY_LINK}
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full text-center px-4 py-3.5 mt-6 text-sm font-medium"
               style={{ background: 'var(--accent)', color: '#04221E' }}
             >
-              Book a call →
+              Book a Free Strategy Call →
             </a>
           </div>
         </div>
@@ -242,37 +261,40 @@ export default function Navigation() {
   );
 }
 
-/* ── Desktop mega panel content ──────────────────────────────────────────── */
+/* ── Compact floating dropdown ───────────────────────────────────────────── */
 
-function MegaPanel({ label }: { label: string }) {
+const PANEL_STYLE: CSSProperties = {
+  background: 'rgba(10,10,11,0.97)',
+  backdropFilter: 'blur(24px)',
+  WebkitBackdropFilter: 'blur(24px)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  boxShadow: '0 24px 60px rgba(0,0,0,0.45)',
+  borderRadius: 14,
+  transformOrigin: 'top center',
+  animation: 'rf-page-in 0.24s cubic-bezier(0.22,1,0.36,1) both',
+};
+
+const ITEM_LINK =
+  'group/i flex items-center justify-between gap-6 px-3 py-2 rounded-lg text-[13.5px] transition-colors';
+
+function DropdownPanel({ label }: { label: string }) {
   if (label === 'Industries') {
     return (
-      <div>
-        <div className="flex items-baseline justify-between mb-7">
-          <span className="font-mono text-[11px] tracking-[0.18em] uppercase" style={{ color: 'var(--accent)' }}>
-            Industries we operate in
-          </span>
-          <Link href="/industries" className="text-[13px] rf-link" style={{ color: 'rgba(243,240,234,0.7)' }}>
+      <div className="w-[440px] p-3" style={PANEL_STYLE}>
+        <div className="px-3 pt-1.5 pb-2 font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: 'var(--accent)' }}>
+          Industries
+        </div>
+        <div className="grid grid-cols-2 gap-x-2 gap-y-0.5">
+          {INDUSTRY_MENU.map((ind) => (
+            <Link key={ind.href} href={ind.href} className={ITEM_LINK} style={{ color: 'rgba(243,240,234,0.78)' }}>
+              <span className="group-hover/i:text-white transition-colors">{ind.label}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-2 pt-2.5 px-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <Link href="/industries" className="text-[13px] font-medium" style={{ color: 'var(--accent)' }}>
             View all industries →
           </Link>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-6">
-          {INDUSTRY_MENU.map((ind) => (
-            <div key={ind.href}>
-              <Link href={ind.href} className="block text-[14px] font-medium mb-2 transition-colors" style={{ color: '#F3F0EA' }}>
-                {ind.label}
-              </Link>
-              <ul className="space-y-1.5">
-                {ind.subItems.map((sub) => (
-                  <li key={sub.href}>
-                    <Link href={sub.href} className="text-[13px] transition-colors hover:text-white" style={{ color: 'rgba(243,240,234,0.55)' }}>
-                      {sub.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
       </div>
     );
@@ -282,41 +304,25 @@ function MegaPanel({ label }: { label: string }) {
   if (!menu) return null;
 
   return (
-    <div className="grid gap-10" style={{ gridTemplateColumns: '260px 1fr' }}>
-      {/* Intro rail */}
-      <div className="flex flex-col">
-        <span className="font-mono text-[11px] tracking-[0.18em] uppercase mb-3" style={{ color: 'var(--accent)' }}>
-          Qognition {menu.label}
-        </span>
-        <p className="text-[15px] leading-relaxed mb-5" style={{ color: 'rgba(243,240,234,0.7)' }}>
-          {menu.blurb}
-        </p>
-        <Link href={menu.href} className="text-[13px] rf-link mb-2" style={{ color: '#F3F0EA' }}>
-          Explore {menu.label} →
+    <div className="w-[480px] p-3" style={PANEL_STYLE}>
+      <div className="px-3 pt-1.5 pb-2 font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: 'var(--accent)' }}>
+        {menu.label}
+      </div>
+      <div className="grid grid-cols-2 gap-x-2 gap-y-0.5">
+        {menu.groups.map((group) => (
+          <Link key={group.href} href={group.href} className={ITEM_LINK} style={{ color: 'rgba(243,240,234,0.78)' }}>
+            <span className="group-hover/i:text-white transition-colors">{group.label}</span>
+            <span className="opacity-0 group-hover/i:opacity-100 transition-opacity" style={{ color: 'var(--accent)' }}>→</span>
+          </Link>
+        ))}
+      </div>
+      <div className="mt-2 pt-2.5 px-3 flex items-center justify-between" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <Link href={menu.href} className="text-[13px]" style={{ color: 'rgba(243,240,234,0.7)' }}>
+          All {menu.label.toLowerCase()} →
         </Link>
-        <Link href={menu.cta.href} className="text-[13px]" style={{ color: 'var(--accent)' }}>
+        <Link href={menu.cta.href} className="text-[13px] font-medium" style={{ color: 'var(--accent)' }}>
           {menu.cta.label} →
         </Link>
-      </div>
-
-      {/* Service columns */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7">
-        {menu.groups.map((group) => (
-          <div key={group.label}>
-            <Link href={group.href} className="block text-[14px] font-medium mb-2.5" style={{ color: '#F3F0EA' }}>
-              {group.label}
-            </Link>
-            <ul className="space-y-1.5">
-              {group.items.map((sub) => (
-                <li key={sub.href}>
-                  <Link href={sub.href} className="text-[13px] transition-colors hover:text-white" style={{ color: 'rgba(243,240,234,0.55)' }}>
-                    {sub.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
       </div>
     </div>
   );

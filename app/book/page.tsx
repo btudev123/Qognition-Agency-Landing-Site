@@ -4,11 +4,12 @@ import { ArrowRight } from 'lucide-react';
 import { breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
-import CalendlyEmbed from '../../components/shared/CalendlyEmbed';
+import CalBooking from '../../components/shared/CalBooking';
+import { BOOKING_LINK } from '../../data/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Book a Strategy Call | Qognition',
-  description: 'Book a free 30-minute strategy call with Qognition. Discuss your growth challenges and get an honest assessment of what would move the needle.',
+  description: 'Book a free 15-minute strategy call with Qognition. Discuss your growth challenges and get an honest assessment of what would move the needle.',
   alternates: { canonical: '/book' },
 };
 
@@ -21,15 +22,15 @@ const bookingOptions = [
   },
   {
     title: 'Marketing Strategy Call',
-    description: '30-minute call to discuss SEO, paid media, content, CRO, or AI search visibility. We will tell you what is worth fixing first.',
-    href: 'https://calendly.com/hello-qognitionagency/30min',
+    description: '15-minute call to discuss SEO, paid media, content, CRO, or AI search visibility. We will tell you what is worth fixing first.',
+    href: BOOKING_LINK,
     cta: 'Book Call',
     external: true,
   },
   {
-    title: 'Tech Scoping Call',
-    description: '30-minute call to discuss a website, web app, integration, or performance project. We will scope timeline and ballpark cost.',
-    href: 'https://calendly.com/hello-qognitionagency/30min',
+    title: 'Project Scoping Call',
+    description: '15-minute call to scope a website, brand, video, or automation project. We will outline timeline and a ballpark range.',
+    href: BOOKING_LINK,
     cta: 'Book Call',
     external: true,
   },
@@ -91,7 +92,7 @@ export default function Page() {
           {/* Inline Calendly */}
           <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8">
             <Heading level="h2" className="text-center mb-8">Or Jump Right Into Our Calendar</Heading>
-            <CalendlyEmbed url="https://calendly.com/hello-qognitionagency/30min" />
+            <CalBooking />
           </div>
         </div>
       </main>

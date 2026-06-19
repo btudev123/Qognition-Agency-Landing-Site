@@ -41,6 +41,8 @@ export const leadSchema = z.object({
   source_page: z.string().min(1).max(500),
   utm: utmSchema,
   contact: contactSchema,
+  /** CRM tag, e.g. "lead magnet for ai readiness". Falls back to a funnel-derived tag. */
+  tag: z.string().max(120).optional(),
   honeypot: z.string().max(0).optional(),
   metadata: z
     .object({

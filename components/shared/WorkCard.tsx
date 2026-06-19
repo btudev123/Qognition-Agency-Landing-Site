@@ -30,7 +30,7 @@ export function WorkCard({ work, index }: { work: CaseStudy; index: number }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className="block group rf-studio-border"
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      style={{ textDecoration: 'none', color: 'inherit', background: 'var(--surface)' }}
     >
       {/* Image */}
       <div className="rf-work-image" style={{ aspectRatio: '16/10' }}>
@@ -127,7 +127,7 @@ export function WorkCardFeatured({ work, index }: { work: CaseStudy; index: numb
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className="block group rf-studio-border"
-      style={{ textDecoration: 'none', color: 'inherit' }}
+      style={{ textDecoration: 'none', color: 'inherit', background: 'var(--surface)' }}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Image */}

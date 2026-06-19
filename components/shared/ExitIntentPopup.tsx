@@ -43,11 +43,11 @@ function getSpokePopup(pathname: string): { title: string; body: string; cta: st
     };
   }
   return {
-    title: 'Before you go...',
-    body: 'Get a free growth audit of your website within 48 hours. No pitch. No commitment. Just an honest assessment.',
-    cta: 'Get Free Growth Audit',
-    href: '/free-seo-audit',
-    note: 'Delivered within 48 hours. No credit card required.',
+    title: 'Before you go — what is manual work costing you?',
+    body: 'Use our free ROI calculator to see how much time and money manual reporting is draining each year — and what you could save by automating it.',
+    cta: 'See My Savings (Free ROI Calculator)',
+    href: '/#roi-calculator',
+    note: 'Takes 30 seconds. No credit card. Custom report in your inbox.',
   };
 }
 

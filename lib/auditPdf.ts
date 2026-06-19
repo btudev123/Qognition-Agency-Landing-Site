@@ -116,7 +116,7 @@ export const buildAuditReportPdf = (report: AuditReport, offer: AuditOffer) => {
   add('Next Step', 18, '0 0 0');
   addWrapped('Book a Qognition strategy call to turn this audit into a prioritized growth roadmap with SEO, AI visibility, landing pages, creative, paid media, and CRM follow-up.', 11, '0.15 0.15 0.15');
   y -= 12;
-  add('https://calendly.com/hello-qognitionagency/30min', 11, '0 0.55 0.5');
+  add('https://cal.com/qognition-agency/15min', 11, '0 0.55 0.5');
   y -= 30;
   add('Qognition Agency', 16, '0 0 0');
   add('hello@qognitionagency.com | www.qognitionagency.com', 10, '0.25 0.25 0.25');

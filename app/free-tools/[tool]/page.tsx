@@ -132,7 +132,7 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
                     label: resource.title,
                     href: resource.href || `/${resource.slug}`,
                   })),
-                  { label: 'Book a Strategy Call', href: 'https://calendly.com/hello-qognitionagency/30min' },
+                  { label: 'Book a Strategy Call', href: 'https://cal.com/qognition-agency/15min' },
                 ].map((item) => (
                   <Link
                     key={item.href}

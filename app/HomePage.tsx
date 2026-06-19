@@ -7,11 +7,13 @@ import ScrollReveal from '../components/shared/ScrollReveal';
 import MaskReveal from '../components/shared/MaskReveal';
 import MagneticBtn from '../components/shared/MagneticBtn';
 import { WorkCard, WorkCardFeatured } from '../components/shared/WorkCard';
-import { HeroAurora, HeroDashboard } from '../components/HeroAurora';
+import { HeroAurora } from '../components/HeroAurora';
 import ClientPartners from '../components/shared/ClientPartners';
+import StatBand from '../components/shared/StatBand';
+import HeroRoiCalculator from '../components/shared/HeroRoiCalculator';
 import { CASE_STUDIES } from '../data/work';
-import { SPOKES, type SpokeConfig } from '../lib/spokes';
-import { CALENDLY_LINK } from '../data/siteConfig';
+import { SERVICES } from '../data/services';
+import { BOOKING_LINK } from '../data/siteConfig';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 
@@ -30,6 +32,12 @@ const METHOD_DATA = [
   { n: '02', title: 'Strategy', timeline: 'WEEK 5–6', blurb: 'A 90-day blueprint with conversion architecture, channel maths, and deliverables your board can audit.' },
   { n: '03', title: 'Execution', timeline: 'WEEK 7–14', blurb: 'Code, content, and campaigns ship weekly in synced sprints — not quarterly grand reveals.' },
   { n: '04', title: 'Scale', timeline: 'ONGOING', blurb: 'Iteration as a system, not a moment. Every week your moat grows; every quarter your CAC drops.' },
+];
+
+const HERO_STATS = [
+  { value: '320%', label: 'Avg. organic growth' },
+  { value: '$500M+', label: 'Revenue influenced' },
+  { value: '5', label: 'Global hubs · 24h' },
 ];
 
 const HUBS = [
@@ -51,21 +59,7 @@ const INDUSTRIES_DATA = [
   { name: 'Industrial & Trade', note: 'Digital transformation for the backbone.', tags: ['Trade', 'Logistics', 'Heavy', 'Energy'] },
 ];
 
-const SPOKE_LIST = [SPOKES.marketing, SPOKES.tech, SPOKES.finance, SPOKES.automation];
-
-const SPOKE_SERVICES: Record<string, string[]> = {
-  marketing: ['AI Search & SGE', 'SEO & Technical', 'Paid Media', 'Content Strategy', 'CRO'],
-  tech: ['Marketing Websites', 'Web Apps & SaaS', 'Next.js + Performance', 'Integrations', 'MVP Development'],
-  finance: ['Bookkeeping', 'Tax & Planning', 'Fractional CFO', 'Payroll', 'Cash Flow Modeling'],
-  automation: ['AI Agents', 'Workflow Automation', 'CRM Automation', 'Data Pipelines', 'No-Code Stack'],
-};
-
-const SPOKE_RGB: Record<string, string> = {
-  marketing: '20, 184, 166',
-  tech: '37, 99, 235',
-  finance: '5, 150, 105',
-  automation: '245, 158, 11',
-};
+// 11 service categories drive the homepage grid (see data/services.ts).
 
 // ── PRIMITIVES ────────────────────────────────────────────────────────────────
 
@@ -196,96 +190,107 @@ function GradientMesh({ className }: { className?: string }) {
 function Hero() {
   return (
     <section
-      className="relative flex items-center overflow-hidden"
-      style={{ minHeight: '100vh', background: 'var(--bg)', paddingTop: 104, paddingBottom: 72 }}
+      className="relative flex flex-col items-center justify-center overflow-hidden"
+      style={{ minHeight: '100vh', background: 'var(--bg)', paddingTop: 132, paddingBottom: 64 }}
     >
-      {/* Animated teal aurora / mesh background */}
+      {/* Refined ambient background (grid + single restrained halo) */}
       <HeroAurora />
 
-      {/* Content — copy left, glass dashboard right (stacks on mobile/tablet) */}
-      <div className="relative z-10 w-full max-w-[1320px] mx-auto px-5 sm:px-10 grid items-center gap-12 lg:gap-16 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="relative z-10 w-full max-w-[1180px] mx-auto px-5 sm:px-10 text-center">
 
-        {/* Left — copy */}
-        <div className="text-center lg:text-left">
-          <ScrollReveal className="mb-7 sm:mb-9">
-            <div className="inline-flex items-center gap-3">
-              <div style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 16px',
-                border: '1px solid var(--border-strong)', background: 'rgba(20,184,166,0.08)', borderRadius: 100,
-              }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', animation: 'rf-pulse 2s ease-in-out infinite' }} />
-                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)' }}>
-                  AI-Native Operating Partner
+        {/* Badge */}
+        <ScrollReveal className="mb-7 sm:mb-9 flex justify-center">
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 16px',
+            border: '1px solid var(--border-strong)', background: 'rgba(20,184,166,0.08)', borderRadius: 100,
+          }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', animation: 'rf-pulse 2s ease-in-out infinite' }} />
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)' }}>
+              AI-Native Marketing Partner
+            </span>
+          </div>
+        </ScrollReveal>
+
+        {/* Headline — oversized, centered */}
+        <h1
+          className="font-sans font-medium m-0 leading-[0.86] tracking-[-0.05em]"
+          style={{ fontSize: 'clamp(52px, 11vw, 184px)', color: 'var(--ink)' }}
+        >
+          <MaskReveal>THE OPERATING</MaskReveal>
+          <MaskReveal delay={0.1}>
+            <span className="rf-gradient-text">SYSTEM</span>
+          </MaskReveal>
+        </h1>
+
+        <ScrollReveal stagger={4} className="mt-7 sm:mt-9">
+          <p
+            className="text-base sm:text-[20px] leading-relaxed tracking-[-0.005em] max-w-[620px] mx-auto m-0"
+            style={{ color: 'var(--ink-soft)' }}
+          >
+            The growth partner behind ambitious brands. We run{' '}
+            <strong style={{ color: 'var(--ink)' }}>strategy, search, content, paid, and conversion</strong>{' '}
+            as one system — so you compound, not coordinate.
+          </p>
+        </ScrollReveal>
+
+        {/* CTAs */}
+        <ScrollReveal stagger={5} className="mt-9 sm:mt-11">
+          <div className="flex flex-wrap gap-3 justify-center">
+            <MagneticBtn>
+              <Btn variant="accent" href={BOOKING_LINK} external>Book a Free Strategy Call →</Btn>
+            </MagneticBtn>
+            <MagneticBtn>
+              <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
+            </MagneticBtn>
+          </div>
+        </ScrollReveal>
+
+        {/* ROI calculator — see what manual work costs, gated by email */}
+        <ScrollReveal stagger={6} className="mt-10 sm:mt-12">
+          <HeroRoiCalculator />
+        </ScrollReveal>
+
+        {/* Stat strip — hard proof, replaces the dashboard */}
+        <ScrollReveal stagger={6} className="mt-14 sm:mt-16">
+          <div
+            className="mx-auto grid grid-cols-3 max-w-[760px]"
+            style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
+          >
+            {HERO_STATS.map((s, i) => (
+              <div
+                key={s.label}
+                className="py-6 sm:py-7 px-2"
+                style={{ borderLeft: i === 0 ? 'none' : '1px solid var(--border)' }}
+              >
+                <div
+                  className="font-sans font-medium leading-none tracking-[-0.03em]"
+                  style={{ fontSize: 'clamp(28px, 4vw, 48px)', color: 'var(--ink)', fontFeatureSettings: '"tnum"' }}
+                >
+                  {s.value}
+                </div>
+                <div className="font-mono text-[10px] sm:text-[11px] tracking-[0.12em] uppercase mt-2.5" style={{ color: 'var(--text-muted)' }}>
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </ScrollReveal>
+
+        {/* AI engines strip */}
+        <ScrollReveal stagger={7} className="mt-10 sm:mt-12">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
+            <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: 'var(--text-muted)' }}>
+              We optimize for
+            </span>
+            {AI_ENGINES.map((ai) => (
+              <div key={ai.name} className="inline-flex items-center gap-1.5">
+                <div style={{ width: 5, height: 5, borderRadius: '50%', background: ai.color, flexShrink: 0 }} />
+                <span className="font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-soft)' }}>
+                  {ai.name}
                 </span>
               </div>
-            </div>
-          </ScrollReveal>
-
-          {/* Headline */}
-          <h1
-            className="font-sans font-medium m-0 leading-[0.9] tracking-[-0.045em]"
-            style={{ fontSize: 'clamp(44px, 7.2vw, 116px)', color: 'var(--ink)' }}
-          >
-            <MaskReveal>THE OPERATING</MaskReveal>
-            <br />
-            <MaskReveal delay={0.1}>
-              <span className="rf-gradient-text">SYSTEM</span>
-            </MaskReveal>
-          </h1>
-
-          <ScrollReveal stagger={3} className="mt-6 sm:mt-8">
-            <p className="font-sans font-medium tracking-[-0.02em] leading-[1.05]" style={{ fontSize: 'clamp(22px, 3vw, 34px)', color: 'var(--ink)' }}>
-              Four functions. One partner.
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal stagger={4} className="mt-5">
-            <p
-              className="text-base sm:text-[19px] leading-relaxed tracking-[-0.005em] max-w-[540px] mx-auto lg:mx-0 m-0"
-              style={{ color: 'var(--ink-soft)' }}
-            >
-              We run{' '}
-              <strong style={{ color: 'var(--ink)' }}>marketing</strong>,{' '}
-              <strong style={{ color: 'var(--ink)' }}>tech</strong>,{' '}
-              <strong style={{ color: 'var(--ink)' }}>finance</strong>, and{' '}
-              <strong style={{ color: 'var(--ink)' }}>automation</strong>{' '}
-              so founders can build the business — not manage vendors.
-            </p>
-          </ScrollReveal>
-
-          {/* CTAs */}
-          <ScrollReveal stagger={5} className="mt-8 sm:mt-10">
-            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-              <MagneticBtn>
-                <Btn variant="solid" href={CALENDLY_LINK} external>Book a call →</Btn>
-              </MagneticBtn>
-              <MagneticBtn>
-                <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
-              </MagneticBtn>
-            </div>
-          </ScrollReveal>
-
-          {/* AI engines strip */}
-          <ScrollReveal stagger={6} className="mt-9 sm:mt-11">
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-6">
-              <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: 'var(--text-muted)' }}>
-                We optimize for
-              </span>
-              {AI_ENGINES.map((ai) => (
-                <div key={ai.name} className="inline-flex items-center gap-1.5">
-                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: ai.color, flexShrink: 0 }} />
-                  <span className="font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-soft)' }}>
-                    {ai.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </ScrollReveal>
-        </div>
-
-        {/* Right — floating glass dashboard */}
-        <ScrollReveal stagger={4}>
-          <HeroDashboard />
+            ))}
+          </div>
         </ScrollReveal>
       </div>
     </section>
@@ -326,36 +331,36 @@ function FourSpokes() {
           color: 'rgba(255,255,255,0.02)', whiteSpace: 'nowrap',
           userSelect: 'none', paddingLeft: '5%',
         }}>
-          FOUR SPOKES
+          SERVICES
         </span>
       </motion.div>
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-24 mb-16 sm:mb-20 items-end">
           <ScrollReveal className="lg:col-span-5">
-            <Eyebrow color="var(--accent)">The operating system</Eyebrow>
+            <Eyebrow color="var(--accent)">What we do</Eyebrow>
             <h2
               className="font-sans font-medium leading-[0.96] tracking-[-0.04em] m-0 mt-4"
               style={{ fontSize: 'clamp(40px, 5vw, 80px)', color: '#FAFAF8' }}
             >
-              <MaskReveal>Four functions.</MaskReveal><br />
+              <MaskReveal>Eleven services.</MaskReveal><br />
               <MaskReveal delay={0.1}>One partner.</MaskReveal>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-7">
             <p className="text-base sm:text-[17px] leading-relaxed max-w-[500px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.78)' }}>
-              Founders waste 40% of their time coordinating vendors. We consolidate four functions into one operating partnership — one SLA, one relationship, one standard of execution.
+              Most teams juggle a dozen vendors across strategy, brand, web, search, ads, content, and analytics. We run all of it under one roof — one team, one standard, one number to grow.
             </p>
           </ScrollReveal>
         </div>
 
         <div
-          className="grid grid-cols-1 sm:grid-cols-2"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
           style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderLeft: '1px solid rgba(255,255,255,0.06)' }}
         >
-          {SPOKE_LIST.map((spoke, i) => (
-            <ScrollReveal key={spoke.id} stagger={(i % 2) + 1}>
-              <SpokeCard spoke={spoke} index={i} />
+          {SERVICES.map((service, i) => (
+            <ScrollReveal key={service.id} stagger={(i % 3) + 1}>
+              <ServiceCard service={service} />
             </ScrollReveal>
           ))}
         </div>
@@ -364,35 +369,34 @@ function FourSpokes() {
   );
 }
 
-function SpokeCard({ spoke, index }: { spoke: SpokeConfig; index: number }) {
+function ServiceCard({ service }: { service: (typeof SERVICES)[number] }) {
   const [hover, setHover] = React.useState(false);
-  const services = SPOKE_SERVICES[spoke.id] || [];
-  const rgb = SPOKE_RGB[spoke.id] || '255,255,255';
+  const subs = service.subServices.slice(0, 4);
 
   return (
     <Link
-      href={`/${spoke.id}`}
+      href={`/services/${service.id}`}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="rf-spoke-glow flex flex-col text-left cursor-none relative overflow-hidden p-8 sm:p-10 min-h-[380px]"
+      className="rf-spoke-glow flex flex-col text-left cursor-none relative overflow-hidden p-8 sm:p-9 min-h-[300px]"
       style={{
-        '--spoke-glow': `rgba(${rgb}, 0.12)`,
+        '--spoke-glow': 'rgba(20,184,166,0.12)',
         borderRight: '1px solid rgba(255,255,255,0.06)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
         background: hover ? 'rgba(255,255,255,0.025)' : 'transparent',
         textDecoration: 'none', color: '#FAFAF8',
         transition: 'background 0.5s ease, box-shadow 0.5s ease',
-        boxShadow: hover ? `inset 0 0 80px rgba(${rgb}, 0.06)` : 'none',
+        boxShadow: hover ? 'inset 0 0 80px rgba(20,184,166,0.06)' : 'none',
       } as React.CSSProperties}
     >
-      <div className="flex justify-between items-start mb-10" style={{ position: 'relative', zIndex: 1 }}>
+      <div className="flex justify-between items-start mb-8" style={{ position: 'relative', zIndex: 1 }}>
         <div className="flex items-center gap-3">
           <div
             className="w-2.5 h-2.5 rounded-full transition-all duration-500"
-            style={{ background: hover ? spoke.accent : 'rgba(255,255,255,0.2)', boxShadow: hover ? `0 0 12px ${spoke.accent}80` : 'none' }}
+            style={{ background: hover ? 'var(--accent)' : 'rgba(255,255,255,0.2)', boxShadow: hover ? '0 0 12px rgba(20,184,166,0.5)' : 'none' }}
           />
-          <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: hover ? spoke.accent : 'rgba(255,255,255,0.58)' }}>
-            {spoke.primaryBuyer}
+          <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: hover ? 'var(--accent)' : 'rgba(255,255,255,0.58)' }}>
+            {service.kpis[0] || 'Growth'}
           </span>
         </div>
         <span
@@ -404,20 +408,20 @@ function SpokeCard({ spoke, index }: { spoke: SpokeConfig; index: number }) {
       </div>
 
       <h3
-        className="font-sans font-medium tracking-[-0.035em] leading-none m-0"
-        style={{ fontSize: 'clamp(32px, 4vw, 52px)', color: '#FAFAF8', position: 'relative', zIndex: 1 }}
+        className="font-sans font-medium tracking-[-0.035em] leading-[1.05] m-0"
+        style={{ fontSize: 'clamp(24px, 2.4vw, 34px)', color: '#FAFAF8', position: 'relative', zIndex: 1 }}
       >
-        {spoke.label}
+        {service.title}
       </h3>
 
-      <p className="text-sm leading-relaxed mt-4 mb-0 max-w-[360px] flex-1" style={{ color: 'rgba(255,255,255,0.74)', position: 'relative', zIndex: 1 }}>
-        {spoke.description}
+      <p className="text-sm leading-relaxed mt-3 mb-0 max-w-[360px] flex-1" style={{ color: 'rgba(255,255,255,0.74)', position: 'relative', zIndex: 1 }}>
+        {service.shortDescription}
       </p>
 
-      <div className="mt-8 grid gap-2" style={{ position: 'relative', zIndex: 1 }}>
-        {services.map((s, idx) => (
+      <div className="mt-7 grid gap-2" style={{ position: 'relative', zIndex: 1 }}>
+        {subs.map((s, idx) => (
           <div
-            key={s}
+            key={s.slug || s.name}
             className="flex items-center gap-3"
             style={{
               opacity: hover ? 1 : 0.35,
@@ -425,18 +429,12 @@ function SpokeCard({ spoke, index }: { spoke: SpokeConfig; index: number }) {
               transition: `opacity 0.4s ease ${idx * 0.04}s, transform 0.4s ease ${idx * 0.04}s`,
             }}
           >
-            <div className="w-1 h-1 rounded-full" style={{ background: spoke.accent }} />
+            <div className="w-1 h-1 rounded-full" style={{ background: 'var(--accent)' }} />
             <span className="font-mono text-[10px] tracking-[0.10em] uppercase" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              {s}
+              {s.name}
             </span>
           </div>
         ))}
-      </div>
-
-      <div className="mt-8 pt-5" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', position: 'relative', zIndex: 1 }}>
-        <span className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: hover ? spoke.accent : 'rgba(255,255,255,0.25)' }}>
-          {spoke.pricingModel}
-        </span>
       </div>
     </Link>
   );
@@ -795,7 +793,7 @@ function FinalCTA() {
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
               <MagneticBtn>
-                <Btn variant="accent" href={CALENDLY_LINK} external>Book a call →</Btn>
+                <Btn variant="accent" href={BOOKING_LINK} external>Book a call →</Btn>
               </MagneticBtn>
               <MagneticBtn>
                 <Btn variant="onDark" href="/free-seo-audit">Get free audit</Btn>
@@ -818,6 +816,7 @@ export default function HomePage() {
       <Hero />
       <ClientPartners />
       <FourSpokes />
+      <StatBand />
       <Methodology />
       <SelectedWorks />
       <Coverage />

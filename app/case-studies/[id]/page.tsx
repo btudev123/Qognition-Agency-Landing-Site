@@ -270,7 +270,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             <div className="pt-12 border-t border-[var(--border)]">
               <Heading level="h3" className="mb-6">Ready for similar results?</Heading>
               <a
-                href="https://calendly.com/hello-qognitionagency/30min"
+                href="https://cal.com/qognition-agency/15min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 hover:brightness-110 transition-all text-sm"

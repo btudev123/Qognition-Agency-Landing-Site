@@ -188,7 +188,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
                 </Link>
               </div>
               <a
-                href="https://calendly.com/hello-qognitionagency/30min"
+                href="https://cal.com/qognition-agency/15min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"

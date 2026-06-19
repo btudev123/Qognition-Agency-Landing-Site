@@ -91,7 +91,7 @@ function leadConfirmationHtml(lead: LeadPayload): string {
           : '<li>Your message lands in the right team inbox</li><li>A team member reads and reviews your situation</li><li>You get a personal response within one business day</li>'}
       </ol>
     </div>
-    ${isAudit ? `<a href="https://calendly.com/hello-qognitionagency/30min" style="display:inline-block;background:#14B8A6;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px">Book a strategy call now</a>` : ''}
+    ${isAudit ? `<a href="https://cal.com/qognition-agency/15min" style="display:inline-block;background:#14B8A6;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px">Book a strategy call now</a>` : ''}
     <p style="color:#9ca3af;font-size:12px;margin-top:24px">Qognition Agency &mdash; The operating partner for founders.</p>
   </div>
 </div>`;

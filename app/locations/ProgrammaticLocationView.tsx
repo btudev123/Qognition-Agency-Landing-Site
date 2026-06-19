@@ -95,9 +95,9 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
         {[
-          `Quick summary: Qognition helps companies grow in ${location.name} with SEO, paid media, AI search visibility, web design, and conversion tracking.`,
-          `The strategy is built around how buyers in ${location.name} compare providers, check proof, and decide who to contact.`,
-          `Use this page to choose priority services, review relevant industries and case studies, and plan a measurable path to qualified enquiries.`,
+          `${location.name} is a priority ${location.type === 'city' ? 'metro' : 'market'} in ${location.region}${location.country && location.country !== location.name ? `, ${location.country}` : ''}. We build demand-generation matched to how its buyers actually search, compare, and choose vendors.`,
+          `Priority segments here: ${location.marketFocus.join(', ')} — plus B2B, professional services, ecommerce, and local services wherever there is real search demand in ${location.name}.`,
+          `Buyers in ${location.name} shortlist providers through search results, review signals, case studies, paid landing pages, and AI answer engines. We engineer visibility and conversion across every one of those touchpoints.`,
         ].map((item) => (
           <div
             key={item}
@@ -263,7 +263,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
               ))}
             </div>
             <a
-              href="https://calendly.com/hello-qognitionagency/30min"
+              href="https://cal.com/qognition-agency/15min"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
@@ -438,7 +438,7 @@ export const LocationServiceView = ({
               {location.name} Digital Marketing
             </Link>
             <a
-              href="https://calendly.com/hello-qognitionagency/30min"
+              href="https://cal.com/qognition-agency/15min"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"

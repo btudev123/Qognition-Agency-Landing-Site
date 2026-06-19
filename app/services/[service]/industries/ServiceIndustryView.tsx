@@ -74,7 +74,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
             </Link>
           </div>
           <a
-            href="https://calendly.com/hello-qognitionagency/30min"
+            href="https://cal.com/qognition-agency/15min"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-4 hover:brightness-110 transition-all text-sm"

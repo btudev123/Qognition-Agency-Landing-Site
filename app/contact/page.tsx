@@ -76,7 +76,7 @@ export default function Page() {
               <p className="text-sm text-[var(--text-muted)] mb-6">
                 Book a 30-minute strategy call directly. Pick a time that works for you — no back-and-forth.
               </p>
-              <CalendlyEmbed url="https://calendly.com/hello-qognitionagency/30min" />
+              <CalendlyEmbed url="https://cal.com/qognition-agency/15min" />
             </div>
           </div>
 

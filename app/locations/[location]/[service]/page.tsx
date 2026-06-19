@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocationBySlug, LOCATIONS } from '../../../../data/locations';
-import { SERVICES } from '../../../../data/services';
+import { SERVICES, LOCATION_MATRIX_SERVICES } from '../../../../data/services';
 import { getLocationMetadata } from '../../../../lib/seo';
 import { breadcrumbSchema, faqSchema } from '../../../../lib/schema';
 import { LocationServiceView } from '../../ProgrammaticLocationView';
@@ -9,7 +9,9 @@ import { LocationServiceView } from '../../ProgrammaticLocationView';
 export const dynamicParams = false;
 
 export const generateStaticParams = () =>
-  LOCATIONS.flatMap((location) => SERVICES.map((service) => ({ location: location.slug, service: service.id })));
+  LOCATIONS.flatMap((location) =>
+    LOCATION_MATRIX_SERVICES.map((service) => ({ location: location.slug, service: service.id })),
+  );
 
 export const generateMetadata = async ({
   params

@@ -71,6 +71,50 @@ export function serviceSchema(spoke: SpokeConfig, path: string) {
   };
 }
 
+// Service schema for the 11 marketing service categories (data/services.ts).
+export function serviceCategorySchema(service: {
+  id: string;
+  title: string;
+  shortDescription: string;
+  subServices: { name: string }[];
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    serviceType: service.title,
+    description: service.shortDescription,
+    url: `${SITE_URL}/services/${service.id}`,
+    provider: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
+    areaServed: 'Worldwide',
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: `${service.title} sub-services`,
+      itemListElement: service.subServices.map((sub) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: sub.name },
+      })),
+    },
+  };
+}
+
+export function localBusinessSchema(location: {
+  name: string;
+  slug: string;
+  schemaType: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: `Qognition — Digital Marketing in ${location.name}`,
+    url: `${SITE_URL}/locations/${location.slug}`,
+    areaServed: { '@type': location.schemaType, name: location.name },
+    provider: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
+    priceRange: '$$',
+    email: 'hello@qognitionagency.com',
+  };
+}
+
 export function faqPageSchema(faqs: { question: string; answer: string }[]) {
   return {
     '@context': 'https://schema.org',

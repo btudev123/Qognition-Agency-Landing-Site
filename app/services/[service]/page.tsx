@@ -6,9 +6,10 @@ import { SERVICE_SUB_PAGES } from '../../../data/seoExpansion';
 import { INDUSTRIES } from '../../../data/industries';
 import { SERVICES } from '../../../data/services';
 import { getServiceMetadata } from '../../../lib/seo';
-import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
+import { breadcrumbSchema, faqSchema, serviceCategorySchema } from '../../../lib/schema';
 import Heading from '../../../components/ui/Heading';
 import CrossLinks from '../../../components/shared/CrossLinks';
+import FunnelCTA from '../../../components/shared/FunnelCTA';
 
 export const dynamicParams = false;
 
@@ -39,16 +40,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
-            {
-              '@context': 'https://schema.org',
-              '@type': 'Service',
-              name: service.title,
-              description: service.fullDescription,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
-              areaServed: 'Global',
-              serviceType: service.title,
-              url: `https://qognition.com${path}`,
-            },
+            serviceCategorySchema(service),
             ...(service.faqs?.length ? [faqSchema(service.faqs)] : []),
             breadcrumbSchema([
               { name: 'Home', path: '/' },
@@ -68,6 +60,20 @@ export default async function Page({ params }: { params: Promise<{ service: stri
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           <article className="lg:col-span-8">
+            {/* Visual banner — swap the background for a stock/brand image when chosen */}
+            <div
+              className="mb-12 rounded-2xl h-44 sm:h-56 relative overflow-hidden border border-[var(--border)]"
+              style={{
+                background:
+                  'radial-gradient(ellipse at 20% 20%, rgba(20,184,166,0.35), transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(15,118,110,0.3), transparent 55%), linear-gradient(135deg, #0a0a0a, #111)',
+              }}
+            >
+              <div className="absolute inset-0 flex items-end p-6 sm:p-8">
+                <span className="font-mono text-[11px] tracking-[0.2em] uppercase" style={{ color: 'var(--accent)' }}>
+                  {service.kpis.join(' · ')}
+                </span>
+              </div>
+            </div>
             <header className="mb-12">
               <Heading level="h1" className="mb-8">
                 {service.title.replace('Web Development', 'Web Design')}
@@ -267,7 +273,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 Stop guessing. Start growing. Schedule a consultation with our {service.title} leads.
               </p>
               <a
-                href="https://calendly.com/hello-qognitionagency/30min"
+                href="https://cal.com/qognition-agency/15min"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"
@@ -277,6 +283,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
             </div>
           </aside>
         </div>
+        <FunnelCTA stage="mofu" service={service.title} className="mt-16 mb-8" />
         <CrossLinks serviceId={service.id} exclude={{ type: 'service', id: service.id }} />
       </main>
     </>

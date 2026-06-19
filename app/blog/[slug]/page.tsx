@@ -6,6 +6,7 @@ import { BLOG_POSTS } from '../../../data/blog';
 import { articleSchema, breadcrumbSchema } from '../../../lib/schema';
 import Heading from '../../../components/ui/Heading';
 import Badge from '../../../components/ui/Badge';
+import FunnelCTA from '../../../components/shared/FunnelCTA';
 
 export const dynamicParams = false;
 
@@ -177,7 +178,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               Let Qognition help you leverage AI marketing and SEO to grow your business.
             </p>
             <a
-              href="https://calendly.com/hello-qognitionagency/30min"
+              href="https://cal.com/qognition-agency/15min"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 hover:brightness-110 transition-all text-sm"
@@ -185,6 +186,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               Get Started Today <ArrowRight size={16} />
             </a>
           </div>
+
+          <FunnelCTA stage="tofu" className="mt-16" />
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
