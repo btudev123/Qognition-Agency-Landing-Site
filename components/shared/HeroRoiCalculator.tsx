@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { openTallyPopup } from './TallyForm';
 
 // Hero ROI calculator. "See how much manual data processing is costing you."
 // Inputs (team size, hours/week, hourly cost) drive a live savings figure; the
@@ -87,6 +88,16 @@ export default function HeroRoiCalculator() {
     if (status === 'submitting') return;
     setStatus('submitting');
     setErrorMsg('');
+
+    const note = `ROI calculator — team ${teamSize}, ${hoursPerWeek} hrs/wk @ ${fmt(
+      hourlyCost,
+    )}/hr. Est. annual manual cost ${fmt(annualCost)}, projected savings ${fmt(
+      annualSavings,
+    )}/yr (${reclaimedHours} hrs reclaimed).`;
+
+    // Route the lead to Tally (with the savings note) on the user's click gesture.
+    openTallyPopup({ email, source: 'ROI calculator', note });
+
     try {
       const res = await fetch('/api/lead', {
         method: 'POST',

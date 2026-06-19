@@ -13,8 +13,30 @@ export function isTallyConfigured() {
 }
 
 type TallyWindow = Window & {
-  Tally?: { loadEmbeds: () => void };
+  Tally?: {
+    loadEmbeds: () => void;
+    openPopup: (formId: string, options?: Record<string, unknown>) => void;
+  };
 };
+
+// Opens the Tally lead form in a modal, carrying context (note/source/email) as
+// hidden/URL fields so ROI-calculator and audit leads are recorded in Tally too.
+export function openTallyPopup(hiddenFields: Record<string, string | undefined>) {
+  if (!TALLY_FORM_ID || typeof window === 'undefined') return false;
+  const fields: Record<string, string> = {};
+  for (const [k, v] of Object.entries(hiddenFields)) if (v) fields[k] = v;
+  const open = () =>
+    (window as TallyWindow).Tally?.openPopup(TALLY_FORM_ID, {
+      layout: 'modal',
+      width: 560,
+      hiddenFields: fields,
+      ...fields,
+    });
+  ensureTallyScript(open);
+  // If the script was already loaded, ensureTallyScript calls open synchronously;
+  // otherwise open fires on load.
+  return true;
+}
 
 function ensureTallyScript(onReady: () => void) {
   const w = window as TallyWindow;
