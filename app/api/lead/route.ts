@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { leadSchema } from '../../../lib/validation';
 import { sendLeadNotification, sendLeadConfirmation } from '../../../lib/leadDelivery';
-import { pushLeadToZoho } from '../../../lib/zoho';
 import { checkAuditRateLimit, getAuditDeviceCookie, recordAuditRateLimit } from '../../../lib/auditRateLimit';
 
 export const dynamic = 'force-dynamic';
@@ -47,14 +46,9 @@ export async function POST(request: NextRequest) {
       return response;
     }
 
-    // Tag every lead so each funnel is filterable in Zoho. Explicit tag wins,
-    // otherwise derive one from intent + spoke.
-    const crmTag = lead.tag || `${lead.intent}:${lead.service}`;
-
-    const [notifyResult, confirmResult, zohoResult] = await Promise.all([
+    const [notifyResult, confirmResult] = await Promise.all([
       sendLeadNotification(lead),
       sendLeadConfirmation(lead),
-      pushLeadToZoho(lead, { tag: crmTag }),
     ]);
 
     await recordAuditRateLimit(rateLimit.keys);
@@ -84,9 +78,6 @@ export async function POST(request: NextRequest) {
     }
     if (!confirmResult.ok && !confirmResult.skipped) {
       console.error('[Lead] Confirmation email failed:', confirmResult.error);
-    }
-    if (!zohoResult.ok && !zohoResult.skipped) {
-      console.error('[Lead] Zoho CRM push failed:', zohoResult.error);
     }
 
     return response;

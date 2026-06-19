@@ -4,6 +4,7 @@ import { useState, useRef, type FormEvent } from 'react';
 import type { SpokeId, LeadIntent } from '../../lib/validation';
 import { contactSchema } from '../../lib/validation';
 import Button from '../ui/Button';
+import TallyForm, { isTallyConfigured } from './TallyForm';
 
 interface LeadFormProps {
   spoke: SpokeId;
@@ -45,6 +46,17 @@ export default function LeadForm({
         : 'Send Message';
 
   const finalCta = ctaLabel || defaultCta;
+
+  // When a Tally form is configured, every lead form routes to Tally.
+  // Falls back to the native form + /api/lead when it's not set.
+  if (isTallyConfigured()) {
+    return (
+      <TallyForm
+        className={className}
+        hidden={{ spoke, intent, source: sourcePage }}
+      />
+    );
+  }
 
   const validate = () => {
     const result = contactSchema.safeParse({ name, email, company: company || undefined, company_url: companyUrl || undefined, message: message || undefined });

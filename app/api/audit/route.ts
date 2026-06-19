@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AUDIT_OFFERS } from '../../../data/auditOffers';
 import { submitHubSpotLead, sendResendEmail } from '../../../lib/leadDelivery';
-import { pushLeadToZoho } from '../../../lib/zoho';
 import { buildAuditReportPdf } from '../../../lib/auditPdf';
 import { checkAuditRateLimit, getAuditDeviceCookie, recordAuditRateLimit } from '../../../lib/auditRateLimit';
 import { AuditCheck, AuditReport, AuditType } from '../../../types';
@@ -371,26 +370,6 @@ export async function POST(request: NextRequest) {
       },
       request
     );
-
-    // Push the audit lead into Zoho CRM, tagged by audit type (no-ops if Zoho
-    // is not configured).
-    const zoho = await pushLeadToZoho(
-      {
-        service: 'unsure',
-        intent: 'audit',
-        source_page: payload.source || `/${offer.slug}`,
-        contact: {
-          name: email.split('@')[0],
-          email,
-          company_url: targetUrl.toString(),
-          message: `${offer.title} — score ${score}/100. ${report.summary}`,
-        },
-      },
-      { tag: offer.type === 'ai' ? 'lead magnet for ai readiness' : `audit:${offer.type}` },
-    );
-    if (!zoho.ok && !zoho.skipped) {
-      console.error('[Audit] Zoho CRM push failed:', zoho.error);
-    }
 
     const notifyEmail = process.env.AUDIT_NOTIFY_EMAIL;
     const to = notifyEmail && notifyEmail !== email ? [email, notifyEmail] : email;
