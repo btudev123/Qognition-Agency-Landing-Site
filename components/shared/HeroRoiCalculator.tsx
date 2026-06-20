@@ -6,7 +6,7 @@ import { openTallyPopup } from './TallyForm';
 
 // Hero ROI calculator. "See how much manual data processing is costing you."
 // Inputs (team size, hours/week, hourly cost) drive a live savings figure; the
-// detailed report is gated behind a business email → /api/lead (tagged in Zoho).
+// detailed report is gated behind a business email → Tally popup + /api/lead.
 
 const WORKING_WEEKS = 48;
 const AUTOMATABLE = 0.7; // ~70% of manual reporting work is automatable
@@ -30,16 +30,16 @@ function NumberField({
   prefix?: string;
 }) {
   return (
-    <label className="block text-left">
+    <label className="block text-left min-w-0">
       <span
-        className="font-mono uppercase tracking-[0.12em]"
-        style={{ fontSize: 10, color: 'var(--text-muted)' }}
+        className="block font-mono uppercase tracking-[0.1em] whitespace-nowrap"
+        style={{ fontSize: 9.5, color: 'var(--text-muted)' }}
       >
         {label}
       </span>
       <div
-        className="flex items-center mt-1.5"
-        style={{ border: '1px solid var(--border-strong)', background: 'rgba(255,255,255,0.03)' }}
+        className="flex items-center mt-1.5 rounded-lg overflow-hidden"
+        style={{ border: '1px solid var(--border-strong)', background: 'var(--bg)' }}
       >
         {prefix && (
           <span className="pl-3" style={{ color: 'var(--text-muted)', fontSize: 15 }}>
@@ -56,7 +56,7 @@ function NumberField({
             const v = Number(e.target.value);
             onChange(Number.isFinite(v) ? Math.max(min, Math.min(max, v)) : min);
           }}
-          className="w-full bg-transparent px-3 py-2.5 outline-none"
+          className="w-full min-w-0 bg-transparent px-3 py-2.5 outline-none"
           style={{ color: 'var(--ink)', fontSize: 16, fontVariantNumeric: 'tabular-nums' }}
         />
       </div>
@@ -134,18 +134,17 @@ export default function HeroRoiCalculator() {
   return (
     <div
       id="roi-calculator"
-      className="mx-auto w-full max-w-[680px] text-left scroll-mt-28"
+      className="w-full text-left scroll-mt-28 rounded-2xl"
       style={{
         border: '1px solid var(--border-strong)',
-        background: 'rgba(255,255,255,0.02)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        padding: 'clamp(20px, 4vw, 32px)',
+        background: 'var(--surface)',
+        boxShadow: '0 24px 60px -24px rgba(15,118,110,0.22), 0 2px 8px rgba(0,0,0,0.04)',
+        padding: 'clamp(22px, 3vw, 34px)',
       }}
     >
-      <div className="flex items-center gap-2 mb-1">
+      <div className="flex items-center gap-2 mb-2">
         <span
-          style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }}
+          style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 8px var(--accent-glow)' }}
         />
         <span
           className="font-mono uppercase tracking-[0.14em]"
@@ -155,23 +154,26 @@ export default function HeroRoiCalculator() {
         </span>
       </div>
       <h2
-        className="font-sans font-medium tracking-[-0.02em] m-0 mb-5"
-        style={{ fontSize: 'clamp(18px, 2.4vw, 24px)', color: 'var(--ink)' }}
+        className="font-sans font-medium tracking-[-0.02em] m-0 mb-1"
+        style={{ fontSize: 'clamp(19px, 2.2vw, 25px)', color: 'var(--ink)' }}
       >
         See what manual work is costing you
       </h2>
+      <p className="m-0 mb-6" style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+        Estimate the cost of hours your team spends on manual reporting.
+      </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-3 gap-2.5 sm:gap-3 mb-6">
         <NumberField label="Team size" value={teamSize} onChange={setTeamSize} min={1} max={1000} />
         <NumberField
-          label="Hrs/week on reports"
+          label="Hrs / week"
           value={hoursPerWeek}
           onChange={setHoursPerWeek}
           min={1}
           max={80}
         />
         <NumberField
-          label="Avg cost / hour"
+          label="Cost / hour"
           value={hourlyCost}
           onChange={setHourlyCost}
           min={5}
@@ -193,7 +195,7 @@ export default function HeroRoiCalculator() {
           </div>
           <div
             className="rf-gradient-text font-sans font-medium leading-none tracking-[-0.03em]"
-            style={{ fontSize: 'clamp(36px, 6vw, 56px)', fontVariantNumeric: 'tabular-nums' }}
+            style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontVariantNumeric: 'tabular-nums' }}
           >
             {fmt(annualSavings)}
           </div>
@@ -228,10 +230,10 @@ export default function HeroRoiCalculator() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your business email"
             aria-label="Business email"
-            className="flex-1 px-4 py-3 outline-none"
+            className="flex-1 min-w-0 px-4 py-3 outline-none rounded-lg"
             style={{
               border: '1px solid var(--border-strong)',
-              background: 'rgba(255,255,255,0.03)',
+              background: 'var(--bg)',
               color: 'var(--ink)',
               fontSize: 15,
             }}
@@ -239,7 +241,7 @@ export default function HeroRoiCalculator() {
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium whitespace-nowrap transition-all disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium whitespace-nowrap transition-all disabled:opacity-60 rounded-lg"
             style={{ background: 'var(--accent)', color: '#04221E', fontSize: 14 }}
           >
             {status === 'submitting' ? (
