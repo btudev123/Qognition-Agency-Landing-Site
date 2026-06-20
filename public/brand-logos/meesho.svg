@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120" role="img" aria-labelledby="title">
-  <title id="title">Meesho</title>
-  <rect width="320" height="120" fill="none"/>
-  <path d="M48 78V42h36l18 18-18 18H48Z" fill="#111"/>
-  <text x="116" y="75" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="800">Meesho</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 32" role="img" aria-label="meesho"><text x="0" y="25" font-family="Geist, Inter, system-ui, Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="-1" fill="#9F2089" style="text-transform:none">meesho</text></svg>

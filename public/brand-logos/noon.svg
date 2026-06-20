@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120" role="img" aria-labelledby="title">
-  <title id="title">Noon</title>
-  <rect width="320" height="120" fill="none"/>
-  <text x="65" y="76" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900">noon</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 32" role="img" aria-label="noon"><text x="0" y="25" font-family="Geist, Inter, system-ui, Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="-1" fill="#1C1C1C" style="text-transform:none">noon</text></svg>

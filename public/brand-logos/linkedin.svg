@@ -1,3 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" role="img" aria-label="LinkedIn">
-  <text x="0" y="29" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#1a1a1a">LinkedIn</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="LinkedIn"><rect width="24" height="24" rx="4.5" fill="#0A66C2"/><path fill="#fff" d="M6.94 8.78H4.3V18h2.64V8.78zM5.62 4.5a1.53 1.53 0 100 3.06 1.53 1.53 0 000-3.06zM18 18h-2.64v-4.5c0-1.13-.02-2.58-1.57-2.58-1.57 0-1.81 1.23-1.81 2.5V18H9.34V8.78h2.54v1.26h.04c.35-.67 1.22-1.38 2.51-1.38 2.69 0 3.18 1.77 3.18 4.06V18z"/></svg>

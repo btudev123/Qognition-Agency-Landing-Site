@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="120" viewBox="0 0 320 120" role="img" aria-labelledby="title">
-  <title id="title">Daraz</title>
-  <rect width="320" height="120" fill="none"/>
-  <path d="M46 34h48l18 26-18 26H46L28 60l18-26Z" fill="#111"/>
-  <text x="126" y="75" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="800">Daraz</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" role="img" aria-label="daraz"><text x="0" y="25" font-family="Geist, Inter, system-ui, Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5" fill="#F85606" style="text-transform:none">daraz</text></svg>
