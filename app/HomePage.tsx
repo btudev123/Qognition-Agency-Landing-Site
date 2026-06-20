@@ -18,11 +18,11 @@ import { BOOKING_LINK } from '../data/siteConfig';
 // ── DATA ──────────────────────────────────────────────────────────────────────
 
 const AI_ENGINES = [
-  { name: 'ChatGPT', color: '#10a37f' },
-  { name: 'Claude', color: '#d97706' },
-  { name: 'Gemini', color: '#4285F4' },
-  { name: 'Perplexity', color: '#1fb8cd' },
-  { name: 'Google AI', color: '#EA4335' },
+  { name: 'ChatGPT', logo: '/brand-logos/ai-openai.svg' },
+  { name: 'Claude', logo: '/brand-logos/ai-claude.svg' },
+  { name: 'Gemini', logo: '/brand-logos/ai-gemini.svg' },
+  { name: 'Perplexity', logo: '/brand-logos/ai-perplexity.svg' },
+  { name: 'Google AI', logo: '/brand-logos/google.svg' },
 ];
 
 const TECH_STACK = ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind', 'Framer Motion', 'Shopify Plus', 'Sanity CMS', 'OpenAI', 'Vercel', 'Supabase', 'Ahrefs', 'GA4'];
@@ -190,104 +190,120 @@ function GradientMesh({ className }: { className?: string }) {
 function Hero() {
   return (
     <section
-      className="relative flex flex-col items-center justify-center overflow-hidden"
-      style={{ minHeight: '100vh', background: 'var(--bg)', paddingTop: 132, paddingBottom: 64 }}
+      className="relative overflow-hidden"
+      style={{ background: 'var(--bg)', paddingTop: 'clamp(116px, 14vh, 156px)', paddingBottom: 'clamp(48px, 8vh, 88px)' }}
     >
-      {/* Refined ambient background (grid + single restrained halo) */}
       <HeroAurora />
 
-      <div className="relative z-10 w-full max-w-[1180px] mx-auto px-5 sm:px-10 text-center">
+      <div className="relative z-10 w-full max-w-[1240px] mx-auto px-5 sm:px-8 lg:px-10">
+        {/* Two-col grid — left: message · right: ROI calculator */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-y-12 gap-x-10 xl:gap-x-16 items-center">
 
-        {/* Badge */}
-        <ScrollReveal className="mb-7 sm:mb-9 flex justify-center">
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 16px',
-            border: '1px solid var(--border-strong)', background: 'rgba(20,184,166,0.08)', borderRadius: 100,
-          }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', animation: 'rf-pulse 2s ease-in-out infinite' }} />
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)' }}>
-              AI-Native Marketing Partner
-            </span>
+          {/* ── LEFT: message ── */}
+          <div className="min-w-0 flex flex-col items-start text-left max-w-[600px]">
+
+            {/* Badge */}
+            <ScrollReveal className="mb-6 sm:mb-7">
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 15px',
+                border: '1px solid var(--border-strong)', background: 'rgba(20,184,166,0.08)', borderRadius: 100,
+              }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', animation: 'rf-pulse 2s ease-in-out infinite' }} />
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-deep)' }}>
+                  AI-Native Marketing Partner
+                </span>
+              </div>
+            </ScrollReveal>
+
+            {/* Headline — sized to the column, never overflows */}
+            <h1
+              className="font-sans font-medium m-0 leading-[0.9] tracking-[-0.045em]"
+              style={{ fontSize: 'clamp(40px, 5.8vw, 84px)', color: 'var(--ink)' }}
+            >
+              <span className="block"><MaskReveal>AI-NATIVE GROWTH</MaskReveal></span>
+              <span className="block">
+                <MaskReveal delay={0.1}>
+                  <span className="rf-gradient-text">PARTNERS</span>
+                </MaskReveal>
+              </span>
+            </h1>
+
+            {/* Subhead */}
+            <ScrollReveal stagger={4} className="mt-6 sm:mt-7">
+              <p
+                className="text-base sm:text-[18px] leading-relaxed tracking-[-0.005em] max-w-[520px] m-0"
+                style={{ color: 'var(--ink-soft)' }}
+              >
+                Qognition is the AI-native growth partner for ambitious brands. We run{' '}
+                <strong style={{ color: 'var(--ink)' }}>SEO, AI search, content, paid media, and conversion</strong>{' '}
+                as one system — so you win customers from Google and AI engines alike.
+              </p>
+            </ScrollReveal>
+
+            {/* CTAs */}
+            <ScrollReveal stagger={5} className="mt-8">
+              <div className="flex flex-wrap gap-3">
+                <MagneticBtn>
+                  <Btn variant="accent" href={BOOKING_LINK} external>Book a Free Strategy Call →</Btn>
+                </MagneticBtn>
+                <MagneticBtn>
+                  <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
+                </MagneticBtn>
+              </div>
+            </ScrollReveal>
+
+            {/* AI engines strip — real logos, minimal chips */}
+            <ScrollReveal stagger={6} className="mt-9 sm:mt-10 w-full">
+              <div className="font-mono text-[10px] tracking-[0.18em] uppercase mb-3.5" style={{ color: 'var(--text-muted)' }}>
+                Built to win citations in
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {AI_ENGINES.map((ai) => (
+                  <span
+                    key={ai.name}
+                    className="inline-flex items-center gap-2 py-1.5 pl-2 pr-3 transition-colors"
+                    style={{ border: '1px solid var(--border)', borderRadius: 100, background: 'var(--surface)' }}
+                  >
+                    <img src={ai.logo} alt="" aria-hidden="true" width={16} height={16} className="h-4 w-4 object-contain" loading="lazy" />
+                    <span className="text-[12.5px] font-medium tracking-[-0.005em]" style={{ color: 'var(--ink-soft)' }}>
+                      {ai.name}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
 
-        {/* Headline — oversized, centered */}
-        <h1
-          className="font-sans font-medium m-0 leading-[0.86] tracking-[-0.05em]"
-          style={{ fontSize: 'clamp(52px, 11vw, 184px)', color: 'var(--ink)' }}
-        >
-          <MaskReveal>THE OPERATING</MaskReveal>
-          <MaskReveal delay={0.1}>
-            <span className="rf-gradient-text">SYSTEM</span>
-          </MaskReveal>
-        </h1>
-
-        <ScrollReveal stagger={4} className="mt-7 sm:mt-9">
-          <p
-            className="text-base sm:text-[20px] leading-relaxed tracking-[-0.005em] max-w-[620px] mx-auto m-0"
-            style={{ color: 'var(--ink-soft)' }}
-          >
-            The growth partner behind ambitious brands. We run{' '}
-            <strong style={{ color: 'var(--ink)' }}>strategy, search, content, paid, and conversion</strong>{' '}
-            as one system — so you compound, not coordinate.
-          </p>
-        </ScrollReveal>
-
-        {/* CTAs */}
-        <ScrollReveal stagger={5} className="mt-9 sm:mt-11">
-          <div className="flex flex-wrap gap-3 justify-center">
-            <MagneticBtn>
-              <Btn variant="accent" href={BOOKING_LINK} external>Book a Free Strategy Call →</Btn>
-            </MagneticBtn>
-            <MagneticBtn>
-              <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
-            </MagneticBtn>
+          {/* ── RIGHT: ROI calculator ── */}
+          <div className="min-w-0 w-full lg:justify-self-end lg:max-w-[520px]">
+            <ScrollReveal stagger={3}>
+              <HeroRoiCalculator />
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
 
-        {/* ROI calculator — see what manual work costs, gated by email */}
-        <ScrollReveal stagger={6} className="mt-10 sm:mt-12">
-          <HeroRoiCalculator />
-        </ScrollReveal>
+        </div>
 
-        {/* Stat strip — hard proof, replaces the dashboard */}
-        <ScrollReveal stagger={6} className="mt-14 sm:mt-16">
+        {/* Stat band — full width under both columns */}
+        <ScrollReveal stagger={4} className="mt-14 sm:mt-16">
           <div
-            className="mx-auto grid grid-cols-3 max-w-[760px]"
+            className="grid grid-cols-3 max-w-[820px]"
             style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
           >
             {HERO_STATS.map((s, i) => (
               <div
                 key={s.label}
-                className="py-6 sm:py-7 px-2"
+                className="py-6 sm:py-7 px-3 sm:px-5"
                 style={{ borderLeft: i === 0 ? 'none' : '1px solid var(--border)' }}
               >
                 <div
                   className="font-sans font-medium leading-none tracking-[-0.03em]"
-                  style={{ fontSize: 'clamp(28px, 4vw, 48px)', color: 'var(--ink)', fontFeatureSettings: '"tnum"' }}
+                  style={{ fontSize: 'clamp(26px, 3.6vw, 44px)', color: 'var(--ink)', fontFeatureSettings: '"tnum"' }}
                 >
                   {s.value}
                 </div>
                 <div className="font-mono text-[10px] sm:text-[11px] tracking-[0.12em] uppercase mt-2.5" style={{ color: 'var(--text-muted)' }}>
                   {s.label}
                 </div>
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
-
-        {/* AI engines strip */}
-        <ScrollReveal stagger={7} className="mt-10 sm:mt-12">
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6">
-            <span className="font-mono text-[10px] tracking-[0.16em] uppercase" style={{ color: 'var(--text-muted)' }}>
-              We optimize for
-            </span>
-            {AI_ENGINES.map((ai) => (
-              <div key={ai.name} className="inline-flex items-center gap-1.5">
-                <div style={{ width: 5, height: 5, borderRadius: '50%', background: ai.color, flexShrink: 0 }} />
-                <span className="font-mono text-[11px] tracking-[0.04em]" style={{ color: 'var(--ink-soft)' }}>
-                  {ai.name}
-                </span>
               </div>
             ))}
           </div>

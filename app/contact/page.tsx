@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { organizationSchema, breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
 import LeadForm from '../../components/shared/LeadForm';
-import CalendlyEmbed from '../../components/shared/CalendlyEmbed';
-import { WHATSAPP_LINK, WHATSAPP_DISPLAY } from '../../data/siteConfig';
+import { WHATSAPP_LINK, WHATSAPP_DISPLAY, BOOKING_LINK } from '../../data/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Contact Qognition | Book a Strategy Call',
@@ -74,9 +73,16 @@ export default function Page() {
             <div className="p-8 rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)]">
               <Heading level="h3" className="mb-4">Skip the email?</Heading>
               <p className="text-sm text-[var(--text-muted)] mb-6">
-                Book a 30-minute strategy call directly. Pick a time that works for you — no back-and-forth.
+                Book a free 30-minute strategy call directly. Pick a time that works for you — no back-and-forth.
               </p>
-              <CalendlyEmbed url="https://cal.com/qognition-agency/15min" />
+              <a
+                href={BOOKING_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent)] text-white font-semibold transition-opacity hover:opacity-90"
+              >
+                Book a Strategy Call &rarr;
+              </a>
             </div>
           </div>
 
