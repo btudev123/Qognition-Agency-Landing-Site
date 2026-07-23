@@ -127,10 +127,10 @@ export default function LeadForm({
         <div className="w-12 h-12 bg-[var(--accent)] text-[var(--accent-deep)] rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
           ✓
         </div>
-        <h3 className="text-lg font-semibold text-[var(--text)] mb-2">
+        <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">
           {isAudit ? 'Audit request received!' : 'Message sent!'}
         </h3>
-        <p className="text-sm text-[var(--text-muted)] mb-6 leading-relaxed">
+        <p className="text-body text-[var(--text-muted)] mb-6">
           {isAudit
             ? 'We review your submission and send a personalized audit within 48 hours. Want to jump the line?'
             : 'A real person will read your message and respond within one business day. Want to talk sooner?'}
@@ -143,7 +143,7 @@ export default function LeadForm({
         >
           Book a 30-Min Strategy Call
         </a>
-        <p className="text-xs text-[var(--text-muted)] mt-4">
+        <p className="text-meta text-[var(--text-muted)] mt-4">
           You'll also receive a confirmation email shortly.
         </p>
       </div>
@@ -179,7 +179,7 @@ export default function LeadForm({
           placeholder="Your full name"
           required
         />
-        {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+        {errors.name && <p className="text-meta text-red-500 mt-1">{errors.name}</p>}
       </div>
 
       <div>
@@ -197,7 +197,7 @@ export default function LeadForm({
           placeholder="you@company.com"
           required
         />
-        {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+        {errors.email && <p className="text-meta text-red-500 mt-1">{errors.email}</p>}
       </div>
 
       <div>
@@ -228,7 +228,7 @@ export default function LeadForm({
           }`}
           placeholder="https://yourcompany.com"
         />
-        {errors.companyUrl && <p className="text-xs text-red-500 mt-1">{errors.companyUrl}</p>}
+        {errors.companyUrl && <p className="text-meta text-red-500 mt-1">{errors.companyUrl}</p>}
       </div>
 
       <div>
@@ -255,7 +255,7 @@ export default function LeadForm({
         {status === 'submitting' ? 'Sending...' : finalCta}
       </Button>
 
-      <p className="text-xs text-[var(--text-muted)] text-center">
+      <p className="text-meta text-[var(--text-muted)] text-center">
         No spam. No auto-sequences. A real human reviews every submission.
       </p>
     </form>

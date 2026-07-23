@@ -60,12 +60,12 @@ export default function Page() {
           <div className="p-12 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)]">
             <Target className="text-[var(--accent)] mb-6" size={48} />
             <Heading level="h2" className="mb-6">Our Mission</Heading>
-            <p className="text-xl text-[var(--text-muted)] leading-relaxed">{ABOUT_DATA.mission}</p>
+            <p className="text-body text-[var(--text-muted)]">{ABOUT_DATA.mission}</p>
           </div>
           <div className="p-12 rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)]">
             <Rocket className="text-[var(--accent)] mb-6" size={48} />
             <Heading level="h2" className="mb-6">Our Vision</Heading>
-            <p className="text-xl text-[var(--text-muted)] leading-relaxed">{ABOUT_DATA.vision}</p>
+            <p className="text-body text-[var(--text-muted)]">{ABOUT_DATA.vision}</p>
           </div>
         </div>
 
@@ -76,8 +76,8 @@ export default function Page() {
               <div key={i} className="flex gap-6 border-t border-[var(--border)] pt-8">
                 <div className="text-[var(--accent)] font-mono text-xl">0{i + 1}</div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-[var(--text)] mb-4">{value.title}</h3>
-                  <p className="text-[var(--text-muted)] leading-relaxed">{value.desc}</p>
+                  <h3 className="text-h3 text-[var(--text)] mb-4 font-semibold">{value.title}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{value.desc}</p>
                 </div>
               </div>
             ))}
@@ -92,8 +92,8 @@ export default function Page() {
               { icon: Users, name: 'Tech Squad', focus: 'Dev, Automation, AI.', roles: ['Full-Stack Engineers', 'AI Architects', 'DevOps'] }].map((squad) => (
               <div key={squad.name} className="p-8 border border-[var(--border)] rounded-xl hover:bg-[var(--ink)]/5 transition-colors">
                 <squad.icon className="text-[var(--accent)] mb-6" size={32} />
-                <h3 className="text-2xl font-semibold text-[var(--text)] mb-4">{squad.name}</h3>
-                <p className="text-[var(--text-muted)] mb-4">Focus: {squad.focus}</p>
+                <h3 className="text-h3 text-[var(--text)] mb-4 font-semibold">{squad.name}</h3>
+                <p className="text-body text-[var(--text-muted)] mb-4">Focus: {squad.focus}</p>
                 <ul className="text-sm text-[var(--text-muted)] space-y-2">
                   {squad.roles.map((r) => <li key={r}>&bull; {r}</li>)}
                 </ul>
@@ -104,7 +104,7 @@ export default function Page() {
 
         <div className="text-center py-24 border-t border-[var(--border)]">
           <Heading level="h2" className="mb-8 !text-4xl md:!text-6xl">Join the movement.</Heading>
-          <p className="text-[var(--text-muted)] mb-12 max-w-2xl mx-auto">We are always looking for world-class talent and ambitious partners.</p>
+          <p className="text-body text-[var(--text-muted)] mb-12 max-w-2xl mx-auto">We are always looking for world-class talent and ambitious partners.</p>
           <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
             <a href="https://cal.com/qognition-agency/15min" target="_blank" rel="noopener noreferrer" className="rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-8 py-4 text-sm hover:brightness-110 transition-all">Book Strategy Call</a>
             <a href="mailto:hello@qognitionagency.com" className="rounded-lg border border-[var(--border)] text-[var(--text)] font-medium px-8 py-4 text-sm hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all">Join the Team</a>
@@ -114,8 +114,8 @@ export default function Page() {
               { label: 'Case Studies', desc: "See the results we've delivered for our clients.", href: '/case-studies' },
               { label: 'Industries', desc: 'Learn about the sectors we specialize in.', href: '/industries' }].map((link) => (
               <Link key={link.href} href={link.href} className="p-6 border border-[var(--border)] rounded-xl hover:border-[var(--accent)]/40 transition-all">
-                <h3 className="text-xl font-semibold text-[var(--text)] mb-3">{link.label}</h3>
-                <p className="text-[var(--text-muted)] text-sm mb-4">{link.desc}</p>
+                <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{link.label}</h3>
+                <p className="text-body text-[var(--text-muted)] mb-4">{link.desc}</p>
                 <span className="text-[var(--accent)] text-sm">Explore &rarr;</span>
               </Link>
             ))}

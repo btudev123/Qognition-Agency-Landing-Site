@@ -36,7 +36,7 @@ export default function Page() {
           <div className="max-w-3xl mx-auto text-center">
             <Badge className="mb-4">Global Regions</Badge>
             <Heading level="h1" className="mb-4">Regions We Serve</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl mx-auto">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
               Strategic hubs and service regions for local SEO, paid media, and digital growth.
             </p>
           </div>
@@ -54,10 +54,10 @@ export default function Page() {
                   <MapPin size={20} className="text-[var(--accent)]" />
                   <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">Region</span>
                 </div>
-                <h2 className="text-xl font-semibold text-[var(--text)] mb-3 group-hover:text-[var(--accent)] transition-colors">
+                <h2 className="text-h2 text-[var(--text)] mb-3 group-hover:text-[var(--accent)] transition-colors font-semibold">
                   {region.name}
                 </h2>
-                <p className="text-sm text-[var(--text-muted)] mb-5 line-clamp-3 leading-relaxed">
+                <p className="text-body text-[var(--text-muted)] mb-5 line-clamp-3">
                   {region.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">

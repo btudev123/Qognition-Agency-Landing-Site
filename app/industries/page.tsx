@@ -42,7 +42,7 @@ export default function Page() {
           <div className="max-w-3xl mx-auto text-center">
             <Badge className="mb-4">Industries</Badge>
             <Heading level="h1" className="mb-4">Industries We Serve</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl mx-auto">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
               AI growth marketing by buyer journey, compliance pressure, local demand, sales cycle, and proof requirements.
             </p>
           </div>
@@ -85,15 +85,15 @@ export default function Page() {
                 key={industry.id}
                 className="p-8 border border-[var(--border)] rounded-2xl bg-[var(--card-bg)] hover:border-[var(--accent)]/40 transition-colors"
               >
-                <Heading level="h2" className="mb-4 text-2xl">
+                <Heading level="h2" className="mb-4">
                   <Link href={`/industries/${industry.id}`} className="hover:text-[var(--accent)] transition-colors">
                     {industry.name}
                   </Link>
                 </Heading>
-                <p className="text-[var(--text-muted)] mb-6 leading-relaxed">{industry.description}</p>
+                <p className="text-body text-[var(--text-muted)] mb-6">{industry.description}</p>
 
                 <div className="mb-6">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-3">
+                  <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-3">
                     Specialist Verticals
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -136,7 +136,7 @@ export default function Page() {
         <Section spacing="lg">
           <div className="max-w-xl mx-auto text-center">
             <Heading level="h2" className="mb-3">Need a market-specific plan?</Heading>
-            <p className="text-[var(--text-muted)] leading-relaxed mb-8">
+            <p className="text-body text-[var(--text-muted)] mb-8">
               Bring your industry, location, offer, sales cycle, and current traffic. We will map the fastest route to qualified demand.
             </p>
             <a

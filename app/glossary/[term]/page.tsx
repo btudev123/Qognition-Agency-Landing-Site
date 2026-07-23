@@ -70,7 +70,7 @@ export default async function Page({ params }: { params: Promise<{ term: string 
           <div className="max-w-3xl">
             <Badge className="mb-4">{page.category}</Badge>
             <Heading level="h1" className="mb-6">What Is {page.term}?</Heading>
-            <p className="text-xl text-[var(--text-muted)] leading-relaxed">
+            <p className="text-body text-[var(--text-muted)]">
               {page.definition}
             </p>
           </div>
@@ -80,7 +80,7 @@ export default async function Page({ params }: { params: Promise<{ term: string 
           <div className="max-w-3xl space-y-10">
             <div>
               <Heading level="h2" className="mb-4">Why It Matters</Heading>
-              <p className="text-lg text-[var(--text-muted)] leading-relaxed">
+              <p className="text-body text-[var(--text-muted)]">
                 {page.term} matters because modern marketing performance depends on clarity
                 across discovery, trust, conversion, and measurement. Qognition uses this
                 concept when deciding what to build, what to optimize, and how to connect
@@ -89,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ term: string 
             </div>
             <div>
               <Heading level="h2" className="mb-4">How Qognition Applies It</Heading>
-              <p className="text-lg text-[var(--text-muted)] leading-relaxed">
+              <p className="text-body text-[var(--text-muted)]">
                 In client work, {page.term.toLowerCase()} is translated into pages, technical
                 fixes, dashboards, content briefs, paid media tests, internal links, schema,
                 lead magnets, or conversion experiments depending on the business model and

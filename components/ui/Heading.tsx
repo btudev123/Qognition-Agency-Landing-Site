@@ -1,21 +1,38 @@
 import type { ReactNode } from 'react';
 
 type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4';
+type HeadingVariant = 'display' | 'default';
 
 interface HeadingProps {
   children: ReactNode;
   level?: HeadingLevel;
+  /** `display` renders at hero scale. Only for above-fold hero headings. */
+  variant?: HeadingVariant;
   className?: string;
+  id?: string;
 }
 
+/* Heading size lives here and nowhere else. Never pass a text-* class through
+   `className` — scripts/audit-headings.mjs fails the build if you do. */
 const levelClasses: Record<HeadingLevel, string> = {
-  h1: 'text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-tight',
-  h2: 'text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight',
-  h3: 'text-xl sm:text-2xl font-semibold',
-  h4: 'text-lg sm:text-xl font-semibold',
+  h1: 'text-h1 font-semibold',
+  h2: 'text-h2 font-semibold',
+  h3: 'text-h3 font-semibold',
+  h4: 'text-h4 font-semibold',
 };
 
-export default function Heading({ children, level = 'h2', className = '' }: HeadingProps) {
+export default function Heading({
+  children,
+  level = 'h2',
+  variant = 'default',
+  className = '',
+  id,
+}: HeadingProps) {
   const Tag = level;
-  return <Tag className={`${levelClasses[level]} ${className}`}>{children}</Tag>;
+  const size = variant === 'display' ? 'text-display font-semibold' : levelClasses[level];
+  return (
+    <Tag id={id} className={`${size} ${className}`.trim()}>
+      {children}
+    </Tag>
+  );
 }

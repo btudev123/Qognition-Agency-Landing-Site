@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { marked } from 'marked';
 import { BLOG_POSTS } from '../../../data/blog';
 import { articleSchema, breadcrumbSchema } from '../../../lib/schema';
 import Heading from '../../../components/ui/Heading';
@@ -24,78 +25,17 @@ export const generateMetadata = async ({ params }: { params: Promise<{ slug: str
   };
 };
 
-const parseMarkdown = (content: string) => {
-  return content.split('\n').map((line, index) => {
-    if (line.startsWith('# ')) {
-      return (
-        <Heading key={index} level="h2" className="mt-10 mb-5">
-          {line.replace('# ', '')}
-        </Heading>
-      );
-    }
-    if (line.startsWith('## ')) {
-      return (
-        <h2 key={index} className="text-2xl font-bold text-[var(--text)] mt-8 mb-4">
-          {line.replace('## ', '')}
-        </h2>
-      );
-    }
-    if (line.startsWith('### ')) {
-      return (
-        <h3 key={index} className="text-xl font-semibold text-[var(--text)] mt-6 mb-3">
-          {line.replace('### ', '')}
-        </h3>
-      );
-    }
-    if (line.startsWith('- ')) {
-      return (
-        <li key={index} className="ml-4 mb-2 text-[var(--text-muted)] leading-relaxed">
-          {line.replace('- ', '')}
-        </li>
-      );
-    }
-    if (line.match(/^\d+\. /)) {
-      return (
-        <li key={index} className="ml-4 mb-2 list-decimal text-[var(--text-muted)] leading-relaxed">
-          {line.replace(/^\d+\. /, '')}
-        </li>
-      );
-    }
-    if (line.startsWith('**') && line.endsWith('**')) {
-      const text = line.replace(/\*\*/g, '');
-      return (
-        <p key={index} className="mb-4 font-bold text-[var(--text)]">
-          {text}
-        </p>
-      );
-    }
-    if (line.trim() === '') {
-      return <br key={index} />;
-    }
-    // Handle inline bold markers
-    const parts = line.split(/(\*\*.*?\*\*)/g);
-    if (parts.length > 1) {
-      return (
-        <p key={index} className="mb-4 text-[var(--text-muted)] leading-relaxed">
-          {parts.map((part, i) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
-              return (
-                <strong key={i} className="text-[var(--text)]">
-                  {part.slice(2, -2)}
-                </strong>
-              );
-            }
-            return part;
-          })}
-        </p>
-      );
-    }
-    return (
-      <p key={index} className="mb-4 text-[var(--text-muted)] leading-relaxed">
-        {line}
-      </p>
-    );
-  });
+/* Blog bodies are markdown. `marked` handles structure; `.prose-q` (app/globals.css)
+   supplies the type scale, so blog h2/h3/body are byte-identical in size to the
+   rest of the site. The page already renders the title as <h1>, so any level-1
+   heading inside the body is demoted to <h2> — one H1 per page, always. */
+const renderMarkdown = (content: string): string => {
+  const html = marked.parse(content, { async: false, gfm: true, breaks: false }) as string;
+  return html
+    .replace(/<h1(\s[^>]*)?>/g, '<h2$1>')
+    .replace(/<\/h1>/g, '</h2>')
+    .replace(/<table>/g, '<div class="table-scroll"><table>')
+    .replace(/<\/table>/g, '</table></div>');
 };
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -167,14 +107,17 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </article>
 
           {/* Post Content */}
-          <div className="prose-custom max-w-none">{parseMarkdown(post.content)}</div>
+          <div
+            className="prose-q max-w-none"
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }}
+          />
 
           {/* Call to Action */}
           <div className="mt-16 p-8 rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)]">
             <Heading level="h2" className="mb-6">
               Ready to implement these strategies?
             </Heading>
-            <p className="mb-6 text-lg text-[var(--text-muted)]">
+            <p className="text-body mb-6 text-[var(--text-muted)]">
               Let Qognition help you leverage AI marketing and SEO to grow your business.
             </p>
             <a
@@ -204,10 +147,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   >
                     <div className="p-6">
                       <Badge className="mb-3">{related.category}</Badge>
-                      <h3 className="text-xl font-semibold text-[var(--text)] mb-3 line-clamp-2 group-hover:text-[var(--accent)] transition-colors">
+                      <h3 className="text-h3 text-[var(--text)] mb-3 line-clamp-2 group-hover:text-[var(--accent)] transition-colors font-semibold">
                         {related.title}
                       </h3>
-                      <p className="text-[var(--text-muted)] mb-4 line-clamp-3">{related.excerpt}</p>
+                      <p className="text-body text-[var(--text-muted)] mb-4 line-clamp-3">{related.excerpt}</p>
                       <div className="flex items-center gap-3 text-sm text-[var(--text-muted)]">
                         <span>{related.date}</span>
                         <span>&middot;</span>

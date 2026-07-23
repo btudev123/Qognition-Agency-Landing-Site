@@ -39,7 +39,7 @@ export default function Page() {
         <Section spacing="lg">
           <Badge className="mb-4">Immediate Lead Plan</Badge>
           <Heading level="h1" className="mb-6">30-Day Roadmap to More Qualified Leads</Heading>
-          <p className="text-xl text-[var(--text-muted)] max-w-4xl leading-relaxed">
+          <p className="text-body text-[var(--text-muted)] max-w-4xl">
             A conversion-first plan for making the Qognition website clearer above the fold, easier to trust, easier to act on, and more discoverable across Google, AI search, country pages, and LinkedIn.
           </p>
         </Section>
@@ -91,8 +91,8 @@ export default function Page() {
         <Section spacing="lg">
           <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8">
             <Heading level="h2" className="mb-6">Exact Homepage Copy</Heading>
-            <p className="text-2xl text-[var(--text)] mb-4">Get qualified leads online.</p>
-            <p className="text-[var(--text-muted)] mb-6">
+            <p className="text-body text-[var(--text)] mb-4">Get qualified leads online.</p>
+            <p className="text-body text-[var(--text-muted)] mb-6">
               Qognition helps law firms, clinics, consultants, SaaS teams, and B2B companies turn search demand into booked calls with SEO, Google Ads, conversion pages, AI search visibility, and HubSpot tracking.
             </p>
             <Link
@@ -119,10 +119,10 @@ export default function Page() {
 
 const Block = ({ title, items }: { title: string; items: string[] }) => (
   <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-    <h2 className="text-xl font-semibold text-[var(--text)] mb-5">{title}</h2>
+    <h2 className="text-h2 text-[var(--text)] mb-5 font-semibold">{title}</h2>
     <div className="space-y-3">
       {items.map((item) => (
-        <p key={item} className="text-sm text-[var(--text-muted)] leading-relaxed">{item}</p>
+        <p key={item} className="text-body text-[var(--text-muted)]">{item}</p>
       ))}
     </div>
   </div>

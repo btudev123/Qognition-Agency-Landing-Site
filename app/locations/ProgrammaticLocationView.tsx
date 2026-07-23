@@ -14,7 +14,7 @@ export const LocationsIndexView = ({ locations }: { locations: Location[] }) => 
       <div className="text-center mb-16">
         <Badge className="mb-4">Service Areas</Badge>
         <Heading level="h1" className="mb-4">Locations</Heading>
-        <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed">
+        <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
           Revenue-market pages for brands that need local search visibility, paid media efficiency, and conversion-focused web experiences.
         </p>
       </div>
@@ -32,10 +32,10 @@ export const LocationsIndexView = ({ locations }: { locations: Location[] }) => 
                 {location.type}
               </span>
             </div>
-            <h2 className="text-xl font-semibold text-[var(--text)] mb-3 group-hover:text-[var(--accent)] transition-colors">
+            <h2 className="text-h2 text-[var(--text)] mb-3 group-hover:text-[var(--accent)] transition-colors font-semibold">
               {location.name}
             </h2>
-            <p className="text-sm text-[var(--text-muted)] mb-5 line-clamp-3 leading-relaxed">
+            <p className="text-body text-[var(--text-muted)] mb-5 line-clamp-3">
               {location.intro}
             </p>
             <div className="flex flex-wrap gap-2 mb-6">
@@ -66,10 +66,10 @@ const ServicePills = ({ location }: { location: Location }) => (
         href={`/locations/${location.slug}/${service.id}`}
         className="group p-5 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl hover:border-[var(--accent)]/40 transition-all"
       >
-        <h3 className="font-semibold text-[var(--text)] mb-2 group-hover:text-[var(--accent)] transition-colors">
+        <h3 className="text-h3 text-[var(--text)] mb-2 group-hover:text-[var(--accent)] transition-colors font-semibold">
           {service.title}
         </h3>
-        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{service.shortDescription}</p>
+        <p className="text-body text-[var(--text-muted)]">{service.shortDescription}</p>
       </Link>
     ))}
   </div>
@@ -88,7 +88,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
       <div className="mb-14 max-w-4xl">
         <Badge className="mb-4">{location.region}</Badge>
         <Heading level="h1" className="mb-5">Digital Marketing Agency in {location.name}</Heading>
-        <p className="text-xl text-[var(--text-muted)] leading-relaxed border-l-2 border-[var(--accent)] pl-6">
+        <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6">
           {location.intro}
         </p>
       </div>
@@ -112,7 +112,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
         <main className="lg:col-span-8 space-y-14">
           <section>
             <Heading level="h2" className="mb-5">Local Growth Strategy</Heading>
-            <p className="text-[var(--text-muted)] leading-relaxed mb-6">
+            <p className="text-body text-[var(--text-muted)] mb-6">
               We build search, ads, content, and conversion systems around how buyers in {location.name} evaluate vendors. Each page is
               built around clear offers, fast load times, local proof, and measurable conversion paths without implying an office that does not exist.
             </p>
@@ -123,7 +123,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
                   className="p-5 border border-[var(--border)] bg-[rgba(var(--accent-rgb),0.04)] rounded-xl"
                 >
                   <CheckCircle size={20} className="text-[var(--accent)] mb-3" />
-                  <h3 className="font-semibold text-[var(--text)] text-sm">{item}</h3>
+                  <h3 className="text-h3 text-[var(--text)] font-semibold">{item}</h3>
                 </div>
               ))}
             </div>
@@ -174,11 +174,11 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
                   href={`/case-studies/${study.id}`}
                   className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--accent)]/40 transition-all"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-2">
+                  <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
                     {study.industry}
                   </p>
-                  <h3 className="font-semibold text-[var(--text)] mb-2">{study.client}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{study.client}</h3>
+                  <p className="text-body text-[var(--text-muted)]">
                     {study.summary || study.title}
                   </p>
                 </Link>
@@ -206,8 +206,8 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
                   href={item.href}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 hover:border-[var(--accent)]/40 transition-all"
                 >
-                  <h3 className="font-semibold text-[var(--text)] mb-2">{item.label}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">{item.note}</p>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{item.label}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{item.note}</p>
                 </Link>
               ))}
             </div>
@@ -238,8 +238,8 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
                   key={question}
                   className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                 >
-                  <h3 className="font-semibold text-[var(--text)] mb-2">{question}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">{answer}</p>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{question}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{answer}</p>
                 </div>
               ))}
             </div>
@@ -250,8 +250,8 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
           <div className="sticky top-28 p-7 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl space-y-5">
             <Globe size={36} className="text-[var(--accent)]" />
             <div>
-              <Heading level="h3" className="text-lg mb-1">{location.name} Market</Heading>
-              <p className="text-sm text-[var(--text-muted)]">
+              <Heading level="h3" className="mb-1">{location.name} Market</Heading>
+              <p className="text-body text-[var(--text-muted)]">
                 {location.country} · {location.type}
               </p>
             </div>
@@ -299,7 +299,7 @@ export const LocationServiceView = ({
           <Heading level="h1" className="mb-5">
             {service.title} in {location.name}
           </Heading>
-          <p className="text-xl text-[var(--text-muted)] leading-relaxed border-l-2 border-[var(--accent)] pl-6 mb-14">
+          <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6 mb-14">
             {service.shortDescription} Qognition adapts {service.title.toLowerCase()} for companies targeting {location.name}, with clear offers,
             fast pages, conversion tracking, and market-specific proof that helps the right buyers take action.
           </p>
@@ -328,8 +328,8 @@ export const LocationServiceView = ({
                   className="p-6 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl"
                 >
                   <Search size={20} className="text-[var(--accent)] mb-3" />
-                  <h3 className="font-semibold text-[var(--text)] mb-2">{subService.name}</h3>
-                  <p className="text-sm text-[var(--text-muted)]">{subService.description}</p>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{subService.name}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{subService.description}</p>
                 </div>
               ))}
             </div>
@@ -360,11 +360,11 @@ export const LocationServiceView = ({
                   href={`/case-studies/${study.id}`}
                   className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--accent)]/40 transition-all"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-2">
+                  <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
                     {study.industry}
                   </p>
-                  <h3 className="font-semibold text-[var(--text)] mb-2">{study.title}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{study.title}</h3>
+                  <p className="text-body text-[var(--text-muted)]">
                     {study.results?.[0] || study.summary}
                   </p>
                 </Link>
@@ -375,11 +375,11 @@ export const LocationServiceView = ({
                   href={`/free-tools/${tool.slug}`}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 hover:border-[var(--accent)]/40 transition-all"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-2">
+                  <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
                     Free Tool
                   </p>
-                  <h3 className="font-semibold text-[var(--text)] mb-2">{tool.title}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">{tool.description}</p>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{tool.title}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{tool.description}</p>
                 </Link>
               ))}
             </div>
@@ -414,8 +414,8 @@ export const LocationServiceView = ({
                   key={question}
                   className="p-5 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl"
                 >
-                  <h3 className="font-semibold text-[var(--text)] mb-2">{question}</h3>
-                  <p className="text-sm text-[var(--text-muted)]">{answer}</p>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{question}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{answer}</p>
                 </div>
               ))}
             </div>
@@ -424,7 +424,7 @@ export const LocationServiceView = ({
 
         <aside className="lg:col-span-4">
           <div className="sticky top-28 p-7 border border-[var(--border)] bg-[rgba(var(--accent-rgb),0.04)] rounded-2xl space-y-3">
-            <Heading level="h3" className="text-base">Related Routes</Heading>
+            <Heading level="h3">Related Routes</Heading>
             <Link
               href={`/services/${service.id}`}
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"

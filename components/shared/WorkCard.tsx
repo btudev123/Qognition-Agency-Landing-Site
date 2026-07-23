@@ -53,12 +53,12 @@ export function WorkCard({ work, index }: { work: CaseStudy; index: number }) {
           {work.client.toUpperCase()}
         </div>
         <h3
-          className="font-sans font-medium tracking-[-0.025em] leading-tight m-0 text-[var(--ink)]"
+          className="text-h3 font-sans m-0 text-[var(--ink)] font-semibold"
           style={{ fontSize: 'clamp(20px, 2vw, 28px)' }}
         >
           {work.title}
         </h3>
-        <p className="text-sm leading-relaxed mt-3 text-[var(--text-muted)] line-clamp-2">
+        <p className="text-body mt-3 text-[var(--text-muted)] line-clamp-2">
           {work.summary || work.challenge}
         </p>
 
@@ -152,12 +152,12 @@ export function WorkCardFeatured({ work, index }: { work: CaseStudy; index: numb
               {work.client.toUpperCase()}
             </div>
             <h3
-              className="font-sans font-medium tracking-[-0.03em] leading-tight m-0 text-[var(--ink)]"
+              className="text-h3 font-sans m-0 text-[var(--ink)] font-semibold"
               style={{ fontSize: 'clamp(28px, 3vw, 42px)' }}
             >
               {work.title}
             </h3>
-            <p className="text-[15px] leading-relaxed mt-4 text-[var(--text-muted)]">
+            <p className="text-body mt-4 text-[var(--text-muted)]">
               {work.summary || work.challenge}
             </p>
           </div>

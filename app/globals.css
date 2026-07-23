@@ -287,6 +287,99 @@ input:focus-visible,
   border-radius: 50%; will-change: transform;
 }
 
+/* ─── PROSE (markdown output) ─────────────────────────────────────────────────
+   Maps the bare tags `marked` emits for blog bodies onto the exact same type
+   scale as hand-built pages (tailwind.config.js → theme.fontSize). Blog body
+   copy and homepage body copy are the same size, by construction. The values
+   below are duplicated from that scale because Tailwind tokens are not
+   available to raw CSS — keep the two in sync when the scale changes. */
+
+.prose-q {
+  font-size: 1.0625rem;      /* text-body */
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 72ch;
+}
+
+.prose-q > * + * { margin-top: 1.25em; }
+
+.prose-q h2 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 2.25em;
+  margin-bottom: 0.6em;
+  scroll-margin-top: 6rem;
+}
+
+.prose-q h3 {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 1.75em;
+  margin-bottom: 0.5em;
+  scroll-margin-top: 6rem;
+}
+
+.prose-q h4 {
+  font-size: 1.125rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 1.5em;
+  margin-bottom: 0.4em;
+}
+
+.prose-q p,
+.prose-q li {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.prose-q ul,
+.prose-q ol { padding-left: 1.35em; }
+.prose-q ul { list-style: disc; }
+.prose-q ol { list-style: decimal; }
+.prose-q li + li { margin-top: 0.5em; }
+.prose-q li::marker { color: var(--accent); }
+
+.prose-q strong { color: var(--ink); font-weight: 600; }
+
+.prose-q a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-q blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25em;
+  color: var(--ink-soft);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.prose-q figure figcaption,
+.prose-q .prose-meta {
+  font-size: 0.8125rem;      /* text-meta */
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+.prose-q img { max-width: 100%; height: auto; }
+
+.prose-q table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+.prose-q th,
+.prose-q td { border: 1px solid var(--border); padding: 0.6em 0.8em; text-align: left; }
+.prose-q th { color: var(--ink); font-weight: 600; }
+
+/* Wide content must scroll inside itself, never the page body. */
+.prose-q .table-scroll { overflow-x: auto; }
+
 /* ─── ACCESSIBILITY ───────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

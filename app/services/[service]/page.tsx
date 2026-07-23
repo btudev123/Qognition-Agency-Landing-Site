@@ -78,7 +78,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               <Heading level="h1" className="mb-8">
                 {service.title.replace('Web Development', 'Web Design')}
               </Heading>
-              <p className="text-xl text-[var(--text-muted)] leading-relaxed mb-12 border-l-2 border-[var(--accent)] pl-6">
+              <p className="text-body text-[var(--text-muted)] mb-12 border-l-2 border-[var(--accent)] pl-6">
                 {service.fullDescription}
               </p>
             </header>
@@ -102,7 +102,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               <section className="my-16 p-8 md:p-10 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl relative overflow-hidden">
                 <Quote size={80} className="absolute top-4 right-4 text-[var(--accent)]/10 rotate-180" />
                 <blockquote className="relative z-10">
-                  <p className="text-2xl md:text-3xl leading-relaxed italic mb-8 text-[var(--text)]">
+                  <p className="text-body italic mb-8 text-[var(--text)]">
                     &ldquo;{service.expertQuote.quote}&rdquo;
                   </p>
                   <footer className="flex items-center gap-4">
@@ -125,7 +125,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 {service.deepDive.map((section) => (
                   <section key={section.title}>
                     <Heading level="h2" className="mb-4">{section.title}</Heading>
-                    <p className="text-[var(--text-muted)] leading-relaxed text-lg whitespace-pre-wrap">
+                    <p className="text-body text-[var(--text-muted)] whitespace-pre-wrap">
                       {section.content}
                     </p>
                   </section>
@@ -144,8 +144,8 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                     href={`/services/${service.id}/${subServiceSlug(sub)}`}
                     className="group block p-6 border border-[var(--border)] bg-[var(--card-bg)] rounded-lg hover:border-[var(--accent)]/40 transition-colors"
                   >
-                    <h3 className="font-semibold text-xl text-[var(--text)] mb-3">{sub.name}</h3>
-                    <p className="text-sm text-[var(--text-muted)]">{sub.description}</p>
+                    <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{sub.name}</h3>
+                    <p className="text-body text-[var(--text-muted)]">{sub.description}</p>
                     <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[var(--accent)] group-hover:text-[var(--text)] transition-colors">
                       Explore sub-service <ArrowRight size={14} />
                     </span>
@@ -157,7 +157,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
             {serviceSubPages.length > 0 && (
               <section className="mb-16 p-8 rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)]">
                 <Heading level="h2" className="mb-5">AI-Readable Service Map</Heading>
-                <p className="text-[var(--text-muted)] leading-relaxed mb-6">
+                <p className="text-body text-[var(--text-muted)] mb-6">
                   These sub-pages explain workflows, deliverables, FAQs, and related routes for buyers, Googlebot, Bingbot, and AI answer engines.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -183,8 +183,8 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                       {index + 1}
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-[var(--text)] mb-2">{step.title}</h3>
-                      <p className="text-[var(--text-muted)] leading-relaxed">{step.description}</p>
+                      <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{step.title}</h3>
+                      <p className="text-body text-[var(--text-muted)]">{step.description}</p>
                     </div>
                   </div>
                 ))}
@@ -228,8 +228,8 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                     key={faq.question}
                     className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                   >
-                    <h3 className="font-semibold text-[var(--text)] text-lg mb-3">{faq.question}</h3>
-                    <p className="text-sm text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                    <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{faq.question}</h3>
+                    <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                   </div>
                 ))}
               </div>
@@ -238,7 +238,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
 
           <aside className="lg:col-span-4">
             <div className="sticky top-28 p-8 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl">
-              <h2 className="text-xl font-semibold text-[var(--text)] mb-6 flex items-center gap-2">
+              <h2 className="text-h2 text-[var(--text)] mb-6 flex items-center gap-2 font-semibold">
                 <BarChart className="text-[var(--accent)]" size={20} /> Typical Results
               </h2>
               <div className="space-y-6 mb-8">
@@ -269,7 +269,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                   Lead magnets <CheckCircle2 size={16} className="text-[var(--accent)]" />
                 </Link>
               </div>
-              <p className="text-sm text-[var(--text-muted)] mb-8 border-t border-[var(--border)] pt-4">
+              <p className="text-body text-[var(--text-muted)] mb-8 border-t border-[var(--border)] pt-4">
                 Stop guessing. Start growing. Schedule a consultation with our {service.title} leads.
               </p>
               <a

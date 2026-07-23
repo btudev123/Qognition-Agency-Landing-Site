@@ -13,8 +13,8 @@ export default function Page() {
     <main className="min-h-screen px-6 pb-28 pt-32 md:px-12">
       <section className="mx-auto max-w-5xl">
         <span className="font-mono text-sm uppercase tracking-widest text-[var(--accent)]">API Documentation</span>
-        <h1 className="mt-6 font-display text-5xl leading-none text-[var(--ink)] md:text-8xl">Qognition Public API</h1>
-        <p className="mt-8 text-xl leading-relaxed text-[var(--text-muted)]">
+        <h1 className="text-display mt-6 font-display text-[var(--ink)] font-semibold">Qognition Public API</h1>
+        <p className="text-body mt-8 text-[var(--text-muted)]">
           These public no-auth endpoints help agents and visitors discover Qognition audit tools, machine-readable metadata, and service documentation.
         </p>
         <div className="mt-12 grid grid-cols-1 gap-5">
@@ -28,8 +28,8 @@ export default function Page() {
             ['GET /.well-known/mcp/server-card.json', 'Returns the public WebMCP discovery card.']
           ].map(([title, description]) => (
             <div key={title} className="rounded-2xl border border-[var(--ink)]/10 bg-[var(--ink)]/[0.03] p-6">
-              <h2 className="font-display text-2xl text-[var(--ink)]">{title}</h2>
-              <p className="mt-3 text-[var(--text-muted)]">{description}</p>
+              <h2 className="text-h2 font-display text-[var(--ink)] font-semibold">{title}</h2>
+              <p className="text-body mt-3 text-[var(--text-muted)]">{description}</p>
             </div>
           ))}
         </div>

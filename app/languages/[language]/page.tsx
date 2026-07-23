@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ language: str
         <Section spacing="lg">
           <Badge className="mb-4">{page.nativeName}</Badge>
           <Heading level="h1" className="mb-6">{page.title}</Heading>
-          <p className="text-xl text-[var(--text-muted)] max-w-4xl leading-relaxed">{page.intro}</p>
+          <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <Link
               href="/free-seo-audit"
@@ -89,7 +89,7 @@ export default async function Page({ params }: { params: Promise<{ language: str
               <Heading level="h2" className="mb-6">Services</Heading>
               <div className="space-y-3">
                 {page.services.map((service) => (
-                  <p key={service} className="text-[var(--text-muted)]">{service}</p>
+                  <p key={service} className="text-body text-[var(--text-muted)]">{service}</p>
                 ))}
               </div>
             </div>

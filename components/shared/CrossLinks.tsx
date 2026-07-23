@@ -26,7 +26,7 @@ function Column({
   if (links.length === 0) return null;
   return (
     <div>
-      <h3 className="font-mono text-[11px] tracking-[0.18em] uppercase mb-4" style={{ color: 'var(--accent)' }}>
+      <h3 className="text-h3 mb-4 font-semibold" style={{ color: 'var(--accent)' }}>
         {title}
       </h3>
       <ul className="grid gap-2.5">
@@ -61,10 +61,10 @@ export default function CrossLinks({ serviceId, exclude, className = '' }: Cross
   return (
     <section className={`py-16 sm:py-20 ${className}`} style={{ borderTop: '1px solid var(--border)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <p className="font-mono text-[11px] tracking-[0.18em] uppercase mb-2" style={{ color: 'var(--text-muted)' }}>
+        <p className="text-meta font-mono uppercase mb-2" style={{ color: 'var(--text-muted)' }}>
           Keep exploring
         </p>
-        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-10" style={{ color: 'var(--ink)' }}>
+        <h2 className="text-h2 mb-10 font-semibold" style={{ color: 'var(--ink)' }}>
           One partner across every service, industry, and market
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">

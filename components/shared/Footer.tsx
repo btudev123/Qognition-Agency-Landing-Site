@@ -194,7 +194,7 @@ export default function Footer() {
                 qognition<span style={{ color: 'var(--accent)' }}>.</span>
               </span>
             </Link>
-            <p className="text-[15px] leading-relaxed mt-5 mb-7 max-w-[380px]" style={{ color: '#a8a294' }}>
+            <p className="text-body mt-5 mb-7 max-w-[380px]" style={{ color: '#a8a294' }}>
               AI growth marketing partner for companies that need qualified leads, better search visibility, sharper creative, and measurable revenue systems.
             </p>
             <div className="flex gap-2.5 flex-wrap">

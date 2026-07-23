@@ -84,7 +84,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               </Heading>
             </div>
             <div className="lg:col-span-4 lg:mb-4">
-              <p className="text-xl text-[var(--text-muted)] border-l border-[var(--accent)]/30 pl-6">
+              <p className="text-body text-[var(--text-muted)] border-l border-[var(--accent)]/30 pl-6">
                 {study.summary}
               </p>
             </div>
@@ -118,7 +118,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
             {study.tags.length > 0 && (
               <div>
-                <h4 className="font-bold text-sm uppercase tracking-wider text-[var(--text-muted)] mb-4">Services Provided</h4>
+                <h4 className="text-h4 text-[var(--text-muted)] mb-4 font-semibold">Services Provided</h4>
                 <div className="flex flex-wrap gap-2">
                   {study.tags.map((tag) => (
                     <span key={tag} className="px-3 py-1 bg-[var(--ink)]/5 border border-[var(--border)] rounded-full text-sm text-[var(--text-muted)]">
@@ -130,10 +130,10 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             )}
 
             <div className="p-6 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]">
-              <h4 className="font-bold text-sm uppercase tracking-wider text-[var(--text-muted)] mb-3">Timeline</h4>
-              <p className="text-2xl font-semibold text-[var(--text)] mb-6">{study.timeline || '120 days'}</p>
-              <h4 className="font-bold text-sm uppercase tracking-wider text-[var(--text-muted)] mb-3">ROI Signal</h4>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed">{study.roi}</p>
+              <h4 className="text-h4 text-[var(--text-muted)] mb-3 font-semibold">Timeline</h4>
+              <p className="text-body font-semibold text-[var(--text)] mb-6">{study.timeline || '120 days'}</p>
+              <h4 className="text-h4 text-[var(--text-muted)] mb-3 font-semibold">ROI Signal</h4>
+              <p className="text-body text-[var(--text-muted)]">{study.roi}</p>
             </div>
           </aside>
 
@@ -142,13 +142,13 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             {/* Challenge */}
             <section>
               <Heading level="h2" className="mb-6">The Challenge</Heading>
-              <p className="text-lg text-[var(--text-muted)] leading-relaxed">{study.challenge}</p>
+              <p className="text-body text-[var(--text-muted)]">{study.challenge}</p>
             </section>
 
             {/* Solution */}
             <section>
               <Heading level="h2" className="mb-6">Our Solution</Heading>
-              <p className="text-lg text-[var(--text-muted)] leading-relaxed mb-6">{study.solution}</p>
+              <p className="text-body text-[var(--text-muted)] mb-6">{study.solution}</p>
               <ul className="space-y-4">
                 {(study.implementation || []).map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -168,11 +168,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                     <div key={row.before} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="p-5 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]">
                         <div className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-3">Before</div>
-                        <p className="text-[var(--text-muted)] leading-relaxed">{row.before}</p>
+                        <p className="text-body text-[var(--text-muted)]">{row.before}</p>
                       </div>
                       <div className="p-5 border border-[var(--accent)]/20 rounded-xl bg-[rgba(var(--accent-rgb),0.05)]">
                         <div className="text-xs uppercase tracking-widest text-[var(--accent)] mb-3">After</div>
-                        <p className="text-[var(--text)] leading-relaxed">{row.after}</p>
+                        <p className="text-body text-[var(--text)]">{row.after}</p>
                       </div>
                     </div>
                   ))}
@@ -188,10 +188,10 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                   {study.funnelStages.map((stage) => (
                     <div key={stage.stage} className="p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)]">
                       <Heading level="h3" className="mb-4 !text-[var(--accent)]">{stage.stage}</Heading>
-                      <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-2">Before</p>
-                      <p className="text-sm text-[var(--text-muted)] mb-5">{stage.before}</p>
-                      <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-2">After</p>
-                      <p className="text-sm text-[var(--text)]">{stage.after}</p>
+                      <p className="text-meta uppercase text-[var(--text-muted)] mb-2">Before</p>
+                      <p className="text-body text-[var(--text-muted)] mb-5">{stage.before}</p>
+                      <p className="text-meta uppercase text-[var(--text-muted)] mb-2">After</p>
+                      <p className="text-body text-[var(--text)]">{stage.after}</p>
                     </div>
                   ))}
                 </div>
@@ -210,7 +210,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                       <div className="h-2 w-full rounded-full bg-[var(--ink)]/10 mb-4 overflow-hidden">
                         <div className="h-full w-3/4 rounded-full bg-[var(--accent)]" />
                       </div>
-                      <p className="text-xs text-[var(--text-muted)] leading-relaxed">{metric.note}</p>
+                      <p className="text-meta text-[var(--text-muted)]">{metric.note}</p>
                     </div>
                   ))}
                 </div>
@@ -225,7 +225,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                   {study.clientJourney.map((step, index) => (
                     <div key={step} className="flex gap-5 border-l border-[var(--border)] pl-6 py-2">
                       <span className="font-mono text-[var(--accent)] text-sm">0{index + 1}</span>
-                      <p className="text-[var(--text-muted)] leading-relaxed">{step}</p>
+                      <p className="text-body text-[var(--text-muted)]">{step}</p>
                     </div>
                   ))}
                 </div>
@@ -236,14 +236,14 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             {study.contentSections?.map((section) => (
               <section key={section.title}>
                 <Heading level="h2" className="mb-6">{section.title}</Heading>
-                <p className="text-lg text-[var(--text-muted)] leading-relaxed">{section.content}</p>
+                <p className="text-body text-[var(--text-muted)]">{section.content}</p>
               </section>
             ))}
 
             {/* Testimonial */}
             <section className="bg-[rgba(var(--accent-rgb),0.04)] p-8 md:p-12 rounded-2xl border border-[var(--accent)]/10 my-8">
               <Heading level="h3" className="mb-4 !text-[var(--accent)]">The Impact</Heading>
-              <p className="text-xl md:text-2xl text-[var(--text)] leading-relaxed">
+              <p className="text-body text-[var(--text)]">
                 &ldquo;{study.testimonial?.quote || "Qognition didn't just build a website; they built a growth engine."}&rdquo;
               </p>
               <div className="mt-6 text-sm text-[var(--text-muted)] font-bold uppercase tracking-wider">

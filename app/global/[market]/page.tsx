@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ market: strin
         <Section spacing="lg">
           <Badge className="mb-4">{page.region}</Badge>
           <Heading level="h1" className="mb-6">{page.h1}</Heading>
-          <p className="text-xl text-[var(--text-muted)] max-w-4xl leading-relaxed">{page.intro}</p>
+          <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <Link
               href="/free-seo-audit"
@@ -78,7 +78,7 @@ export default async function Page({ params }: { params: Promise<{ market: strin
               <Heading level="h2" className="mb-6">Market Opportunities</Heading>
               <div className="space-y-4">
                 {page.opportunities.map((item) => (
-                  <p key={item} className="text-[var(--text-muted)]">{item}</p>
+                  <p key={item} className="text-body text-[var(--text-muted)]">{item}</p>
                 ))}
               </div>
             </div>
@@ -86,7 +86,7 @@ export default async function Page({ params }: { params: Promise<{ market: strin
               <Heading level="h2" className="mb-6">Qognition Services</Heading>
               <div className="space-y-4">
                 {page.services.map((item) => (
-                  <p key={item} className="text-[var(--text-muted)]">{item}</p>
+                  <p key={item} className="text-body text-[var(--text-muted)]">{item}</p>
                 ))}
               </div>
             </div>
@@ -98,8 +98,8 @@ export default async function Page({ params }: { params: Promise<{ market: strin
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {page.faqs.map((faq) => (
               <div key={faq.question} className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">
-                <h3 className="font-semibold text-[var(--text)] mb-3">{faq.question}</h3>
-                <p className="text-sm text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{faq.question}</h3>
+                <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
               </div>
             ))}
           </div>

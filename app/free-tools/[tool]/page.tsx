@@ -68,7 +68,7 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
         <div className="max-w-7xl mx-auto">
           <Badge className="mb-4">Free Tool</Badge>
           <Heading level="h1" className="mb-6">{page.h1}</Heading>
-          <p className="text-xl text-[var(--text-muted)] max-w-4xl leading-relaxed">{page.intro}</p>
+          <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
@@ -97,7 +97,7 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
             </div>
             <div>
               <Heading level="h2" className="mb-4">Want the full model?</Heading>
-              <p className="text-[var(--text-muted)] mb-6">
+              <p className="text-body text-[var(--text-muted)] mb-6">
                 Send the estimate to Qognition and we will review the assumptions with you.
               </p>
               <LeadForm spoke="marketing" intent="audit" sourcePage={path} ctaLabel="Review My Estimate" />
@@ -153,10 +153,10 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
 
 const Info = ({ title, items }: { title: string; items: string[] }) => (
   <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-    <h2 className="text-xl font-semibold text-[var(--text)] mb-5">{title}</h2>
+    <h2 className="text-h2 text-[var(--text)] mb-5 font-semibold">{title}</h2>
     <div className="space-y-3">
       {items.map((item) => (
-        <p key={item} className="text-sm text-[var(--text-muted)]">{item}</p>
+        <p key={item} className="text-body text-[var(--text-muted)]">{item}</p>
       ))}
     </div>
   </div>

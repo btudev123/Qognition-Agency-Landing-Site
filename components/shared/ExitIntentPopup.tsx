@@ -107,10 +107,10 @@ const ExitIntentPopup = () => {
         </button>
 
         <div className="text-center">
-          <h3 className="text-2xl font-semibold text-[var(--text)] mb-3">
+          <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">
             {popup.title}
           </h3>
-          <p className="text-[var(--text-muted)] mb-8 leading-relaxed">
+          <p className="text-body text-[var(--text-muted)] mb-8">
             {popup.body}
           </p>
 
@@ -122,7 +122,7 @@ const ExitIntentPopup = () => {
             {popup.cta} <ArrowRight size={16} />
           </Link>
 
-          <p className="text-xs text-[var(--text-muted)] mt-4">
+          <p className="text-meta text-[var(--text-muted)] mt-4">
             {popup.note}
           </p>
         </div>

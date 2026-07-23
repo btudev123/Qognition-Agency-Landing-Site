@@ -217,7 +217,7 @@ function Hero() {
 
             {/* Headline — sized to the column, never overflows */}
             <h1
-              className="font-sans font-medium m-0 leading-[0.9] tracking-[-0.045em]"
+              className="text-h1 font-sans m-0 font-semibold"
               style={{ fontSize: 'clamp(40px, 5.8vw, 84px)', color: 'var(--ink)' }}
             >
               <span className="block"><MaskReveal>AI-NATIVE GROWTH</MaskReveal></span>
@@ -231,7 +231,7 @@ function Hero() {
             {/* Subhead */}
             <ScrollReveal stagger={4} className="mt-6 sm:mt-7">
               <p
-                className="text-base sm:text-[18px] leading-relaxed tracking-[-0.005em] max-w-[520px] m-0"
+                className="text-body max-w-[520px] m-0"
                 style={{ color: 'var(--ink-soft)' }}
               >
                 Qognition is the AI-native growth partner for ambitious brands. We run{' '}
@@ -356,7 +356,7 @@ function FourSpokes() {
           <ScrollReveal className="lg:col-span-5">
             <Eyebrow color="var(--accent)">What we do</Eyebrow>
             <h2
-              className="font-sans font-medium leading-[0.96] tracking-[-0.04em] m-0 mt-4"
+              className="text-h2 font-sans m-0 mt-4 font-semibold"
               style={{ fontSize: 'clamp(40px, 5vw, 80px)', color: '#FAFAF8' }}
             >
               <MaskReveal>Eleven services.</MaskReveal><br />
@@ -364,7 +364,7 @@ function FourSpokes() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-7">
-            <p className="text-base sm:text-[17px] leading-relaxed max-w-[500px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.78)' }}>
+            <p className="text-body max-w-[500px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.78)' }}>
               Most teams juggle a dozen vendors across strategy, brand, web, search, ads, content, and analytics. We run all of it under one roof — one team, one standard, one number to grow.
             </p>
           </ScrollReveal>
@@ -424,13 +424,13 @@ function ServiceCard({ service }: { service: (typeof SERVICES)[number] }) {
       </div>
 
       <h3
-        className="font-sans font-medium tracking-[-0.035em] leading-[1.05] m-0"
+        className="text-h3 font-sans m-0 font-semibold"
         style={{ fontSize: 'clamp(24px, 2.4vw, 34px)', color: '#FAFAF8', position: 'relative', zIndex: 1 }}
       >
         {service.title}
       </h3>
 
-      <p className="text-sm leading-relaxed mt-3 mb-0 max-w-[360px] flex-1" style={{ color: 'rgba(255,255,255,0.74)', position: 'relative', zIndex: 1 }}>
+      <p className="text-body mt-3 mb-0 max-w-[360px] flex-1" style={{ color: 'rgba(255,255,255,0.74)', position: 'relative', zIndex: 1 }}>
         {service.shortDescription}
       </p>
 
@@ -487,14 +487,14 @@ function Methodology() {
           <ScrollReveal className="lg:col-span-5">
             <Eyebrow>The methodology</Eyebrow>
             <h2
-              className="font-sans font-medium leading-[0.96] tracking-[-0.04em] m-0 mt-4"
+              className="text-h2 font-sans m-0 mt-4 font-semibold"
               style={{ fontSize: 'clamp(40px, 5vw, 80px)' }}
             >
               <MaskReveal>How we win.</MaskReveal>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-7">
-            <p className="text-base sm:text-lg leading-relaxed max-w-[540px] m-0" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-body max-w-[540px] m-0" style={{ color: 'var(--text-muted)' }}>
               A four-stage operating system that ships in weeks, not quarters. Each stage has a discrete deliverable, a senior accountable owner, and a measurable exit criterion.
             </p>
           </ScrollReveal>
@@ -536,12 +536,12 @@ function Methodology() {
                     {m.n} · {m.timeline}
                   </div>
                   <h3
-                    className="font-sans font-medium tracking-[-0.03em] leading-none mt-5 m-0"
+                    className="text-h3 font-sans mt-5 m-0 font-semibold"
                     style={{ fontSize: 'clamp(32px, 3.4vw, 44px)', color: 'var(--ink)' }}
                   >
                     {m.title}.
                   </h3>
-                  <p className="text-sm leading-relaxed mt-4 m-0" style={{ color: 'var(--text-muted)' }}>{m.blurb}</p>
+                  <p className="text-body mt-4 m-0" style={{ color: 'var(--text-muted)' }}>{m.blurb}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -585,7 +585,7 @@ function SelectedWorks() {
           <ScrollReveal className="lg:col-span-5">
             <Eyebrow color="var(--accent)">Selected works</Eyebrow>
             <h2
-              className="font-sans font-medium leading-[0.96] tracking-[-0.04em] m-0 mt-4"
+              className="text-h2 font-sans m-0 mt-4 font-semibold"
               style={{ fontSize: 'clamp(40px, 5vw, 80px)', color: '#FAFAF8' }}
             >
               <MaskReveal>Receipts,</MaskReveal><br />
@@ -593,7 +593,7 @@ function SelectedWorks() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-7">
-            <p className="text-base sm:text-[17px] leading-relaxed max-w-[480px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.74)' }}>
+            <p className="text-body max-w-[480px] ml-auto text-left lg:text-right m-0" style={{ color: 'rgba(255,255,255,0.74)' }}>
               Real work, real numbers. Each engagement ships with measurable outcomes — picked for the gap between starting point and result.
             </p>
             <div className="text-left lg:text-right mt-6">
@@ -654,7 +654,7 @@ function Coverage() {
         <ScrollReveal>
           <Eyebrow>Coverage</Eyebrow>
           <h2
-            className="font-sans font-medium leading-[0.96] tracking-[-0.04em] m-0 mt-4"
+            className="text-h2 font-sans m-0 mt-4 font-semibold"
             style={{ fontSize: 'clamp(40px, 5vw, 80px)' }}
           >
             <MaskReveal>Industries we</MaskReveal><br />
@@ -727,7 +727,7 @@ function IndustryCell({ ind, i }: { ind: typeof INDUSTRIES_DATA[0]; i: number })
         <div className="font-mono text-[11px] tracking-[0.14em]" style={{ color: hover ? 'var(--accent)' : 'var(--text-muted)' }}>
           {String(i + 1).padStart(2, '0')} / 08
         </div>
-        <h3 className="font-sans text-lg sm:text-xl font-medium tracking-[-0.02em] leading-tight mt-4 mb-1.5">
+        <h3 className="text-h3 font-sans mt-4 mb-1.5 font-semibold">
           {ind.name}
         </h3>
         <div className="text-[13px] leading-relaxed" style={{ color: hover ? 'rgba(255,255,255,0.8)' : 'var(--text-muted)' }}>
@@ -792,7 +792,7 @@ function FinalCTA() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-end">
           <ScrollReveal className="lg:col-span-7">
             <h2
-              className="font-sans font-medium leading-[0.9] tracking-[-0.045em] m-0"
+              className="text-h2 font-sans m-0 font-semibold"
               style={{ fontSize: 'clamp(56px, 9vw, 180px)' }}
             >
               <MaskReveal>
@@ -804,7 +804,7 @@ function FinalCTA() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={3} className="lg:col-span-5">
-            <p className="text-lg leading-relaxed m-0" style={{ color: 'rgba(255,255,255,0.8)' }}>
+            <p className="text-body m-0" style={{ color: 'rgba(255,255,255,0.8)' }}>
               Start with a free audit. No pitch. No commitment. A real analysis of where you are and what to do next — delivered within 48 hours.
             </p>
             <div className="flex flex-wrap gap-3 mt-8">

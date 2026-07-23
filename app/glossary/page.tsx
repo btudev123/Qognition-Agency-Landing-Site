@@ -38,7 +38,7 @@ export default function Page() {
           <div className="max-w-3xl">
             <Badge className="mb-4">Glossary</Badge>
             <Heading level="h1" className="mb-4">Digital Marketing Glossary</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl">
               More than 300 definitions across SEO, AI search, paid media, analytics, lead generation, and conversion strategy.
             </p>
           </div>
@@ -47,7 +47,7 @@ export default function Page() {
           <div className="space-y-14">
             {categories.map((category) => (
               <div key={category}>
-                <h2 className="text-sm font-semibold uppercase tracking-widest text-[var(--accent)] mb-5">
+                <h2 className="text-h2 text-[var(--accent)] mb-5 font-semibold">
                   {category}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">

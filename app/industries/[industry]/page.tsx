@@ -89,7 +89,7 @@ export default async function Page({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-14">
             <article className="lg:col-span-8">
               <Heading level="h1" className="mb-6">{industry.name}</Heading>
-              <p className="text-xl text-[var(--text-muted)] leading-relaxed mb-12 border-l-2 border-[var(--accent)] pl-6">
+              <p className="text-body text-[var(--text-muted)] mb-12 border-l-2 border-[var(--accent)] pl-6">
                 {industry.description}
               </p>
 
@@ -110,7 +110,7 @@ export default async function Page({
 
               <div className="mb-14">
                 <Heading level="h2" className="mb-5">Specialized Verticals</Heading>
-                <p className="text-[var(--text-muted)] mb-5">
+                <p className="text-body text-[var(--text-muted)] mb-5">
                   Select a specific niche to see tailored strategies:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -140,10 +140,10 @@ export default async function Page({
                       >
                         <Target className="text-red-400 mt-0.5 shrink-0" size={20} />
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-widest text-red-400 mb-1">
+                          <p className="text-meta font-semibold uppercase text-red-400 mb-1">
                             The Problem
                           </p>
-                          <p className="text-[var(--text-muted)] text-sm leading-relaxed">{pain}</p>
+                          <p className="text-body text-[var(--text-muted)]">{pain}</p>
                         </div>
                       </div>
                     ))}
@@ -178,10 +178,10 @@ export default async function Page({
                         href={`/services/${service.id}`}
                         className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--accent)]/40 transition-all"
                       >
-                        <h3 className="font-semibold text-[var(--text)] mb-2">
+                        <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">
                           {service.title.replace('Web Development', 'Web Design')}
                         </h3>
-                        <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                        <p className="text-body text-[var(--text-muted)]">
                           {service.shortDescription}
                         </p>
                       </Link>
@@ -199,8 +199,8 @@ export default async function Page({
                         key={faq.question}
                         className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                       >
-                        <h3 className="font-semibold text-[var(--text)] mb-2">{faq.question}</h3>
-                        <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                        <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{faq.question}</h3>
+                        <p className="text-body text-[var(--text-muted)]">
                           {faq.answer}
                         </p>
                       </div>
@@ -213,19 +213,19 @@ export default async function Page({
             <aside className="lg:col-span-4">
               <div className="sticky top-28 p-7 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl space-y-6">
                 <div>
-                  <Heading level="h3" className="text-base mb-3">Case Study Reference</Heading>
+                  <Heading level="h3" className="mb-3">Case Study Reference</Heading>
                   {relatedCaseStudy && (
                     <Link
                       href={`/case-studies/${relatedCaseStudy.id}`}
                       className="block p-4 border border-[var(--border)] rounded-xl hover:border-[var(--accent)]/40 transition-all"
                     >
-                      <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-2">
+                      <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
                         {relatedCaseStudy.industry}
                       </p>
-                      <h4 className="font-semibold text-[var(--text)] mb-1">
+                      <h4 className="text-h4 text-[var(--text)] mb-1 font-semibold">
                         {relatedCaseStudy.client}
                       </h4>
-                      <p className="text-xs text-[var(--text-muted)]">
+                      <p className="text-meta text-[var(--text-muted)]">
                         {relatedCaseStudy.summary || relatedCaseStudy.title}
                       </p>
                     </Link>
@@ -233,7 +233,7 @@ export default async function Page({
                 </div>
 
                 <div>
-                  <Heading level="h3" className="text-base mb-3">Internal Links</Heading>
+                  <Heading level="h3" className="mb-3">Internal Links</Heading>
                   <div className="space-y-2">
                     {[
                       { label: 'Location pages', href: '/locations' },

@@ -61,7 +61,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <div className="mb-14 max-w-4xl">
             <Badge className="mb-4">{region.name}</Badge>
             <Heading level="h1" className="mb-5">Digital Marketing in {region.name}</Heading>
-            <p className="text-xl text-[var(--text-muted)] leading-relaxed border-l-2 border-[var(--accent)] pl-6">
+            <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6">
               {region.description}
             </p>
           </div>
@@ -122,8 +122,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                         key={stat.label}
                         className="p-5 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl text-center"
                       >
-                        <p className="text-2xl font-bold text-[var(--accent)] mb-1">{stat.value}</p>
-                        <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
+                        <p className="text-body font-bold text-[var(--accent)] mb-1">{stat.value}</p>
+                        <p className="text-meta text-[var(--text-muted)]">{stat.label}</p>
                       </div>
                     ))}
                   </div>
@@ -139,8 +139,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                         key={faq.question}
                         className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                       >
-                        <h3 className="font-semibold text-[var(--text)] mb-2">{faq.question}</h3>
-                        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                        <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{faq.question}</h3>
+                        <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                       </div>
                     ))}
                   </div>
@@ -150,8 +150,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
             <aside className="lg:col-span-4">
               <div className="sticky top-28 p-7 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl space-y-5">
-                <Heading level="h3" className="text-base">{region.name} Strategy</Heading>
-                <p className="text-sm text-[var(--text-muted)]">{region.localStrategy || region.description}</p>
+                <Heading level="h3">{region.name} Strategy</Heading>
+                <p className="text-body text-[var(--text-muted)]">{region.localStrategy || region.description}</p>
                 <a
                   href="https://cal.com/qognition-agency/15min"
                   target="_blank"

@@ -19,7 +19,7 @@ const B2BMoFuPage = ({ page }: Props) => {
             <Heading level="h1" className="mt-6 !text-5xl md:!text-8xl !leading-none">
               {page.h1}
             </Heading>
-            <p className="mt-8 text-xl leading-relaxed text-[var(--text-muted)]">{page.summary}</p>
+            <p className="text-body mt-8 text-[var(--text-muted)]">{page.summary}</p>
           </div>
           <div className="lg:col-span-5">
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
@@ -39,7 +39,7 @@ const B2BMoFuPage = ({ page }: Props) => {
         <section className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-3">
           {page.checklist.map((item) => (
             <div key={item} className="rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-5">
-              <p className="text-sm leading-relaxed text-[var(--text)]">{item}</p>
+              <p className="text-body text-[var(--text)]">{item}</p>
             </div>
           ))}
         </section>
@@ -49,7 +49,7 @@ const B2BMoFuPage = ({ page }: Props) => {
             {page.sections.map((section) => (
               <section key={section.title} className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
                 <Heading level="h2">{section.title}</Heading>
-                <p className="mt-5 text-lg leading-relaxed text-[var(--text-muted)]">{section.content}</p>
+                <p className="text-body mt-5 text-[var(--text-muted)]">{section.content}</p>
               </section>
             ))}
           </div>
@@ -78,8 +78,8 @@ const B2BMoFuPage = ({ page }: Props) => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {page.faqs.map((faq) => (
               <div key={faq.question}>
-                <h3 className="text-xl font-semibold text-[var(--text)]">{faq.question}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{faq.answer}</p>
+                <h3 className="text-h3 text-[var(--text)] font-semibold">{faq.question}</h3>
+                <p className="text-body mt-3 text-[var(--text-muted)]">{faq.answer}</p>
               </div>
             ))}
           </div>

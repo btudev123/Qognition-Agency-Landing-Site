@@ -94,7 +94,7 @@ export default function Page() {
           <div className="text-center mb-16">
             <Badge className="mb-4">Transparent Pricing</Badge>
             <Heading level="h1" className="mb-6">Investment That Compounds</Heading>
-            <p className="text-xl text-[var(--text-muted)] max-w-3xl mx-auto leading-relaxed">
+            <p className="text-body text-[var(--text-muted)] max-w-3xl mx-auto">
               No hidden fees. No long lock-in. Every engagement starts with a free audit so you can evaluate our work before committing.
             </p>
           </div>
@@ -108,9 +108,9 @@ export default function Page() {
                   key={tier.name}
                   className={`rounded-2xl border p-8 flex flex-col ${tier.highlight ? 'border-[var(--accent)] bg-[rgba(var(--accent-rgb),0.06)]' : 'border-[var(--border)] bg-[var(--card-bg)]'}`}
                 >
-                  <h3 className="text-2xl font-semibold text-[var(--text)] mb-2">{tier.name}</h3>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{tier.name}</h3>
                   <div className="text-3xl font-bold text-[var(--accent)] mb-4">{tier.price}</div>
-                  <p className="text-[var(--text-muted)] mb-8">{tier.description}</p>
+                  <p className="text-body text-[var(--text-muted)] mb-8">{tier.description}</p>
                   <ul className="space-y-3 mb-8 flex-1">
                     {tier.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
@@ -139,9 +139,9 @@ export default function Page() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {projectTiers.map((tier) => (
                 <div key={tier.name} className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
-                  <h3 className="text-2xl font-semibold text-[var(--text)] mb-2">{tier.name}</h3>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{tier.name}</h3>
                   <div className="text-3xl font-bold text-[var(--accent)] mb-4">{tier.price}</div>
-                  <p className="text-[var(--text-muted)] mb-8">{tier.description}</p>
+                  <p className="text-body text-[var(--text-muted)] mb-8">{tier.description}</p>
                   <ul className="space-y-3">
                     {tier.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
@@ -166,15 +166,15 @@ export default function Page() {
                 { q: 'What does the free audit include?', a: 'A 12-page report covering technical SEO, on-page signals, conversion readiness, competitive gaps, and a prioritized action plan. Delivered within 48 hours. No credit card required.' },
               ].map((faq) => (
                 <div key={faq.q} className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-                  <h3 className="text-lg font-semibold text-[var(--text)] mb-3">{faq.q}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">{faq.a}</p>
+                  <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{faq.q}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{faq.a}</p>
                 </div>
               ))}
             </div>
           </section>
 
           <div className="mt-16 text-center">
-            <p className="text-[var(--text-muted)] mb-6">Not sure which tier fits? Start with a free audit — we will recommend the right scope.</p>
+            <p className="text-body text-[var(--text-muted)] mb-6">Not sure which tier fits? Start with a free audit — we will recommend the right scope.</p>
             <Link
               href="/free-seo-audit"
               className="inline-flex rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-8 py-4 text-sm hover:brightness-110 transition-all"

@@ -154,12 +154,12 @@ export default function HeroRoiCalculator() {
         </span>
       </div>
       <h2
-        className="font-sans font-medium tracking-[-0.02em] m-0 mb-1"
+        className="text-h2 font-sans m-0 mb-1 font-semibold"
         style={{ fontSize: 'clamp(19px, 2.2vw, 25px)', color: 'var(--ink)' }}
       >
         See what manual work is costing you
       </h2>
-      <p className="m-0 mb-6" style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+      <p className="text-body m-0 mb-6" style={{ fontSize: 13, color: 'var(--text-muted)' }}>
         Estimate the cost of hours your team spends on manual reporting.
       </p>
 
@@ -215,8 +215,8 @@ export default function HeroRoiCalculator() {
         <div className="flex items-start gap-3" style={{ color: 'var(--ink)' }}>
           <CheckCircle2 size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 2 }} />
           <div>
-            <p className="m-0 font-medium">Your full report is on the way.</p>
-            <p className="m-0 mt-1" style={{ color: 'var(--ink-soft)', fontSize: 14 }}>
+            <p className="text-body m-0 font-medium">Your full report is on the way.</p>
+            <p className="text-body m-0 mt-1" style={{ color: 'var(--ink-soft)', fontSize: 14 }}>
               Check your inbox — and grab a 15-min strategy call to action it.
             </p>
           </div>
@@ -257,12 +257,12 @@ export default function HeroRoiCalculator() {
         </form>
       )}
       {status === 'error' && (
-        <p className="m-0 mt-3" style={{ color: '#f87171', fontSize: 13 }}>
+        <p className="text-body m-0 mt-3" style={{ color: '#f87171', fontSize: 13 }}>
           {errorMsg}
         </p>
       )}
       {status !== 'done' && (
-        <p className="m-0 mt-3" style={{ color: 'var(--text-muted)', fontSize: 12 }}>
+        <p className="text-body m-0 mt-3" style={{ color: 'var(--text-muted)', fontSize: 12 }}>
           Free · No credit card · Custom savings report in your inbox
         </p>
       )}

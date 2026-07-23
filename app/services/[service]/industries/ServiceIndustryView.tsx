@@ -17,7 +17,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
       <main className="lg:col-span-8">
         <span className="text-[var(--accent)] font-semibold uppercase tracking-widest mb-4 block text-xs">Service + Industry</span>
         <Heading level="h1" className="mb-6">{service.title} for {industry.name}</Heading>
-        <p className="text-xl text-[var(--text-muted)] leading-relaxed border-l-2 border-[var(--accent)] pl-6 mb-16">
+        <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6 mb-16">
           {service.shortDescription} For {industry.name}, we tailor strategy around buyer trust, compliance, search demand, and conversion paths.
         </p>
 
@@ -29,8 +29,8 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
             {service.process.map((step, index) => (
               <div key={step.title} className="p-6 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl">
                 <span className="text-[var(--accent)] font-mono">0{index + 1}</span>
-                <h3 className="text-xl font-semibold text-[var(--text)] my-3">{step.title}</h3>
-                <p className="text-sm text-[var(--text-muted)]">{step.description}</p>
+                <h3 className="text-h3 text-[var(--text)] my-3 font-semibold">{step.title}</h3>
+                <p className="text-body text-[var(--text-muted)]">{step.description}</p>
               </div>
             ))}
           </div>
@@ -42,7 +42,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
             {industry.painPoints.map((pain) => (
               <div key={pain} className="flex gap-4 p-5 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl">
                 <BarChart3 className="text-[var(--accent)] shrink-0" />
-                <p className="text-[var(--text-muted)]">{pain}</p>
+                <p className="text-body text-[var(--text-muted)]">{pain}</p>
               </div>
             ))}
           </div>
@@ -64,7 +64,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
         <div className="sticky top-28 p-8 border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] rounded-2xl">
           <CheckCircle className="text-[var(--accent)] mb-6" size={40} />
           <Heading level="h2" className="mb-4">Built for {industry.name}</Heading>
-          <p className="text-[var(--text-muted)] mb-8">{industry.description}</p>
+          <p className="text-body text-[var(--text-muted)] mb-8">{industry.description}</p>
           <div className="space-y-3 mb-8">
             <Link href={`/industries/${industry.id}`} className="block text-sm text-[var(--accent)] hover:text-[var(--text)] transition-colors">
               View industry strategy

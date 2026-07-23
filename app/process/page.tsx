@@ -65,7 +65,7 @@ export default function Page() {
           <div className="text-center mb-16">
             <Badge className="mb-4">Engagement Model</Badge>
             <Heading level="h1" className="mb-6">How We Work</Heading>
-            <p className="text-xl text-[var(--text-muted)] max-w-3xl mx-auto leading-relaxed">
+            <p className="text-body text-[var(--text-muted)] max-w-3xl mx-auto">
               We operate as your growth partner, not a vendor. Every engagement follows a proven process designed to create measurable pipeline within 90 days.
             </p>
           </div>
@@ -89,12 +89,12 @@ export default function Page() {
                   <div className="flex-1 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                       <span className="text-xs font-mono text-[var(--accent)] uppercase tracking-wider">0{index + 1}</span>
-                      <h2 className="text-2xl font-semibold text-[var(--text)]">{phase.title}</h2>
+                      <h2 className="text-h2 text-[var(--text)] font-semibold">{phase.title}</h2>
                       <span className="text-xs font-medium text-[var(--text-muted)] bg-[var(--surface)] border border-[var(--border)] rounded-full px-3 py-1 sm:ml-auto">
                         {phase.timeline}
                       </span>
                     </div>
-                    <p className="text-[var(--text-muted)] leading-relaxed mb-6">{phase.description}</p>
+                    <p className="text-body text-[var(--text-muted)] mb-6">{phase.description}</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {phase.deliverables.map((d) => (
                         <span key={d} className="text-xs text-[var(--text-muted)] bg-[var(--surface)] border border-[var(--border)] rounded-lg px-3 py-2">
@@ -111,7 +111,7 @@ export default function Page() {
           {/* CTA */}
           <div className="mt-20 text-center rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-12">
             <Heading level="h2" className="mb-4">Ready to start?</Heading>
-            <p className="text-[var(--text-muted)] mb-8 max-w-xl mx-auto">
+            <p className="text-body text-[var(--text-muted)] mb-8 max-w-xl mx-auto">
               Every engagement begins with a free audit. No commitment. No pitch. Just an honest assessment of where you are and what would move the needle.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
