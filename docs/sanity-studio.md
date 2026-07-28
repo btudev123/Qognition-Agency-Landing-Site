@@ -129,7 +129,38 @@ The script is **idempotent** — each document gets a deterministic `_id` derive
 from its source id and writes go through `createOrReplace`, so re-running
 reconciles rather than duplicating.
 
-## Important: the site still reads from `data/*.ts`
+## Live content: edit in Studio -> live on the site
+
+Cut over so far: **blog posts, case studies, pillar/guide pages**. Editing any of
+these in the studio and hitting Publish updates the live page.
+
+How it works:
+
+1. Pages read through `lib/sanityContent.ts`, which tags every query
+   (`sanity:<type>` and `sanity:<type>:<slug>`) and sets a 60s ISR window.
+2. On publish, Sanity POSTs to `/api/revalidate`. The route verifies the
+   signature and calls `revalidateTag` for the document's own tag and its type
+   tag — so one edit refreshes its detail page and any listing containing it,
+   without dumping the whole cache.
+3. The next request re-renders that page. Expect a few seconds.
+
+The webhook is already registered (`Next.js revalidate`, id `k7OG5sffr3vZlmIe`,
+rule `_type in ['post','caseStudy','pillarPage','glossaryTerm']`). Its secret
+must match `SANITY_REVALIDATE_SECRET` in the deployment env — **without that env
+var the route returns 503** and edits fall back to the 60s ISR window instead of
+being near-instant.
+
+`dynamicParams` is `true` on these routes, so a brand-new document added in the
+studio renders on first request rather than waiting for a rebuild.
+
+### Every read falls back to `data/*.ts`
+
+Deliberate. A Sanity outage, a network blip, or an unmigrated document must
+never blank a page that used to render. Sanity is the source of truth when it
+answers; the committed data is the floor when it does not. This also means a
+cutover cannot take the site down — worst case it serves the old copy.
+
+## Still reading from `data/*.ts`
 
 Migrating the content **did not** change what the site renders. Every page still
 imports from `data/*.ts`. Sanity is now the populated system of record, but

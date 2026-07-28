@@ -3,19 +3,22 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { marked } from 'marked';
-import { BLOG_POSTS } from '../../../data/blog';
+import { getBlogPost, getBlogPosts } from '../../../lib/sanityContent';
 import { articleSchema, breadcrumbSchema } from '../../../lib/schema';
 import Heading from '../../../components/ui/Heading';
 import Badge from '../../../components/ui/Badge';
 import FunnelCTA from '../../../components/shared/FunnelCTA';
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
-export const generateStaticParams = () => BLOG_POSTS.map((post) => ({ slug: post.id }));
+export const generateStaticParams = async () => {
+  const posts = await getBlogPosts();
+  return posts.map((post: any) => ({ slug: post.id }));
+};
 
 export const generateMetadata = async ({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> => {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((item) => item.id === slug);
+  const post = await getBlogPost(slug);
   if (!post) return { title: 'Post Not Found', description: 'Blog post not found.', robots: { index: false } };
   return {
     title: `${post.title} | Qognition Blog`,
@@ -40,12 +43,13 @@ const renderMarkdown = (content: string): string => {
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((item) => item.id === slug);
+  const post = await getBlogPost(slug);
   if (!post) notFound();
 
   const path = `/blog/${post.id}`;
 
-  const relatedPosts = BLOG_POSTS.filter((p) => p.id !== post.id).slice(0, 2);
+  const allPosts = await getBlogPosts();
+  const relatedPosts = allPosts.filter((p: any) => p.id !== post.id).slice(0, 2);
 
   return (
     <>

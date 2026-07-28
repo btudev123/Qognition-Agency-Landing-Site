@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { CASE_STUDIES } from '../../data/work';
+import { getCaseStudies } from '../../lib/sanityContent';
 import { breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
 
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/case-studies' },
 };
 
-export default function Page() {
+export default async function Page() {
+  const CASE_STUDIES = await getCaseStudies();
   return (
     <>
       <script

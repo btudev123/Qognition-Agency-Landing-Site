@@ -118,6 +118,18 @@ for (const study of CASE_STUDIES as any[]) {
     implementation: study.implementation || [],
     results: study.results || [],
     clientJourney: study.clientJourney || [],
+    beforeAfter: (study.beforeAfter || []).map((r: any, i: number) => ({
+      ...r,
+      _key: `ba-${i}`,
+    })),
+    funnelStages: (study.funnelStages || []).map((r: any, i: number) => ({
+      ...r,
+      _key: `fs-${i}`,
+    })),
+    analytics: (study.analytics || []).map((r: any, i: number) => ({
+      ...r,
+      _key: `an-${i}`,
+    })),
   });
 }
 

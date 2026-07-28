@@ -2,19 +2,22 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { CASE_STUDIES } from '../../../data/work';
+import { getCaseStudies, getCaseStudy } from '../../../lib/sanityContent';
 import { breadcrumbSchema } from '../../../lib/schema';
 import { SITE_URL } from '../../../lib/seo';
 import Heading from '../../../components/ui/Heading';
 import Badge from '../../../components/ui/Badge';
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
-export const generateStaticParams = () => CASE_STUDIES.map((study) => ({ id: study.id }));
+export const generateStaticParams = async () => {
+  const studies = await getCaseStudies();
+  return studies.map((study: any) => ({ id: study.id }));
+};
 
 export const generateMetadata = async ({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> => {
   const { id } = await params;
-  const study = CASE_STUDIES.find((item) => item.id === id);
+  const study = await getCaseStudy(id);
   if (!study) return { title: 'Case Study Not Found', description: 'Case study not found.', robots: { index: false } };
   return {
     title: `${study.title} | Case Study | Qognition`,
@@ -26,7 +29,7 @@ export const generateMetadata = async ({ params }: { params: Promise<{ id: strin
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const study = CASE_STUDIES.find((item) => item.id === id);
+  const study = await getCaseStudy(id);
   if (!study) notFound();
 
   const path = `/case-studies/${study.id}`;

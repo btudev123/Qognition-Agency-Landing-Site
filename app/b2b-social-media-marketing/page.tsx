@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
 import B2BMoFuPage from '../../components/B2BMoFuPage';
-import { getB2BMoFuPage } from '../../data/b2bPages';
+import { getPillarPage } from '../../lib/sanityContent';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
 import { metadataFor, SITE_URL } from '../../lib/seo';
 
-const page = getB2BMoFuPage('b2b-social-media-marketing')!;
+export const generateMetadata = async (): Promise<Metadata> => {
+  const page = await getPillarPage('b2b-social-media-marketing');
+  return metadataFor({ title: page.title, description: page.description, path: `/${page.slug}` });
+};
 
-export const metadata: Metadata = metadataFor({ title: page.title, description: page.description, path: `/${page.slug}` });
-
-export default function Page() {
+export default async function Page() {
+  const page = await getPillarPage('b2b-social-media-marketing');
   return (
     <>
       <script

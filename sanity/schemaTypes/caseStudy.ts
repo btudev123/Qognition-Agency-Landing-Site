@@ -41,6 +41,53 @@ export const caseStudy = defineType({
     defineField({ name: 'implementation', type: 'array', of: [{ type: 'string' }] }),
     defineField({ name: 'results', type: 'array', of: [{ type: 'string' }] }),
     defineField({ name: 'clientJourney', title: 'Client journey', type: 'array', of: [{ type: 'string' }] }),
+    defineField({
+      name: 'beforeAfter',
+      title: 'Before / after',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'before', type: 'string' },
+            { name: 'after', type: 'string' },
+          ],
+          preview: { select: { title: 'before', subtitle: 'after' } },
+        },
+      ],
+    }),
+    defineField({
+      name: 'funnelStages',
+      title: 'Funnel stages',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'stage', type: 'string' },
+            { name: 'before', type: 'string' },
+            { name: 'after', type: 'string' },
+          ],
+          preview: { select: { title: 'stage', subtitle: 'after' } },
+        },
+      ],
+    }),
+    defineField({
+      name: 'analytics',
+      title: 'Analytics',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string' },
+            { name: 'value', type: 'string' },
+            { name: 'note', type: 'string' },
+          ],
+          preview: { select: { title: 'label', subtitle: 'value' } },
+        },
+      ],
+    }),
   ],
   preview: {
     select: { title: 'client', subtitle: 'title', media: 'image' },

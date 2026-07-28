@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BLOG_POSTS } from '../../data/blog';
+import { getBlogPosts } from '../../lib/sanityContent';
 import { breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/blog' },
 };
 
-export default function Page() {
+export default async function Page() {
+  const BLOG_POSTS = await getBlogPosts();
   return (
     <>
       <script

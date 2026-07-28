@@ -5,6 +5,7 @@ import './globals.css';
 import { SITE_URL } from '../lib/seo';
 import Navigation from '../components/shared/Navigation';
 import Footer from '../components/shared/Footer';
+import ChromeGate from '../components/shared/ChromeGate';
 import StickyCTA from '../components/shared/StickyCTA';
 import ExitIntentPopup from '../components/shared/ExitIntentPopup';
 import FloatingWhatsApp from '../components/shared/FloatingWhatsApp';
@@ -181,14 +182,25 @@ gtag('config', '${GA4_ID}');`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        <CustomCursor />
-        <NoiseLayer />
-        <Navigation />
-        <main className="min-h-screen bg-[var(--bg)]">{children}</main>
-        <Footer />
-        <StickyCTA />
-        <ExitIntentPopup />
-        <FloatingWhatsApp />
+        <ChromeGate
+          header={
+            <>
+              <CustomCursor />
+              <NoiseLayer />
+              <Navigation />
+            </>
+          }
+          footer={
+            <>
+              <Footer />
+              <StickyCTA />
+              <ExitIntentPopup />
+              <FloatingWhatsApp />
+            </>
+          }
+        >
+          {children}
+        </ChromeGate>
       </body>
     </html>
   );
