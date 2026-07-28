@@ -6,6 +6,7 @@ import { visionTool } from '@sanity/vision';
 
 import { apiVersion, dataset, projectId } from './sanity/env';
 import { schemaTypes } from './sanity/schemaTypes';
+import { structure } from './sanity/structure';
 
 // Studio is mounted inside the Next app at /studio so it lives on the same
 // domain as the site (www.qognitionagency.com/studio) rather than a separate
@@ -17,5 +18,5 @@ export default defineConfig({
   projectId,
   dataset,
   schema: { types: schemaTypes },
-  plugins: [structureTool(), visionTool({ defaultApiVersion: apiVersion })],
+  plugins: [structureTool({ structure }), visionTool({ defaultApiVersion: apiVersion })],
 });

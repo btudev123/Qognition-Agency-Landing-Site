@@ -18,6 +18,18 @@ import { CASE_STUDIES } from '../data/work';
 import { TOOLS } from '../data/tools';
 import { TESTIMONIALS } from '../data/trust';
 import { TOOL_CATEGORIES } from '../data/toolCategories';
+import { SERVICES } from '../data/services';
+import { B2B_MOFU_PAGES } from '../data/b2bPages';
+import { LOCATIONS } from '../data/locations';
+import { INDUSTRIES } from '../data/industries';
+import {
+  SERVICE_SUB_PAGES,
+  FREE_TOOLS,
+  RESOURCES,
+  COMPARISONS,
+  GLOSSARY_TERMS,
+  TEAM_MEMBERS,
+} from '../data/seoExpansion';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'ngv93z0z';
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
@@ -137,6 +149,176 @@ for (const [i, item] of (TESTIMONIALS as any[]).entries()) {
     role: item.role,
     company: item.company,
     avatarPath: item.avatar,
+  });
+}
+
+/** Arrays of objects need a stable _key per item or the studio flags them. */
+const keyed = <T extends Record<string, unknown>>(items: T[] | undefined, type: string) =>
+  (items || []).map((item, i) => ({ ...item, _key: `${type}-${i}`, _type: type }));
+
+const slugOf = (current: string) => ({ _type: 'slug', current });
+
+for (const s of SERVICES as any[]) {
+  docs.push({
+    _id: safeId('service', s.id),
+    _type: 'service',
+    title: s.title,
+    slug: slugOf(s.id),
+    shortDescription: s.shortDescription,
+    fullDescription: s.fullDescription,
+    icon: s.icon,
+    kpis: s.kpis || [],
+    subServices: keyed(s.subServices, 'subService'),
+    process: keyed(s.process, 'processStep'),
+    deepDive: keyed(s.deepDive, 'contentSection'),
+    expertQuote: s.expertQuote
+      ? { ...s.expertQuote, _type: 'expertQuote' }
+      : undefined,
+    techStack: s.techStack || [],
+    relatedIndustries: s.relatedIndustries || [],
+    faqs: keyed(s.faqs, 'faq'),
+  });
+}
+
+for (const p of B2B_MOFU_PAGES as any[]) {
+  docs.push({
+    _id: safeId('pillarPage', p.slug),
+    _type: 'pillarPage',
+    title: p.title,
+    slug: slugOf(p.slug),
+    description: p.description,
+    h1: p.h1,
+    eyebrow: p.eyebrow,
+    summary: p.summary,
+    sections: keyed(p.sections, 'contentSection'),
+    checklist: p.checklist || [],
+    faqs: keyed(p.faqs, 'faq'),
+    relatedLinks: keyed(p.relatedLinks, 'relatedLink'),
+  });
+}
+
+for (const p of SERVICE_SUB_PAGES as any[]) {
+  docs.push({
+    // serviceId + slug, because the same slug repeats across services.
+    _id: safeId('servicePage', `${p.serviceId}-${p.slug}`),
+    _type: 'servicePage',
+    title: p.title,
+    slug: slugOf(p.slug),
+    description: p.description,
+    h1: p.h1,
+    serviceId: p.serviceId,
+    intro: p.intro,
+    deliverables: p.deliverables || [],
+    sections: keyed(p.sections, 'contentSection'),
+    faqs: keyed(p.faqs, 'faq'),
+    relatedLinks: keyed(p.relatedLinks, 'relatedLink'),
+  });
+}
+
+for (const t of FREE_TOOLS as any[]) {
+  docs.push({
+    _id: safeId('freeToolPage', t.slug),
+    _type: 'freeToolPage',
+    title: t.title,
+    slug: slugOf(t.slug),
+    description: t.description,
+    h1: t.h1,
+    intro: t.intro,
+    inputs: t.inputs || [],
+    outputs: t.outputs || [],
+    useCases: t.useCases || [],
+    faqs: keyed(t.faqs, 'faq'),
+  });
+}
+
+for (const c of COMPARISONS as any[]) {
+  docs.push({
+    _id: safeId('comparisonPage', c.slug),
+    _type: 'comparisonPage',
+    title: c.title,
+    slug: slugOf(c.slug),
+    description: c.description,
+    h1: c.h1,
+    category: c.category,
+    summary: c.summary,
+    decisionFactors: c.decisionFactors || [],
+    qognitionFit: c.qognitionFit || [],
+    alternatives: c.alternatives || [],
+    faqs: keyed(c.faqs, 'faq'),
+  });
+}
+
+for (const r of RESOURCES as any[]) {
+  docs.push({
+    _id: safeId('resourcePage', r.slug),
+    _type: 'resourcePage',
+    title: r.title,
+    slug: slugOf(r.slug),
+    description: r.description,
+    format: r.format,
+    readingTime: r.readingTime,
+    gated: r.gated,
+    audience: r.audience,
+    highlights: r.highlights || [],
+    sections: keyed(r.sections, 'contentSection'),
+  });
+}
+
+for (const i of INDUSTRIES as any[]) {
+  docs.push({
+    _id: safeId('industry', i.id),
+    _type: 'industry',
+    name: i.name,
+    slug: slugOf(i.id),
+    description: i.description,
+    painPoints: i.painPoints || [],
+    solutions: i.solutions || [],
+    relatedServices: i.relatedServices || [],
+    expertQuote: i.expertQuote ? { ...i.expertQuote, _type: 'expertQuote' } : undefined,
+    faqs: keyed(i.faqs, 'faq'),
+  });
+}
+
+for (const l of LOCATIONS as any[]) {
+  docs.push({
+    _id: safeId('location', l.slug),
+    _type: 'location',
+    name: l.name,
+    slug: slugOf(l.slug),
+    country: l.country,
+    region: l.region,
+    type: l.type,
+    intro: l.intro,
+    marketFocus: l.marketFocus || [],
+    localModifiers: l.localModifiers || [],
+    canonicalParent: l.canonicalParent,
+    schemaType: l.schemaType,
+  });
+}
+
+for (const g of GLOSSARY_TERMS as any[]) {
+  docs.push({
+    _id: safeId('glossaryTerm', g.slug),
+    _type: 'glossaryTerm',
+    term: g.term,
+    slug: slugOf(g.slug),
+    definition: g.definition,
+    category: g.category,
+    relatedTerms: g.relatedTerms || [],
+  });
+}
+
+for (const m of TEAM_MEMBERS as any[]) {
+  docs.push({
+    _id: safeId('teamMember', m.slug),
+    _type: 'teamMember',
+    name: m.name,
+    slug: slugOf(m.slug),
+    role: m.role,
+    focus: m.focus,
+    bio: m.bio,
+    imagePath: m.image,
+    linkedin: m.linkedin,
   });
 }
 

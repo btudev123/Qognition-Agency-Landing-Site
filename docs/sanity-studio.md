@@ -13,12 +13,19 @@ on the same domain as the site.
 | Schemas | `sanity/schemaTypes/` |
 | Read/write client | `lib/sanity.ts` |
 
-## Required manual step: CORS origins
+## CORS origins — DONE (2026-07-29)
 
-**The studio will not load in a browser until CORS origins are registered.**
-This cannot be done with an API token — neither an editor token nor an
-access-manager token carries the `sanity.project.cors/create` grant. It requires
-a project **administrator** signed in to the dashboard.
+All three origins are registered with credentials allowed. Verified returning
+`access-control-allow-origin`. Nothing further is needed here.
+
+Kept for reference, because it will bite again on a new project: adding a CORS
+origin requires the `sanity.project.cors/create` grant, which **no API token
+carries** — not an editor token, not an access-manager token. It needs an
+authenticated *administrator user* session. `npx sanity login` stores one in
+`~/.config/sanity/config.json` (`authType: normal`), and the CLI picks it up
+automatically. If `sanity cors add` fails with a grant error, check whether
+`SANITY_AUTH_TOKEN` is set in the environment — it overrides the stored session
+with a robot token that cannot do this.
 
 Go to <https://sanity.io/manage/project/ngv93z0z/api> → *CORS origins* → *Add*,
 and add each of these with **Allow credentials** checked:
@@ -76,12 +83,33 @@ paths — it is not needed to render the site or load the studio.
 
 ## Schemas
 
-| Type | Mirrors | Count migrated |
-|---|---|---|
-| `post` | `data/blog.ts` (`BLOG_POSTS`) | 11 |
-| `caseStudy` | `data/work.ts` (`CASE_STUDIES`) | 25 |
-| `tool` | `data/tools.ts` (`TOOLS`) | 25 |
-| `testimonial` | `data/trust.ts` (`TESTIMONIALS`) | 12 |
+909 documents across 14 types. The desk is grouped in `sanity/structure.ts` —
+a flat type list is unusable at this volume.
+
+| Group | Type | Mirrors | Count |
+|---|---|---|---|
+| Pages & SEO | `pillarPage` | `data/b2bPages.ts` | 7 |
+| | `servicePage` | `SERVICE_SUB_PAGES` | 119 |
+| | `freeToolPage` | `FREE_TOOLS` | 7 |
+| | `comparisonPage` | `COMPARISONS` | 9 |
+| | `resourcePage` | `RESOURCES` | 5 |
+| Editorial | `post` | `data/blog.ts` | 11 |
+| | `caseStudy` | `data/work.ts` | 25 |
+| | `glossaryTerm` | `GLOSSARY_TERMS` | 320 |
+| Offering | `service` | `data/services.ts` | 11 |
+| | `industry` | `data/industries.ts` | 11 |
+| | `tool` | `data/tools.ts` | 25 |
+| Locations | `location` | `data/locations.ts` | 340 |
+| Trust | `teamMember` | `TEAM_MEMBERS` | 7 |
+| | `testimonial` | `data/trust.ts` | 12 |
+
+Every page-shaped type carries the same SEO head fields — `title` (the `<title>`
+tag), `description` (meta description), `slug`, and `h1` — so the whole search
+surface is editable in one place.
+
+Nested objects (`faq`, `contentSection`, `relatedLink`, `subService`,
+`processStep`, `expertQuote`) live in `sanity/schemaTypes/objects.ts` and are
+registered before the documents that reference them.
 
 Post and case-study bodies are stored as **Markdown text**, not Portable Text,
 because the site already renders Markdown through `marked`. Moving to Portable
