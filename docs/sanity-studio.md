@@ -27,6 +27,25 @@ and add each of these with **Allow credentials** checked:
 - `https://qognitionagency.com`
 - `http://localhost:3000`
 
+Or from a terminal, after a browser login:
+
+```bash
+npx sanity login
+npx sanity cors add https://www.qognitionagency.com --credentials --project ngv93z0z
+npx sanity cors add https://qognitionagency.com     --credentials --project ngv93z0z
+npx sanity cors add http://localhost:3000           --credentials --project ngv93z0z
+```
+
+To verify it worked, this should return an `access-control-allow-origin` header
+(it returns none while CORS is unconfigured):
+
+```bash
+curl -s -D - -o /dev/null -X OPTIONS \
+  "https://ngv93z0z.api.sanity.io/v2024-10-01/data/query/production?query=*" \
+  -H "Origin: https://www.qognitionagency.com" \
+  -H "Access-Control-Request-Method: GET" | grep -i access-control
+```
+
 ## Environment variables
 
 ```
@@ -36,9 +55,14 @@ NEXT_PUBLIC_SANITY_API_VERSION=2024-10-01
 SANITY_API_WRITE_TOKEN=<server-only, never NEXT_PUBLIC_>
 ```
 
+**These are optional in deployment.** `sanity/env.ts` falls back to the literals
+`ngv93z0z` / `production` / `2024-10-01`, so the deployed studio resolves its
+project without any Vercel configuration. Set them only when you want to point a
+preview environment at a different dataset.
+
 Project ID and dataset are public by design and ship in the browser bundle. The
-write token is server-only and is used by the migration script and any future
-write paths.
+write token is server-only, used by the migration script and any future write
+paths — it is not needed to render the site or load the studio.
 
 ## Schemas
 
