@@ -43,7 +43,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <div className="max-w-7xl mx-auto">
           <Badge className="mb-4">{page.category}</Badge>
           <Heading level="h1" className="mb-6">{page.h1}</Heading>
-          <p className="text-xl text-[var(--text-muted)] max-w-4xl leading-relaxed">{page.summary}</p>
+          <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.summary}</p>
 
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
             <Panel title="Decision Factors" items={page.decisionFactors} />
@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
           <div className="mt-16 rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8">
             <Heading level="h2" className="mb-5">How to Choose</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-4xl">
+            <p className="text-body text-[var(--text-muted)] max-w-4xl">
               Pick the partner whose operating model matches your constraint. If you need procurement scale, a large agency can fit.
               If you need technical SEO, paid search, landing pages, content systems, AI search visibility, and faster implementation,
               Qognition is designed for that path.
@@ -73,10 +73,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
 const Panel = ({ title, items }: { title: string; items: string[] }) => (
   <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-    <h2 className="text-xl font-semibold text-[var(--text)] mb-5">{title}</h2>
+    <h2 className="text-h2 text-[var(--text)] mb-5 font-semibold">{title}</h2>
     <div className="space-y-3">
       {items.map((item) => (
-        <p key={item} className="text-sm text-[var(--text-muted)] leading-relaxed">{item}</p>
+        <p key={item} className="text-body text-[var(--text-muted)]">{item}</p>
       ))}
     </div>
   </div>

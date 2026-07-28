@@ -27,13 +27,13 @@ export default function SpokeBookPage({ spoke }: { spoke: SpokeId }) {
           </ScrollReveal>
 
           <MaskReveal>
-            <h1 className="text-[clamp(36px,6vw,64px)] font-semibold leading-[1.05] text-[var(--ink)] max-w-3xl text-balance">
+            <h1 className="text-display text-[var(--ink)] max-w-3xl text-balance font-semibold">
               Book a {config.label} Strategy Call
             </h1>
           </MaskReveal>
 
           <ScrollReveal stagger={150}>
-            <p className="mt-6 text-lg text-[var(--text-muted)] max-w-2xl leading-relaxed">
+            <p className="text-body mt-6 text-[var(--text-muted)] max-w-2xl">
               Pick a time that works for you. We&apos;ll discuss your current situation, answer your questions, and map out what working together could look like. No commitment, no pitch — just a conversation.
             </p>
           </ScrollReveal>
@@ -49,8 +49,8 @@ export default function SpokeBookPage({ spoke }: { spoke: SpokeId }) {
               ].map((item) => (
                 <div key={item.title} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5">
                   <item.icon size={20} className="text-[var(--accent)] mb-3" />
-                  <h3 className="font-semibold text-[var(--ink)] text-sm mb-1">{item.title}</h3>
-                  <p className="text-xs text-[var(--text-muted)] leading-relaxed">{item.desc}</p>
+                  <h3 className="text-h3 text-[var(--ink)] mb-1 font-semibold">{item.title}</h3>
+                  <p className="text-meta text-[var(--text-muted)]">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -73,10 +73,10 @@ export default function SpokeBookPage({ spoke }: { spoke: SpokeId }) {
       <section className="px-6 md:px-12 py-20 bg-[var(--bg-warm)]">
         <div className="max-w-xl mx-auto text-center">
           <ScrollReveal>
-            <h2 className="text-2xl font-semibold text-[var(--ink)] mb-4">
+            <h2 className="text-h2 text-[var(--ink)] mb-4 font-semibold">
               Not ready for a call?
             </h2>
-            <p className="text-[var(--text-muted)] mb-8 leading-relaxed">
+            <p className="text-body text-[var(--text-muted)] mb-8">
               Start with a free audit instead. We&apos;ll review your current setup and send a personalized report within 48 hours — no call required.
             </p>
             <Link

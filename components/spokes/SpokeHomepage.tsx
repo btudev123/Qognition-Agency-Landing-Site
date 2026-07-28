@@ -67,13 +67,13 @@ function SpokeHeroSection({ data }: { data: SpokePageData }) {
         </ScrollReveal>
 
         <MaskReveal>
-          <h1 className="text-[clamp(40px,7vw,88px)] font-semibold leading-[1.05] text-[var(--ink)] max-w-5xl text-balance">
+          <h1 className="text-display text-[var(--ink)] max-w-5xl text-balance font-semibold">
             {data.hero.h1}
           </h1>
         </MaskReveal>
 
         <ScrollReveal stagger={150}>
-          <p className="mt-8 text-lg md:text-xl text-[var(--text-muted)] max-w-3xl leading-relaxed">
+          <p className="text-body mt-8 text-[var(--text-muted)] max-w-3xl">
             {data.hero.subhead}
           </p>
         </ScrollReveal>
@@ -113,7 +113,7 @@ function SpokePainsSection({ data }: { data: SpokePageData }) {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
           <Eyebrow>The Problem</Eyebrow>
-          <h2 className="text-4xl md:text-6xl font-semibold text-[var(--ink)] mt-4 max-w-3xl">
+          <h2 className="text-display text-[var(--ink)] mt-4 max-w-3xl font-semibold">
             You&apos;re not alone. These are the patterns we fix.
           </h2>
         </ScrollReveal>
@@ -125,11 +125,11 @@ function SpokePainsSection({ data }: { data: SpokePageData }) {
                 <div className="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] font-bold text-sm mb-6">
                   {String(i + 1).padStart(2, '0')}
                 </div>
-                <h3 className="text-xl font-semibold text-[var(--ink)] mb-4">{pain.title}</h3>
-                <p className="text-[var(--text-muted)] leading-relaxed mb-4 flex-1">{pain.why}</p>
+                <h3 className="text-h3 text-[var(--ink)] mb-4 font-semibold">{pain.title}</h3>
+                <p className="text-body text-[var(--text-muted)] mb-4 flex-1">{pain.why}</p>
                 <div className="border-t border-[var(--border)] pt-4 mt-auto">
-                  <p className="text-xs font-medium text-[var(--accent)] uppercase tracking-wider">The Cost</p>
-                  <p className="text-sm text-[var(--text-muted)] mt-1 leading-relaxed">{pain.cost}</p>
+                  <p className="text-meta font-medium text-[var(--accent)] uppercase">The Cost</p>
+                  <p className="text-body text-[var(--text-muted)] mt-1">{pain.cost}</p>
                 </div>
               </div>
             </ScrollReveal>
@@ -148,7 +148,7 @@ function SpokeProcessSection({ data }: { data: SpokePageData }) {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
           <Eyebrow>How We Work</Eyebrow>
-          <h2 className="text-4xl md:text-6xl font-semibold text-[var(--ink)] mt-4 max-w-3xl">
+          <h2 className="text-display text-[var(--ink)] mt-4 max-w-3xl font-semibold">
             Three steps from where you are to where you want to be.
           </h2>
         </ScrollReveal>
@@ -167,8 +167,8 @@ function SpokeProcessSection({ data }: { data: SpokePageData }) {
                     </div>
                   </div>
                   <div className="flex-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">
-                    <h3 className="text-2xl font-semibold text-[var(--ink)] mb-3">{step.title}</h3>
-                    <p className="text-[var(--text-muted)] leading-relaxed mb-6">{step.description}</p>
+                    <h3 className="text-h3 text-[var(--ink)] mb-3 font-semibold">{step.title}</h3>
+                    <p className="text-body text-[var(--text-muted)] mb-6">{step.description}</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {step.deliverables.map((d) => (
                         <span key={d} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
@@ -199,7 +199,7 @@ function SpokeOutcomesSection({ data }: { data: SpokePageData }) {
           <span className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-[var(--accent)] mb-4">
             Client Outcomes
           </span>
-          <h2 className="text-4xl md:text-6xl font-semibold text-white mt-4 max-w-3xl">
+          <h2 className="text-display text-white mt-4 max-w-3xl font-semibold">
             Real results. Real clients. Real numbers.
           </h2>
         </ScrollReveal>
@@ -209,10 +209,10 @@ function SpokeOutcomesSection({ data }: { data: SpokePageData }) {
             <ScrollReveal key={outcome.label} stagger={i * 100}>
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
                 <div className="text-5xl font-semibold text-[var(--accent)] mb-4">{outcome.metric}</div>
-                <p className="text-white/80 leading-relaxed mb-6">{outcome.label}</p>
+                <p className="text-body text-white/80 mb-6">{outcome.label}</p>
                 <div className="border-t border-white/10 pt-4">
-                  <p className="text-sm text-white/50">{outcome.client}</p>
-                  <p className="text-xs text-white/30 mt-0.5">{outcome.industry}</p>
+                  <p className="text-body text-white/50">{outcome.client}</p>
+                  <p className="text-meta text-white/30 mt-0.5">{outcome.industry}</p>
                 </div>
               </div>
             </ScrollReveal>
@@ -231,7 +231,7 @@ function SpokeProofBarSection({ data }: { data: SpokePageData }) {
     <section className="px-6 md:px-12 py-16 sm:py-20 bg-[var(--surface)] border-y border-[var(--border)]">
       <div className="max-w-7xl mx-auto text-center">
         <ScrollReveal>
-          <p className="text-sm font-medium text-[var(--text-muted)] uppercase tracking-widest mb-8">
+          <p className="text-meta font-medium text-[var(--text-muted)] uppercase mb-8">
             Trusted by ambitious companies
           </p>
         </ScrollReveal>
@@ -258,7 +258,7 @@ function SpokeTeamSection({ data }: { data: SpokePageData }) {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
           <Eyebrow>Who You&apos;ll Work With</Eyebrow>
-          <h2 className="text-4xl md:text-6xl font-semibold text-[var(--ink)] mt-4 max-w-3xl">
+          <h2 className="text-display text-[var(--ink)] mt-4 max-w-3xl font-semibold">
             Led by practitioners, not account managers.
           </h2>
         </ScrollReveal>
@@ -270,9 +270,9 @@ function SpokeTeamSection({ data }: { data: SpokePageData }) {
               </span>
             </div>
             <div>
-              <h3 className="text-2xl font-semibold text-[var(--ink)] mb-1">{data.teamMember.name}</h3>
-              <p className="text-sm font-medium text-[var(--accent)] mb-4">{data.teamMember.role}</p>
-              <p className="text-[var(--text-muted)] leading-relaxed max-w-2xl">{data.teamMember.focus}</p>
+              <h3 className="text-h3 text-[var(--ink)] mb-1 font-semibold">{data.teamMember.name}</h3>
+              <p className="text-body font-medium text-[var(--accent)] mb-4">{data.teamMember.role}</p>
+              <p className="text-body text-[var(--text-muted)] max-w-2xl">{data.teamMember.focus}</p>
             </div>
           </div>
         </ScrollReveal>
@@ -290,7 +290,7 @@ function SpokeServicesSection({ data }: { data: SpokePageData }) {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
           <Eyebrow>What We Offer</Eyebrow>
-          <h2 className="text-4xl md:text-6xl font-semibold text-[var(--ink)] mt-4 max-w-3xl">
+          <h2 className="text-display text-[var(--ink)] mt-4 max-w-3xl font-semibold">
             Everything you need, nothing you don&apos;t.
           </h2>
         </ScrollReveal>
@@ -302,10 +302,10 @@ function SpokeServicesSection({ data }: { data: SpokePageData }) {
                 href={`/${data.spoke}/${svc.slug}`}
                 className="group block rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 hover:border-[var(--accent)]/40 transition-all duration-300 h-full"
               >
-                <h3 className="text-lg font-semibold text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors mb-3">
+                <h3 className="text-h3 text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors mb-3 font-semibold">
                   {svc.title}
                 </h3>
-                <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">{svc.summary}</p>
+                <p className="text-body text-[var(--text-muted)] mb-4">{svc.summary}</p>
                 <div className="flex items-center gap-2 text-sm font-medium text-[var(--accent)]">
                   Learn more <ArrowRight size={14} />
                 </div>
@@ -326,7 +326,7 @@ function SpokePricingSection({ data }: { data: SpokePageData }) {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
           <Eyebrow>Pricing</Eyebrow>
-          <h2 className="text-4xl md:text-6xl font-semibold text-[var(--ink)] mt-4 max-w-3xl">
+          <h2 className="text-display text-[var(--ink)] mt-4 max-w-3xl font-semibold">
             Transparent pricing. No surprises.
           </h2>
         </ScrollReveal>
@@ -346,9 +346,9 @@ function SpokePricingSection({ data }: { data: SpokePageData }) {
                     Most Popular
                   </span>
                 )}
-                <h3 className="text-2xl font-semibold text-[var(--ink)] mb-2">{tier.name}</h3>
+                <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">{tier.name}</h3>
                 <div className="text-3xl font-bold text-[var(--ink)] mb-2">{tier.price}</div>
-                <p className="text-sm text-[var(--text-muted)] mb-6">{tier.description}</p>
+                <p className="text-body text-[var(--text-muted)] mb-6">{tier.description}</p>
                 <ul className="space-y-3 mb-8 flex-1">
                   {tier.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-[var(--text-muted)]">
@@ -363,7 +363,7 @@ function SpokePricingSection({ data }: { data: SpokePageData }) {
           ))}
         </div>
         <ScrollReveal>
-          <p className="text-center text-sm text-[var(--text-muted)] mt-8">{data.pricing.note}</p>
+          <p className="text-body text-center text-[var(--text-muted)] mt-8">{data.pricing.note}</p>
         </ScrollReveal>
       </div>
     </section>
@@ -380,7 +380,7 @@ function SpokeFAQSection({ data }: { data: SpokePageData }) {
       <div className="max-w-4xl mx-auto">
         <ScrollReveal>
           <Eyebrow>FAQ</Eyebrow>
-          <h2 className="text-4xl md:text-6xl font-semibold text-[var(--ink)] mt-4">
+          <h2 className="text-display text-[var(--ink)] mt-4 font-semibold">
             You ask. We answer.
           </h2>
         </ScrollReveal>
@@ -402,7 +402,7 @@ function SpokeFAQSection({ data }: { data: SpokePageData }) {
                 </button>
                 {openIndex === i && (
                   <div className="px-6 pb-5">
-                    <p className="text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                    <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -424,10 +424,10 @@ function SpokeGuaranteeSection({ data }: { data: SpokePageData }) {
           <div className="w-16 h-16 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center mx-auto mb-6">
             <span className="text-3xl">⚡</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-semibold text-[var(--ink)] mb-6">
+          <h2 className="text-h2 text-[var(--ink)] mb-6 font-semibold">
             {data.guarantee.headline}
           </h2>
-          <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
             {data.guarantee.body}
           </p>
         </ScrollReveal>
@@ -444,10 +444,10 @@ function SpokeFinalCTA({ data }: { data: SpokePageData }) {
     <section className="px-6 md:px-12 py-16 sm:py-20 md:py-32">
       <div className="max-w-7xl mx-auto">
         <ScrollReveal>
-          <h2 className="text-4xl md:text-7xl font-semibold text-[var(--ink)] mb-4 text-center">
+          <h2 className="text-display text-[var(--ink)] mb-4 text-center font-semibold">
             Ready to get started?
           </h2>
-          <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto mb-12 text-center leading-relaxed">
+          <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto mb-12 text-center">
             Every engagement begins with a free audit. No commitment. No pitch. Just an honest assessment of where you are and what would move the needle.
           </p>
         </ScrollReveal>
@@ -455,10 +455,10 @@ function SpokeFinalCTA({ data }: { data: SpokePageData }) {
           {/* Lead Form */}
           <ScrollReveal>
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">
-              <h3 className="text-lg font-semibold text-[var(--ink)] mb-2">
+              <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">
                 Get your free assessment
               </h3>
-              <p className="text-sm text-[var(--text-muted)] mb-6">
+              <p className="text-body text-[var(--text-muted)] mb-6">
                 Fill out the form. We&apos;ll deliver a personalized audit within 48 hours.
               </p>
               <LeadForm
@@ -474,10 +474,10 @@ function SpokeFinalCTA({ data }: { data: SpokePageData }) {
           <ScrollReveal stagger={100}>
             <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.02)] overflow-hidden">
               <div className="px-6 pt-6 pb-2">
-                <h3 className="text-lg font-semibold text-[var(--ink)] mb-1">
+                <h3 className="text-h3 text-[var(--ink)] mb-1 font-semibold">
                   Or book a call directly
                 </h3>
-                <p className="text-sm text-[var(--text-muted)]">
+                <p className="text-body text-[var(--text-muted)]">
                   Pick a time that works for you. No back-and-forth.
                 </p>
               </div>
@@ -499,10 +499,10 @@ function SpokeLeadCapture({ data }: { data: SpokePageData }) {
       <div className="max-w-xl mx-auto">
         <ScrollReveal>
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">
-            <h3 className="text-xl font-semibold text-[var(--ink)] mb-2 text-center">
+            <h3 className="text-h3 text-[var(--ink)] mb-2 text-center font-semibold">
               Want the full picture?
             </h3>
-            <p className="text-sm text-[var(--text-muted)] mb-6 text-center">
+            <p className="text-body text-[var(--text-muted)] mb-6 text-center">
               Get a free, personalized assessment delivered within 48 hours. No commitment.
             </p>
             <LeadForm
@@ -567,13 +567,13 @@ export function SubServicePage({
           </ScrollReveal>
 
           <MaskReveal>
-            <h1 className="text-[clamp(36px,6vw,72px)] font-semibold leading-[1.05] text-[var(--ink)] max-w-4xl text-balance">
+            <h1 className="text-display text-[var(--ink)] max-w-4xl text-balance font-semibold">
               {service.h1}
             </h1>
           </MaskReveal>
 
           <ScrollReveal stagger={150}>
-            <p className="mt-6 text-lg text-[var(--text-muted)] max-w-3xl leading-relaxed">
+            <p className="text-body mt-6 text-[var(--text-muted)] max-w-3xl">
               {service.summary}
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -617,19 +617,19 @@ export function SubServicePage({
             {service.problem && (
               <ScrollReveal>
                 <Eyebrow>The Problem</Eyebrow>
-                <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mt-4 mb-6">
+                <h2 className="text-h2 text-[var(--ink)] mt-4 mb-6 font-semibold">
                   The way it&apos;s usually done
                 </h2>
-                <p className="text-[var(--text-muted)] leading-relaxed text-lg">{service.problem}</p>
+                <p className="text-body text-[var(--text-muted)]">{service.problem}</p>
               </ScrollReveal>
             )}
 
             <ScrollReveal stagger={100}>
               <Eyebrow>Our Approach</Eyebrow>
-              <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mt-4 mb-6">
+              <h2 className="text-h2 text-[var(--ink)] mt-4 mb-6 font-semibold">
                 How we fix it
               </h2>
-              <p className="text-[var(--text-muted)] leading-relaxed text-lg mb-6">{service.description}</p>
+              <p className="text-body text-[var(--text-muted)] mb-6">{service.description}</p>
               <ul className="space-y-3">
                 {service.approach.map((step, i) => (
                   <li key={i} className="flex items-start gap-3 text-[var(--text-muted)]">
@@ -647,7 +647,7 @@ export function SubServicePage({
           {(service.whoItsFor?.length ?? 0) > 0 && (
             <ScrollReveal>
               <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-6 sm:p-8">
-                <h3 className="text-xl font-semibold text-[var(--ink)] mb-4">Who this is for</h3>
+                <h3 className="text-h3 text-[var(--ink)] mb-4 font-semibold">Who this is for</h3>
                 <ul className="space-y-2">
                   {(service.whoItsFor ?? []).map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-[var(--text-muted)]">
@@ -672,10 +672,10 @@ export function SubServicePage({
                 <div className="mt-4 text-4xl md:text-5xl font-semibold text-[var(--accent)]">
                   {service.caseStudySnippet.metric}
                 </div>
-                <p className="mt-4 text-lg text-[var(--text)] leading-relaxed">
+                <p className="text-body mt-4 text-[var(--text)]">
                   {service.caseStudySnippet.context}
                 </p>
-                <p className="mt-2 text-sm text-[var(--text-muted)]">
+                <p className="text-body mt-2 text-[var(--text-muted)]">
                   — {service.caseStudySnippet.client}
                 </p>
               </div>
@@ -689,7 +689,7 @@ export function SubServicePage({
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16">
           <ScrollReveal>
             <Eyebrow>What You Get</Eyebrow>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mt-4 mb-6">
+            <h2 className="text-h2 text-[var(--ink)] mt-4 mb-6 font-semibold">
               Deliverables
             </h2>
             <ul className="space-y-4">
@@ -704,16 +704,16 @@ export function SubServicePage({
 
           <ScrollReveal stagger={100}>
             <Eyebrow>Timeline</Eyebrow>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mt-4 mb-6">
+            <h2 className="text-h2 text-[var(--ink)] mt-4 mb-6 font-semibold">
               How long it takes
             </h2>
             <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-6 mb-6">
-              <p className="text-lg font-medium text-[var(--ink)]">{service.timeline}</p>
+              <p className="text-body font-medium text-[var(--ink)]">{service.timeline}</p>
             </div>
 
             {service.kpis.length > 0 && (
               <>
-                <h3 className="text-lg font-semibold text-[var(--ink)] mb-4">How We Measure Success</h3>
+                <h3 className="text-h3 text-[var(--ink)] mb-4 font-semibold">How We Measure Success</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {service.kpis.map((kpi) => (
                     <span
@@ -736,7 +736,7 @@ export function SubServicePage({
           <div className="max-w-4xl mx-auto">
             <ScrollReveal>
               <Eyebrow>FAQ</Eyebrow>
-              <h2 className="text-4xl md:text-6xl font-semibold text-[var(--ink)] mt-4 mb-10">
+              <h2 className="text-display text-[var(--ink)] mt-4 mb-10 font-semibold">
                 Common questions about {service.title}
               </h2>
             </ScrollReveal>
@@ -744,8 +744,8 @@ export function SubServicePage({
               {(service.faqs ?? []).map((faq, i) => (
                 <ScrollReveal key={faq.question} stagger={i * 50}>
                   <div>
-                    <h3 className="text-lg font-semibold text-[var(--ink)] mb-2">{faq.question}</h3>
-                    <p className="text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                    <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">{faq.question}</h3>
+                    <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                   </div>
                 </ScrollReveal>
               ))}
@@ -781,10 +781,10 @@ export function SubServicePage({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <ScrollReveal>
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">
-                <h3 className="text-lg font-semibold text-[var(--ink)] mb-2">
+                <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">
                   Get your free assessment
                 </h3>
-                <p className="text-sm text-[var(--text-muted)] mb-6">
+                <p className="text-body text-[var(--text-muted)] mb-6">
                   We&apos;ll review your current setup and send a personalized report within 48 hours.
                 </p>
                 <LeadForm
@@ -799,10 +799,10 @@ export function SubServicePage({
             <ScrollReveal stagger={100}>
               <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.02)] overflow-hidden">
                 <div className="px-6 pt-6 pb-2">
-                  <h3 className="text-lg font-semibold text-[var(--ink)] mb-1">
+                  <h3 className="text-h3 text-[var(--ink)] mb-1 font-semibold">
                     Or book a call directly
                   </h3>
-                  <p className="text-sm text-[var(--text-muted)]">
+                  <p className="text-body text-[var(--text-muted)]">
                     Pick a time that works for you. No back-and-forth.
                   </p>
                 </div>

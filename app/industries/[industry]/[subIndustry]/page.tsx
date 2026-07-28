@@ -48,9 +48,9 @@ export default async function Page({ params }: { params: Promise<{ industry: str
               '@type': 'Service',
               name: `${subIndustry.name} Digital Marketing`,
               description: subIndustry.description,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
               serviceType: `${subIndustry.name} Marketing`,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             ...(displayFaqs?.length ? [faqSchema(displayFaqs)] : []),
             breadcrumbSchema([
@@ -76,7 +76,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
               {industry.name}
             </span>
             <Heading level="h1" className="mb-8">{subIndustry.name} Marketing</Heading>
-            <p className="text-xl text-[var(--text-muted)] leading-relaxed mb-12 border-l-2 border-[var(--accent)] pl-6">
+            <p className="text-body text-[var(--text-muted)] mb-12 border-l-2 border-[var(--accent)] pl-6">
               {subIndustry.description}
             </p>
 
@@ -104,8 +104,8 @@ export default async function Page({ params }: { params: Promise<{ industry: str
                     className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                   >
                     <CheckCircle2 className="text-[var(--accent)] mb-4" size={20} />
-                    <h3 className="font-semibold text-[var(--text)] text-lg mb-3">{feature}</h3>
-                    <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                    <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{feature}</h3>
+                    <p className="text-body text-[var(--text-muted)]">
                       We translate this requirement into search pages, ad messaging, creative proof, analytics events, and lead-routing logic.
                     </p>
                   </div>
@@ -138,10 +138,10 @@ export default async function Page({ params }: { params: Promise<{ industry: str
                     href={`/services/${service.id}`}
                     className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--accent)]/40 transition-all"
                   >
-                    <h3 className="font-semibold text-[var(--text)] text-lg mb-3">
+                    <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">
                       {service.title.replace('Web Development', 'Web Design')}
                     </h3>
-                    <p className="text-sm text-[var(--text-muted)] leading-relaxed">{service.shortDescription}</p>
+                    <p className="text-body text-[var(--text-muted)]">{service.shortDescription}</p>
                   </Link>
                 ))}
               </div>
@@ -155,8 +155,8 @@ export default async function Page({ params }: { params: Promise<{ industry: str
                     key={faq.question}
                     className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                   >
-                    <h3 className="font-semibold text-[var(--text)] text-lg mb-3">{faq.question}</h3>
-                    <p className="text-sm text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                    <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{faq.question}</h3>
+                    <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                   </div>
                 ))}
               </div>
@@ -172,8 +172,8 @@ export default async function Page({ params }: { params: Promise<{ industry: str
                   href={`/case-studies/${study.id}`}
                   className="mb-3 block rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 hover:border-[var(--accent)]/40 transition-all"
                 >
-                  <p className="text-xs uppercase tracking-widest text-[var(--accent)] mb-2">{study.industry}</p>
-                  <h3 className="font-semibold text-[var(--text)]">{study.client}</h3>
+                  <p className="text-meta uppercase text-[var(--accent)] mb-2">{study.industry}</p>
+                  <h3 className="text-h3 text-[var(--text)] font-semibold">{study.client}</h3>
                 </Link>
               ))}
               <div className="mt-8 space-y-3">

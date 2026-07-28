@@ -162,13 +162,13 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
             </ScrollReveal>
 
             <MaskReveal>
-              <h1 className="text-[clamp(36px,6vw,72px)] font-semibold leading-[1.05] text-[var(--ink)] text-balance">
+              <h1 className="text-display text-[var(--ink)] text-balance font-semibold">
                 {content.h1}
               </h1>
             </MaskReveal>
 
             <ScrollReveal stagger={150}>
-              <p className="mt-6 text-lg md:text-xl text-[var(--text-muted)] max-w-3xl leading-relaxed">
+              <p className="text-body mt-6 text-[var(--text-muted)] max-w-3xl">
                 {content.subhead}
               </p>
             </ScrollReveal>
@@ -180,7 +180,7 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
       <section className="px-6 md:px-12 py-16 sm:py-20 bg-[var(--bg-warm)]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mb-8">
+            <h2 className="text-h2 text-[var(--ink)] mb-8 font-semibold">
               What you&apos;ll get
             </h2>
             <ul className="space-y-4">
@@ -196,8 +196,8 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
           {/* Form */}
           <ScrollReveal stagger={100}>
             <div className="rounded-2xl border border-[var(--accent)]/20 bg-[var(--surface)] p-6 sm:p-8 max-lg:static lg:sticky lg:top-28">
-              <h3 className="text-xl font-semibold text-[var(--ink)] mb-2">Get your free audit</h3>
-              <p className="text-sm text-[var(--text-muted)] mb-6">
+              <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">Get your free audit</h3>
+              <p className="text-body text-[var(--text-muted)] mb-6">
                 Fill out the form. We deliver within 48 hours. No commitment.
               </p>
               <LeadForm
@@ -216,14 +216,14 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
       <section className="px-6 md:px-12 py-16 sm:py-20">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mb-8 text-center">
+            <h2 className="text-h2 text-[var(--ink)] mb-8 text-center font-semibold">
               Who this is for
             </h2>
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <ScrollReveal>
               <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-5 sm:p-6">
-                <h3 className="font-semibold text-[var(--ink)] mb-2">✅ You if…</h3>
+                <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">✅ You if…</h3>
                 <ul className="space-y-2 text-sm text-[var(--text-muted)]">
                   <li>• You&apos;re a founder or operator running a business with real revenue</li>
                   <li>• You know there&apos;s room for improvement but don&apos;t know where to start</li>
@@ -234,7 +234,7 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
             </ScrollReveal>
             <ScrollReveal stagger={100}>
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
-                <h3 className="font-semibold text-[var(--ink)] mb-2">❌ Not for you if…</h3>
+                <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">❌ Not for you if…</h3>
                 <ul className="space-y-2 text-sm text-[var(--text-muted)]">
                   <li>• You&apos;re looking for free work disguised as an audit</li>
                   <li>• You&apos;re not willing to invest in fixing what the audit finds</li>
@@ -251,7 +251,7 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
       <section className="px-6 md:px-12 py-16 sm:py-20 bg-[var(--bg-warm)]">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mb-12 text-center">
+            <h2 className="text-h2 text-[var(--ink)] mb-12 text-center font-semibold">
               How it works
             </h2>
           </ScrollReveal>
@@ -262,7 +262,7 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
                   <div className="w-10 h-10 rounded-full bg-[var(--accent)] text-[var(--accent-deep)] flex items-center justify-center font-bold text-sm shrink-0">
                     {step.step}
                   </div>
-                  <p className="text-[var(--text-muted)] leading-relaxed pt-2">{step.description}</p>
+                  <p className="text-body text-[var(--text-muted)] pt-2">{step.description}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -274,7 +274,7 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
       <section className="px-6 md:px-12 py-16 sm:py-20">
         <div className="max-w-3xl mx-auto">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mb-10 text-center">
+            <h2 className="text-h2 text-[var(--ink)] mb-10 text-center font-semibold">
               Common questions
             </h2>
           </ScrollReveal>
@@ -282,8 +282,8 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
             {content.faqs.map((faq, i) => (
               <ScrollReveal key={faq.question} stagger={i * 50}>
                 <div>
-                  <h3 className="text-lg font-semibold text-[var(--ink)] mb-2">{faq.question}</h3>
-                  <p className="text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                  <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">{faq.question}</h3>
+                  <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -295,10 +295,10 @@ export default function SpokeAuditPage({ spoke }: { spoke: SpokeId }) {
       <section className="px-6 md:px-12 py-16 sm:py-20 bg-[var(--bg-warm)]">
         <div className="max-w-xl mx-auto text-center">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--ink)] mb-4">
+            <h2 className="text-h2 text-[var(--ink)] mb-4 font-semibold">
               Ready to get started?
             </h2>
-            <p className="text-[var(--text-muted)] mb-8 leading-relaxed">
+            <p className="text-body text-[var(--text-muted)] mb-8">
               Fill out the form above. We deliver your audit within 48 hours. No commitment, no pitch — just an honest assessment.
             </p>
             <Link

@@ -69,13 +69,13 @@ export default async function Page({ params }: { params: Promise<{ location: str
               provider: {
                 '@type': 'Organization',
                 name: 'Qognition',
-                url: 'https://qognition.com',
+                url: 'https://www.qognitionagency.com',
               },
               areaServed: {
                 '@type': location.schemaType,
                 name: location.name,
               },
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             ...(faqs.length ? [faqSchema(faqs)] : []),
             breadcrumbSchema([

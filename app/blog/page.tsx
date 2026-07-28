@@ -26,7 +26,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto">
           <header className="mb-16 text-center">
             <Heading level="h1" className="mb-6">Our Blog</Heading>
-            <p className="text-lg text-[var(--text-muted)] max-w-2xl mx-auto">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
               Expert insights on AI marketing, SEO strategies, and digital transformation to help your business thrive in 2026 and beyond.
             </p>
           </header>
@@ -43,10 +43,10 @@ export default function Page() {
                 </div>
                 <div className="p-6">
                   <Badge className="mb-3">{post.category}</Badge>
-                  <h2 className="text-2xl font-semibold text-[var(--text)] mb-3 line-clamp-2 group-hover:text-[var(--accent)] transition-colors">
+                  <h2 className="text-h2 text-[var(--text)] mb-3 line-clamp-2 group-hover:text-[var(--accent)] transition-colors font-semibold">
                     {post.title}
                   </h2>
-                  <p className="text-[var(--text-muted)] mb-4 line-clamp-3">{post.excerpt}</p>
+                  <p className="text-body text-[var(--text-muted)] mb-4 line-clamp-3">{post.excerpt}</p>
                   <div className="flex items-center gap-3 text-sm text-[var(--text-muted)]">
                     <span>{post.date}</span>
                     <span>&middot;</span>

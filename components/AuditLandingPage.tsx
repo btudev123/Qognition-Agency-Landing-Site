@@ -19,7 +19,7 @@ const AuditLandingPage = ({ offer }: Props) => {
           <Heading level="h1" className="mt-6 !text-5xl md:!text-8xl !leading-none">
             {offer.h1}
           </Heading>
-          <p className="mx-auto mt-8 max-w-3xl text-xl leading-relaxed text-[var(--text-muted)]">{offer.description}</p>
+          <p className="text-body mx-auto mt-8 max-w-3xl text-[var(--text-muted)]">{offer.description}</p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <a
               href="#audit-form"
@@ -51,7 +51,7 @@ const AuditLandingPage = ({ offer }: Props) => {
       <section className="mx-auto mt-20 grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-3">
         {offer.outcomes.map((outcome) => (
           <div key={outcome} className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-6">
-            <p className="text-sm font-bold uppercase tracking-widest text-[var(--accent)]">Outcome</p>
+            <p className="text-meta font-bold uppercase text-[var(--accent)]">Outcome</p>
             <Heading level="h2" className="mt-4">
               {outcome}
             </Heading>
@@ -65,7 +65,7 @@ const AuditLandingPage = ({ offer }: Props) => {
             {offer.sections.map((section) => (
               <section key={section.title} className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
                 <Heading level="h2">{section.title}</Heading>
-                <p className="mt-5 text-lg leading-relaxed text-[var(--text-muted)]">{section.content}</p>
+                <p className="text-body mt-5 text-[var(--text-muted)]">{section.content}</p>
               </section>
             ))}
           </div>
@@ -77,7 +77,7 @@ const AuditLandingPage = ({ offer }: Props) => {
               {offer.checks.map((check) => (
                 <p
                   key={check}
-                  className="rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-4 py-3 text-sm text-[var(--text-muted)]"
+                  className="text-body rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-4 py-3 text-[var(--text-muted)]"
                 >
                   {check}
                 </p>
@@ -95,8 +95,8 @@ const AuditLandingPage = ({ offer }: Props) => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {offer.faqs.map((faq) => (
               <div key={faq.question}>
-                <h3 className="text-xl font-semibold text-[var(--text)]">{faq.question}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">{faq.answer}</p>
+                <h3 className="text-h3 text-[var(--text)] font-semibold">{faq.question}</h3>
+                <p className="text-body mt-3 text-[var(--text-muted)]">{faq.answer}</p>
               </div>
             ))}
           </div>
@@ -106,7 +106,7 @@ const AuditLandingPage = ({ offer }: Props) => {
       <section className="mx-auto mt-16 flex max-w-7xl flex-col gap-4 rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8 md:flex-row md:items-center md:justify-between">
         <div>
           <Heading level="h2">Want the full growth plan?</Heading>
-          <p className="mt-2 text-[var(--text-muted)]">
+          <p className="text-body mt-2 text-[var(--text-muted)]">
             Run the audit first, then use the report to choose the highest-impact next step.
           </p>
         </div>

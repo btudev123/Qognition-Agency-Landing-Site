@@ -26,7 +26,7 @@ export default function CTABlock({
           {heading}
         </Heading>
         {subheading && (
-          <p className="text-[var(--text-muted)] text-base leading-relaxed mb-8 max-w-md mx-auto">
+          <p className="text-body text-[var(--text-muted)] mb-8 max-w-md mx-auto">
             {subheading}
           </p>
         )}

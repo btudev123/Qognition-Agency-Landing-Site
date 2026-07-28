@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
   if (!product) {
     return (
       <main className="min-h-screen pt-36 pb-20 px-4 sm:px-6 flex items-center justify-center">
-        <p className="text-[var(--text-muted)]">Tool not found.</p>
+        <p className="text-body text-[var(--text-muted)]">Tool not found.</p>
       </main>
     );
   }
@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   applicationCategory: product.category,
                   operatingSystem: 'Web',
                   description: product.shortDescription,
-                  url: `https://qognition.com${path}`,
+                  url: `https://www.qognitionagency.com${path}`,
                   offers: {
                     '@type': 'Offer',
                     price: product.pricing === 'Free' || product.pricing === 'Open Source' ? '0' : undefined,
@@ -87,7 +87,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                       bestRating: 5,
                     },
                   },
-                  url: `https://qognition.com${path}`,
+                  url: `https://www.qognitionagency.com${path}`,
                 },
               ],
             },
@@ -137,7 +137,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   </div>
                 </div>
               </div>
-              <p className="text-xl text-[var(--text-muted)] leading-relaxed">{product.shortDescription}</p>
+              <p className="text-body text-[var(--text-muted)]">{product.shortDescription}</p>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
@@ -158,17 +158,17 @@ export default async function Page({ params }: { params: Promise<{ category: str
             <div className="space-y-12">
               <section className="border border-[var(--border)] bg-[var(--card-bg)] p-8 rounded-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-12 bg-[var(--accent)]/10 blur-[60px] rounded-full" />
-                <h2 className="text-2xl font-semibold text-[var(--text)] mb-4 flex items-center gap-2">
+                <h2 className="text-h2 text-[var(--text)] mb-4 flex items-center gap-2 font-semibold">
                   <ShieldCheck className="text-[var(--accent)]" /> Qognition Take
                 </h2>
-                <p className="text-lg text-[var(--text-muted)] leading-relaxed border-l-2 border-[var(--accent)] pl-6 mb-6">
+                <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6 mb-6">
                   &ldquo;{product.agencyVerdict}&rdquo;
                 </p>
               </section>
 
               <section>
                 <Heading level="h2" className="mb-6">Overview</Heading>
-                <p className="text-[var(--text-muted)] text-lg leading-relaxed whitespace-pre-wrap">
+                <p className="text-body text-[var(--text-muted)] whitespace-pre-wrap">
                   {product.fullDescription}
                 </p>
               </section>
@@ -183,7 +183,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                         className="p-5 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl"
                       >
                         <CheckCircle2 className="text-[var(--accent)] mb-4" size={20} />
-                        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{item}</p>
+                        <p className="text-body text-[var(--text-muted)]">{item}</p>
                       </div>
                     ))}
                   </div>
@@ -200,7 +200,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                         className="flex gap-4 border border-[var(--border)] bg-[var(--surface)] rounded-xl p-5"
                       >
                         <span className="font-mono text-[var(--accent)] text-sm">0{index + 1}</span>
-                        <p className="text-[var(--text-muted)] leading-relaxed">{item}</p>
+                        <p className="text-body text-[var(--text-muted)]">{item}</p>
                       </div>
                     ))}
                   </div>
@@ -212,7 +212,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   <Heading level="h2" className="mb-6">Pros and Limits</Heading>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-6 border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] rounded-xl">
-                      <h3 className="text-xl font-semibold text-[var(--accent)] mb-5">Where it helps</h3>
+                      <h3 className="text-h3 text-[var(--accent)] mb-5 font-semibold">Where it helps</h3>
                       <div className="space-y-4">
                         {(product.pros || []).map((item) => (
                           <div key={item} className="flex gap-3 text-sm text-[var(--text-muted)]">
@@ -223,7 +223,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                       </div>
                     </div>
                     <div className="p-6 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl">
-                      <h3 className="text-xl font-semibold text-[var(--text)] mb-5">Watch-outs</h3>
+                      <h3 className="text-h3 text-[var(--text)] mb-5 font-semibold">Watch-outs</h3>
                       <div className="space-y-4">
                         {(product.cons || []).map((item) => (
                           <div key={item} className="flex gap-3 text-sm text-[var(--text-muted)]">
@@ -240,7 +240,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
               {product.workflowExample && (
                 <section className="border border-[var(--border)] rounded-2xl p-8 bg-[var(--card-bg)]">
                   <Heading level="h2" className="mb-6">Workflow Example</Heading>
-                  <p className="text-[var(--text-muted)] text-lg leading-relaxed mb-6">
+                  <p className="text-body text-[var(--text-muted)] mb-6">
                     {product.workflowExample}
                   </p>
                   {product.implementationSteps && (
@@ -262,7 +262,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
               {product.seoNotes && (
                 <section className="border-l-2 border-[var(--accent)] pl-6">
                   <Heading level="h2" className="mb-4">SEO and AI Search Notes</Heading>
-                  <p className="text-[var(--text-muted)] text-lg leading-relaxed">{product.seoNotes}</p>
+                  <p className="text-body text-[var(--text-muted)]">{product.seoNotes}</p>
                 </section>
               )}
 
@@ -291,8 +291,8 @@ export default async function Page({ params }: { params: Promise<{ category: str
                       key={title}
                       className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                     >
-                      <h3 className="text-xl font-semibold text-[var(--text)] mb-3">{title}</h3>
-                      <p className="text-sm text-[var(--text-muted)] leading-relaxed">{copy}</p>
+                      <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{title}</h3>
+                      <p className="text-body text-[var(--text-muted)]">{copy}</p>
                     </div>
                   ))}
                 </div>
@@ -323,8 +323,8 @@ export default async function Page({ params }: { params: Promise<{ category: str
                         key={faq.question}
                         className="p-5 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]"
                       >
-                        <h3 className="font-semibold text-[var(--text)] mb-2">{faq.question}</h3>
-                        <p className="text-sm text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                        <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{faq.question}</h3>
+                        <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                       </div>
                     ))}
                   </div>
@@ -376,7 +376,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                 Visit Website
               </a>
               <div className="border-t border-[var(--border)] pt-6">
-                <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)] mb-4">
+                <h2 className="text-h2 text-[var(--text-muted)] mb-4 font-semibold">
                   Related Service
                 </h2>
                 {relatedService ? (
@@ -385,14 +385,41 @@ export default async function Page({ params }: { params: Promise<{ category: str
                       <span className="font-semibold text-[var(--text)]">{relatedService.title}</span>
                       <ArrowRight size={16} className="text-[var(--accent)]" />
                     </div>
-                    <p className="text-xs text-[var(--text-muted)] mt-2">
+                    <p className="text-meta text-[var(--text-muted)] mt-2">
                       Need help implementing {product.name}? Our {relatedService.title} team can turn the tool into a
                       measurable workflow.
                     </p>
                   </Link>
                 ) : (
-                  <p className="text-sm text-[var(--text-muted)]">Contact us for enterprise implementation.</p>
+                  <p className="text-body text-[var(--text-muted)]">Contact us for enterprise implementation.</p>
                 )}
+              </div>
+
+              {/* Internal links. Directory pages rank but historically dead-ended,
+                  passing no equity to the guides and audits that convert. */}
+              <div className="border-t border-[var(--border)] pt-6 mt-6">
+                <h2 className="text-h2 text-[var(--text-muted)] mb-4 font-semibold">
+                  Related Guides
+                </h2>
+                <ul className="space-y-2.5">
+                  {[
+                    { label: 'How to improve AI search visibility', href: '/improve-ai-search-visibility' },
+                    { label: 'OpenAI API for SEO', href: '/openai-api-seo' },
+                    { label: `Browse all ${product.category} tools`, href: `/directory/${product.categorySlug}` },
+                    { label: 'Free SEO audit', href: '/free-seo-audit' },
+                    { label: 'Free AI visibility audit', href: '/free-ai-audit' },
+                  ].map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-body text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <ArrowRight size={13} className="text-[var(--accent)] shrink-0" />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </aside>

@@ -13,8 +13,8 @@ export const SERVICES: Service[] = [
   {
     id: 'strategy',
     title: 'Strategy & Consulting',
-    shortDescription: 'Go-to-market, positioning, and growth strategy for founders.',
-    fullDescription: 'Before a dollar is spent on ads or a line of content is written, we build the strategic spine: who you serve, why you win, which channels matter, and how budget converts to pipeline. Fractional CMO leadership without the full-time cost.',
+    shortDescription: 'Marketing consulting for founders: positioning, go-to-market, channel mix, and budget allocation.',
+    fullDescription: 'Marketing consulting that answers four questions before you spend: who exactly you serve, why you win against the alternatives, which channels are worth funding, and how each dollar of budget becomes pipeline. You get a written GTM plan, a positioning statement your whole team can use, a channel-by-channel budget model, and a measurement plan that ties spend to revenue — fractional CMO leadership without the full-time cost.',
     icon: 'Compass',
     kpis: ['Clear GTM Plan', 'Lower CAC', 'Faster Decisions'],
     expertQuote: {
@@ -349,8 +349,8 @@ export const SERVICES: Service[] = [
   {
     id: 'video',
     title: 'Video & Multimedia',
-    shortDescription: 'Explainers, product films, testimonials, podcasts, and motion.',
-    fullDescription: 'Video is the highest-converting and most-shared format online. We produce explainer videos, product films, testimonials, YouTube programs, and podcasts — scripted, shot, edited, and optimized for the platform and the funnel stage they serve.',
+    shortDescription: 'Expert multimedia production: explainers, product films, testimonials, podcasts, and motion graphics.',
+    fullDescription: 'Expert multimedia production, end to end. We script, shoot, edit, and optimize explainer videos, product films, customer testimonials, YouTube programs, podcasts, and motion graphics — each cut for the platform it runs on and the funnel stage it serves. Video is the highest-converting and most-shared format online, and every asset we produce is built to be measured against pipeline, not views.',
     icon: 'Video',
     kpis: ['2x Time-on-Page', 'Higher Trust', 'More Shares'],
     subServices: [

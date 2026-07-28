@@ -53,10 +53,10 @@ export default async function SpokePage({
               '@context': 'https://schema.org',
               '@type': 'Service',
               name: `${config.label} Services`,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
               description: config.description,
               areaServed: { '@type': 'Country', name: 'United States' },
-              url: `https://qognition.com/${spoke}`,
+              url: `https://www.qognitionagency.com/${spoke}`,
             },
             breadcrumbSchema([
               { name: 'Home', path: '/' },

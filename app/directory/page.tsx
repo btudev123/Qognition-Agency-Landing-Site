@@ -26,7 +26,7 @@ export default function Page() {
               '@type': 'CollectionPage',
               name: 'Qognition Growth Stack Directory',
               description: 'Useful software profiles for SEO, AI, marketing, development, design, and automation tools.',
-              url: 'https://qognition.com/directory',
+              url: 'https://www.qognitionagency.com/directory',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Directory', path: '/directory' }]),
           ]),
@@ -37,7 +37,7 @@ export default function Page() {
           <div className="max-w-3xl">
             <Badge className="mb-4">Growth Stack</Badge>
             <Heading level="h1" className="mb-4">Tools Directory</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl">
               Browse useful software and AI product profiles for SEO, PPC, content, social media, web development, and automation.
             </p>
           </div>
@@ -57,10 +57,10 @@ export default function Page() {
                     <Search size={20} className="text-[var(--accent)]" />
                     <span className="text-xs text-[var(--text-muted)]">{count} tools</span>
                   </div>
-                  <h2 className="text-lg font-semibold text-[var(--text)] mb-2 group-hover:text-[var(--accent)] transition-colors">
+                  <h2 className="text-h2 text-[var(--text)] mb-2 group-hover:text-[var(--accent)] transition-colors font-semibold">
                     {category.name}
                   </h2>
-                  <p className="text-sm text-[var(--text-muted)] mb-4 leading-relaxed">{category.description}</p>
+                  <p className="text-body text-[var(--text-muted)] mb-4">{category.description}</p>
                   <span className="inline-flex items-center gap-2 text-[var(--accent)] text-sm">
                     Browse category <ArrowRight size={14} />
                   </span>

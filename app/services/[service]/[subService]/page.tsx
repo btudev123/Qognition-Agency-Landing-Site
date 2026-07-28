@@ -49,9 +49,9 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               '@type': 'Service',
               name: page.title,
               description: page.description,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
               serviceType: page.title,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             ...(page.faqs?.length ? [faqSchema(page.faqs)] : []),
             breadcrumbSchema([
@@ -72,7 +72,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
             {parent.title}
           </Link>
           <Heading level="h1" className="mt-6 mb-6">{page.h1}</Heading>
-          <p className="text-xl text-[var(--text-muted)] max-w-4xl leading-relaxed">{page.intro}</p>
+          <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
@@ -107,7 +107,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               {page.sections.map((section) => (
                 <section key={section.title} className="border-b border-[var(--border)] pb-10 last:border-0">
                   <Heading level="h2" className="mb-5">{section.title}</Heading>
-                  <p className="text-lg text-[var(--text-muted)] leading-relaxed">{section.content}</p>
+                  <p className="text-body text-[var(--text-muted)]">{section.content}</p>
                 </section>
               ))}
             </div>
@@ -122,8 +122,8 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                     key={faq.question}
                     className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5"
                   >
-                    <h3 className="font-semibold text-[var(--text)] text-lg mb-3">{faq.question}</h3>
-                    <p className="text-sm text-[var(--text-muted)] leading-relaxed">{faq.answer}</p>
+                    <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{faq.question}</h3>
+                    <p className="text-body text-[var(--text-muted)]">{faq.answer}</p>
                   </div>
                 ))}
               </div>
@@ -148,7 +148,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
           {siblingPages.length > 0 && (
             <div className="mt-20 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
               <Heading level="h2" className="mb-6">More {parent.title} Sub-Services</Heading>
-              <p className="text-[var(--text-muted)] leading-relaxed mb-6">
+              <p className="text-body text-[var(--text-muted)] mb-6">
                 Internal links help buyers understand how this service fits inside the wider AI growth marketing system.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">

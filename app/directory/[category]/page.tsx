@@ -40,14 +40,14 @@ export default async function Page({ params }: { params: Promise<{ category: str
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: `${categoryName} Tools Directory`,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
               mainEntity: {
                 '@type': 'ItemList',
                 itemListElement: products.slice(0, 100).map((product, index) => ({
                   '@type': 'ListItem',
                   position: index + 1,
                   name: product.name,
-                  url: `https://qognition.com/directory/${product.categorySlug}/${product.slug}`,
+                  url: `https://www.qognitionagency.com/directory/${product.categorySlug}/${product.slug}`,
                 })),
               },
             },
@@ -71,7 +71,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
           <div className="max-w-3xl mb-14">
             <Badge className="mb-4">{products.length} tools</Badge>
             <Heading level="h1" className="mb-4">{categoryName} Tools</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed">
+            <p className="text-body text-[var(--text-muted)]">
               {categoryData?.description || `Browse useful software profiles for ${categoryName.toLowerCase()} tools.`}
             </p>
           </div>
@@ -96,13 +96,13 @@ export default async function Page({ params }: { params: Promise<{ category: str
                     </div>
                   )}
                   <div>
-                    <h3 className="font-semibold text-[var(--text)] text-sm">{product.name}</h3>
+                    <h3 className="text-h3 text-[var(--text)] font-semibold">{product.name}</h3>
                     <div className="flex items-center gap-1 text-xs text-[var(--accent)]">
                       <Star size={12} fill="currentColor" /> {product.rating}/5
                     </div>
                   </div>
                 </div>
-                <p className="text-xs text-[var(--text-muted)] leading-relaxed line-clamp-2">
+                <p className="text-meta text-[var(--text-muted)] line-clamp-2">
                   {product.shortDescription}
                 </p>
               </Link>

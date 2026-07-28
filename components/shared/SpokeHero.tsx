@@ -42,13 +42,13 @@ export default function SpokeHero({
     return (
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-20 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-4">
+          <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-4">
             Free {config?.label} Audit
           </p>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--text)] leading-tight mb-4">
+          <h1 className="text-h1 text-[var(--text)] mb-4 font-semibold">
             {heading}
           </h1>
-          <p className="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed mb-8 max-w-xl mx-auto">
+          <p className="text-body text-[var(--text-muted)] mb-8 max-w-xl mx-auto">
             {subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -56,7 +56,7 @@ export default function SpokeHero({
               {finalPrimaryCta}
             </Button>
           </div>
-          <p className="text-xs text-[var(--text-muted)] mt-4">
+          <p className="text-meta text-[var(--text-muted)] mt-4">
             Free · No commitment · Delivered in 48 hours
           </p>
         </div>
@@ -68,10 +68,10 @@ export default function SpokeHero({
     return (
       <section className="pt-32 pb-12 sm:pt-40 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--text)] leading-tight mb-4">
+          <h1 className="text-h1 text-[var(--text)] mb-4 font-semibold">
             {heading}
           </h1>
-          <p className="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed mb-8 max-w-xl mx-auto">
+          <p className="text-body text-[var(--text-muted)] mb-8 max-w-xl mx-auto">
             {subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -93,10 +93,10 @@ export default function SpokeHero({
   return (
     <section className="pt-32 pb-16 sm:pt-44 sm:pb-24 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-[var(--text)] leading-tight mb-5">
+        <h1 className="text-display text-[var(--text)] mb-5 font-semibold">
           {heading}
         </h1>
-        <p className="text-lg sm:text-xl text-[var(--text-muted)] leading-relaxed mb-10 max-w-2xl mx-auto">
+        <p className="text-body text-[var(--text-muted)] mb-10 max-w-2xl mx-auto">
           {subtitle}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">

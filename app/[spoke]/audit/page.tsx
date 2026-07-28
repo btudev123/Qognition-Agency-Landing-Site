@@ -61,7 +61,7 @@ export default async function SpokeAuditPageRoute({
               name: `Free ${config.label} Audit`,
               provider: { '@type': 'Organization', name: 'Qognition' },
               description: `Free ${config.label.toLowerCase()} audit delivered within 48 hours.`,
-              url: `https://qognition.com/${spoke}/audit`,
+              url: `https://www.qognitionagency.com/${spoke}/audit`,
             },
             breadcrumbSchema([
               { name: 'Home', path: '/' },

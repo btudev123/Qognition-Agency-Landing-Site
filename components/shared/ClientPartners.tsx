@@ -17,7 +17,7 @@ function LogoRow({
   return (
     <div>
       <p
-        className="text-center font-mono text-[10px] tracking-[0.18em] uppercase mb-7"
+        className="text-center font-mono text-meta uppercase mb-7"
         style={{ color: 'var(--text-muted)' }}
       >
         {label}

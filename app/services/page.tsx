@@ -42,7 +42,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'Qognition',
-              url: 'https://qognition.com',
+              url: 'https://www.qognitionagency.com',
               knowsAbout: SERVICES.flatMap((service) => [service.title, ...service.subServices.map((sub) => sub.name)]),
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }]),
@@ -54,7 +54,7 @@ export default function Page() {
           <div className="text-center">
             <Badge className="mb-6">AI Growth Marketing Partner</Badge>
             <Heading level="h1" className="mb-8">AI Growth Marketing Services</Heading>
-            <p className="text-xl text-[var(--text-muted)] max-w-3xl mx-auto leading-relaxed">
+            <p className="text-body text-[var(--text-muted)] max-w-3xl mx-auto">
               Qognition helps companies get qualified leads through SEO, SMM, AI SEO, web design, PPC, branding, and creative systems that connect to measurable pipeline.
             </p>
           </div>
@@ -77,10 +77,10 @@ export default function Page() {
           </div>
 
           <div className="max-w-4xl mx-auto text-center mb-16">
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed mb-8">
+            <p className="text-body text-[var(--text-muted)] mb-8">
               Your buyers do not move through one channel. They search Google, compare agencies, read case studies, ask AI tools for options, check LinkedIn, and judge your website before they speak to sales. Qognition builds the connected system around that journey.
             </p>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed">
+            <p className="text-body text-[var(--text-muted)]">
               Use this page as the map: each service connects to sub-service pages, location pages, industry pages, case studies, resources, tools, and directory content so buyers can compare options and choose the right next step.{' '}
               <a href="mailto:hello@qognitionagency.com" className="text-[var(--accent)] hover:underline">Email hello@qognitionagency.com</a> or{' '}
               <a href="https://cal.com/qognition-agency/15min" target="_blank" rel="noopener noreferrer" className="text-[var(--accent)] hover:underline">book a strategy call</a>.
@@ -106,10 +106,10 @@ export default function Page() {
                     </div>
                     <ArrowRight size={18} className="text-[var(--accent)]" />
                   </div>
-                  <h2 className="text-2xl font-semibold text-[var(--text)] mb-4 group-hover:text-[var(--accent)] transition-colors">
+                  <h2 className="text-h2 text-[var(--text)] mb-4 group-hover:text-[var(--accent)] transition-colors font-semibold">
                     <Link href={`/services/${service.id}`}>{service.title.replace('Web Development', 'Web Design')}</Link>
                   </h2>
-                  <p className="text-[var(--text-muted)] text-base leading-relaxed mb-8">
+                  <p className="text-body text-[var(--text-muted)] mb-8">
                     {service.shortDescription}
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -148,14 +148,14 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="p-8 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]">
               <Heading level="h2" className="mb-4 text-[var(--accent)]">AI Growth Partner</Heading>
-              <p className="text-[var(--text-muted)] mb-4">
+              <p className="text-body text-[var(--text-muted)] mb-4">
                 Strategy, engineering, SEO, content, creative, and paid media leadership work from one growth model, so every page and campaign has a clear job.
               </p>
               <Link href="/team" className="text-[var(--accent)] hover:underline">Meet the team</Link>
             </div>
             <div className="p-8 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]">
               <Heading level="h2" className="mb-4 text-[var(--accent)]">Proof and Planning</Heading>
-              <p className="text-[var(--text-muted)] mb-4">
+              <p className="text-body text-[var(--text-muted)] mb-4">
                 Use our case studies, lead magnets, free tools, and location pages to see how the system fits your market before a call.
               </p>
               <Link href="/case-studies" className="text-[var(--accent)] hover:underline">View case studies</Link>
@@ -165,7 +165,7 @@ export default function Page() {
 
         <Section spacing="lg">
           <div className="text-center">
-            <p className="text-xl text-[var(--text)] mb-8">Ready to turn visibility into pipeline?</p>
+            <p className="text-body text-[var(--text)] mb-8">Ready to turn visibility into pipeline?</p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <a
                 href="https://cal.com/qognition-agency/15min"

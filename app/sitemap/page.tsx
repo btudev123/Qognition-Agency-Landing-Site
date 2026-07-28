@@ -22,7 +22,7 @@ export default function Page() {
       <main className="pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-32">
         <header className="mb-12">
           <Heading level="h1" className="!text-4xl md:!text-6xl mb-4">XML Sitemap</Heading>
-          <p className="text-xl text-[var(--text-muted)]">Raw index of all platform endpoints.</p>
+          <p className="text-body text-[var(--text-muted)]">Raw index of all platform endpoints.</p>
         </header>
 
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] overflow-hidden">
@@ -38,7 +38,7 @@ export default function Page() {
             </a>
           </div>
           <div className="p-8 text-center">
-            <p className="text-[var(--text-muted)] mb-4">
+            <p className="text-body text-[var(--text-muted)] mb-4">
               The XML sitemap is generated automatically by Next.js at build time.
             </p>
             <a

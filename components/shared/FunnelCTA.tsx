@@ -46,7 +46,7 @@ export default function FunnelCTA({
           {cta.eyebrow}
         </span>
         <h2
-          className="mt-5 mb-8"
+          className="text-h2 mt-5 mb-8 font-semibold"
           style={{
             fontFamily: 'var(--font-geist), system-ui, sans-serif',
             fontSize: 'clamp(30px, 5vw, 56px)',
@@ -78,7 +78,7 @@ export default function FunnelCTA({
             {cta.secondary.label}
           </Secondary>
         </div>
-        <p className="mt-5 text-xs" style={{ color: 'rgba(243,240,234,0.5)' }}>
+        <p className="text-meta mt-5" style={{ color: 'rgba(243,240,234,0.5)' }}>
           {cta.reassurance}
         </p>
       </div>

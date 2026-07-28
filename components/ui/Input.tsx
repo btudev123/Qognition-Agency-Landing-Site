@@ -21,7 +21,7 @@ export default function Input({ error, label, className = '', id, ...props }: In
         } ${className}`}
         {...props}
       />
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-meta text-red-400">{error}</p>}
     </div>
   );
 }

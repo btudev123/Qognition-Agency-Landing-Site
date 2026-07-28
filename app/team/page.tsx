@@ -24,7 +24,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'Qognition',
-              url: 'https://qognition.com',
+              url: 'https://www.qognitionagency.com',
               employee: TEAM_MEMBERS.map((member) => ({
                 '@type': 'Person',
                 name: member.name,
@@ -41,7 +41,7 @@ export default function Page() {
           <div className="max-w-3xl">
             <Badge className="mb-4">Leadership</Badge>
             <Heading level="h1" className="mb-4">Meet the Team Behind the Strategy</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-3xl">
+            <p className="text-body text-[var(--text-muted)] max-w-3xl">
               Enterprise buyers want to know who is accountable for strategy. Qognition combines senior growth strategy, SEO systems, paid media, and engineering leadership.
             </p>
           </div>
@@ -61,10 +61,10 @@ export default function Page() {
                     .join('')
                     .slice(0, 2)}
                 </div>
-                <h2 className="text-2xl font-semibold text-[var(--text)] mb-2">{member.name}</h2>
-                <p className="text-[var(--accent)] mb-4">{member.role}</p>
-                <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-5">{member.focus}</p>
-                <p className="text-[var(--text-muted)] leading-relaxed">{member.bio}</p>
+                <h2 className="text-h2 text-[var(--text)] mb-2 font-semibold">{member.name}</h2>
+                <p className="text-body text-[var(--accent)] mb-4">{member.role}</p>
+                <p className="text-meta uppercase text-[var(--text-muted)] mb-5">{member.focus}</p>
+                <p className="text-body text-[var(--text-muted)]">{member.bio}</p>
               </article>
             ))}
           </div>

@@ -58,12 +58,12 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Assessment */}
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-5">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)] mb-2">
+        <h2 className="text-h2 text-[var(--text-muted)] mb-2 font-semibold">
           Quick Assessment
         </h2>
         {questions.map((q) => (
           <div key={q.id} className="space-y-2">
-            <p className="text-sm text-[var(--text)]">{q.label}</p>
+            <p className="text-body text-[var(--text)]">{q.label}</p>
             <div className="flex gap-2">
               {(['yes', 'partial', 'no'] as const).map((v) => (
                 <button
@@ -87,7 +87,7 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
       {/* Results */}
       <div>
         <div className="rounded-xl border-2 border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.03)] p-6 mb-6">
-          <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-6">
+          <h2 className="text-h2 text-[var(--accent)] mb-6 font-semibold">
             Your Finance Health Score
           </h2>
           <div className="mb-6">
@@ -112,17 +112,17 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
               </div>
             ))}
           </div>
-          <p className="mt-6 text-xs text-[var(--text-muted)] leading-relaxed">
+          <p className="text-meta mt-6 text-[var(--text-muted)]">
             This is a quick self-assessment. For a full finance health check with benchmarks and recommendations, request the free audit below.
           </p>
         </div>
 
         {/* Capture */}
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-          <h3 className="text-sm font-semibold text-[var(--text)] mb-1 text-center">
+          <h3 className="text-h3 text-[var(--text)] mb-1 text-center font-semibold">
             Get Your Full Finance Health Check
           </h3>
-          <p className="text-xs text-[var(--text-muted)] mb-5 text-center">
+          <p className="text-meta text-[var(--text-muted)] mb-5 text-center">
             A real CFO-level analysis delivered in 48 hours. Free, no commitment.
           </p>
           <form
@@ -149,7 +149,7 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
             '@type': 'SoftwareApplication',
             name: 'Finance Health Score',
             description: 'Quick 6-question self-assessment for founder finance operations health.',
-            url: `https://qognition.com/free-tools/${toolSlug}`,
+            url: `https://www.qognitionagency.com/free-tools/${toolSlug}`,
             applicationCategory: 'FinanceApplication',
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
           }),

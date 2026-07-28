@@ -25,7 +25,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Digital Marketing Agency Comparisons',
-              url: 'https://qognition.com/comparisons',
+              url: 'https://www.qognitionagency.com/comparisons',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Comparisons', path: '/comparisons' }]),
           ]),
@@ -36,7 +36,7 @@ export default function Page() {
           <div className="max-w-3xl">
             <Badge className="mb-4">Comparisons</Badge>
             <Heading level="h1" className="mb-4">Agency and Strategy Comparisons</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl">
               Buyer-intent pages for teams comparing agencies, internal hiring, and local options before committing budget.
             </p>
           </div>
@@ -50,9 +50,9 @@ export default function Page() {
                 href={`/comparisons/${comparison.slug}`}
                 className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6 hover:border-[var(--accent)]/40 transition-all"
               >
-                <p className="text-xs uppercase tracking-widest text-[var(--accent)] mb-5">{comparison.category}</p>
-                <h2 className="text-xl font-semibold text-[var(--text)] mb-4">{comparison.title}</h2>
-                <p className="text-sm text-[var(--text-muted)] leading-relaxed">{comparison.description}</p>
+                <p className="text-meta uppercase text-[var(--accent)] mb-5">{comparison.category}</p>
+                <h2 className="text-h2 text-[var(--text)] mb-4 font-semibold">{comparison.title}</h2>
+                <p className="text-body text-[var(--text-muted)]">{comparison.description}</p>
               </Link>
             ))}
           </div>

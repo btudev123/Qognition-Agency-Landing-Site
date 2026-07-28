@@ -58,7 +58,7 @@ export default function Page() {
           <div className="text-center mb-16">
             <Badge className="mb-4">Start Here</Badge>
             <Heading level="h1" className="mb-6">Book a Strategy Call</Heading>
-            <p className="text-xl text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
               Every engagement starts with a conversation. Pick the path that matches your needs and we will take it from there.
             </p>
           </div>
@@ -66,8 +66,8 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
             {bookingOptions.map((option) => (
               <div key={option.title} className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8 flex flex-col">
-                <h3 className="text-xl font-semibold text-[var(--text)] mb-3">{option.title}</h3>
-                <p className="text-[var(--text-muted)] mb-8 flex-1">{option.description}</p>
+                <h3 className="text-h3 text-[var(--text)] mb-3 font-semibold">{option.title}</h3>
+                <p className="text-body text-[var(--text-muted)] mb-8 flex-1">{option.description}</p>
                 {option.external ? (
                   <a
                     href={option.href}

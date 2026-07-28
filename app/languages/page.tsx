@@ -25,7 +25,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Qognition Multilingual SEO',
-              url: 'https://qognition.com/languages',
+              url: 'https://www.qognitionagency.com/languages',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Languages', path: '/languages' }]),
           ]),
@@ -36,7 +36,7 @@ export default function Page() {
           <div className="max-w-3xl">
             <Badge className="mb-4">Multilingual SEO</Badge>
             <Heading level="h1" className="mb-4">Marketing in Every Priority Language</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl">
               Localized SEO, landing pages, paid media, and lead capture for Arabic, French, Spanish, Mandarin, Portuguese, Russian, and Japanese markets.
             </p>
           </div>
@@ -50,9 +50,9 @@ export default function Page() {
                 href={`/languages/${language.slug}`}
                 className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6 hover:border-[var(--accent)]/40 transition-all"
               >
-                <p className="text-2xl mb-4">{language.nativeName}</p>
-                <h2 className="text-xl font-semibold text-[var(--text)] mb-4">{language.language}</h2>
-                <p className="text-sm text-[var(--text-muted)] leading-relaxed">{language.description}</p>
+                <p className="text-body mb-4">{language.nativeName}</p>
+                <h2 className="text-h2 text-[var(--text)] mb-4 font-semibold">{language.language}</h2>
+                <p className="text-body text-[var(--text-muted)]">{language.description}</p>
               </Link>
             ))}
           </div>

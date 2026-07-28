@@ -26,6 +26,20 @@ export default {
         sans: ['var(--font-geist)', 'Geist', 'Inter Tight', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'SF Mono', 'monospace'],
       },
+      /* ── Canonical type scale ────────────────────────────────────────────
+         One token per role. Fluid via clamp() so there are no per-breakpoint
+         overrides in JSX. Every heading and every paragraph on the site
+         resolves to one of these — see components/ui/Heading.tsx,
+         components/ui/Text.tsx and the .prose-q block in app/globals.css. */
+      fontSize: {
+        display: ['clamp(2.75rem, 6vw, 5rem)', { lineHeight: '1.05', letterSpacing: '-0.03em' }],
+        h1: ['clamp(2.25rem, 4.5vw, 3.5rem)', { lineHeight: '1.1', letterSpacing: '-0.025em' }],
+        h2: ['clamp(1.75rem, 3vw, 2.5rem)', { lineHeight: '1.15', letterSpacing: '-0.02em' }],
+        h3: ['clamp(1.25rem, 2vw, 1.5rem)', { lineHeight: '1.25', letterSpacing: '-0.01em' }],
+        h4: ['1.125rem', { lineHeight: '1.35', letterSpacing: '-0.01em' }],
+        body: ['1.0625rem', { lineHeight: '1.7' }],
+        meta: ['0.8125rem', { lineHeight: '1.5' }],
+      },
       maxWidth: { '8xl': '90rem' },
       borderRadius: { DEFAULT: 'var(--radius)', lg: 'var(--radius-lg)' },
       keyframes: {

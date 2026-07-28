@@ -94,13 +94,13 @@ export default async function Page({
         }}
       />
       <main className="min-h-screen pt-36 pb-20 px-5 sm:px-10 max-w-5xl mx-auto">
-        <p className="font-mono text-[11px] tracking-[0.18em] uppercase mb-4" style={{ color: 'var(--accent)' }}>
+        <p className="text-meta font-mono uppercase mb-4" style={{ color: 'var(--accent)' }}>
           {location.name} · {industry.name}
         </p>
-        <h1 className="font-sans font-semibold tracking-[-0.03em] leading-[1.05] mb-6" style={{ fontSize: 'clamp(34px,5vw,60px)' }}>
+        <h1 className="text-h1 font-sans mb-6 font-semibold" style={{ fontSize: 'clamp(34px,5vw,60px)' }}>
           {service.title} for {industry.name} in {location.name}
         </h1>
-        <p className="text-lg leading-relaxed mb-10" style={{ color: 'var(--text-muted)' }}>
+        <p className="text-body mb-10" style={{ color: 'var(--text-muted)' }}>
           {service.shortDescription} Qognition adapts {service.title.toLowerCase()} for {industry.name.toLowerCase()} companies
           competing in {location.name} ({location.region}) — built around local search demand, {industry.name.toLowerCase()} buyer
           intent, and the trust signals that convert in this market.
@@ -114,7 +114,7 @@ export default async function Page({
           ].map((c) => (
             <div key={c.h} className="rounded-xl border p-5" style={{ borderColor: 'var(--border)' }}>
               <div className="font-semibold mb-2" style={{ color: 'var(--text)' }}>{c.h}</div>
-              <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{c.p}</p>
+              <p className="text-body" style={{ color: 'var(--text-muted)' }}>{c.p}</p>
             </div>
           ))}
         </div>

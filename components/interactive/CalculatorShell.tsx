@@ -25,7 +25,7 @@ export default function CalculatorShell({
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Inputs */}
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6 space-y-4">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--text-muted)] mb-2">
+        <h2 className="text-h2 text-[var(--text-muted)] mb-2 font-semibold">
           Inputs
         </h2>
         {children}
@@ -33,7 +33,7 @@ export default function CalculatorShell({
 
       {/* Results */}
       <div className="rounded-xl border-2 border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.03)] p-6">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-[var(--accent)] mb-6">
+        <h2 className="text-h2 text-[var(--accent)] mb-6 font-semibold">
           Your Estimate
         </h2>
         <div className="space-y-4">
@@ -55,7 +55,7 @@ export default function CalculatorShell({
             </div>
           ))}
         </div>
-        <p className="mt-6 text-xs text-[var(--text-muted)] leading-relaxed">
+        <p className="text-meta mt-6 text-[var(--text-muted)]">
           This is a directional estimate. Use your real CRM, analytics, and close-rate data for board-level forecasting.
         </p>
       </div>
@@ -63,10 +63,10 @@ export default function CalculatorShell({
       {/* Lead capture below results */}
       <div className="lg:col-span-2 max-w-md mx-auto w-full">
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-          <h3 className="text-sm font-semibold text-[var(--text)] mb-1 text-center">
+          <h3 className="text-h3 text-[var(--text)] mb-1 text-center font-semibold">
             Want the full model?
           </h3>
-          <p className="text-xs text-[var(--text-muted)] mb-5 text-center">
+          <p className="text-meta text-[var(--text-muted)] mb-5 text-center">
             Send this estimate and we&apos;ll review the assumptions with you — free.
           </p>
           <LeadForm

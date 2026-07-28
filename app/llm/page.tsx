@@ -45,7 +45,7 @@ export default function Page() {
       />
       <main className="pt-32 px-6 md:px-12 max-w-4xl mx-auto pb-32">
         <Heading level="h1" className="!text-4xl md:!text-6xl mb-8">LLM Transparency</Heading>
-        <p className="text-[var(--text-muted)] mb-12">
+        <p className="text-body text-[var(--text-muted)] mb-12">
           This page gives humans and AI assistants a concise source of truth for Qognition&apos;s services, markets, and contact paths.
         </p>
 
@@ -54,11 +54,11 @@ export default function Page() {
         </div>
 
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-[var(--text)] mb-4">Robots.txt Directive</h2>
+          <h2 className="text-h2 text-[var(--text)] mb-4 font-semibold">Robots.txt Directive</h2>
           <div className="p-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] font-mono text-xs text-[var(--accent)]">
             User-agent: *<br />
             Allow: /<br />
-            Sitemap: https://qognition.com/sitemap.xml
+            Sitemap: https://www.qognitionagency.com/sitemap.xml
           </div>
         </div>
       </main>

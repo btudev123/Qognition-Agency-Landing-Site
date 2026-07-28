@@ -25,14 +25,14 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Free SEO and Marketing Tools',
-              url: 'https://qognition.com/free-tools',
+              url: 'https://www.qognitionagency.com/free-tools',
               mainEntity: {
                 '@type': 'ItemList',
                 itemListElement: FREE_TOOLS.map((tool, index) => ({
                   '@type': 'ListItem',
                   position: index + 1,
                   name: tool.title,
-                  url: `https://qognition.com/free-tools/${tool.slug}`,
+                  url: `https://www.qognitionagency.com/free-tools/${tool.slug}`,
                 })),
               },
             },
@@ -45,7 +45,7 @@ export default function Page() {
           <div className="max-w-3xl">
             <Badge className="mb-4">Free Tools</Badge>
             <Heading level="h1" className="mb-4">SEO and Marketing Calculators</Heading>
-            <p className="text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl">
+            <p className="text-body text-[var(--text-muted)] max-w-2xl">
               Estimate ROI, budget, traffic, ROAS, and content opportunities before you commit spend or build a campaign.
             </p>
           </div>
@@ -59,10 +59,10 @@ export default function Page() {
                 href={`/free-tools/${tool.slug}`}
                 className="group rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6 hover:border-[var(--accent)]/40 transition-all"
               >
-                <h2 className="text-xl font-semibold text-[var(--text)] mb-4 group-hover:text-[var(--accent)] transition-colors">
+                <h2 className="text-h2 text-[var(--text)] mb-4 group-hover:text-[var(--accent)] transition-colors font-semibold">
                   {tool.title}
                 </h2>
-                <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-6">{tool.description}</p>
+                <p className="text-body text-[var(--text-muted)] mb-6">{tool.description}</p>
                 <span className="text-sm text-[var(--accent)]">Open calculator</span>
               </Link>
             ))}

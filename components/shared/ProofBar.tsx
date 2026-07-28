@@ -17,10 +17,10 @@ export default function ProofBar({ stats, logoSrcs }: ProofBarProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {stats.map((stat) => (
             <div key={stat.label}>
-              <p className="text-2xl sm:text-3xl font-semibold text-[var(--accent)] tracking-tight">
+              <p className="text-body font-semibold text-[var(--accent)]">
                 {stat.value}
               </p>
-              <p className="text-sm text-[var(--text-muted)] mt-1">{stat.label}</p>
+              <p className="text-body text-[var(--text-muted)] mt-1">{stat.label}</p>
             </div>
           ))}
         </div>

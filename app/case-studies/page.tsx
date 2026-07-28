@@ -22,7 +22,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Case Studies',
-              url: 'https://qognition.com/case-studies',
+              url: 'https://www.qognitionagency.com/case-studies',
               about: { '@type': 'Organization', name: 'Qognition' },
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies' }]),
@@ -32,7 +32,7 @@ export default function Page() {
       <main className="pt-24 md:pt-32 px-6 md:px-12 max-w-7xl mx-auto min-h-screen pb-32">
         <header className="mb-24 text-center md:text-left">
           <Heading level="h1" className="!text-6xl md:!text-9xl mb-8">Case Studies</Heading>
-          <p className="text-xl md:text-2xl text-[var(--text-muted)] max-w-2xl">
+          <p className="text-body text-[var(--text-muted)] max-w-2xl">
             Real results for ambitious brands. We let the metrics speak for themselves.
           </p>
         </header>
@@ -53,7 +53,7 @@ export default function Page() {
                     <span className="text-[var(--accent)] text-sm font-bold uppercase tracking-wider">{study.client}</span>
                     <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">{study.industry}</span>
                   </div>
-                  <h3 className="text-3xl md:text-5xl font-semibold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-300">
+                  <h3 className="text-h3 text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-300 font-semibold">
                     {study.title}
                   </h3>
                   <div className="flex gap-2 flex-wrap mt-2">

@@ -81,7 +81,7 @@ export default async function SpokeServicePage({
               name: serviceData.title,
               provider: { '@type': 'Organization', name: 'Qognition' },
               description: serviceData.summary,
-              url: `https://qognition.com/${spoke}/${service}`,
+              url: `https://www.qognitionagency.com/${spoke}/${service}`,
               areaServed: { '@type': 'Country', name: 'United States' },
             },
             breadcrumbSchema([
