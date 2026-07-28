@@ -28,7 +28,7 @@ export default function Page() {
               name: 'Industries Qognition Serves',
               description:
                 'Industry-specific AI growth marketing pages for SEO, PPC, web design, AI visibility, social, branding, and creative.',
-              url: 'https://qognition.com/industries',
+              url: 'https://www.qognitionagency.com/industries',
             },
             breadcrumbSchema([
               { name: 'Home', path: '/' },

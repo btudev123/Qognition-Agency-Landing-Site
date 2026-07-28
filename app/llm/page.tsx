@@ -58,7 +58,7 @@ export default function Page() {
           <div className="p-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] font-mono text-xs text-[var(--accent)]">
             User-agent: *<br />
             Allow: /<br />
-            Sitemap: https://qognition.com/sitemap.xml
+            Sitemap: https://www.qognitionagency.com/sitemap.xml
           </div>
         </div>
       </main>

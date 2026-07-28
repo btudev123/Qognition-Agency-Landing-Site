@@ -49,9 +49,9 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               '@type': 'Service',
               name: page.title,
               description: page.description,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
               serviceType: page.title,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             ...(page.faqs?.length ? [faqSchema(page.faqs)] : []),
             breadcrumbSchema([

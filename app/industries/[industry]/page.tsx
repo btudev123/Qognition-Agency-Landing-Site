@@ -63,10 +63,10 @@ export default async function Page({
               provider: {
                 '@type': 'Organization',
                 name: 'Qognition',
-                url: 'https://qognition.com',
+                url: 'https://www.qognitionagency.com',
               },
               serviceType: 'Industry Digital Marketing',
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             ...(allFaqs.length ? [faqSchema(allFaqs)] : []),
             breadcrumbSchema([

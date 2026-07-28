@@ -25,14 +25,14 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Qognition Resources',
-              url: 'https://qognition.com/resources',
+              url: 'https://www.qognitionagency.com/resources',
               mainEntity: {
                 '@type': 'ItemList',
                 itemListElement: RESOURCES.map((resource, index) => ({
                   '@type': 'ListItem',
                   position: index + 1,
                   name: resource.title,
-                  url: `https://qognition.com${resource.href || `/${resource.slug}`}`,
+                  url: `https://www.qognitionagency.com${resource.href || `/${resource.slug}`}`,
                 })),
               },
             },

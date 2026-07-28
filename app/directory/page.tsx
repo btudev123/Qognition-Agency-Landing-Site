@@ -26,7 +26,7 @@ export default function Page() {
               '@type': 'CollectionPage',
               name: 'Qognition Growth Stack Directory',
               description: 'Useful software profiles for SEO, AI, marketing, development, design, and automation tools.',
-              url: 'https://qognition.com/directory',
+              url: 'https://www.qognitionagency.com/directory',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Directory', path: '/directory' }]),
           ]),

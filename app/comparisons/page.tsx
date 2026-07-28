@@ -25,7 +25,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Digital Marketing Agency Comparisons',
-              url: 'https://qognition.com/comparisons',
+              url: 'https://www.qognitionagency.com/comparisons',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Comparisons', path: '/comparisons' }]),
           ]),

@@ -25,14 +25,14 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Free SEO and Marketing Tools',
-              url: 'https://qognition.com/free-tools',
+              url: 'https://www.qognitionagency.com/free-tools',
               mainEntity: {
                 '@type': 'ItemList',
                 itemListElement: FREE_TOOLS.map((tool, index) => ({
                   '@type': 'ListItem',
                   position: index + 1,
                   name: tool.title,
-                  url: `https://qognition.com/free-tools/${tool.slug}`,
+                  url: `https://www.qognitionagency.com/free-tools/${tool.slug}`,
                 })),
               },
             },

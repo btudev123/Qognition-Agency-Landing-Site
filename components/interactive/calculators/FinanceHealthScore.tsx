@@ -149,7 +149,7 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
             '@type': 'SoftwareApplication',
             name: 'Finance Health Score',
             description: 'Quick 6-question self-assessment for founder finance operations health.',
-            url: `https://qognition.com/free-tools/${toolSlug}`,
+            url: `https://www.qognitionagency.com/free-tools/${toolSlug}`,
             applicationCategory: 'FinanceApplication',
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
           }),

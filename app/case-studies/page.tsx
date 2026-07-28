@@ -22,7 +22,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Case Studies',
-              url: 'https://qognition.com/case-studies',
+              url: 'https://www.qognitionagency.com/case-studies',
               about: { '@type': 'Organization', name: 'Qognition' },
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies' }]),

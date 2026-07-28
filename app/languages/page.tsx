@@ -25,7 +25,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Qognition Multilingual SEO',
-              url: 'https://qognition.com/languages',
+              url: 'https://www.qognitionagency.com/languages',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Languages', path: '/languages' }]),
           ]),

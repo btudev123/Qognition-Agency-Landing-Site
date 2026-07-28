@@ -48,9 +48,9 @@ export default async function Page({ params }: { params: Promise<{ industry: str
               '@type': 'Service',
               name: `${subIndustry.name} Digital Marketing`,
               description: subIndustry.description,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
               serviceType: `${subIndustry.name} Marketing`,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             ...(displayFaqs?.length ? [faqSchema(displayFaqs)] : []),
             breadcrumbSchema([

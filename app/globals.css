@@ -380,6 +380,82 @@ input:focus-visible,
 /* Wide content must scroll inside itself, never the page body. */
 .prose-q .table-scroll { overflow-x: auto; }
 
+/* ─── ROI CALCULATOR SLIDERS ──────────────────────────────────────────────── */
+
+/* Track is painted with a gradient split at --roi-pct so the filled portion
+   reads as progress. Thumb styling has to be duplicated per-engine — WebKit and
+   Firefox do not share a pseudo-element. */
+.roi-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+}
+
+.roi-slider:focus { outline: none; }
+
+.roi-slider::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) var(--roi-pct),
+    var(--border-strong) var(--roi-pct),
+    var(--border-strong) 100%
+  );
+}
+
+.roi-slider::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+
+.roi-slider::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.roi-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.roi-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.roi-slider:hover::-webkit-slider-thumb,
+.roi-slider:active::-webkit-slider-thumb { transform: scale(1.12); }
+.roi-slider:hover::-moz-range-thumb,
+.roi-slider:active::-moz-range-thumb { transform: scale(1.12); }
+
+.roi-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--accent-pale);
+}
+.roi-slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px var(--accent-pale);
+}
+
 /* ─── ACCESSIBILITY ───────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

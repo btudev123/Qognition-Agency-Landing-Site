@@ -36,9 +36,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               '@type': 'Service',
               name: `Digital Marketing in ${region.name}`,
               description: region.description,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
               areaServed: region.name,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             ...(region.faqs?.length ? [faqSchema(region.faqs)] : []),
             breadcrumbSchema([

@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   applicationCategory: product.category,
                   operatingSystem: 'Web',
                   description: product.shortDescription,
-                  url: `https://qognition.com${path}`,
+                  url: `https://www.qognitionagency.com${path}`,
                   offers: {
                     '@type': 'Offer',
                     price: product.pricing === 'Free' || product.pricing === 'Open Source' ? '0' : undefined,
@@ -87,7 +87,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                       bestRating: 5,
                     },
                   },
-                  url: `https://qognition.com${path}`,
+                  url: `https://www.qognitionagency.com${path}`,
                 },
               ],
             },
@@ -393,6 +393,33 @@ export default async function Page({ params }: { params: Promise<{ category: str
                 ) : (
                   <p className="text-body text-[var(--text-muted)]">Contact us for enterprise implementation.</p>
                 )}
+              </div>
+
+              {/* Internal links. Directory pages rank but historically dead-ended,
+                  passing no equity to the guides and audits that convert. */}
+              <div className="border-t border-[var(--border)] pt-6 mt-6">
+                <h2 className="text-h2 text-[var(--text-muted)] mb-4 font-semibold">
+                  Related Guides
+                </h2>
+                <ul className="space-y-2.5">
+                  {[
+                    { label: 'How to improve AI search visibility', href: '/improve-ai-search-visibility' },
+                    { label: 'OpenAI API for SEO', href: '/openai-api-seo' },
+                    { label: `Browse all ${product.category} tools`, href: `/directory/${product.categorySlug}` },
+                    { label: 'Free SEO audit', href: '/free-seo-audit' },
+                    { label: 'Free AI visibility audit', href: '/free-ai-audit' },
+                  ].map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-body text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors inline-flex items-center gap-1.5"
+                      >
+                        <ArrowRight size={13} className="text-[var(--accent)] shrink-0" />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </aside>

@@ -22,9 +22,9 @@ export default function Page() {
               '@type': 'Article',
               headline: 'White-Hat Backlink and Authority Roadmap',
               description: 'A practical backlink execution asset for legitimate citations, outreach, partner pages, resource links, podcasts, and digital PR.',
-              author: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
-              publisher: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
-              url: 'https://qognition.com/backlink-authority-roadmap',
+              author: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
+              publisher: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
+              url: 'https://www.qognitionagency.com/backlink-authority-roadmap',
             },
           ]),
         }}

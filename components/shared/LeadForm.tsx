@@ -47,9 +47,10 @@ export default function LeadForm({
 
   const finalCta = ctaLabel || defaultCta;
 
-  // When a Tally form is configured, every lead form routes to Tally.
-  // Falls back to the native form + /api/lead when it's not set.
-  if (isTallyConfigured()) {
+  // Leads are delivered by Resend via /api/lead (notification + confirmation).
+  // Tally stays available as an explicit opt-out for forms we want hosted
+  // externally — set NEXT_PUBLIC_LEAD_TRANSPORT=tally to route through it.
+  if (process.env.NEXT_PUBLIC_LEAD_TRANSPORT === 'tally' && isTallyConfigured()) {
     return (
       <TallyForm
         className={className}

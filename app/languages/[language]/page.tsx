@@ -36,10 +36,10 @@ export default async function Page({ params }: { params: Promise<{ language: str
               '@type': 'Service',
               name: page.title,
               description: page.description,
-              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://qognition.com' },
+              provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
               availableLanguage: page.language,
               areaServed: page.countries,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
             },
             breadcrumbSchema([
               { name: 'Home', path: '/' },

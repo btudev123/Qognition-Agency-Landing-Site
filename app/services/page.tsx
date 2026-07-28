@@ -42,7 +42,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'Qognition',
-              url: 'https://qognition.com',
+              url: 'https://www.qognitionagency.com',
               knowsAbout: SERVICES.flatMap((service) => [service.title, ...service.subServices.map((sub) => sub.name)]),
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Services', path: '/services' }]),

@@ -27,7 +27,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'DefinedTermSet',
               name: 'Digital Marketing Glossary',
-              url: 'https://qognition.com/glossary',
+              url: 'https://www.qognitionagency.com/glossary',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Glossary', path: '/glossary' }]),
           ]),

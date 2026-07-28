@@ -26,7 +26,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Qognition Global Markets',
-              url: 'https://qognition.com/global',
+              url: 'https://www.qognitionagency.com/global',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Global Markets', path: '/global' }]),
           ]),

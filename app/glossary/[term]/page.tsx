@@ -54,8 +54,8 @@ export default async function Page({ params }: { params: Promise<{ term: string 
               '@type': 'DefinedTerm',
               name: page.term,
               description: page.definition,
-              inDefinedTermSet: 'https://qognition.com/glossary',
-              url: `https://qognition.com${path}`,
+              inDefinedTermSet: 'https://www.qognitionagency.com/glossary',
+              url: `https://www.qognitionagency.com${path}`,
             },
             breadcrumbSchema([
               { name: 'Home', path: '/' },

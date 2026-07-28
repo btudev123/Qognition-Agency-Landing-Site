@@ -25,7 +25,7 @@ export default function Page() {
               '@type': 'CollectionPage',
               name: 'Qognition Regions',
               description: 'Qognition delivers digital marketing strategy across global regions.',
-              url: 'https://qognition.com/regions',
+              url: 'https://www.qognitionagency.com/regions',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Regions', path: '/regions' }]),
           ]),

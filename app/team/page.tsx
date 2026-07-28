@@ -24,7 +24,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'Qognition',
-              url: 'https://qognition.com',
+              url: 'https://www.qognitionagency.com',
               employee: TEAM_MEMBERS.map((member) => ({
                 '@type': 'Person',
                 name: member.name,

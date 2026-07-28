@@ -40,14 +40,14 @@ export default async function Page({ params }: { params: Promise<{ category: str
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: `${categoryName} Tools Directory`,
-              url: `https://qognition.com${path}`,
+              url: `https://www.qognitionagency.com${path}`,
               mainEntity: {
                 '@type': 'ItemList',
                 itemListElement: products.slice(0, 100).map((product, index) => ({
                   '@type': 'ListItem',
                   position: index + 1,
                   name: product.name,
-                  url: `https://qognition.com/directory/${product.categorySlug}/${product.slug}`,
+                  url: `https://www.qognitionagency.com/directory/${product.categorySlug}/${product.slug}`,
                 })),
               },
             },
