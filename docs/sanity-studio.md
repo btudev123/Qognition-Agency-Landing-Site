@@ -27,14 +27,24 @@ and add each of these with **Allow credentials** checked:
 - `https://qognitionagency.com`
 - `http://localhost:3000`
 
-Or from a terminal, after a browser login:
+Or from a terminal. This must be a **real interactive terminal** (Terminal.app,
+iTerm) — `sanity login` needs a TTY to open the browser OAuth flow, and fails
+with "Multiple login providers available" when piped through a non-interactive
+shell:
 
 ```bash
-npx sanity login
-npx sanity cors add https://www.qognitionagency.com --credentials --project ngv93z0z
-npx sanity cors add https://qognitionagency.com     --credentials --project ngv93z0z
-npx sanity cors add http://localhost:3000           --credentials --project ngv93z0z
+npx sanity login   # opens a browser; pick google / github / sanity
+npx sanity cors add https://www.qognitionagency.com --credentials -p ngv93z0z
+npx sanity cors add https://qognitionagency.com     --credentials -p ngv93z0z
+npx sanity cors add http://localhost:3000           --credentials -p ngv93z0z
 ```
+
+The flag is `-p` / `--project-id`; there is no `--project`.
+
+Setting `SANITY_AUTH_TOKEN` instead of logging in does **not** work here: the
+CLI authenticates fine but the API still rejects the write, because neither an
+editor nor an access-manager token carries `sanity.project.cors/create`. Only an
+administrator session can add origins.
 
 To verify it worked, this should return an `access-control-allow-origin` header
 (it returns none while CORS is unconfigured):
