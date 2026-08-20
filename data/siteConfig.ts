@@ -15,8 +15,8 @@ export const CALENDLY_LINK = BOOKING_LINK;
 // Contact — ONE number across the whole site (WhatsApp + click-to-call).
 export const CONTACT_EMAIL = "hello@qognitionagency.com";
 export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
-export const WHATSAPP_NUMBER = "14372902549";
-export const WHATSAPP_DISPLAY = "+1 437 290 2549";
+export const WHATSAPP_NUMBER = "14372919570";
+export const WHATSAPP_DISPLAY = "+1 (437) 291-9570";
 export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 // Same number, click-to-call.
