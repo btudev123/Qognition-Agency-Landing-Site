@@ -16,11 +16,21 @@ export const intentSchema = z.enum([
   'newsletter',
 ]);
 
+const normalizeCompanyUrl = (value: unknown) => {
+  if (typeof value !== 'string') return value;
+  const trimmed = value.trim();
+  if (!trimmed) return '';
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+};
+
 export const contactSchema = z.object({
   name: z.string().min(1, 'Name is required').max(120),
   email: z.string().email('Valid email required').max(254),
   company: z.string().max(200).optional(),
-  company_url: z.string().url('Must be a valid URL').or(z.literal('')).optional(),
+  company_url: z.preprocess(
+    normalizeCompanyUrl,
+    z.string().url('Must be a valid URL').or(z.literal('')).optional(),
+  ),
   phone: z.string().max(30).optional(),
   message: z.string().max(5000).optional(),
 });

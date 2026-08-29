@@ -9,8 +9,8 @@ import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
 
 export const metadata: Metadata = {
-  title: 'AI Growth Marketing Services | Qognition',
-  description: 'SEO, SMM, AI SEO, web design, PPC, branding, and creative services for qualified leads and measurable revenue.',
+  title: 'AI Growth Marketing Services | SEO, PPC, Web Design & AI Search',
+  description: 'Qognition delivers SEO, AI search visibility, paid media, web design, content, and conversion strategy that turns attention into qualified leads.',
   alternates: { canonical: '/services' },
 };
 

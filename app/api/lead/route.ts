@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { leadSchema } from '../../../lib/validation';
-import { sendLeadNotification, sendLeadConfirmation } from '../../../lib/leadDelivery';
+import { sendLeadNotification, sendLeadConfirmation, submitHubSpotLead } from '../../../lib/leadDelivery';
 import { checkAuditRateLimit, getAuditDeviceCookie, recordAuditRateLimit } from '../../../lib/auditRateLimit';
 
 export const dynamic = 'force-dynamic';
@@ -46,10 +46,31 @@ export async function POST(request: NextRequest) {
       return response;
     }
 
-    const [notifyResult, confirmResult] = await Promise.all([
+    const [notifyResult, confirmResult, hubspotResult] = await Promise.all([
       sendLeadNotification(lead),
       sendLeadConfirmation(lead),
+      submitHubSpotLead(
+        {
+          source: lead.intent === 'audit' ? 'Free Audit Request' : 'Contact Form',
+          resource: lead.source_page,
+          pageUri: `https://www.qognitionagency.com${lead.source_page}`,
+          pageName: lead.source_page,
+          fields: {
+            email: lead.contact.email,
+            firstname: lead.contact.name,
+            company: lead.contact.company,
+            website: lead.contact.company_url,
+            phone: lead.contact.phone,
+            message: lead.contact.message,
+          },
+        },
+        request,
+      ),
     ]);
+
+    if (!hubspotResult.ok && !hubspotResult.skipped) {
+      console.error('[Lead] HubSpot CRM push failed:', hubspotResult.error);
+    }
 
     await recordAuditRateLimit(rateLimit.keys);
 

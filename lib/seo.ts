@@ -164,14 +164,14 @@ export const directoryProductSchema = (product: DirectoryProduct, path: string) 
 export const getCoreMetadata = (path: string): Metadata => {
   const pages: Record<string, { title: string; description: string }> = {
     '/': {
-      title: 'Qognition | AI Growth Marketing Partner',
+      title: 'Qognition | AI Growth Marketing Partner for Founders',
       description:
-        "Scale qualified leads with Qognition's AI growth marketing across SEO, AI search visibility, PPC, SMM, web design, branding, and creative."
+        'Qognition helps founders win with AI-native marketing, SEO, paid media, web design, and conversion strategy built to generate qualified pipeline.'
     },
     '/services': {
-      title: 'AI Growth Marketing Services | SEO, PPC, AI SEO & Web Design',
+      title: 'AI Growth Marketing Services | SEO, PPC, AI Search & Web Design',
       description:
-        'SEO, SMM, AI SEO, web design, PPC, branding, and creative services for qualified leads and measurable revenue.'
+        'Qognition delivers SEO, AI search visibility, paid media, web design, content, and CRO that turn attention into qualified opportunities.'
     },
     '/industries': {
       title: 'Industries We Serve | Expert Digital Marketing',

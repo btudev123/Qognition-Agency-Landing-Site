@@ -60,7 +60,14 @@ export default function LeadForm({
   }
 
   const validate = () => {
-    const result = contactSchema.safeParse({ name, email, company: company || undefined, company_url: companyUrl || undefined, message: message || undefined });
+    const normalizedCompanyUrl = companyUrl.trim();
+    const result = contactSchema.safeParse({
+      name,
+      email,
+      company: company || undefined,
+      company_url: normalizedCompanyUrl || undefined,
+      message: message || undefined,
+    });
     if (!result.success) {
       const flat = result.error.flatten().fieldErrors;
       const errs: Record<string, string> = {};

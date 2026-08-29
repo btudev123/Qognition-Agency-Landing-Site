@@ -1,12 +1,10 @@
-import dynamic from 'next/dynamic';
-
-const SeoRoiCalculator = dynamic(() => import('./interactive/calculators/SeoRoiCalculator'));
-const GoogleAdsCalculator = dynamic(() => import('./interactive/calculators/GoogleAdsCalculator'));
-const TrafficEstimator = dynamic(() => import('./interactive/calculators/TrafficEstimator'));
-const RoasCalculator = dynamic(() => import('./interactive/calculators/RoasCalculator'));
-const ContentIdeaGenerator = dynamic(() => import('./interactive/calculators/ContentIdeaGenerator'));
-const AutomationRoiCalculator = dynamic(() => import('./interactive/calculators/AutomationRoiCalculator'));
-const FinanceHealthScore = dynamic(() => import('./interactive/calculators/FinanceHealthScore'));
+import SeoRoiCalculator from './interactive/calculators/SeoRoiCalculator';
+import GoogleAdsCalculator from './interactive/calculators/GoogleAdsCalculator';
+import TrafficEstimator from './interactive/calculators/TrafficEstimator';
+import RoasCalculator from './interactive/calculators/RoasCalculator';
+import ContentIdeaGenerator from './interactive/calculators/ContentIdeaGenerator';
+import AutomationRoiCalculator from './interactive/calculators/AutomationRoiCalculator';
+import FinanceHealthScore from './interactive/calculators/FinanceHealthScore';
 
 interface Props {
   tool: string;

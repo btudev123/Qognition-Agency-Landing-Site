@@ -145,7 +145,6 @@ export async function sendLeadNotification(lead: LeadPayload) {
 }
 
 type LeadFieldValue = string | number | boolean | undefined | null;
-type HubSpotFieldMode = 'full' | 'core' | 'email';
 
 type HubSpotLeadSubmission = {
   source?: string;
@@ -155,125 +154,112 @@ type HubSpotLeadSubmission = {
   fields: Record<string, LeadFieldValue>;
 };
 
-const hubspotFieldNames: Record<string, string> = {
-  firstname: process.env.HUBSPOT_FIELD_FIRSTNAME || 'firstname',
-  email: process.env.HUBSPOT_FIELD_EMAIL || 'email',
-  company: process.env.HUBSPOT_FIELD_COMPANY || 'company',
-  website: process.env.HUBSPOT_FIELD_WEBSITE || 'website',
-  message: process.env.HUBSPOT_FIELD_MESSAGE || 'message',
-  auditType: process.env.HUBSPOT_FIELD_AUDIT_TYPE || 'audit_type',
-  score: process.env.HUBSPOT_FIELD_AUDIT_SCORE || 'audit_score',
-  reportSummary: process.env.HUBSPOT_FIELD_AUDIT_SUMMARY || 'audit_summary',
-  sourceUrl: process.env.HUBSPOT_FIELD_SOURCE_URL || 'source_url',
-};
-
-const coreLeadFields = new Set(['firstname', 'email', 'company', 'website', 'message']);
-
-function getAllowedFields(mode: HubSpotFieldMode) {
-  if (mode === 'email') return new Set(['email', 'message']);
-  if (mode === 'core') return coreLeadFields;
-  return new Set(Object.keys(hubspotFieldNames));
-}
-
 function makeSourceNote(payload: HubSpotLeadSubmission) {
   const fields = payload.fields || {};
   const details = [
     `Source: ${payload.source || 'Website'}`,
     payload.resource ? `Resource: ${payload.resource}` : '',
+    payload.pageUri ? `Page: ${payload.pageUri}` : '',
     fields.auditType ? `Audit type: ${fields.auditType}` : '',
     fields.score !== undefined && fields.score !== null ? `Audit score: ${fields.score}` : '',
     fields.sourceUrl ? `Source URL: ${fields.sourceUrl}` : '',
-    fields.reportSummary ? `Summary: ${fields.reportSummary}` : '',
-  ].filter(Boolean);
-
-  return details.join('\n');
+    fields.reportSummary ? `Summary: ${String(fields.reportSummary).slice(0, 500)}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+  return details;
 }
 
-function buildHubSpotFields(payload: HubSpotLeadSubmission, mode: HubSpotFieldMode) {
-  const allowedFields = getAllowedFields(mode);
-  const sourceNote = makeSourceNote(payload);
-
-  const fields = Object.entries(payload.fields || {})
-    .filter(
-      ([key, value]) =>
-        allowedFields.has(key) && hubspotFieldNames[key] && value !== undefined && value !== null && String(value).trim().length > 0,
-    )
-    .map(([key, value]) => ({
-      name: hubspotFieldNames[key],
-      value: String(value),
-    }));
-
-  const messageFieldName = hubspotFieldNames.message;
-  const messageField = fields.find((field) => field.name === messageFieldName);
-  if (messageField) {
-    messageField.value = `${messageField.value}\n\n${sourceNote}`;
-  } else if (sourceNote && allowedFields.has('message')) {
-    fields.push({ name: messageFieldName, value: sourceNote });
-  }
-
-  return fields;
-}
-
-async function postHubSpotForm(
+/**
+ * Push a lead to HubSpot CRM using the Contacts API v3 (Private App token).
+ * Creates or updates the contact by email. Falls back silently if the token
+ * is not configured so the rest of the lead flow is never blocked.
+ */
+export async function submitHubSpotLead(
   payload: HubSpotLeadSubmission,
-  request: NextRequest | undefined,
-  mode: HubSpotFieldMode,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _request?: NextRequest,
 ) {
-  const portalId = process.env.HUBSPOT_PORTAL_ID;
-  const formGuid = process.env.HUBSPOT_LEAD_FORM_GUID;
+  const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
 
-  if (!portalId || !formGuid) {
-    return { ok: false, skipped: true, status: 503, error: 'HubSpot not configured.' };
+  if (!accessToken) {
+    return { ok: false, skipped: true, status: 503, error: 'HubSpot access token not configured.' };
   }
 
-  const fields = buildHubSpotFields(payload, mode);
+  const fields = payload.fields || {};
+  const email = String(fields.email || '').trim().toLowerCase();
 
-  if (!fields.some((field) => field.name === hubspotFieldNames.email)) {
-    return { ok: false, skipped: false, status: 400, error: 'Email is required.' };
+  if (!email) {
+    return { ok: false, skipped: false, status: 400, error: 'Email is required for HubSpot.' };
   }
 
-  const hutk = request?.cookies.get('hubspotutk')?.value;
-  const response = await fetch(
-    `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        submittedAt: Date.now().toString(),
-        fields,
-        context: { hutk, pageUri: payload.pageUri, pageName: payload.pageName },
-      }),
-      cache: 'no-store',
-    },
-  );
+  const sourceNote = makeSourceNote(payload);
+  const existingMessage = fields.message ? String(fields.message) : '';
+  const fullMessage = existingMessage ? `${existingMessage}\n\n${sourceNote}` : sourceNote;
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    return { ok: false, skipped: false, status: response.status, error: data?.message || 'HubSpot submission failed.' };
+  const properties: Record<string, string> = { email };
+
+  const nameParts = String(fields.firstname || fields.name || '').trim().split(/\s+/);
+  if (nameParts[0]) properties.firstname = nameParts[0];
+  if (nameParts.length > 1) properties.lastname = nameParts.slice(1).join(' ');
+
+  if (fields.company) properties.company = String(fields.company);
+  if (fields.website) properties.website = String(fields.website);
+  if (fields.phone) properties.phone = String(fields.phone);
+  if (fullMessage) properties.message = fullMessage;
+
+  if (properties.website && !/^https?:\/\//i.test(properties.website)) {
+    properties.website = `https://${properties.website}`;
   }
 
-  return { ok: true, skipped: false, status: response.status, data };
-}
+  const upsertUrl = 'https://api.hubapi.com/crm/v3/objects/contacts/';
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  };
 
-export async function submitHubSpotLead(payload: HubSpotLeadSubmission, request?: NextRequest) {
-  const fullResult = await postHubSpotForm(payload, request, 'full');
-  if (fullResult.ok || fullResult.skipped || fullResult.status === 400) {
-    return fullResult;
+  // Try to create first; if 409 (duplicate) then update by email
+  const createRes = await fetch(upsertUrl, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ properties }),
+    cache: 'no-store',
+  });
+
+  if (createRes.ok) {
+    const data = await createRes.json().catch(() => ({}));
+    return { ok: true, skipped: false, status: createRes.status, data };
   }
 
-  const coreResult = await postHubSpotForm(payload, request, 'core');
-  if (coreResult.ok) {
-    return { ...coreResult, fallbackUsed: true, originalError: fullResult.error };
+  // 409 = contact already exists — update instead
+  if (createRes.status === 409) {
+    const updateRes = await fetch(
+      `https://api.hubapi.com/crm/v3/objects/contacts/${encodeURIComponent(email)}?idProperty=email`,
+      {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({ properties }),
+        cache: 'no-store',
+      },
+    );
+    const data = await updateRes.json().catch(() => ({}));
+    if (updateRes.ok) {
+      return { ok: true, skipped: false, status: updateRes.status, data, updated: true };
+    }
+    return {
+      ok: false,
+      skipped: false,
+      status: updateRes.status,
+      error: data?.message || 'HubSpot update failed.',
+    };
   }
 
-  const emailResult = await postHubSpotForm(payload, request, 'email');
-  if (emailResult.ok) {
-    return { ...emailResult, fallbackUsed: true, originalError: coreResult.error || fullResult.error };
-  }
-
+  const errData = await createRes.json().catch(() => ({}));
   return {
-    ...emailResult,
-    error: emailResult.error || coreResult.error || fullResult.error || 'HubSpot submission failed.',
+    ok: false,
+    skipped: false,
+    status: createRes.status,
+    error: errData?.message || 'HubSpot submission failed.',
   };
 }
 
