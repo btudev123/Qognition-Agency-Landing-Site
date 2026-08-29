@@ -211,6 +211,10 @@ export default function HeroRoiCalculator() {
             email,
             message: summary,
           },
+          honeypot: '',
+          metadata: {
+            referrer: document.referrer || undefined,
+          },
         }),
       });
       if (!res.ok) {
