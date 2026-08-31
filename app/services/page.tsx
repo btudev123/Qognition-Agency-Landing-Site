@@ -4,15 +4,17 @@ import { ArrowRight, Brain, Code, Globe, Palette, Search, Zap, Compass, FileText
 import { SERVICE_SUB_PAGES } from '../../data/seoExpansion';
 import { SERVICES } from '../../data/services';
 import { breadcrumbSchema } from '../../lib/schema';
+import { metadataFor } from '../../lib/seo';
 import Section from '../../components/ui/Section';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
 
-export const metadata: Metadata = {
+// Title and description come from SEO_OVERRIDES['/services'] in lib/seo.ts.
+export const metadata: Metadata = metadataFor({
   title: 'AI Growth Marketing Services | SEO, PPC, Web Design & AI Search',
   description: 'Qognition delivers SEO, AI search visibility, paid media, web design, content, and conversion strategy that turns attention into qualified leads.',
-  alternates: { canonical: '/services' },
-};
+  path: '/services',
+});
 
 const IconMap: Record<string, LucideIcon> = {
   Search,

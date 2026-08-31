@@ -1,4 +1,20 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { isRedisConfigured } from '../../../../lib/redis';
+
 export const dynamic = 'force-dynamic';
+
+/**
+ * Configuration health check for the lead pipeline.
+ *
+ * Lead delivery is Resend-only: every submission emails AUDIT_NOTIFY_EMAIL.
+ * There is no CRM in this path.
+ *
+ * The shallow response reports whether each credential is *present*. Presence
+ * is not proof a credential works — that gap is what let the pipeline sit
+ * silently broken — so `?deep=1` calls Resend for real and reports the actual
+ * HTTP status. That spends live API quota, so it requires
+ * INTEGRATIONS_STATUS_SECRET.
+ */
 
 const mask = (value?: string) => {
   if (!value) return null;
@@ -6,41 +22,72 @@ const mask = (value?: string) => {
   return `${value.slice(0, 4)}...${value.slice(-4)}`;
 };
 
-export function GET() {
-  const portalId = process.env.HUBSPOT_PORTAL_ID;
-  const formGuid = process.env.HUBSPOT_LEAD_FORM_GUID;
+type ProbeResult = { reachable: boolean; status: number; error?: string };
+
+const probe = async (url: string, headers: Record<string, string>): Promise<ProbeResult> => {
+  try {
+    const response = await fetch(url, { headers, cache: 'no-store' });
+    if (response.ok) return { reachable: true, status: response.status };
+    const body = (await response.json().catch(() => ({}))) as { message?: string; error?: { message?: string } };
+    return {
+      reachable: false,
+      status: response.status,
+      error: body?.message || body?.error?.message || `HTTP ${response.status}`,
+    };
+  } catch (error) {
+    return { reachable: false, status: 0, error: error instanceof Error ? error.message : 'Request failed.' };
+  }
+};
+
+export async function GET(request: NextRequest) {
   const resendKey = process.env.RESEND_API_KEY;
   const resendFrom = process.env.RESEND_FROM;
   const notifyEmail = process.env.AUDIT_NOTIFY_EMAIL;
-  const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const metaToken = process.env.META_CAPI_ACCESS_TOKEN;
+  const metaTestCode = process.env.META_TEST_EVENT_CODE;
 
-  return Response.json({
+  const payload: Record<string, unknown> = {
     ok: true,
-    hubspot: {
-      configured: Boolean(portalId && formGuid),
-      portalId: mask(portalId),
-      formGuid: mask(formGuid),
-      requiredEnv: ['HUBSPOT_PORTAL_ID', 'HUBSPOT_LEAD_FORM_GUID'],
-      optionalFieldEnv: [
-        'HUBSPOT_FIELD_AUDIT_TYPE',
-        'HUBSPOT_FIELD_AUDIT_SCORE',
-        'HUBSPOT_FIELD_AUDIT_SUMMARY',
-        'HUBSPOT_FIELD_SOURCE_URL'
-      ]
-    },
     resend: {
       configured: Boolean(resendKey && resendFrom),
       apiKey: resendKey ? 'configured' : null,
       from: resendFrom || null,
       notifyEmail: notifyEmail || null,
       requiredEnv: ['RESEND_API_KEY', 'RESEND_FROM'],
-      optionalEnv: ['AUDIT_NOTIFY_EMAIL']
+      optionalEnv: ['AUDIT_NOTIFY_EMAIL'],
+    },
+    meta: {
+      pixelConfigured: Boolean(metaPixelId),
+      capiConfigured: Boolean(metaPixelId && metaToken),
+      pixelId: metaPixelId || null,
+      accessToken: mask(metaToken),
+      testEventCode: metaTestCode || null,
+      requiredEnv: ['NEXT_PUBLIC_META_PIXEL_ID', 'META_CAPI_ACCESS_TOKEN'],
+      optionalEnv: ['META_API_VERSION', 'META_TEST_EVENT_CODE'],
     },
     rateLimit: {
-      configured: Boolean(redisUrl && redisToken),
-      storage: redisUrl && redisToken ? 'upstash-redis' : 'in-memory-local-fallback',
-      requiredEnv: ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']
-    }
-  });
+      configured: isRedisConfigured(),
+      storage: isRedisConfigured() ? 'upstash-redis' : 'in-memory-local-fallback',
+      requiredEnv: ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'],
+    },
+  };
+
+  if (request.nextUrl.searchParams.get('deep') !== '1') {
+    return NextResponse.json(payload);
+  }
+
+  const secret = process.env.INTEGRATIONS_STATUS_SECRET;
+  if (!secret || request.headers.get('x-status-secret') !== secret) {
+    return NextResponse.json(
+      { ...payload, deep: { error: 'Deep check requires a matching x-status-secret header.' } },
+      { status: 401 },
+    );
+  }
+
+  const resendProbe = resendKey
+    ? await probe('https://api.resend.com/domains', { Authorization: `Bearer ${resendKey}` })
+    : ({ reachable: false, status: 503, error: 'RESEND_API_KEY not set.' } as ProbeResult);
+
+  return NextResponse.json({ ...payload, deep: { resend: resendProbe } });
 }

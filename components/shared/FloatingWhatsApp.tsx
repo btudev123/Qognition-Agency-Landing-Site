@@ -1,18 +1,14 @@
 'use client';
 
 import { WHATSAPP_LINK, WHATSAPP_DISPLAY } from '../../data/siteConfig';
+import { track as trackEvent, trackGtag } from '../../lib/analytics';
 
 // Persistent click-to-chat button. Bottom-right, above the mobile sticky bar.
-// Fires a `whatsapp_click` event into dataLayer/gtag when available.
-function track() {
-  if (typeof window === 'undefined') return;
-  const w = window as unknown as {
-    dataLayer?: unknown[];
-    gtag?: (...args: unknown[]) => void;
-  };
-  w.dataLayer?.push({ event: 'whatsapp_click' });
-  w.gtag?.('event', 'whatsapp_click');
-}
+// Reports to dataLayer, GA4 directly, and Meta as a Contact conversion.
+const track = () => {
+  trackEvent('whatsapp_click', {}, { event: 'Contact' });
+  trackGtag('whatsapp_click');
+};
 
 export default function FloatingWhatsApp() {
   return (

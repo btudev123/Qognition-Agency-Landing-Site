@@ -51,7 +51,7 @@ export function GET() {
         '/api/integrations/status': {
           get: {
             operationId: 'getIntegrationStatus',
-            summary: 'Check HubSpot and Resend configuration status',
+            summary: 'Check Resend and Meta configuration status',
             responses: { '200': { description: 'Integration configuration status without exposing secrets' } }
           }
         }

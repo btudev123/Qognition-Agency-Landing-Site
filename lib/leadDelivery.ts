@@ -1,5 +1,42 @@
-import type { NextRequest } from 'next/server';
 import type { LeadPayload } from './validation';
+import { redisCommand } from './redis';
+
+export const DEAD_LETTER_KEY = 'leads:deadletter';
+
+/**
+ * Where every lead, audit, and lead-magnet submission gets emailed.
+ *
+ * Hardcoded fallback on purpose: an unset or empty AUDIT_NOTIFY_EMAIL must
+ * never mean "send the internal copy nowhere". Always resolve through this,
+ * never `process.env.AUDIT_NOTIFY_EMAIL` directly.
+ */
+export const notifyEmailAddress = () =>
+  process.env.AUDIT_NOTIFY_EMAIL || 'hello@qognitionagency.com';
+
+/** Recipients for a report: the lead, plus our inbox (deduped). */
+export const withNotifyCopy = (leadEmail: string) => {
+  const notify = notifyEmailAddress();
+  return notify.toLowerCase() === leadEmail.toLowerCase() ? [leadEmail] : [leadEmail, notify];
+};
+
+/**
+ * Last-resort capture for a lead that reached no delivery channel.
+ *
+ * Resend fails silently by design so a prospect never sees an error — which is
+ * exactly how leads went missing unnoticed. When delivery fails, park the raw
+ * payload in Redis so it can be replayed instead of lost.
+ * Best-effort: if Redis is unconfigured this is a no-op, and the structured
+ * console.error in the route remains the backstop.
+ */
+export async function recordFailedLead(lead: LeadPayload, failures: Record<string, string | undefined>) {
+  const entry = JSON.stringify({ lead, failures, failedAt: new Date().toISOString() });
+  const result = await redisCommand(['LPUSH', DEAD_LETTER_KEY, entry]);
+  if (result) {
+    // Keep the queue bounded; the newest 500 are what anyone would ever replay.
+    await redisCommand(['LTRIM', DEAD_LETTER_KEY, 0, 499]);
+  }
+  return Boolean(result);
+}
 
 const SPOKE_LABELS: Record<string, string> = {
   marketing: 'Marketing',
@@ -135,132 +172,11 @@ export async function sendResendEmail({
 
 export async function sendLeadNotification(lead: LeadPayload) {
   const subject = `[${lead.service}] ${lead.contact.name} — ${lead.intent} from ${lead.source_page}`;
-  const notifyEmail = process.env.AUDIT_NOTIFY_EMAIL || 'hello@qognitionagency.com';
-
   return sendResendEmail({
-    to: notifyEmail,
+    to: notifyEmailAddress(),
     subject,
     html: leadNotificationHtml(lead),
   });
-}
-
-type LeadFieldValue = string | number | boolean | undefined | null;
-
-type HubSpotLeadSubmission = {
-  source?: string;
-  resource?: string;
-  pageUri?: string;
-  pageName?: string;
-  fields: Record<string, LeadFieldValue>;
-};
-
-function makeSourceNote(payload: HubSpotLeadSubmission) {
-  const fields = payload.fields || {};
-  const details = [
-    `Source: ${payload.source || 'Website'}`,
-    payload.resource ? `Resource: ${payload.resource}` : '',
-    payload.pageUri ? `Page: ${payload.pageUri}` : '',
-    fields.auditType ? `Audit type: ${fields.auditType}` : '',
-    fields.score !== undefined && fields.score !== null ? `Audit score: ${fields.score}` : '',
-    fields.sourceUrl ? `Source URL: ${fields.sourceUrl}` : '',
-    fields.reportSummary ? `Summary: ${String(fields.reportSummary).slice(0, 500)}` : '',
-  ]
-    .filter(Boolean)
-    .join('\n');
-  return details;
-}
-
-/**
- * Push a lead to HubSpot CRM using the Contacts API v3 (Private App token).
- * Creates or updates the contact by email. Falls back silently if the token
- * is not configured so the rest of the lead flow is never blocked.
- */
-export async function submitHubSpotLead(
-  payload: HubSpotLeadSubmission,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _request?: NextRequest,
-) {
-  const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
-
-  if (!accessToken) {
-    return { ok: false, skipped: true, status: 503, error: 'HubSpot access token not configured.' };
-  }
-
-  const fields = payload.fields || {};
-  const email = String(fields.email || '').trim().toLowerCase();
-
-  if (!email) {
-    return { ok: false, skipped: false, status: 400, error: 'Email is required for HubSpot.' };
-  }
-
-  const sourceNote = makeSourceNote(payload);
-  const existingMessage = fields.message ? String(fields.message) : '';
-  const fullMessage = existingMessage ? `${existingMessage}\n\n${sourceNote}` : sourceNote;
-
-  const properties: Record<string, string> = { email };
-
-  const nameParts = String(fields.firstname || fields.name || '').trim().split(/\s+/);
-  if (nameParts[0]) properties.firstname = nameParts[0];
-  if (nameParts.length > 1) properties.lastname = nameParts.slice(1).join(' ');
-
-  if (fields.company) properties.company = String(fields.company);
-  if (fields.website) properties.website = String(fields.website);
-  if (fields.phone) properties.phone = String(fields.phone);
-  if (fullMessage) properties.message = fullMessage;
-
-  if (properties.website && !/^https?:\/\//i.test(properties.website)) {
-    properties.website = `https://${properties.website}`;
-  }
-
-  const upsertUrl = 'https://api.hubapi.com/crm/v3/objects/contacts/';
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-    'Content-Type': 'application/json',
-  };
-
-  // Try to create first; if 409 (duplicate) then update by email
-  const createRes = await fetch(upsertUrl, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ properties }),
-    cache: 'no-store',
-  });
-
-  if (createRes.ok) {
-    const data = await createRes.json().catch(() => ({}));
-    return { ok: true, skipped: false, status: createRes.status, data };
-  }
-
-  // 409 = contact already exists — update instead
-  if (createRes.status === 409) {
-    const updateRes = await fetch(
-      `https://api.hubapi.com/crm/v3/objects/contacts/${encodeURIComponent(email)}?idProperty=email`,
-      {
-        method: 'PATCH',
-        headers,
-        body: JSON.stringify({ properties }),
-        cache: 'no-store',
-      },
-    );
-    const data = await updateRes.json().catch(() => ({}));
-    if (updateRes.ok) {
-      return { ok: true, skipped: false, status: updateRes.status, data, updated: true };
-    }
-    return {
-      ok: false,
-      skipped: false,
-      status: updateRes.status,
-      error: data?.message || 'HubSpot update failed.',
-    };
-  }
-
-  const errData = await createRes.json().catch(() => ({}));
-  return {
-    ok: false,
-    skipped: false,
-    status: createRes.status,
-    error: errData?.message || 'HubSpot submission failed.',
-  };
 }
 
 export async function sendLeadConfirmation(lead: LeadPayload) {

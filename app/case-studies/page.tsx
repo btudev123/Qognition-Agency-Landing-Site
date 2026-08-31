@@ -3,13 +3,15 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getCaseStudies } from '../../lib/sanityContent';
 import { breadcrumbSchema } from '../../lib/schema';
+import { metadataFor } from '../../lib/seo';
 import Heading from '../../components/ui/Heading';
 
-export const metadata: Metadata = {
+// Title and description come from SEO_OVERRIDES['/case-studies'] in lib/seo.ts.
+export const metadata: Metadata = metadataFor({
   title: 'Case Studies | Qognition',
   description: 'Real results for ambitious brands. Explore our portfolio of successful digital marketing campaigns with measurable growth metrics.',
-  alternates: { canonical: '/case-studies' },
-};
+  path: '/case-studies',
+});
 
 export default async function Page() {
   const CASE_STUDIES = await getCaseStudies();

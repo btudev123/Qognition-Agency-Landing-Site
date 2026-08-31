@@ -21,7 +21,7 @@ export default function Page() {
           {[
             ['POST /api/audit', 'Runs a fast SEO, AI, branding, social, or LLM audit for a public URL and returns a branded report.'],
             ['GET /api/health', 'Returns basic API health status.'],
-            ['GET /api/integrations/status', 'Checks whether HubSpot and Resend env vars are configured without exposing secrets.'],
+            ['GET /api/integrations/status', 'Checks whether Resend and Meta env vars are configured without exposing secrets.'],
             ['GET /.well-known/api-catalog', 'Returns the RFC 9727 API catalog as application/linkset+json.'],
             ['GET /.well-known/openapi.json', 'Returns the OpenAPI service description.'],
             ['GET /.well-known/agent-skills/index.json', 'Returns the agent skills discovery index.'],

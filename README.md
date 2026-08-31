@@ -14,9 +14,9 @@ npm run dev
 npm run build
 ```
 
-## Resend and HubSpot
+## Resend
 
-The instant audit funnel uses HubSpot for lead capture and Resend for report delivery.
+Lead capture and report delivery both run through Resend. Every submission emails AUDIT_NOTIFY_EMAIL (hello@qognitionagency.com). There is no CRM in this path.
 
 Setup instructions are in [docs/integrations.md](docs/integrations.md).
 

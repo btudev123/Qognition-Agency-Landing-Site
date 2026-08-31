@@ -6,15 +6,10 @@ import { usePathname } from 'next/navigation';
 import { ArrowRight, X, Phone, MessageCircle, Calendar } from 'lucide-react';
 import { PHONE_LINK, WHATSAPP_LINK, BOOKING_LINK } from '../../data/siteConfig';
 import { getFunnelStage, getFunnelCTA } from '../../lib/funnel';
+import { pushDataLayer } from '../../lib/analytics';
 
-function track(action: string, stage: string) {
-  if (typeof window === 'undefined') return;
-  (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push({
-    event: 'sticky_cta_click',
-    cta_action: action,
-    cta_stage: stage,
-  });
-}
+const track = (action: string, stage: string) =>
+  pushDataLayer('sticky_cta_click', { cta_action: action, cta_stage: stage });
 
 const StickyCTA = () => {
   const [scrolled, setScrolled] = useState(false);

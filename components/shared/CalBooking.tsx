@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Cal, { getCalApi } from '@calcom/embed-react';
 import { CAL_LINK } from '../../data/siteConfig';
+import { pushDataLayer, trackMeta } from '../../lib/analytics';
 
 // Seamless, responsive Cal.com booking. Inline by default (no extra click on
 // BOFU pages). CAL_LINK = "qognition-agency/15min"; namespace = the event slug.
@@ -21,8 +22,9 @@ export default function CalBooking({ minHeight = 620 }: { minHeight?: number }) 
         hideEventTypeDetails: false,
         layout: 'month_view',
       });
-      const w = window as unknown as { dataLayer?: unknown[] };
-      w.dataLayer?.push({ event: 'cal_loaded' });
+      pushDataLayer('cal_loaded');
+      // Browser-only: a booking view has no server-side twin to dedup against.
+      trackMeta('Schedule', { content_name: CAL_LINK });
     })();
   }, []);
 

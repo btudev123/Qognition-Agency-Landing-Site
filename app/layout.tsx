@@ -9,6 +9,7 @@ import ChromeGate from '../components/shared/ChromeGate';
 import StickyCTA from '../components/shared/StickyCTA';
 import ExitIntentPopup from '../components/shared/ExitIntentPopup';
 import FloatingWhatsApp from '../components/shared/FloatingWhatsApp';
+import MetaPixel from '../components/shared/MetaPixel';
 import CustomCursor from '../components/CustomCursor';
 import NoiseLayer from '../components/NoiseLayer';
 
@@ -120,7 +121,6 @@ const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || 'x9bhw0zqaf';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const marketingScriptsEnabled = process.env.NEXT_PUBLIC_ENABLE_MARKETING_SCRIPTS === 'true';
-  const hubSpotTrackingId = process.env.NEXT_PUBLIC_HUBSPOT_TRACKING_ID;
 
   return (
     <html lang="en" className={`${geist.variable} scroll-smooth`}>
@@ -155,7 +155,12 @@ gtag('config', '${GA4_ID}');`}
             {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`}
           </Script>
         )}
-        {/* B2B visitor identification + HubSpot — enable in prod via env flag */}
+        {/* Meta Pixel — gated on NEXT_PUBLIC_META_PIXEL_ID only. Deliberately not
+            behind NEXT_PUBLIC_ENABLE_MARKETING_SCRIPTS: that flag gates the B2B
+            deanonymization tools below, and the pixel must stay in lockstep with
+            the server-side Conversions API call in /api/lead. */}
+        <MetaPixel />
+        {/* B2B visitor identification — enable in prod via env flag */}
         {marketingScriptsEnabled && (
           <>
             <Script id="leadfeeder" strategy="lazyOnload">
@@ -169,9 +174,6 @@ gtag('config', '${GA4_ID}');`}
             <Script id="reb2b" strategy="lazyOnload">
               {`!function(key) {if (window.reb2b) return;window.reb2b = {loaded: true};var s = document.createElement("script");s.async = true;s.src = "https://ddwl4m2hdecbv.cloudfront.net/b/" + key + "/" + key + ".js.gz";document.getElementsByTagName("script")[0].parentNode.insertBefore(s, document.getElementsByTagName("script")[0]);}("Z6PVLHQY3G6R");`}
             </Script>
-            {hubSpotTrackingId && (
-              <Script id="hubspot-tracking" src={`https://js.hs-scripts.com/${hubSpotTrackingId}.js`} strategy="lazyOnload" />
-            )}
           </>
         )}
         <script

@@ -4,16 +4,18 @@ import { ArrowRight } from 'lucide-react';
 import { INDUSTRIES } from '../../data/industries';
 import { SERVICES } from '../../data/services';
 import { breadcrumbSchema } from '../../lib/schema';
+import { metadataFor } from '../../lib/seo';
 import Section from '../../components/ui/Section';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
 
-export const metadata: Metadata = {
+// Title and description come from SEO_OVERRIDES['/industries'] in lib/seo.ts.
+export const metadata: Metadata = metadataFor({
   title: 'Industries | Qognition',
   description:
     'Industry-specific AI growth marketing pages for SEO, PPC, web design, AI visibility, social, branding, and creative.',
-  alternates: { canonical: '/industries' },
-};
+  path: '/industries',
+});
 
 export default function Page() {
   return (

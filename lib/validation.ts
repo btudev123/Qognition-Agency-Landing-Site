@@ -53,6 +53,13 @@ export const leadSchema = z.object({
   contact: contactSchema,
   /** CRM tag, e.g. "lead magnet for ai readiness". Falls back to a funnel-derived tag. */
   tag: z.string().max(120).optional(),
+  /**
+   * Meta deduplication key. The browser pixel fires `Lead` with this as its
+   * `eventID` and the server fires the same `Lead` with it as `event_id`, so
+   * Meta counts the conversion once instead of twice. Optional: a visitor with
+   * JS-blocked tags still submits, their event just won't have a browser twin.
+   */
+  event_id: z.string().max(64).optional(),
   honeypot: z.preprocess(
     (value) => {
       if (typeof value !== 'string') return undefined;

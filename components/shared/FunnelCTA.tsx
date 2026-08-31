@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getFunnelStage, getFunnelCTA, type FunnelStage } from '../../lib/funnel';
+import { pushDataLayer } from '../../lib/analytics';
 
 // Drop-in CTA block whose copy/intensity adapts to the funnel stage.
 // Pass `stage` to override; otherwise it's inferred from the route.
@@ -20,11 +21,7 @@ export default function FunnelCTA({
   const cta = getFunnelCTA(stage, { service });
 
   const external = (href: string) => href.startsWith('http');
-  const track = (action: string) => {
-    if (typeof window === 'undefined') return;
-    const w = window as unknown as { dataLayer?: unknown[] };
-    w.dataLayer?.push({ event: 'cta_click', cta_stage: stage, cta_action: action });
-  };
+  const track = (action: string) => pushDataLayer('cta_click', { cta_stage: stage, cta_action: action });
 
   const Primary = external(cta.primary.href) ? 'a' : Link;
   const Secondary = external(cta.secondary.href) ? 'a' : Link;

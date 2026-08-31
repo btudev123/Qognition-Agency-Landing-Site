@@ -3,6 +3,7 @@
 import { useState, useRef, type FormEvent } from 'react';
 import type { SpokeId, LeadIntent } from '../../lib/validation';
 import { contactSchema } from '../../lib/validation';
+import { getUtmParams, newEventId, track } from '../../lib/analytics';
 import Button from '../ui/Button';
 import TallyForm, { isTallyConfigured } from './TallyForm';
 
@@ -89,6 +90,13 @@ export default function LeadForm({
     setStatus('submitting');
     setServerError('');
 
+    // Generated before the request so the browser pixel and the server-side
+    // Conversions API call can both report this one action under the same id.
+    // Meta then counts it once. See lib/metaCapi.ts.
+    const eventId = newEventId();
+
+    track('lead_submit_attempt', { spoke, intent, source_page: sourcePage });
+
     try {
       const res = await fetch('/api/lead', {
         method: 'POST',
@@ -97,6 +105,8 @@ export default function LeadForm({
           service: spoke,
           intent,
           source_page: sourcePage,
+          event_id: eventId,
+          utm: getUtmParams(),
           contact: {
             name: contact.name,
             email: contact.email,
@@ -120,6 +130,17 @@ export default function LeadForm({
         setStatus('error');
         return;
       }
+
+      track(
+        'lead_submit_success',
+        { spoke, intent, source_page: sourcePage },
+        {
+          event: 'Lead',
+          // The server echoes the id it actually used, so trust that over ours.
+          eventId: data?.event_id || eventId,
+          params: { content_name: sourcePage, content_category: spoke, lead_intent: intent },
+        },
+      );
 
       setStatus('success');
       onSuccess?.();

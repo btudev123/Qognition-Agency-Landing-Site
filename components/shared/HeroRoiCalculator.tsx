@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, Loader2, CheckCircle2, RotateCcw } from 'lucide-react';
+import type { SpokeId } from '../../lib/validation';
+import { getUtmParams, newEventId, track } from '../../lib/analytics';
 
 // Hero ROI calculator. Interactive by design: drag-to-explore sliders, preset
 // scenarios, a live-tweening savings figure, and a visual cost split. The result
@@ -133,7 +135,7 @@ function Slider({
   );
 }
 
-export default function HeroRoiCalculator() {
+export default function HeroRoiCalculator({ service = 'automation' }: { service?: SpokeId }) {
   const [teamSize, setTeamSize] = useState(DEFAULTS.teamSize);
   const [hoursPerWeek, setHoursPerWeek] = useState(DEFAULTS.hoursPerWeek);
   const [hourlyCost, setHourlyCost] = useState(DEFAULTS.hourlyCost);
@@ -142,6 +144,7 @@ export default function HeroRoiCalculator() {
   const [horizon, setHorizon] = useState<1 | 3>(1);
 
   const [email, setEmail] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -197,32 +200,45 @@ export default function HeroRoiCalculator() {
     setStatus('submitting');
     setErrorMsg('');
 
+    const sourcePage = typeof window !== 'undefined' ? window.location.pathname : '/';
+    // Shared browser/server deduplication key for the Meta Lead event.
+    const eventId = newEventId();
+
     try {
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          service: 'automation',
+          service,
           intent: 'consultation',
-          source_page: typeof window !== 'undefined' ? window.location.pathname : '/',
+          source_page: sourcePage,
           tag: 'roi-calculator',
+          event_id: eventId,
+          utm: getUtmParams(),
           contact: {
             name: email.split('@')[0],
             email,
             message: summary,
           },
-          honeypot: '',
+          honeypot,
           metadata: {
             referrer: document.referrer || undefined,
           },
         }),
       });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         throw new Error(data?.error || 'Something went wrong. Please try again.');
       }
-      const w = window as unknown as { dataLayer?: unknown[] };
-      w.dataLayer?.push({ event: 'roi_calculator_submit', savings: Math.round(annualSavings) });
+      track(
+        'roi_calculator_submit',
+        { savings: Math.round(annualSavings), spoke: service, source_page: sourcePage },
+        {
+          event: 'Lead',
+          eventId: data?.event_id || eventId,
+          params: { content_name: 'roi-calculator', content_category: service, value: Math.round(annualSavings), currency: 'USD' },
+        },
+      );
       setStatus('done');
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : 'Something went wrong.');
@@ -441,6 +457,18 @@ export default function HeroRoiCalculator() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          {/* Honeypot: hidden from humans, irresistible to bots. The server
+              discards any submission that fills it in. */}
+          <input
+            type="text"
+            name="website"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute opacity-0 pointer-events-none h-0 w-0"
+          />
           <input
             type="email"
             required

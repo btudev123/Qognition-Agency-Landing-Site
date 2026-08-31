@@ -58,7 +58,7 @@ export default function Page() {
 
             <section>
               <h2 className="text-h2 text-[var(--text)] mb-4 font-semibold">4. Cookies</h2>
-              <p>We use minimal cookies for essential functionality and anonymous analytics. No advertising or tracking cookies are used without your consent. You can control cookie preferences through your browser settings.</p>
+              <p>We use cookies for essential functionality, analytics (Google Analytics, Google Tag Manager, Microsoft Clarity), and advertising measurement (Meta Pixel). The Meta Pixel sets first-party cookies that let us measure which campaigns lead to enquiries. When you submit a form, we also send a hashed, irreversible version of your email address to Meta&apos;s Conversions API to attribute that conversion — we never share your email in readable form. You can control cookie preferences through your browser settings, and opt out of Meta advertising through your Meta ad preferences.</p>
             </section>
 
             <section>
