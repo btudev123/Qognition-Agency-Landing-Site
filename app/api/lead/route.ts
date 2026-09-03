@@ -68,11 +68,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, message: 'Thank you.' }, { status: 200 });
     }
 
-    const rateLimit = await checkAuditRateLimit(request, lead.contact.email);
+    // Only the audit funnel gets the strict daily policy — a contact message
+    // must never be refused because a stranger on the same office IP or
+    // mobile carrier NAT happened to write to us first.
+    const rateLimit = await checkAuditRateLimit(
+      request,
+      lead.contact.email,
+      lead.intent === 'audit' ? 'audit' : 'lead',
+    );
     if (!rateLimit.allowed) {
       const response = NextResponse.json(
         {
-          error: 'You already submitted a request from this email, IP, or device. Please try again later.',
+          error:
+            rateLimit.reason === 'burst'
+              ? 'Too many submissions from your network right now. Please try again in a few minutes, or email hello@qognitionagency.com.'
+              : rateLimit.policy === 'audit'
+                ? 'We already have an audit request for this email. We will be in touch — or email hello@qognitionagency.com if it is urgent.'
+                : 'We just received your message. Give us a moment before sending another.',
           retryAfterSeconds: rateLimit.retryAfterSeconds,
         },
         {
@@ -153,7 +165,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await recordAuditRateLimit(rateLimit.keys);
+    await recordAuditRateLimit(rateLimit);
 
     if (runsInstantAudit && auditUrl) {
       after(() => deliverInstantAudit(lead, auditUrl));

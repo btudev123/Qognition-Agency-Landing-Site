@@ -65,12 +65,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'A valid work email is required.' }, { status: 400 });
     }
 
-    const rateLimit = await checkAuditRateLimit(request, email);
+    const rateLimit = await checkAuditRateLimit(request, email, 'audit');
     if (!rateLimit.allowed) {
       const limited = NextResponse.json(
         {
           error:
-            'You already requested an audit from this email, IP, or device today. Please try again tomorrow or book a strategy call.',
+            rateLimit.reason === 'burst'
+              ? 'Too many audit requests from your network right now. Please try again in a few minutes, or book a strategy call.'
+              : 'You already requested an audit for this email today. Check your inbox, or book a strategy call to go deeper.',
           retryAfterSeconds: rateLimit.retryAfterSeconds,
         },
         {
@@ -133,7 +135,7 @@ export async function POST(request: NextRequest) {
       customData: { content_name: offer.slug, content_category: 'audit', audit_score: report.score },
     });
 
-    await recordAuditRateLimit(rateLimit.keys);
+    await recordAuditRateLimit(rateLimit);
 
     const response = NextResponse.json({
       ok: true,
