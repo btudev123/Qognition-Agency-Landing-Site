@@ -12,7 +12,7 @@ import {
   checkAuditRateLimit,
   getAuditClientIp,
   getAuditDeviceCookie,
-  recordAuditRateLimit,
+  releaseAuditRateLimit,
 } from '../../../lib/auditRateLimit';
 import { sendMetaCapiEvent, metaCookiesFromRequest } from '../../../lib/metaCapi';
 import { auditTypeForSourcePage, runAudit, reportEmailHtml } from '../../../lib/auditEngine';
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     // Only the audit funnel gets the strict daily policy — a contact message
     // must never be refused because a stranger on the same office IP or
     // mobile carrier NAT happened to write to us first.
-    const rateLimit = await checkAuditRateLimit(
+    const rateLimit = checkAuditRateLimit(
       request,
       lead.contact.email,
       lead.intent === 'audit' ? 'audit' : 'lead',
@@ -155,17 +155,14 @@ export async function POST(request: NextRequest) {
     // The internal notification is the one that must land — it is the only
     // thing that puts this lead in front of a human. Park it if it did not.
     if (!delivery.notify.ok) {
-      const parked = await recordFailedLead(lead, {
+      recordFailedLead(lead, {
         notify: delivery.notify.error,
         confirm: delivery.confirm.error,
       });
-      console.error(
-        '[Lead] no_delivery_channel_succeeded',
-        JSON.stringify({ email: lead.contact.email, source_page: lead.source_page, deadLettered: parked }),
-      );
+      // Nobody heard about this lead, so it must not cost them their retry.
+      releaseAuditRateLimit(rateLimit);
     }
 
-    await recordAuditRateLimit(rateLimit);
 
     if (runsInstantAudit && auditUrl) {
       after(() => deliverInstantAudit(lead, auditUrl));

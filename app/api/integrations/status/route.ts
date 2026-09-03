@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isRedisConfigured } from '../../../../lib/redis';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,9 +66,11 @@ export async function GET(request: NextRequest) {
       optionalEnv: ['META_API_VERSION', 'META_TEST_EVENT_CODE'],
     },
     rateLimit: {
-      configured: isRedisConfigured(),
-      storage: isRedisConfigured() ? 'upstash-redis' : 'in-memory-local-fallback',
-      requiredEnv: ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'],
+      // In-memory by design — no external store, nothing to configure.
+      // State is per serverless instance; see lib/auditRateLimit.ts.
+      configured: true,
+      storage: 'in-memory-per-instance',
+      requiredEnv: [],
     },
   };
 

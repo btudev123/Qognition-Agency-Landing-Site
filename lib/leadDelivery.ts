@@ -1,7 +1,4 @@
 import type { LeadPayload } from './validation';
-import { redisCommand } from './redis';
-
-export const DEAD_LETTER_KEY = 'leads:deadletter';
 
 /**
  * Where every lead, audit, and lead-magnet submission gets emailed.
@@ -20,22 +17,32 @@ export const withNotifyCopy = (leadEmail: string) => {
 };
 
 /**
- * Last-resort capture for a lead that reached no delivery channel.
+ * Last-resort record of a lead that reached no delivery channel.
  *
  * Resend fails silently by design so a prospect never sees an error — which is
- * exactly how leads went missing unnoticed. When delivery fails, park the raw
- * payload in Redis so it can be replayed instead of lost.
- * Best-effort: if Redis is unconfigured this is a no-op, and the structured
- * console.error in the route remains the backstop.
+ * exactly how leads went missing unnoticed. There is no external store here, so
+ * the record is a structured log line: it is greppable in the platform logs and
+ * carries every field needed to contact the person by hand.
+ *
+ * This is a backstop, not a recovery queue. Nothing replays it automatically.
  */
-export async function recordFailedLead(lead: LeadPayload, failures: Record<string, string | undefined>) {
-  const entry = JSON.stringify({ lead, failures, failedAt: new Date().toISOString() });
-  const result = await redisCommand(['LPUSH', DEAD_LETTER_KEY, entry]);
-  if (result) {
-    // Keep the queue bounded; the newest 500 are what anyone would ever replay.
-    await redisCommand(['LTRIM', DEAD_LETTER_KEY, 0, 499]);
-  }
-  return Boolean(result);
+export function recordFailedLead(lead: LeadPayload, failures: Record<string, string | undefined>) {
+  console.error(
+    '[Lead] UNDELIVERED_LEAD',
+    JSON.stringify({
+      failedAt: new Date().toISOString(),
+      name: lead.contact.name,
+      email: lead.contact.email,
+      phone: lead.contact.phone,
+      company: lead.contact.company,
+      company_url: lead.contact.company_url,
+      message: lead.contact.message,
+      service: lead.service,
+      intent: lead.intent,
+      source_page: lead.source_page,
+      failures,
+    }),
+  );
 }
 
 const SPOKE_LABELS: Record<string, string> = {

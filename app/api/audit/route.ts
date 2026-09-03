@@ -7,7 +7,8 @@ import {
   checkAuditRateLimit,
   getAuditClientIp,
   getAuditDeviceCookie,
-  recordAuditRateLimit,
+  releaseAuditRateLimit,
+  type RateLimitDecision,
 } from '../../../lib/auditRateLimit';
 import { sendMetaCapiEvent, metaCookiesFromRequest } from '../../../lib/metaCapi';
 import { AuditType } from '../../../types';
@@ -55,6 +56,8 @@ const auditLeadAlertHtml = (
  * identical whichever door it comes in.
  */
 export async function POST(request: NextRequest) {
+  // Declared out here so a failure below can hand the slot back.
+  let rateLimit: RateLimitDecision | undefined;
   try {
     const payload = await request.json().catch(() => ({}));
     const auditType = (payload?.auditType || 'seo') as AuditType;
@@ -65,7 +68,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'A valid work email is required.' }, { status: 400 });
     }
 
-    const rateLimit = await checkAuditRateLimit(request, email, 'audit');
+    rateLimit = checkAuditRateLimit(request, email, 'audit');
     if (!rateLimit.allowed) {
       const limited = NextResponse.json(
         {
@@ -135,7 +138,6 @@ export async function POST(request: NextRequest) {
       customData: { content_name: offer.slug, content_category: 'audit', audit_score: report.score },
     });
 
-    await recordAuditRateLimit(rateLimit);
 
     const response = NextResponse.json({
       ok: true,
@@ -152,6 +154,10 @@ export async function POST(request: NextRequest) {
     });
     return response;
   } catch (error) {
+    // The report never got made, so this attempt must not cost them their
+    // one audit for the next 24 hours.
+    if (rateLimit?.allowed) releaseAuditRateLimit(rateLimit);
+
     if (error instanceof AuditError) {
       return NextResponse.json({ error: error.message }, { status: error.status });
     }
