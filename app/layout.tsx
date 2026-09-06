@@ -155,6 +155,7 @@ gtag('config', '${GA4_ID}');`}
             {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`}
           </Script>
         )}
+        <div data-chat-widget data-widget-id="6a9d69473dadf9f23d33955c" data-location-id="xZXIPTrirldKZ9fGQBvt"></div><script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6a9d69473dadf9f23d33955c" data-source="WEB_USER"></script>
         {/* Meta Pixel — gated on NEXT_PUBLIC_META_PIXEL_ID only. Deliberately not
             behind NEXT_PUBLIC_ENABLE_MARKETING_SCRIPTS: that flag gates the B2B
             deanonymization tools below, and the pixel must stay in lockstep with
@@ -207,3 +208,5 @@ gtag('config', '${GA4_ID}');`}
     </html>
   );
 }
+
+
