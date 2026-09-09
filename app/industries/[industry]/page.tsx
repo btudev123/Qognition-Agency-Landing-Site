@@ -44,7 +44,7 @@ export default async function Page({
   const relatedServices = SERVICES.filter((service) =>
     industry.relatedServices?.includes(service.id)
   ).slice(0, 6);
-  const [relatedCaseStudy] = studiesForTopic(`${industry.name} ${industry.slug}`, 1);
+  const [relatedCaseStudy] = studiesForTopic(`${industry.name} ${industry.id}`, 1);
 
   const allFaqs = industry.faqs || [];
 
