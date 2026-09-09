@@ -28,7 +28,7 @@ const AuditLandingPage = ({ offer }: Props) => {
               {offer.cta}
             </a>
             <a
-              href="https://cal.com/qognition-agency/15min"
+              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg border border-[var(--border)] px-8 py-4 text-center text-sm uppercase tracking-wider text-[var(--text)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"

@@ -65,11 +65,6 @@ export default async function Page({ params }: { params: Promise<{ category: str
                     priceCurrency: 'USD',
                     category: product.pricing,
                   },
-                  aggregateRating: {
-                    '@type': 'AggregateRating',
-                    ratingValue: product.rating,
-                    ratingCount: product.votesCount || 25,
-                  },
                 },
                 {
                   '@type': 'Product',
@@ -81,11 +76,6 @@ export default async function Page({ params }: { params: Promise<{ category: str
                     '@type': 'Review',
                     author: { '@type': 'Organization', name: 'Qognition' },
                     reviewBody: product.agencyVerdict,
-                    reviewRating: {
-                      '@type': 'Rating',
-                      ratingValue: product.rating,
-                      bestRating: 5,
-                    },
                   },
                   url: `https://www.qognitionagency.com${path}`,
                 },

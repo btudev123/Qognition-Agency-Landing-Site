@@ -3,7 +3,7 @@
 
 Canonical site: https://www.qognitionagency.com
 Primary contact: hello@qognitionagency.com
-Strategy call: https://calendly.com/hello-qognitionagency/30min
+Strategy call: https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency
 Sitemap index: https://www.qognitionagency.com/sitemap.xml
 
 ## Entity Summary

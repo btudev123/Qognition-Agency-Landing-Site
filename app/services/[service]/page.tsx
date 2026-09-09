@@ -273,7 +273,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 Stop guessing. Start growing. Schedule a consultation with our {service.title} leads.
               </p>
               <a
-                href="https://cal.com/qognition-agency/15min"
+                href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"

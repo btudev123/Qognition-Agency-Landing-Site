@@ -53,11 +53,14 @@ interface Tile {
   accent: string;
 }
 
+// Metrics removed: 4.2x ROAS, 142 builds, $500M+ revenue tracked and 38k hrs automated were
+// all unsourced, and the $500M+/142 figures contradicted the numbers quoted elsewhere on the
+// site. The tiles now name what each division does; put a number back only with a source on file.
 const TILES: Tile[] = [
-  { label: 'Marketing', metric: '4.2×', note: 'Avg. ROAS', accent: '#14B8A6' },
-  { label: 'Tech', metric: '142', note: 'Builds shipped', accent: '#2563EB' },
-  { label: 'Finance', metric: '$500M+', note: 'Revenue tracked', accent: '#059669' },
-  { label: 'Automation', metric: '38k', note: 'Hrs automated/yr', accent: '#F59E0B' },
+  { label: 'Marketing', metric: 'SEO · AI search', note: 'Paid, content, CRO', accent: '#14B8A6' },
+  { label: 'Tech', metric: 'Next.js', note: 'Sites, apps, integrations', accent: '#2563EB' },
+  { label: 'Finance', metric: 'Fractional CFO', note: 'Books, tax, reporting', accent: '#059669' },
+  { label: 'Automation', metric: 'AI agents', note: 'Workflows, data pipelines', accent: '#F59E0B' },
 ];
 
 export function HeroDashboard() {

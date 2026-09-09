@@ -54,5 +54,5 @@ Custom LLM-powered agents, workflow automation (n8n, Make, Zapier), CRM automati
 - Spokes: Marketing · Tech · Finance · Automation
 - Primary buyer: Founders and C-suite at $1M–$50M ARR companies
 - Contact: hello@qognitionagency.com
-- Book a call: https://calendly.com/hello-qognitionagency/30min
+- Book a call: https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency
 - Sitemap: https://www.qognitionagency.com/sitemap.xml

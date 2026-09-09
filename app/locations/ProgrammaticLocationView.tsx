@@ -3,7 +3,7 @@ import { ArrowRight, CheckCircle, Globe, MapPin, Search, TrendingUp } from 'luci
 import { INDUSTRIES } from '../../data/industries';
 import { SERVICES } from '../../data/services';
 import { FREE_TOOLS, RESOURCES } from '../../data/seoExpansion';
-import { CASE_STUDIES } from '../../data/work';
+import { studiesForTopic, nicheLabel, headlineKpi } from '../../data/case-studies';
 import { Location, Service } from '../../types';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
@@ -168,18 +168,18 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
           <section>
             <Heading level="h2" className="mb-5">Relevant Case Studies</Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {CASE_STUDIES.slice(0, 4).map((study) => (
+              {studiesForTopic(location.name, 4).map((study) => (
                 <Link
                   key={study.id}
                   href={`/case-studies/${study.id}`}
                   className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--accent)]/40 transition-all"
                 >
                   <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
-                    {study.industry}
+                    {nicheLabel(study.niche)} · {study.market}
                   </p>
                   <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{study.client}</h3>
                   <p className="text-body text-[var(--text-muted)]">
-                    {study.summary || study.title}
+                    {study.headline}
                   </p>
                 </Link>
               ))}
@@ -263,7 +263,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
               ))}
             </div>
             <a
-              href="https://cal.com/qognition-agency/15min"
+              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
@@ -354,18 +354,18 @@ export const LocationServiceView = ({
           <section className="mb-14">
             <Heading level="h2" className="mb-5">Proof and Planning Assets</Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {CASE_STUDIES.slice(0, 2).map((study) => (
+              {studiesForTopic(`${service.title} ${location.name}`, 2).map((study) => (
                 <Link
                   key={study.id}
                   href={`/case-studies/${study.id}`}
                   className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5 hover:border-[var(--accent)]/40 transition-all"
                 >
                   <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
-                    {study.industry}
+                    {nicheLabel(study.niche)} · {study.market}
                   </p>
-                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{study.title}</h3>
+                  <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">{study.client}</h3>
                   <p className="text-body text-[var(--text-muted)]">
-                    {study.results?.[0] || study.summary}
+                    {headlineKpi(study)?.label ?? study.headline}
                   </p>
                 </Link>
               ))}
@@ -438,7 +438,7 @@ export const LocationServiceView = ({
               {location.name} Digital Marketing
             </Link>
             <a
-              href="https://cal.com/qognition-agency/15min"
+              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"

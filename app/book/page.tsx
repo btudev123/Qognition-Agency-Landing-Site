@@ -89,7 +89,7 @@ export default function Page() {
             ))}
           </div>
 
-          {/* Inline Calendly */}
+          {/* Inline booking widget */}
           <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8">
             <Heading level="h2" className="text-center mb-8">Or Jump Right Into Our Calendar</Heading>
             <CalBooking />

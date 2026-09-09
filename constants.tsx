@@ -7,12 +7,11 @@ export { SERVICES } from './data/services';
 export { INDUSTRIES } from './data/industries';
 export { REGIONS } from './data/regions';
 export { LOCATIONS } from './data/locations';
-export { CASE_STUDIES } from './data/work';
+export { CASE_STUDIES } from './data/case-studies';
 export { TOOLS } from './data/tools';
 export { DIRECTORY_PRODUCTS } from './data/directoryProducts';
 export { TOOL_CATEGORIES } from './data/toolCategories';
 export { CALENDLY_LINK, CONTACT_EMAIL, CONTACT_MAILTO, WHATSAPP_DISPLAY, WHATSAPP_LINK, WHATSAPP_NUMBER } from './data/siteConfig';
-export { CLIENT_LOGOS, TESTIMONIALS } from './data/trust';
 export {
   COMPARISONS,
   FREE_TOOLS,
@@ -42,10 +41,10 @@ export const ABOUT_DATA = {
     { title: "Aesthetic Integrity", desc: "Performance without beauty is spam. We refuse to ship ugly code." },
     { title: "Data Sovereignty", desc: "Your data is your asset. We build systems that you own and control." }
   ],
+  // Revenue Generated ($500M+), Global Hubs (12) and Client Retention (94%) were removed —
+  // unsourced, and inconsistent with the numbers quoted elsewhere on the site. "AI Growth
+  // Leads" is the real team headcount (data/seoExpansion.ts TEAM_MEMBERS).
   stats: [
-    { label: "AI Growth Leads", value: "7" },
-    { label: "Revenue Generated", value: "$500M+" },
-    { label: "Global Hubs", value: "12" },
-    { label: "Client Retention", value: "94%" }
+    { label: "AI Growth Leads", value: "7" }
   ]
 };

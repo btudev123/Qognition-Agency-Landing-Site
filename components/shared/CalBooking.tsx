@@ -1,39 +1,33 @@
 'use client';
 
-import { useEffect } from 'react';
-import Cal, { getCalApi } from '@calcom/embed-react';
-import { CAL_LINK } from '../../data/siteConfig';
+import { useEffect, useRef } from 'react';
+import Script from 'next/script';
+import { BOOKING_LINK, BOOKING_EMBED_SCRIPT } from '../../data/siteConfig';
 import { pushDataLayer, trackMeta } from '../../lib/analytics';
 
-// Seamless, responsive Cal.com booking. Inline by default (no extra click on
-// BOFU pages). CAL_LINK = "qognition-agency/15min"; namespace = the event slug.
-const NAMESPACE = (CAL_LINK.split('/')[1] || 'booking').trim();
-
+// Seamless, responsive LeadConnector (GoHighLevel) booking widget. Inline by
+// default (no extra click on BOFU pages). form_embed.js posts height messages
+// back to the parent so the iframe grows with the calendar instead of scrolling.
 export default function CalBooking({ minHeight = 620 }: { minHeight?: number }) {
+  const fired = useRef(false);
+
   useEffect(() => {
-    (async () => {
-      const cal = await getCalApi({ namespace: NAMESPACE });
-      cal('ui', {
-        theme: 'dark',
-        cssVarsPerTheme: {
-          light: { 'cal-brand': '#14B8A6' },
-          dark: { 'cal-brand': '#14B8A6' },
-        },
-        hideEventTypeDetails: false,
-        layout: 'month_view',
-      });
-      pushDataLayer('cal_loaded');
-      // Browser-only: a booking view has no server-side twin to dedup against.
-      trackMeta('Schedule', { content_name: CAL_LINK });
-    })();
+    if (fired.current) return;
+    fired.current = true;
+    pushDataLayer('cal_loaded');
+    // Browser-only: a booking view has no server-side twin to dedup against.
+    trackMeta('Schedule', { content_name: BOOKING_LINK });
   }, []);
 
   return (
-    <Cal
-      namespace={NAMESPACE}
-      calLink={CAL_LINK}
-      style={{ width: '100%', height: '100%', minHeight, overflow: 'scroll' }}
-      config={{ layout: 'month_view', theme: 'dark' }}
-    />
+    <>
+      <iframe
+        src={BOOKING_LINK}
+        title="Book a discovery call with Qognition"
+        scrolling="no"
+        style={{ width: '100%', height: '100%', minHeight, border: 'none', overflow: 'hidden' }}
+      />
+      <Script src={BOOKING_EMBED_SCRIPT} strategy="lazyOnload" />
+    </>
   );
 }

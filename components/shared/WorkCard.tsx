@@ -3,7 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { CaseStudy } from '../../types';
+import type { ResolvedCaseStudy, Kpi } from '../../data/case-studies';
+import { nicheLabel, serviceLabel } from '../../data/case-studies';
+
+/** Prefer the client's reported figure; fall back to the benchmark-derived target. */
+const kpiValue = (kpi: Kpi) => kpi.actual ?? kpi.target;
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -21,8 +25,9 @@ function Pill({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function WorkCard({ work, index }: { work: CaseStudy; index: number }) {
+export function WorkCard({ work, index }: { work: ResolvedCaseStudy; index: number }) {
   const [hover, setHover] = React.useState(false);
+  const kpis = work.kpis.slice(0, 3);
 
   return (
     <Link
@@ -35,15 +40,15 @@ export function WorkCard({ work, index }: { work: CaseStudy; index: number }) {
       {/* Image */}
       <div className="rf-work-image" style={{ aspectRatio: '16/10' }}>
         <Image
-          src={work.image}
-          alt={`${work.client} — ${work.title}`}
+          src={work.image.src}
+          alt={work.image.alt}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           style={{ objectFit: 'cover' }}
         />
         <div className="absolute top-4 left-4 flex gap-2">
           <Pill>{String(index + 1).padStart(2, '0')}</Pill>
-          <Pill>{work.industry}</Pill>
+          <Pill>{nicheLabel(work.niche)}</Pill>
         </div>
       </div>
 
@@ -56,35 +61,35 @@ export function WorkCard({ work, index }: { work: CaseStudy; index: number }) {
           className="text-h3 font-sans m-0 text-[var(--ink)] font-semibold"
           style={{ fontSize: 'clamp(20px, 2vw, 28px)' }}
         >
-          {work.title}
+          {work.headline}
         </h3>
         <p className="text-body mt-3 text-[var(--text-muted)] line-clamp-2">
-          {work.summary || work.challenge}
+          {work.coreProblem}
         </p>
 
-        {/* Tags */}
+        {/* Services */}
         <div className="flex flex-wrap gap-1.5 mt-4">
-          {work.tags.slice(0, 3).map((tag) => (
+          {work.services.map((service) => (
             <span
-              key={tag}
+              key={service}
               className="px-2 py-1 font-mono text-[10px] tracking-[0.08em] uppercase"
               style={{ border: '1px solid var(--border)', color: 'var(--text-muted)' }}
             >
-              {tag}
+              {serviceLabel(service)}
             </span>
           ))}
         </div>
 
-        {/* Stats */}
+        {/* KPIs — actual where reported, otherwise the benchmark-derived target */}
         <div
           className="grid gap-4 mt-6 pt-5"
           style={{
-            gridTemplateColumns: `repeat(${Math.min(work.stats.length, 3)}, 1fr)`,
+            gridTemplateColumns: `repeat(${Math.min(kpis.length, 3)}, 1fr)`,
             borderTop: '1px solid var(--border)',
           }}
         >
-          {work.stats.slice(0, 3).map((stat) => (
-            <div key={stat.label}>
+          {kpis.map((kpi) => (
+            <div key={kpi.label}>
               <div
                 className="font-sans font-medium tracking-[-0.025em] leading-none"
                 style={{
@@ -93,10 +98,10 @@ export function WorkCard({ work, index }: { work: CaseStudy; index: number }) {
                   fontFeatureSettings: '"tnum"',
                 }}
               >
-                {stat.value}
+                {kpiValue(kpi)}
               </div>
               <div className="font-mono text-[10px] tracking-[0.12em] uppercase mt-1.5" style={{ color: 'var(--text-muted)' }}>
-                {stat.label}
+                {kpi.label}{!kpi.actual && ' (target)'}
               </div>
             </div>
           ))}
@@ -118,8 +123,9 @@ export function WorkCard({ work, index }: { work: CaseStudy; index: number }) {
   );
 }
 
-export function WorkCardFeatured({ work, index }: { work: CaseStudy; index: number }) {
+export function WorkCardFeatured({ work, index }: { work: ResolvedCaseStudy; index: number }) {
   const [hover, setHover] = React.useState(false);
+  const kpis = work.kpis.slice(0, 3);
 
   return (
     <Link
@@ -133,15 +139,15 @@ export function WorkCardFeatured({ work, index }: { work: CaseStudy; index: numb
         {/* Image */}
         <div className="rf-work-image" style={{ minHeight: 320 }}>
           <Image
-            src={work.image}
-            alt={`${work.client} — ${work.title}`}
+            src={work.image.src}
+            alt={work.image.alt}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             style={{ objectFit: 'cover' }}
           />
           <div className="absolute top-4 left-4 flex gap-2">
             <Pill>{String(index + 1).padStart(2, '0')} / Featured</Pill>
-            <Pill>{work.industry}</Pill>
+            <Pill>{nicheLabel(work.niche)}</Pill>
           </div>
         </div>
 
@@ -155,16 +161,16 @@ export function WorkCardFeatured({ work, index }: { work: CaseStudy; index: numb
               className="text-h3 font-sans m-0 text-[var(--ink)] font-semibold"
               style={{ fontSize: 'clamp(28px, 3vw, 42px)' }}
             >
-              {work.title}
+              {work.headline}
             </h3>
             <p className="text-body mt-4 text-[var(--text-muted)]">
-              {work.summary || work.challenge}
+              {work.coreProblem}
             </p>
           </div>
 
           <div className="mt-8 pt-6 grid grid-cols-3 gap-6 items-end" style={{ borderTop: '1px solid var(--border)' }}>
-            {work.stats.slice(0, 3).map((stat) => (
-              <div key={stat.label}>
+            {kpis.map((kpi) => (
+              <div key={kpi.label}>
                 <div
                   className="font-sans font-medium tracking-[-0.025em] leading-none"
                   style={{
@@ -173,10 +179,10 @@ export function WorkCardFeatured({ work, index }: { work: CaseStudy; index: numb
                     fontFeatureSettings: '"tnum"',
                   }}
                 >
-                  {stat.value}
+                  {kpiValue(kpi)}
                 </div>
                 <div className="font-mono text-[10px] tracking-[0.12em] uppercase mt-2" style={{ color: 'var(--text-muted)' }}>
-                  {stat.label}
+                  {kpi.label}{!kpi.actual && ' (target)'}
                 </div>
               </div>
             ))}

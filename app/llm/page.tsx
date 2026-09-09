@@ -30,7 +30,7 @@ export default function Page() {
     '',
     '## Contact',
     'Email: hello@qognitionagency.com',
-    'Booking: https://cal.com/qognition-agency/15min',
+    'Booking: https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency',
   ].join('\n');
 
   return (

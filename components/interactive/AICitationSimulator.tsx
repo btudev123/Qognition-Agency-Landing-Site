@@ -52,7 +52,7 @@ export default function AICitationSimulator() {
   }, [stage, typed, qIdx, cur]);
 
   const sources = [
-    { name: 'qognition.com', highlight: true, snip: 'AI-first growth marketing · $500M+ revenue driven across 142 campaigns.' },
+    { name: 'qognition.com', highlight: true, snip: 'AI-first growth marketing for founders · marketing, tech, finance and automation.' },
     { name: 'reddit.com/r/marketing', snip: 'Discussion: emerging agencies cited in GPT responses…' },
     { name: 'g2.com/agencies', snip: 'Top-rated growth partners 2026.' },
     { name: 'crunchbase.com', snip: 'Agency profiles & rankings.' },

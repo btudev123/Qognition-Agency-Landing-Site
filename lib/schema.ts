@@ -178,41 +178,6 @@ export function articleSchema(post: {
   };
 }
 
-export function reviewSchema(caseStudy: {
-  client: string;
-  title: string;
-  slug: string;
-  stats: { label: string; value: string }[];
-  testimonial?: { quote: string; author: string; role: string };
-}) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: caseStudy.title,
-    url: `${SITE_URL}/case-studies/${caseStudy.slug}`,
-    about: {
-      '@type': 'Thing',
-      name: caseStudy.client,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Qognition',
-      url: SITE_URL,
-    },
-    ...(caseStudy.testimonial && {
-      review: {
-        '@type': 'Review',
-        reviewBody: caseStudy.testimonial.quote,
-        author: {
-          '@type': 'Person',
-          name: caseStudy.testimonial.author,
-          jobTitle: caseStudy.testimonial.role,
-        },
-      },
-    }),
-  };
-}
-
 export function softwareAppSchema(tool: {
   name: string;
   description: string;

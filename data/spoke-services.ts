@@ -74,7 +74,6 @@ Measurement is where most SEO programs fall apart. We do not report rankings in 
       'Founders who know their site has technical SEO debt (slow load times, index bloat, missing schema) but don\'t have the in-house expertise to fix it',
       'Companies launching a new product or entering a new market and needing to build organic visibility from scratch — the right way, from day one',
     ],
-    caseStudySnippet: { metric: '247% organic traffic increase and 3.2× organic-attributed pipeline in 6 months', context: 'Full technical SEO overhaul followed by a content engine targeting 80 high-intent bottom-funnel keywords. Fixed crawl budget waste from 4,000+ thin parameter URLs, implemented programmatic SEO for 120 location + service pages, and built 12 cornerstone content pieces that earned 40+ referring domains in 90 days.', client: 'Professional Services Firm (200 employees)' },
     relatedServices: [
       { label: 'AI Search & LLM Visibility', href: '/marketing/ai-seo' },
       { label: 'Content Marketing', href: '/marketing/content' },
@@ -127,7 +126,6 @@ This is early-stage work. The companies investing in AI search visibility today 
       'Category-creating companies that need LLMs to understand and cite their novel product or service category accurately',
       'VC-backed companies preparing for Series B or later — where investor and enterprise buyer due diligence increasingly includes "what do the AIs say about this company?"',
     ],
-    caseStudySnippet: { metric: 'Brand cited in 4 of 6 major LLMs within 90 days — zero to 18 LLM citations/week', context: 'Built entity presence across Wikidata, Google Knowledge Graph, Wikipedia, and Crunchbase. Published 3 original benchmark reports that became primary LLM citation sources for the category. Implemented llms.txt, llms-full.txt, and comprehensive Schema.org markup with entity linking. Brand went from invisible to the most-cited provider in their category across ChatGPT, Perplexity, and Google AI Overviews.', client: 'B2B SaaS Company (Series A)' },
     relatedServices: [
       { label: 'SEO', href: '/marketing/seo' },
       { label: 'Content Marketing', href: '/marketing/content' },
@@ -180,7 +178,6 @@ Creative testing is the engine that makes paid media compound over time. We run 
       'Companies investing in content and SEO that want to accelerate pipeline with paid while organic compounds — using paid to test messaging and audiences that inform the organic strategy',
       'Marketing leaders who have an in-house paid media buyer but need senior strategy, channel mix decisions, and creative testing frameworks their buyer can execute',
     ],
-    caseStudySnippet: { metric: '3.2× ROAS and 58% reduction in CAC across Google and LinkedIn in 4 months', context: 'Restructured paid media accounts for a B2B SaaS company that had been running unoptimized campaigns for 18 months. Consolidated 40+ ad groups into 8 funnel-aligned campaigns, implemented conversion tracking that followed leads through to closed-won (not just form fills), and ran a systematic creative testing program that identified 3 winning ad variants. Wasted spend identified and reallocated: $4,200/month in non-converting search terms and audiences.', client: 'B2B SaaS Company (Series A)' },
     relatedServices: [
       { label: 'Conversion Rate Optimization', href: '/marketing/cro' },
       { label: 'Content Marketing', href: '/marketing/content' },
@@ -233,7 +230,6 @@ The outcome is a content library that compounds. Each piece earns search traffic
       'Companies launching a new product category that need to define the space, educate the market, and own the search landscape before competitors arrive',
       'Sales-led organizations where the sales team is creating their own one-off content (decks, one-pagers, email templates) because marketing is not producing what they need',
     ],
-    caseStudySnippet: { metric: 'Content-attributed pipeline grew from $0 to $1.2M ARR in 12 months', context: 'Built a content engine for a B2B SaaS company that previously had no content strategy — just an inactive blog with 8 posts from 2019. Developed 5 topic clusters mapped to buyer journey stages, produced 48 long-form articles and 4 interactive tools (ROI calculator, maturity assessment, benchmark tool, vendor comparison matrix), and implemented a distribution system across search, social, email, and paid. Content became the #1 source of qualified inbound pipeline within 12 months.', client: 'B2B SaaS Company (Series A, 35 employees)' },
     relatedServices: [
       { label: 'SEO', href: '/marketing/seo' },
       { label: 'AI Search & LLM Visibility', href: '/marketing/ai-seo' },
@@ -286,7 +282,6 @@ We audit your current email setup — list health, deliverability, segmentation,
       'Companies that migrated to a new ESP and never rebuilt their automations — leaving money on the table with every new subscriber',
       'Sales-led organizations where leads go cold between "booked a demo" and "had the demo" because no email nurture bridges the gap',
     ],
-    caseStudySnippet: { metric: 'Email-attributed revenue up 215% and list unsubscribe rate down 62% in 6 months', context: 'Audited email program for a B2B SaaS company sending a single monthly newsletter to 18,000 subscribers. Built 7 automated lifecycle sequences (welcome, lead nurture, trial onboarding, expansion, re-engagement, win-back, and customer newsletter), implemented behavioral segmentation and dynamic content, and cut the list by 4,000 invalid/unengaged addresses. Revenue per email sent increased 215%. Unsubscribe rate dropped from 0.5% to 0.19%.', client: 'B2B SaaS Company (Series A)' },
     relatedServices: [
       { label: 'Content Marketing', href: '/marketing/content' },
       { label: 'Conversion Rate Optimization', href: '/marketing/cro' },
@@ -339,7 +334,6 @@ The output is not a 50-page deck that sits in a Google Drive folder. It is a pra
       'Founders who have raised a round and are about to scale go-to-market — and need the positioning to be airtight before spending significant marketing dollars',
       'Companies that have grown through multiple acquisitions or product expansions and now have a fragmented brand that confuses customers and employees alike',
     ],
-    caseStudySnippet: { metric: 'Win rate improved 34% and average deal size grew 28% within 6 months of brand repositioning', context: 'Repositioned a B2B services company from a generic "digital transformation partner" to a specific category leader in "revenue operations for professional services firms." Work included stakeholder interviews with 12 team members, customer research with 18 clients and lost prospects, competitive positioning analysis across 8 competitors, and a full messaging playbook with activation guides for website, sales deck, social, and outbound sequences.', client: 'Professional Services Firm (120 employees)' },
     relatedServices: [
       { label: 'Visual Identity', href: '/marketing/visual-identity' },
       { label: 'Content Marketing', href: '/marketing/content' },
@@ -392,7 +386,6 @@ Our process progresses from discovery (brand audit, competitor visual analysis, 
       'Companies that merged, pivoted, or expanded into new offerings and whose current visual identity reflects a previous version of the business',
       'Marketing leaders who have a strong brand strategy and messaging but a visual identity that fails to match the sophistication of the strategy — and undermines it at every touchpoint',
     ],
-    caseStudySnippet: { metric: 'Brand recall increased 47% and website conversion rate improved 22% post-redesign', context: 'Designed a complete visual identity system for a B2B SaaS company whose existing brand was built from a $500 Fiverr logo and inconsistent DIY templates. Created logo family (4 lockups), color system (primary palette with WCAG AA validation, dark mode variants), typography system (Geist + editor serif), icon library (60+ custom icons), and brand guidelines with component templates for website, sales deck, social, and product UI. The new identity was deployed across website, product, and all go-to-market materials in 8 weeks.', client: 'B2B SaaS Company (Series A, 40 employees)' },
     relatedServices: [
       { label: 'Brand Strategy', href: '/marketing/brand-strategy' },
       { label: 'Content Marketing', href: '/marketing/content' },
@@ -445,7 +438,6 @@ The outcome over 6-12 months is typically a 20-50% improvement in conversion rat
       'E-commerce brands with decent traffic and add-to-cart rates but a checkout abandonment problem that nobody has systematically investigated',
       'Founders who recently redesigned their website and watched conversion rates drop — and need to diagnose whether it is the design, the messaging, or something else',
     ],
-    caseStudySnippet: { metric: 'Lead-to-demo conversion rate improved 2.8× in 9 months — from 2.1% to 5.9%', context: 'Ran a 9-month CRO program for a B2B SaaS company. Research phase identified 3 critical friction points: hero messaging confused first-time visitors, the demo request form was too long (11 fields), and the pricing page lacked social proof. Ran 18 A/B tests, 14 reached statistical significance, 11 produced positive lifts. Implemented wins and built a CRO playbook for the internal team to continue testing post-engagement. The compound effect of all winning variants: 2.8× more demos from the same traffic.', client: 'B2B SaaS Platform (Series B)' },
     relatedServices: [
       { label: 'Paid Media', href: '/marketing/paid-media' },
       { label: 'Content Marketing', href: '/marketing/content' },
@@ -496,7 +488,6 @@ Our social media program covers strategy, production, engagement, and measuremen
       'Founders who have built a personal brand on social but have not translated that visibility into pipeline — high engagement, low conversion',
       'Companies in a competitive hiring market where social presence is a recruiting advantage — top candidates evaluate company culture through social media before they apply',
     ],
-    caseStudySnippet: { metric: 'LinkedIn following grew from 800 to 14,000 in 12 months with 4.2% average engagement rate', context: 'Built B2B social media program from near-zero for a professional services firm. Developed 4 content pillars mapped to ICP pain points, produced 16-20 LinkedIn posts and 8-12 Twitter/X threads per month, and implemented a founder ghostwriting program for the CEO and two partners. Social-attributed inbound leads went from zero to 12-15 qualified demos per month.', client: 'Professional Services Firm (75 employees)' },
     relatedServices: [
       { label: 'Content Marketing', href: '/marketing/content' },
       { label: 'Brand Strategy', href: '/marketing/brand-strategy' },
@@ -538,7 +529,6 @@ Our social media program covers strategy, production, engagement, and measuremen
     ],
     longDescription: "",
     whoItsFor: [],
-    caseStudySnippet: null,
     relatedServices: [],
     faqs: [],
     timeline: 'Delivered within 48 hours',
@@ -578,7 +568,6 @@ A website is not a project with a finish line — it is a living marketing asset
       'Founders whose site gets traffic but does not convert — visitors browse and leave, and nobody can explain why',
       'Companies rebranding or repositioning and needing a website that reflects the new strategy, not the old one',
     ],
-    caseStudySnippet: { metric: 'PageSpeed score from 34 to 98, organic traffic up 89%, and conversion rate improved 2.1× within 90 days of launch', context: 'Rebuilt a dated, slow WordPress website for a B2B services firm as a high-performance Next.js site with Sanity CMS. Migrated 200+ blog posts without SEO loss, implemented full schema markup including Organization, Service, FAQ, and Article schemas. Post-launch: Core Web Vitals all green, bounce rate down 41%, average session duration up 2.3 minutes.', client: 'Professional Services Firm (120 employees)' },
     relatedServices: [
       { label: 'Next.js SEO', href: '/tech/nextjs-seo' },
       { label: 'Performance Optimization', href: '/tech/performance' },
@@ -631,7 +620,6 @@ We ship in weekly sprints with continuous deployment. You see working software f
       'Companies building a customer-facing SaaS product that needs authentication, payments, notifications, and API integrations — the full stack, not just a landing page with a form',
       'Technical founders who need additional engineering capacity for a specific project or module and want a team that can integrate into their existing codebase and workflow without a learning curve',
     ],
-    caseStudySnippet: { metric: 'MVP shipped in 7 weeks, 1,200 users onboarded in first 60 days, zero critical bugs in production', context: 'Built an MVP web application for a seed-stage logistics startup connecting shippers with carriers. Started with founder\'s 4-page product spec, ran a 3-day product sprint to identify the core workflow, and shipped a functional marketplace with user authentication, job posting and bidding, real-time notifications, and payment processing — all within 7 weeks. Architecture designed so the platform could scale to thousands of concurrent users without a rewrite. Post-MVP, continued iterating on a weekly sprint cadence based on user feedback.', client: 'Seed-Stage Logistics Marketplace (5 employees at start, 22 at follow-on)' },
     relatedServices: [
       { label: 'MVP Development', href: '/tech/mvp' },
       { label: 'Integrations', href: '/tech/integrations' },
@@ -676,7 +664,6 @@ We ship in weekly sprints with continuous deployment. You see working software f
       'Teams that need offline support, push notifications, camera, or location — features a mobile website cannot deliver well',
       'Founders who have been burned by a cheap webview wrapper that users rejected',
     ],
-    caseStudySnippet: { metric: 'Single codebase shipped to both stores in 11 weeks; 4.7★ average rating across 3,400 reviews', context: 'Built a cross-platform React Native app for a field-services company: offline job lists, photo capture, signature capture, and push notifications. One codebase, native performance, and a clean pass through both App Store and Play Store review on the first submission.', client: 'Field-Services SaaS (18 employees)' },
     relatedServices: [
       { label: 'Web Applications', href: '/tech/web-apps' },
       { label: 'AI Agents', href: '/tech/ai-agents' },
@@ -720,7 +707,6 @@ We ship in weekly sprints with continuous deployment. You see working software f
       'Companies sitting on documents or data an agent could make instantly queryable',
       'Founders who tried a no-code AI tool and hit its ceiling on accuracy, data access, or reliability',
     ],
-    caseStudySnippet: { metric: 'Support copilot deflected 47% of tickets and cut first-response time from 6h to under 2 minutes', context: 'Built a support agent grounded (via RAG) in a SaaS company\'s help center and past tickets, wired to their billing API to answer account-specific questions, with guardrails and a human handoff for anything low-confidence. Shipped with an evaluation harness so quality was measured, not assumed.', client: 'B2B SaaS (40 employees)' },
     relatedServices: [
       { label: 'Web Applications', href: '/tech/web-apps' },
       { label: 'Integrations', href: '/tech/integrations' },
@@ -772,7 +758,6 @@ The technical foundation matters as much as the UX. E-commerce site speed direct
       'Founders whose e-commerce site converts well below industry benchmarks for their category (typically 2-4%) and who cannot identify why',
       'Companies migrating from Magento, WooCommerce, or legacy platforms to Shopify or headless and wanting to do it without SEO loss, data loss, or revenue disruption',
     ],
-    caseStudySnippet: { metric: 'Conversion rate from 1.8% to 3.7%, AOV up 22%, monthly online revenue doubled in 6 months without increasing ad spend', context: 'Full e-commerce rebuild for a DTC home goods brand doing $2.2M/year on a slow, unoptimized Shopify theme. Migrated to a custom Shopify theme built for conversion: redesigned product pages with social proof integration and size/fit guidance, implemented one-click checkout with Shop Pay, optimized collection page filtering and search for 1,200+ SKUs, and set up abandoned cart recovery flows. Post-launch: conversion rate doubled, AOV increased 22% through strategic cross-sells and bundling, and site speed improved from a 28 to a 96 PageSpeed score.', client: 'DTC Home Goods Brand ($2.2M to $4.4M online revenue)' },
     relatedServices: [
       { label: 'Performance Optimization', href: '/tech/performance' },
       { label: 'Integrations', href: '/tech/integrations' },
@@ -825,7 +810,6 @@ We implement the fixes directly — this is not a report you hand to your engine
       'Marketing leaders who cannot get their engineering team to prioritize SEO fixes — we bridge the gap by implementing fixes directly and documenting them for the engineering team',
       'Companies investing in AI search visibility who need llms.txt, llms-full.txt, entity-linked schema, and clean semantic HTML that LLM crawlers can ingest efficiently',
     ],
-    caseStudySnippet: { metric: 'Core Web Vitals all green within 2 weeks, indexed pages up 34%, organic traffic increased 41% in 90 days', context: 'Next.js SEO overhaul for a B2B SaaS company whose engineering team built a technically impressive site that was invisible to search engines. Root cause: reliance on client-side rendering for key content pages meant Google could not see the actual content. We refactored the rendering strategy to use Server Components and ISR, implemented comprehensive metadata and structured data across 200+ pages, fixed sitemap and canonical URL issues, and optimized Core Web Vitals (LCP from 4.8s to 1.9s, CLS from 0.25 to 0.02, INP from 280ms to 95ms). Post-optimization: organic traffic grew 41% in 90 days, pages indexed increased 34% as previously invisible content became crawlable and indexable.', client: 'B2B SaaS Company (Series B, 80 employees)' },
     relatedServices: [
       { label: 'Websites', href: '/tech/websites' },
       { label: 'Performance Optimization', href: '/tech/performance' },
@@ -878,7 +862,6 @@ Every integration project includes monitoring: we set up alerts for sync failure
       'Marketing and sales leaders whose lead handoff between marketing platform and CRM is broken, slow, or inconsistent — leading to leads falling through cracks',
       'Companies that have tried native integrations and found they sync the wrong data, miss important fields, or break silently — and need custom middleware that actually works',
     ],
-    caseStudySnippet: { metric: '22 hours/week of manual data work eliminated, lead-to-CRM sync time from hours to under 30 seconds', context: 'Built a unified integration layer for a B2B SaaS company connecting HubSpot (CRM), Customer.io (email), Stripe (billing), Mixpanel (analytics), and Intercom (support). The previous workflow involved a sales ops person manually exporting leads from marketing tools, formatting them in Excel, and importing them into HubSpot — a 3-hour daily process that was often delayed, causing leads to go cold. Post-integration: real-time sync across all systems with validation and error alerting, 22 hours/week of manual work eliminated, lead response time dropped from 6+ hours to under 5 minutes.', client: 'B2B SaaS Company (Series A, 45 employees)' },
     relatedServices: [
       { label: 'E-Commerce', href: '/tech/ecommerce' },
       { label: 'Web Applications', href: '/tech/web-apps' },
@@ -930,7 +913,6 @@ The final phase is monitoring and prevention. Performance is not a one-time fix 
       'E-commerce brands where every 100ms of latency means measurable revenue loss — and who need aggressive, conversion-focused speed optimization',
       'Teams that have tried to optimize performance internally but hit a wall — usually because the root cause is architectural (rendering strategy, data fetching patterns) rather than superficial (image compression, caching)',
     ],
-    caseStudySnippet: { metric: 'LCP from 6.2s to 1.7s, Core Web Vitals all green, bounce rate down 38%, and organic traffic up 27% within 60 days', context: 'Performance optimization for an e-commerce brand whose site loaded in 6.2 seconds on mobile, with Core Web Vitals all in the red. Audit identified 3 critical bottlenecks: (1) 2.4MB of unoptimized images served as full-resolution PNGs, (2) unoptimized JavaScript bundles including unused MUI components inflating the main bundle to 890KB, and (3) render-blocking Google Tag Manager scripts delaying LCP by 1.8 seconds. Fixes: AVIF/WebP conversion with responsive srcsets, tree-shook and code-split the JavaScript bundles (890KB to 145KB), deferred non-critical third-party scripts, and implemented proper font loading. Post-optimization: LCP dropped to 1.7s, CLS went from 0.31 to 0.03, mobile conversion rate improved 29%.', client: 'DTC E-Commerce Brand ($12M online revenue)' },
     relatedServices: [
       { label: 'Next.js SEO', href: '/tech/nextjs-seo' },
       { label: 'Websites', href: '/tech/websites' },
@@ -983,7 +965,6 @@ Our engagement does not end at launch. We instrument the MVP with analytics and 
       'Technical founders who could build the MVP themselves but know they should be spending their time on customer discovery, sales, and fundraising — not writing CRUD endpoints and debugging authentication flows',
       'Founders who have built an MVP that "works" but is held together with duct tape and cannot be extended — and need a rebuild on a solid architecture before bringing on additional engineers',
     ],
-    caseStudySnippet: { metric: 'MVP launched in 5.5 weeks, validated core hypothesis with 180 beta users in 30 days, raised $1.2M pre-seed on the back of real usage data', context: 'Built an MVP for a fintech startup enabling freelancers to manage invoicing, expenses, and tax estimation in one tool. The founder came with a 22-page product spec; the product sprint cut it to a 3-feature MVP: invoice creation and sending, bank account linking for expense tracking, and a quarterly tax estimate calculator. Shipped in 5.5 weeks using Next.js, Supabase, Stripe Connect, and Plaid for bank integration. Within 30 days, 180 beta users had sent 400+ invoices and linked 200+ bank accounts. The founder used the traction data to close a $1.2M pre-seed round. Post-fundraise, we continued building toward the full product vision with a now-validated roadmap.', client: 'Pre-Seed Fintech Startup (2 founders, now 12 employees post-fundraise)' },
     relatedServices: [
       { label: 'Web Applications', href: '/tech/web-apps' },
       { label: 'Integrations', href: '/tech/integrations' },
@@ -1026,7 +1007,6 @@ Our engagement does not end at launch. We instrument the MVP with analytics and 
     ],
     longDescription: "",
     whoItsFor: [],
-    caseStudySnippet: null,
     relatedServices: [],
     faqs: [],
     timeline: 'Delivered within 48 hours',
@@ -1068,7 +1048,6 @@ For founders preparing to fundraise, clean books are non-negotiable. Investors a
       'SaaS and services companies with complex revenue recognition, multi-entity structures, or international transactions that generic bookkeeping cannot handle',
       'Founders preparing for due diligence who need audit-ready financials and cannot afford to have their numbers questioned',
     ],
-    caseStudySnippet: { metric: '12 months of backlogged books cleaned in 3 weeks, $34K in missed deductions identified', context: 'Full bookkeeping overhaul for a Series A SaaS company that had been running on spreadsheet-based tracking since inception. We rebuilt their chart of accounts, categorized 4,800+ transactions, reconciled 14 months of bank statements, and established a monthly close process that delivers financials by the 10th business day.', client: 'Series A B2B SaaS Company (35 employees)' },
     relatedServices: [
       { label: 'Tax Preparation & Strategy', href: '/finance/tax' },
       { label: 'Financial Reporting', href: '/finance/financial-reporting' },
@@ -1121,7 +1100,6 @@ The engagement is structured as an annual relationship with quarterly touchpoint
       'Founders who plan to exit within 3-7 years and want QSBS planning, entity optimization, and tax-efficient exit structuring',
       'Companies that have outgrown their local tax preparer and need a more sophisticated, strategy-forward approach',
     ],
-    caseStudySnippet: { metric: '$47K in missed deductions identified, $12K in penalties avoided through proactive planning', context: 'Full tax strategy engagement for a Series A SaaS company that had been filing with a generalist CPA. We conducted entity structure review, identified unclaimed R&D credits across two years of software development, corrected multi-state apportionment errors, and established quarterly estimated tax planning that eliminated year-end surprises.', client: 'Series A SaaS Company (40 employees, multi-state)' },
     relatedServices: [
       { label: 'Bookkeeping', href: '/finance/bookkeeping' },
       { label: 'Fractional CFO', href: '/finance/fractional-cfo' },
@@ -1173,7 +1151,6 @@ Every engagement starts with a financial diagnostic: we review your current fina
       'Founders who want a strategic thought partner for pricing, unit economics, capital allocation, and exit planning — not just a report producer',
       'Companies that have a controller or bookkeeper handling the transactional work but lack the strategic layer above it',
     ],
-    caseStudySnippet: { metric: 'Extended cash runway by 11 months through working capital restructuring, raised $8M Series A with financial model built by fractional CFO', context: 'Fractional CFO engagement for a seed-stage B2B marketplace burning $180K/month with 4 months of runway remaining. Restructured vendor payment terms, optimized subscription pricing (15% ARPU increase), built Series A financial model used in successful fundraise, and established monthly board reporting cadence.', client: 'Seed-Stage B2B Marketplace (18 employees)' },
     relatedServices: [
       { label: 'Cash Flow Modeling', href: '/finance/cash-flow' },
       { label: 'Financial Reporting', href: '/finance/financial-reporting' },
@@ -1226,7 +1203,6 @@ Setup takes 2-3 weeks. We register your tax accounts with the appropriate state 
       'Companies that have experienced a payroll tax penalty or filing mistake and never want to deal with that again',
       'Founders who want payroll fully integrated with their books so financials are always accurate without manual journal entries',
     ],
-    caseStudySnippet: { metric: 'Zero payroll tax penalties in 2 years, 8 hours/month of founder time recovered', context: 'Payroll management for a professional services firm with 45 employees across 6 states. We migrated them from a legacy payroll provider, set up multi-state tax compliance, integrated payroll with their accounting system, and established contractor payment workflows for 20+ 1099 contractors.', client: 'Professional Services Firm (45 employees, 6 states)' },
     relatedServices: [
       { label: 'Bookkeeping', href: '/finance/bookkeeping' },
       { label: 'Tax Preparation & Strategy', href: '/finance/tax' },
@@ -1278,7 +1254,6 @@ For companies with investors, we produce board-ready reporting: a concise narrat
       'Companies where the monthly close takes more than 10 business days or involves significant manual spreadsheet work',
       'Finance leads who are spending too much time producing reports and not enough time analyzing what the numbers mean',
     ],
-    caseStudySnippet: { metric: 'Monthly close reduced from 18 days to 8 days, board package quality rated "best we have seen" by lead investor', context: 'Financial reporting overhaul for a Series B SaaS company whose monthly close was taking 18 days and producing error-prone reports. We established standardized close checklist, automated deferred revenue calculations, built KPI dashboard, and implemented board-ready reporting package with variance commentary.', client: 'Series B SaaS Company (65 employees)' },
     relatedServices: [
       { label: 'Fractional CFO', href: '/finance/fractional-cfo' },
       { label: 'Bookkeeping', href: '/finance/bookkeeping' },
@@ -1330,7 +1305,6 @@ We update the forecast weekly with actual cash activity — what came in, what w
       'Companies experiencing rapid growth where cash consumption is getting harder to predict and manage intuitively',
       'Founders who have been surprised by a cash crunch before and are determined to never be caught off guard again',
     ],
-    caseStudySnippet: { metric: 'Identified pending cash shortfall 10 weeks before it would have hit, giving founder time to secure $500K bridge round without dilution pressure', context: 'Cash flow modeling engagement for a growth-stage ecommerce company that was profitable on a P&L basis but had negative operating cash flow due to inventory build and extended customer payment terms. Built 13-week rolling forecast that identified a cash gap 10 weeks out, allowing the founder to negotiate extended vendor terms and secure bridge financing from existing investors on favorable terms rather than a distressed raise.', client: 'Growth-Stage Ecommerce Company ($8M revenue)' },
     relatedServices: [
       { label: 'Fractional CFO', href: '/finance/fractional-cfo' },
       { label: 'Financial Reporting', href: '/finance/financial-reporting' },
@@ -1372,7 +1346,6 @@ We update the forecast weekly with actual cash activity — what came in, what w
     ],
     longDescription: "",
     whoItsFor: [],
-    caseStudySnippet: null,
     relatedServices: [],
     faqs: [],
     timeline: 'Delivered within 48 hours',
@@ -1422,7 +1395,6 @@ The outcome is an agent that runs 24/7, costs a fraction of the equivalent human
       'Companies that have tried "AI chatbots" that disappointed and want agents that actually work',
       'Growth-stage companies scaling headcount faster than processes — and feeling the coordination cost',
     ],
-    caseStudySnippet: { metric: '82% of support tickets resolved autonomously within 6 weeks', context: 'Custom AI agent deployed across Slack and Intercom for a B2B SaaS company handling 1,200+ monthly support requests. Human agents freed to handle enterprise escalations and proactive customer success.', client: 'B2B SaaS Platform (Series A)' },
     relatedServices: [
       { label: 'Workflow Automation', href: '/automation/workflow-automation' },
       { label: 'CRM Automation', href: '/automation/crm-automation' },
@@ -1474,7 +1446,6 @@ The result is not just saved time — though that's the most immediate benefit. 
       'Companies that tried Zapier and hit its limitations — complex branching, high volume, or data privacy requirements',
       'Businesses running on a stack of 6+ tools where data moves between them manually',
     ],
-    caseStudySnippet: { metric: '31 hours/week of manual work eliminated across 8 automated workflows', context: 'Designed and deployed workflow automation for a professional services firm handling client onboarding, invoice generation, project status reporting, and resource allocation. Previously required 2 full-time operations coordinators to manage manually.', client: 'Professional Services Firm (75 employees)' },
     relatedServices: [
       { label: 'Stack Integrations', href: '/automation/integrations' },
       { label: 'CRM Automation', href: '/automation/crm-automation' },
@@ -1526,7 +1497,6 @@ The outcome is a unified stack where data flows automatically and accurately. Yo
       'Operations teams spending more than 5 hours/week on data reconciliation between systems',
       'Businesses that have outgrown native integrations and need custom middleware for their specific workflows',
     ],
-    caseStudySnippet: { metric: 'Eliminated 18 hours/week of manual data entry across 5 systems', context: 'Built a unified integration layer connecting HubSpot, Stripe, Mixpanel, Intercom, and Snowflake for a B2B SaaS company. Real-time sync replaced weekly CSV exports. Marketing can now attribute campaigns to actual revenue instead of just MQLs.', client: 'B2B SaaS Company (Series B)' },
     relatedServices: [
       { label: 'Workflow Automation', href: '/automation/workflow-automation' },
       { label: 'Data Pipelines', href: '/automation/data-pipelines' },
@@ -1578,7 +1548,6 @@ The deliverable isn't just a working pipeline — it's data you can trust. We bu
       'Growth-stage companies where board and investor reporting has become a multi-day fire drill every quarter',
       'Businesses that tried building pipelines internally but hit maintenance and reliability issues',
     ],
-    caseStudySnippet: { metric: 'Board reporting time reduced from 4 days to 2 hours', context: 'Built an end-to-end data pipeline consolidating Salesforce, Stripe, Google Analytics, Zendesk, and PostgreSQL into a single BigQuery warehouse with Metabase dashboards. Automated previously manual quarterly investor reporting that consumed 4 days of a senior analyst\'s time.', client: 'E-Commerce Platform (Series C)' },
     relatedServices: [
       { label: 'Stack Integrations', href: '/automation/integrations' },
       { label: 'Workflow Automation', href: '/automation/workflow-automation' },
@@ -1630,7 +1599,6 @@ The outcome is a CRM your team wants to use because using it makes their job eas
       'Companies implementing a CRM for the first time and wanting to get it right from day one',
       'Revenue operations teams spending hours manually building reports that should be automated',
     ],
-    caseStudySnippet: { metric: 'Deal velocity improved 34% and forecast accuracy reached 92% within one quarter', context: 'Reconfigured HubSpot for a 25-person sales team at a B2B services company. Built custom pipelines per product line, automated lead routing and deal stage progression, and implemented lead scoring based on firmographic fit and behavioral signals. Sales team adoption went from 41% to 94% in 8 weeks.', client: 'B2B Services Company (120 employees)' },
     relatedServices: [
       { label: 'Workflow Automation', href: '/automation/workflow-automation' },
       { label: 'Stack Integrations', href: '/automation/integrations' },
@@ -1682,7 +1650,6 @@ The deliverable is a fully functional operational stack that your team can use o
       'Teams that tried building no-code tools themselves and ended up with unmaintainable, undocumented systems',
       'Growth-stage companies that need client portals, internal dashboards, or approval workflows shipped in weeks, not months',
     ],
-    caseStudySnippet: { metric: 'Client portal and internal ops platform shipped in 5 weeks at 85% less cost than custom development', context: 'Designed and built a complete operational stack for a professional services startup: Airtable database, Softr client portal for document sharing and project tracking, n8n workflows for client onboarding and invoicing, and Retool internal dashboard for resource allocation. Delivered in 5 weeks versus 4-6 months estimated for custom development.', client: 'Professional Services Startup (12 employees)' },
     relatedServices: [
       { label: 'Workflow Automation', href: '/automation/workflow-automation' },
       { label: 'Stack Integrations', href: '/automation/integrations' },
@@ -1713,7 +1680,6 @@ The deliverable is a fully functional operational stack that your team can use o
     ],
     longDescription: "",
     whoItsFor: [],
-    caseStudySnippet: null,
     relatedServices: [],
     faqs: [],
     timeline: 'Delivered within 72 hours',
@@ -1733,11 +1699,11 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       subhead: 'SEO, paid media, content, brand strategy, and CRO — built for measurable revenue within 90 days. We operate as your growth partner, not a vendor.',
       cta: 'Get Free Marketing Audit',
       secondaryCta: 'Book Strategy Call',
+      // Performance claims removed — unsourced, and the finance/SLA ones were regulated
+      // claims. What remains describes the offer, not a result.
       stats: [
-        { value: '3.2×', label: 'Average ROAS' },
         { value: '48h', label: 'Audit Turnaround' },
         { value: '90', label: 'Days to First ROI' },
-        { value: '50+', label: 'Growth Clients' },
       ],
     },
     pains: [
@@ -1777,11 +1743,11 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         deliverables: ['Weekly sprint delivery', 'Performance dashboard', 'Monthly strategy review', 'Continuous experimentation'],
       },
     ],
-    outcomes: [
-      { metric: '3.2×', label: 'Average ROAS across paid channels', client: 'B2B SaaS Company', industry: 'Technology' },
-      { metric: '247%', label: 'Organic traffic increase in 6 months', client: 'Professional Services Firm', industry: 'Consulting' },
-      { metric: '2.8×', label: 'Conversion rate improvement', client: 'E-Commerce Brand', industry: 'Retail' },
-    ],
+    // outcomes emptied: 12 tiles of unsourced metrics attributed to placeholder clients
+    // ('B2B SaaS Company', 'Professional Services Firm'), under a heading reading "Real
+    // results. Real clients. Real numbers." One was a regulated tax claim. The real,
+    // named, sourced engagements now live in data/case-studies and render at /case-studies.
+    outcomes: [],
     subServices: marketingSubServices,
     faqs: [
       {
@@ -1876,18 +1842,12 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       headline: '90-Day Results Guarantee',
       body: 'If we don\'t deliver measurable improvement in your agreed-upon KPIs within 90 days, we work for free until we do. We\'re that confident in our process — and we put our money where our mouth is.',
     },
-    proofLogos: [
-      { name: 'SaaS Academy' },
-      { name: 'TechVentures' },
-      { name: 'Growth Partners' },
-      { name: 'ScaleUp Health' },
-      { name: 'Revenue Labs' },
-    ],
-    teamMember: {
-      name: 'Sarah Chen',
-      role: 'Head of Growth Marketing',
-      focus: '10 years scaling B2B SaaS companies from $1M to $50M ARR through SEO, paid media, and CRO.',
-    },
+    // proofLogos emptied: all 20 wordmarks were invented companies. The proof bar only ships
+    // again with real, permissioned client marks on file.
+    proofLogos: [],
+    // teamMember nulled: this named a person who is not on the roster in data/seoExpansion.ts.
+    // Repoint at a real TEAM_MEMBERS entry before this block ships again.
+    teamMember: null,
   },
 
   tech: {
@@ -1898,11 +1858,10 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       subhead: 'Websites, web apps, integrations, and performance optimization — built to ship fast, scale, and contribute to your bottom line from day one.',
       cta: 'Get Free Tech Audit',
       secondaryCta: 'Book Scoping Call',
+      // Performance claims removed — unsourced, and the finance/SLA ones were regulated
+      // claims. What remains describes the offer, not a result.
       stats: [
-        { value: '200+', label: 'Projects Shipped' },
-        { value: '98', label: 'PageSpeed Score Avg' },
         { value: '6', label: 'Weeks to Launch' },
-        { value: '99.9%', label: 'Uptime SLA' },
       ],
     },
     pains: [
@@ -1942,11 +1901,11 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         deliverables: ['Weekly sprint delivery', 'Staging environment for review', 'Automated test reports', 'Deployment to production'],
       },
     ],
-    outcomes: [
-      { metric: '98', label: 'Average PageSpeed score across client sites', client: 'SaaS Platform', industry: 'Technology' },
-      { metric: '40%', label: 'Conversion rate improvement after rebuild', client: 'Professional Services Firm', industry: 'Consulting' },
-      { metric: '6 wks', label: 'Average time from kickoff to launch', client: 'E-Commerce Brand', industry: 'Retail' },
-    ],
+    // outcomes emptied: 12 tiles of unsourced metrics attributed to placeholder clients
+    // ('B2B SaaS Company', 'Professional Services Firm'), under a heading reading "Real
+    // results. Real clients. Real numbers." One was a regulated tax claim. The real,
+    // named, sourced engagements now live in data/case-studies and render at /case-studies.
+    outcomes: [],
     subServices: techSubServices,
     faqs: [
       {
@@ -2033,18 +1992,12 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       headline: 'Performance Guarantee',
       body: 'Every site we build ships with a PageSpeed score of 90+ and Core Web Vitals in the green. If it doesn\'t, we fix it for free. Speed isn\'t optional — it\'s table stakes.',
     },
-    proofLogos: [
-      { name: 'CloudBase' },
-      { name: 'DataForge' },
-      { name: 'StackSync' },
-      { name: 'NexusDev' },
-      { name: 'PixelForge' },
-    ],
-    teamMember: {
-      name: 'Marcus Rivera',
-      role: 'Head of Engineering',
-      focus: '15 years building production software. Previously led engineering at a YC-backed SaaS company acquired for $120M.',
-    },
+    // proofLogos emptied: all 20 wordmarks were invented companies. The proof bar only ships
+    // again with real, permissioned client marks on file.
+    proofLogos: [],
+    // teamMember nulled: this named a person who is not on the roster in data/seoExpansion.ts.
+    // Repoint at a real TEAM_MEMBERS entry before this block ships again.
+    teamMember: null,
   },
 
   finance: {
@@ -2055,11 +2008,9 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       subhead: 'Bookkeeping, tax, fractional CFO, and payroll — tech-enabled finance that goes beyond compliance to give you clarity, confidence, and time.',
       cta: 'Get Free Finance Health Check',
       secondaryCta: 'Book Discovery Call',
+      // Performance claims removed — unsourced, and the finance/SLA ones were regulated
+      // claims. What remains describes the offer, not a result.
       stats: [
-        { value: '500+', label: 'Monthly Closes' },
-        { value: '$0', label: 'Tax Penalties (Ever)' },
-        { value: '15h', label: 'Avg Hours Saved/Mo' },
-        { value: '97%', label: 'Client Retention' },
       ],
     },
     pains: [
@@ -2099,11 +2050,11 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         deliverables: ['Monthly financial statements', 'Variance analysis', 'Cash flow forecast', 'Strategic recommendations'],
       },
     ],
-    outcomes: [
-      { metric: '15h', label: 'Average hours saved per month per client', client: 'SaaS Startup', industry: 'Technology' },
-      { metric: '$0', label: 'Tax penalties across all clients', client: 'Growth-Stage Company', industry: 'Services' },
-      { metric: '18mo', label: 'Average client retention and growing', client: 'E-Commerce Brand', industry: 'Retail' },
-    ],
+    // outcomes emptied: 12 tiles of unsourced metrics attributed to placeholder clients
+    // ('B2B SaaS Company', 'Professional Services Firm'), under a heading reading "Real
+    // results. Real clients. Real numbers." One was a regulated tax claim. The real,
+    // named, sourced engagements now live in data/case-studies and render at /case-studies.
+    outcomes: [],
     subServices: financeSubServices,
     faqs: [
       {
@@ -2184,18 +2135,12 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       headline: 'Accuracy Guarantee',
       body: 'If we make a bookkeeping error that results in a tax penalty, we pay the penalty. We\'re that confident in our process — and we carry professional liability insurance to back it up.',
     },
-    proofLogos: [
-      { name: 'ClearBooks' },
-      { name: 'FinScale' },
-      { name: 'CapTable Partners' },
-      { name: 'LedgerTech' },
-      { name: 'Compass CFO' },
-    ],
-    teamMember: {
-      name: 'Priya Patel',
-      role: 'Head of Finance',
-      focus: 'CPA with 12 years of experience. Former controller at a PE-backed services company. Specializes in founder finance and cash flow strategy.',
-    },
+    // proofLogos emptied: all 20 wordmarks were invented companies. The proof bar only ships
+    // again with real, permissioned client marks on file.
+    proofLogos: [],
+    // teamMember nulled: this named a person who is not on the roster in data/seoExpansion.ts.
+    // Repoint at a real TEAM_MEMBERS entry before this block ships again.
+    teamMember: null,
   },
 
   automation: {
@@ -2206,11 +2151,9 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       subhead: 'Custom AI agents, workflow automation, CRM integration, and data pipelines — built for founders who want to scale without scaling headcount.',
       cta: 'Get Free Automation Map',
       secondaryCta: 'Book Strategy Call',
+      // Performance claims removed — unsourced, and the finance/SLA ones were regulated
+      // claims. What remains describes the offer, not a result.
       stats: [
-        { value: '40+', label: 'AI Agents Deployed' },
-        { value: '85%', label: 'Avg Task Automation' },
-        { value: '30h', label: 'Avg Hours Saved/Week' },
-        { value: '6mo', label: 'Avg Payback Period' },
       ],
     },
     pains: [
@@ -2250,11 +2193,11 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         deliverables: ['Performance dashboard', 'Exception handling and alerts', 'Monthly optimization report', 'New opportunity pipeline'],
       },
     ],
-    outcomes: [
-      { metric: '30h', label: 'Average hours saved per week per client', client: 'B2B Services Company', industry: 'Professional Services' },
-      { metric: '85%', label: 'Lead qualification automated', client: 'SaaS Platform', industry: 'Technology' },
-      { metric: '6mo', label: 'Average payback period on automation investment', client: 'E-Commerce Brand', industry: 'Retail' },
-    ],
+    // outcomes emptied: 12 tiles of unsourced metrics attributed to placeholder clients
+    // ('B2B SaaS Company', 'Professional Services Firm'), under a heading reading "Real
+    // results. Real clients. Real numbers." One was a regulated tax claim. The real,
+    // named, sourced engagements now live in data/case-studies and render at /case-studies.
+    outcomes: [],
     subServices: automationSubServices,
     faqs: [
       {
@@ -2329,18 +2272,12 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       headline: 'ROI Guarantee',
       body: 'If our automation doesn\'t deliver the projected time savings within 90 days of deployment, we work for free until it does. We measure success in hours returned to your team and revenue impact — not lines of code written.',
     },
-    proofLogos: [
-      { name: 'WorkflowAI' },
-      { name: 'AutomatePro' },
-      { name: 'DataSync' },
-      { name: 'OpsForge' },
-      { name: 'PipelineIQ' },
-    ],
-    teamMember: {
-      name: 'David Okonkwo',
-      role: 'Head of Automation',
-      focus: 'Built 200+ AI agents and automated workflows for companies ranging from seed-stage to Fortune 500. Previously led automation at a top-tier systems integrator.',
-    },
+    // proofLogos emptied: all 20 wordmarks were invented companies. The proof bar only ships
+    // again with real, permissioned client marks on file.
+    proofLogos: [],
+    // teamMember nulled: this named a person who is not on the roster in data/seoExpansion.ts.
+    // Repoint at a real TEAM_MEMBERS entry before this block ships again.
+    teamMember: null,
   },
 };
 

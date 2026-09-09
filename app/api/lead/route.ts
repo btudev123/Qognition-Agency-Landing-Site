@@ -173,7 +173,7 @@ export async function POST(request: NextRequest) {
       message: isAudit
         ? 'Audit request received. Expect results within 48 hours.'
         : 'Message received. Expect a response within one business day.',
-      nextStep: isAudit ? { calendly: 'https://cal.com/qognition-agency/15min' } : undefined,
+      nextStep: isAudit ? { calendly: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency' } : undefined,
       event_id: eventId,
       delivery,
     });

@@ -60,7 +60,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Identity, design systems, campaigns, and creative direction for brands that need to look as sharp as they perform.',
     fullDescription: 'We turn strategy into a brand system people recognize, trust, and remember. Qognition blends positioning, visual identity, conversion copy, design systems, campaign creative, and AI-assisted production so every touchpoint feels premium and commercially useful.',
     icon: 'Palette',
-    kpis: ['Clearer Positioning', '+38% CTA Lift', 'Launch-Ready Assets'],
+    kpis: ['Clearer Positioning', 'Stronger CTA Hierarchy', 'Launch-Ready Assets'],
     expertQuote: {
         author: 'Richa Sharma',
         role: 'Creative Director',
@@ -114,7 +114,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'High-performance sites that convert — Next.js, Webflow, WordPress, and Shopify.',
     fullDescription: 'We build the fastest, most secure websites on the web using React, Next.js, and headless architecture — plus Webflow, WordPress, and Shopify when the team needs to own publishing. Our sites are not brochures; they are high-performance growth engines built around offers, proof, and booked calls.',
     icon: 'Code',
-    kpis: ['100 PageSpeed', '<1s Load Time', 'Award-Winning UI'],
+    kpis: ['Core Web Vitals Green', 'Fast First Load', 'Accessible UI'],
     subServices: [
         { name: 'UX/UI Design', slug: 'ux-ui-design', description: 'Research, wireframes, prototypes, and conversion-focused interface design.' },
         { name: 'WordPress Development', slug: 'wordpress-development', description: 'Fast, secure, SEO-ready WordPress builds with clean publishing workflows.' },
@@ -151,7 +151,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Technical, content, and off-page SEO for enterprise scale.',
     fullDescription: 'We dominate search results by combining technical excellence with semantic authority. Our strategies are future-proofed against core updates and AI search transitions (SGE). We move beyond keywords to own the entire entity graph of your brand.',
     icon: 'Search',
-    kpis: ['+200% Organic Traffic', 'Top 3 Keywords', '50% Lower CAC'],
+    kpis: ['Non-Branded Organic Growth', 'Buyer-Intent Rankings', 'Lower Acquisition Cost'],
     expertQuote: {
         author: "Dr. Elena Vance",
         role: "Head of Search Engineering",
@@ -240,7 +240,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Performance advertising across search, social, retail, and CTV.',
     fullDescription: 'Scientific paid media management across Google, Meta, LinkedIn, TikTok, Amazon, and beyond. We use predictive analytics, first-party data, and creative testing to bid smarter, lower CPA, and scale spend without losing efficiency. Management is 15% of ad spend.',
     icon: 'Zap',
-    kpis: ['-25% CPA', '3.5x ROAS', 'Scale to $1M+ Spend'],
+    kpis: ['Lower Cost Per Acquisition', 'Tracked Return On Spend', 'Scalable Account Structure'],
     subServices: [
         { name: 'Google Search Ads', slug: 'google-ads-management', description: 'Search campaigns engineered for lead quality and ROAS, not just clicks.' },
         { name: 'Google Shopping Ads', slug: 'google-shopping-ads', description: 'Feed optimization and Shopping campaigns for e-commerce revenue.' },
@@ -278,7 +278,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Strategy, writing, and assets that earn trust and rankings.',
     fullDescription: 'Content that does a job: rank, educate, and convert. We build the strategy, produce the assets — blogs, pillar pages, ebooks, case studies, infographics — and tie every piece to a buyer stage and a measurable action. Original, expert-led, and AI-assisted, never AI slop.',
     icon: 'FileText',
-    kpis: ['+180% Organic Reach', 'Topical Authority', 'Lower CAC'],
+    kpis: ['Organic Reach Growth', 'Topical Authority', 'Lower Acquisition Cost'],
     subServices: [
         { name: 'Content Strategy', slug: 'content-strategy', description: 'Audience, pillars, topic clusters, and an editorial plan tied to pipeline.' },
         { name: 'Blog Writing', slug: 'blog-writing', description: 'Expert-led, SEO-structured articles with information gain and internal links.' },
@@ -310,7 +310,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Brand building and community across social ecosystems.',
     fullDescription: 'Data-driven social strategies that build community and drive revenue. We manage end-to-end creative, from short-form video production to community management, ensuring your brand voice resonates on every platform.',
     icon: 'Globe',
-    kpis: ['+150% Engagement', '4x ROAS', 'Viral Reach'],
+    kpis: ['Engagement Growth', 'Tracked Return On Spend', 'Audience Reach'],
     expertQuote: {
         author: "Marcus Chen",
         role: "Creative Director",
@@ -352,7 +352,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Expert multimedia production: explainers, product films, testimonials, podcasts, and motion graphics.',
     fullDescription: 'Expert multimedia production, end to end. We script, shoot, edit, and optimize explainer videos, product films, customer testimonials, YouTube programs, podcasts, and motion graphics — each cut for the platform it runs on and the funnel stage it serves. Video is the highest-converting and most-shared format online, and every asset we produce is built to be measured against pipeline, not views.',
     icon: 'Video',
-    kpis: ['2x Time-on-Page', 'Higher Trust', 'More Shares'],
+    kpis: ['Longer Time-on-Page', 'Higher Trust', 'More Shares'],
     subServices: [
         { name: 'Explainer Videos', slug: 'explainer-videos', description: 'Concise, animated or live-action videos that make a complex offer clear.' },
         { name: 'Product Videos', slug: 'product-videos', description: 'Feature walkthroughs and demos that drive consideration and conversion.' },
@@ -380,7 +380,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Lifecycle email, SMS/WhatsApp, flows, and CRM automation.',
     fullDescription: 'The highest-ROI channel in marketing, done right. We build segmentation, automated lifecycle flows, newsletters, and SMS/WhatsApp programs — plus the CRM and automation infrastructure (HubSpot, Klaviyo) that turns leads into revenue while you sleep.',
     icon: 'Mail',
-    kpis: ['40x Email ROI', 'Automated Revenue', 'Higher LTV'],
+    kpis: ['Email-Attributed Revenue', 'Automated Lifecycle', 'Higher LTV'],
     subServices: [
         { name: 'Email Campaign Management', slug: 'email-campaign-management', description: 'Planning, building, and sending campaigns that drive opens, clicks, and revenue.' },
         { name: 'Newsletter Management', slug: 'newsletter-management', description: 'Owned-audience newsletters that build trust and pipeline.' },
@@ -411,7 +411,7 @@ export const SERVICES: Service[] = [
     shortDescription: 'Testing, tracking, and attribution that turn traffic into revenue.',
     fullDescription: 'Traffic is wasted without conversion and measurement. We run structured experimentation (A/B testing, funnel and landing-page optimization) and build the analytics backbone — GA4, GTM, server-side tracking, and attribution — so every decision is evidence-based.',
     icon: 'BarChart3',
-    kpis: ['+35% Conversion', 'Clean Attribution', 'Evidence-Based Decisions'],
+    kpis: ['Conversion Rate Lift', 'Clean Attribution', 'Evidence-Based Decisions'],
     subServices: [
         { name: 'A/B Testing', slug: 'ab-testing', description: 'Hypothesis-driven experiments with statistical rigor and a prioritized backlog.' },
         { name: 'Landing Page Optimization', slug: 'landing-page-optimization', description: 'Message match, proof, and friction reduction to lift conversion.' },

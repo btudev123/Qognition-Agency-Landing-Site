@@ -86,7 +86,7 @@ export const TOP_NAV: TopNavItem[] = [
   { label: 'Home', href: '/', type: 'link' },
   { label: 'Services', href: '/services', type: 'spoke' },
   { label: 'Industries', href: '/industries', type: 'industries' },
-  { label: 'Work', href: '/case-studies', type: 'link' },
+  { label: 'Case Studies', href: '/case-studies', type: 'link' },
   { label: 'Free Tools', href: '/free-tools', type: 'link' },
   { label: 'Resources', href: '/resources', type: 'link' },
   { label: 'Contact', href: '/contact', type: 'link' },

@@ -1,7 +1,7 @@
-import { CLIENT_LOGOS, PARTNER_LOGOS } from '../../data/trust';
+import { PARTNER_LOGOS } from '../../data/trust';
 
-/* Two-row proof strip: brands we've driven results for + the platform/ad
-   partners we run certified work across (Google, Meta, TikTok, Snapchat, LinkedIn).
+/* Proof strip: the platform/ad partners we run certified work across
+   (Google, Meta, TikTok, Snapchat, LinkedIn).
    Real full-colour brand SVGs, uniform optical height, subtle on rest → full on hover. */
 
 function LogoRow({
@@ -44,8 +44,7 @@ export default function ClientPartners() {
       className="py-16 sm:py-20"
       style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
     >
-      <div className="max-w-[1240px] mx-auto px-5 sm:px-10 grid gap-14 lg:grid-cols-2 lg:gap-16 items-start">
-        <LogoRow label="Trusted by founders & operators" logos={CLIENT_LOGOS} size="wordmark" />
+      <div className="max-w-[1240px] mx-auto px-5 sm:px-10">
         <LogoRow label="Certified partners across" logos={PARTNER_LOGOS} size="glyph" />
       </div>
     </section>

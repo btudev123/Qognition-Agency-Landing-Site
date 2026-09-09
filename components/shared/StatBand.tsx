@@ -71,14 +71,10 @@ function StatItem({ stat, run }: { stat: Stat; run: boolean }) {
   );
 }
 
-const DEFAULT_STATS: Stat[] = [
-  { value: 312, suffix: '%', label: 'Avg. organic growth' },
-  { value: 3.5, suffix: 'x', decimals: 1, label: 'Average ROAS' },
-  { value: 87, suffix: '%', label: 'Client retention' },
-  { value: 2500, suffix: '+', label: 'Pages ranked' },
-];
-
-export default function StatBand({ stats = DEFAULT_STATS }: { stats?: Stat[] }) {
+// No default stats — every number here must come from a caller that can back it with a
+// verified source. An unsourced count-up is exactly the fabricated-metric pattern this
+// component used to ship (312% growth, 3.5x ROAS, 87% retention, 2,500+ pages ranked).
+export default function StatBand({ stats = [] }: { stats?: Stat[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const [run, setRun] = useState(false);
 
@@ -97,6 +93,8 @@ export default function StatBand({ stats = DEFAULT_STATS }: { stats?: Stat[] }) 
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+
+  if (stats.length === 0) return null;
 
   return (
     <section

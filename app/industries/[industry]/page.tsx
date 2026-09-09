@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, CheckCircle, Target } from 'lucide-react';
 import { INDUSTRIES } from '../../../data/industries';
 import { SERVICES } from '../../../data/services';
-import { CASE_STUDIES } from '../../../data/work';
+import { studiesForTopic, nicheLabel } from '../../../data/case-studies';
 import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
 import Section from '../../../components/ui/Section';
 import Heading from '../../../components/ui/Heading';
@@ -44,8 +44,7 @@ export default async function Page({
   const relatedServices = SERVICES.filter((service) =>
     industry.relatedServices?.includes(service.id)
   ).slice(0, 6);
-  const relatedCaseStudy =
-    CASE_STUDIES.find((study) => study.id === industry.caseStudyRef) || CASE_STUDIES[0];
+  const [relatedCaseStudy] = studiesForTopic(`${industry.name} ${industry.slug}`, 1);
 
   const allFaqs = industry.faqs || [];
 
@@ -220,13 +219,13 @@ export default async function Page({
                       className="block p-4 border border-[var(--border)] rounded-xl hover:border-[var(--accent)]/40 transition-all"
                     >
                       <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
-                        {relatedCaseStudy.industry}
+                        {nicheLabel(relatedCaseStudy.niche)} · {relatedCaseStudy.market}
                       </p>
                       <h4 className="text-h4 text-[var(--text)] mb-1 font-semibold">
                         {relatedCaseStudy.client}
                       </h4>
                       <p className="text-meta text-[var(--text-muted)]">
-                        {relatedCaseStudy.summary || relatedCaseStudy.title}
+                        {relatedCaseStudy.headline}
                       </p>
                     </Link>
                   )}
@@ -253,7 +252,7 @@ export default async function Page({
                 </div>
 
                 <a
-                  href="https://cal.com/qognition-agency/15min"
+                  href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"

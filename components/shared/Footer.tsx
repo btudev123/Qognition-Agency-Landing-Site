@@ -7,7 +7,7 @@ import { SERVICES } from '../../data/services';
 const column1 = [
   { label: 'Services', href: '/services' },
   { label: 'Industries', href: '/industries' },
-  { label: 'Work', href: '/case-studies' },
+  { label: 'Case Studies', href: '/case-studies' },
   { label: 'Regions', href: '/regions' },
   { label: 'Locations', href: '/locations' },
   { label: 'Contact', href: '/contact' },

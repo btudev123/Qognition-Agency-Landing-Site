@@ -14,9 +14,7 @@
 import { createClient } from 'next-sanity';
 
 import { BLOG_POSTS } from '../data/blog';
-import { CASE_STUDIES } from '../data/work';
 import { TOOLS } from '../data/tools';
-import { TESTIMONIALS } from '../data/trust';
 import { TOOL_CATEGORIES } from '../data/toolCategories';
 import { SERVICES } from '../data/services';
 import { B2B_MOFU_PAGES } from '../data/b2bPages';
@@ -94,44 +92,10 @@ for (const post of BLOG_POSTS as any[]) {
   });
 }
 
-for (const study of CASE_STUDIES as any[]) {
-  docs.push({
-    _id: safeId('caseStudy', study.id),
-    _type: 'caseStudy',
-    title: study.title,
-    slug: { _type: 'slug', current: study.id },
-    client: study.client,
-    industry: study.industry,
-    summary: study.summary,
-    imagePath: study.image,
-    tags: study.tags || [],
-    stats: (study.stats || []).map((s: any, i: number) => ({
-      _key: `stat-${i}`,
-      _type: 'object',
-      label: s.label,
-      value: s.value,
-    })),
-    timeline: study.timeline,
-    roi: study.roi,
-    challenge: study.challenge,
-    solution: study.solution,
-    implementation: study.implementation || [],
-    results: study.results || [],
-    clientJourney: study.clientJourney || [],
-    beforeAfter: (study.beforeAfter || []).map((r: any, i: number) => ({
-      ...r,
-      _key: `ba-${i}`,
-    })),
-    funnelStages: (study.funnelStages || []).map((r: any, i: number) => ({
-      ...r,
-      _key: `fs-${i}`,
-    })),
-    analytics: (study.analytics || []).map((r: any, i: number) => ({
-      ...r,
-      _key: `an-${i}`,
-    })),
-  });
-}
+// Case-study migration removed: the old data/work.ts (25 fabricated case studies) is deleted.
+// The real 45-record library at data/case-studies/ has its own shape (ResolvedCaseStudy) and
+// is not wired into this migration — do that as a separate, deliberate pass with Kyle/Jonas
+// signed off on the Sanity `caseStudy` schema, not as a drop-in of the old field names.
 
 for (const t of TOOLS as any[]) {
   docs.push({
@@ -152,17 +116,8 @@ for (const t of TOOLS as any[]) {
   });
 }
 
-for (const [i, item] of (TESTIMONIALS as any[]).entries()) {
-  docs.push({
-    _id: safeId('testimonial', item.author || `entry-${i}`),
-    _type: 'testimonial',
-    quote: item.quote,
-    author: item.author,
-    role: item.role,
-    company: item.company,
-    avatarPath: item.avatar,
-  });
-}
+// Testimonial migration removed: data/trust.ts TESTIMONIALS (12 invented people, two
+// attributed as named executives at real public companies) was deleted outright, not replaced.
 
 /** Arrays of objects need a stable _key per item or the studio flags them. */
 const keyed = <T extends Record<string, unknown>>(items: T[] | undefined, type: string) =>

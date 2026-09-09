@@ -58,7 +58,7 @@ export default function SpokeBookPage({ spoke }: { spoke: SpokeId }) {
         </div>
       </section>
 
-      {/* Calendly */}
+      {/* Booking widget */}
       <section className="px-6 md:px-12 pb-20">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>

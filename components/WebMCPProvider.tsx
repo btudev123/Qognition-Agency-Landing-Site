@@ -61,7 +61,7 @@ const WebMCPProvider = () => {
         },
         {
           name: 'book_strategy_call',
-          description: 'Open the Qognition Calendly strategy call page.',
+          description: 'Open the Qognition discovery call booking page.',
           inputSchema: { type: 'object', properties: {} },
           execute: () => {
             window.open(CALENDLY_LINK, '_blank', 'noopener,noreferrer');

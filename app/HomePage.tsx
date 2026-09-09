@@ -11,7 +11,7 @@ import { HeroAurora } from '../components/HeroAurora';
 import ClientPartners from '../components/shared/ClientPartners';
 import StatBand from '../components/shared/StatBand';
 import HeroRoiCalculator from '../components/shared/HeroRoiCalculator';
-import { CASE_STUDIES } from '../data/work';
+import { CASE_STUDIES, getCaseStudy } from '../data/case-studies';
 import { SERVICES } from '../data/services';
 import { BOOKING_LINK } from '../data/siteConfig';
 
@@ -32,20 +32,6 @@ const METHOD_DATA = [
   { n: '02', title: 'Strategy', timeline: 'WEEK 5–6', blurb: 'A 90-day blueprint with conversion architecture, channel maths, and deliverables your board can audit.' },
   { n: '03', title: 'Execution', timeline: 'WEEK 7–14', blurb: 'Code, content, and campaigns ship weekly in synced sprints — not quarterly grand reveals.' },
   { n: '04', title: 'Scale', timeline: 'ONGOING', blurb: 'Iteration as a system, not a moment. Every week your moat grows; every quarter your CAC drops.' },
-];
-
-const HERO_STATS = [
-  { value: '320%', label: 'Avg. organic growth' },
-  { value: '$500M+', label: 'Revenue influenced' },
-  { value: '5', label: 'Global hubs · 24h' },
-];
-
-const HUBS = [
-  { code: 'NYC', city: 'New York', tz: 'UTC−5' },
-  { code: 'LDN', city: 'London', tz: 'UTC+0' },
-  { code: 'DXB', city: 'Dubai', tz: 'UTC+4' },
-  { code: 'BLR', city: 'Bangalore', tz: 'UTC+5:30' },
-  { code: 'SYD', city: 'Sydney', tz: 'UTC+10' },
 ];
 
 const INDUSTRIES_DATA = [
@@ -282,32 +268,6 @@ function Hero() {
           </div>
 
         </div>
-
-        {/* Stat band — full width under both columns */}
-        <ScrollReveal stagger={4} className="mt-14 sm:mt-16">
-          <div
-            className="grid grid-cols-3 max-w-[820px]"
-            style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
-          >
-            {HERO_STATS.map((s, i) => (
-              <div
-                key={s.label}
-                className="py-6 sm:py-7 px-3 sm:px-5"
-                style={{ borderLeft: i === 0 ? 'none' : '1px solid var(--border)' }}
-              >
-                <div
-                  className="font-sans font-medium leading-none tracking-[-0.03em]"
-                  style={{ fontSize: 'clamp(26px, 3.6vw, 44px)', color: 'var(--ink)', fontFeatureSettings: '"tnum"' }}
-                >
-                  {s.value}
-                </div>
-                <div className="font-mono text-[10px] sm:text-[11px] tracking-[0.12em] uppercase mt-2.5" style={{ color: 'var(--text-muted)' }}>
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
       </div>
     </section>
   );
@@ -563,9 +523,14 @@ function Methodology() {
 // 4. SELECTED WORKS
 // ═══════════════════════════════════════════════════════════════════════════════
 
+// Explicit, deterministic pick — not "whichever engagement happens to sort first."
+// Fox Service Company: verified KPIs, Dominance tier, publish-gated. Update this id if a
+// stronger verified engagement is added to data/case-studies.
+const FEATURED_CASE_STUDY_ID = 'fox-service-company';
+
 function SelectedWorks() {
-  const featured = CASE_STUDIES[0];
-  const gridWorks = CASE_STUDIES.slice(1, 5);
+  const featured = getCaseStudy(FEATURED_CASE_STUDY_ID) ?? CASE_STUDIES[0];
+  const gridWorks = CASE_STUDIES.filter((cs) => cs.id !== featured?.id).slice(0, 4);
 
   return (
     <section
@@ -615,29 +580,6 @@ function SelectedWorks() {
             </ScrollReveal>
           ))}
         </div>
-
-        <ScrollReveal className="mt-16 pt-12" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-            <div className="lg:col-span-3">
-              <div className="font-mono text-[11px] tracking-[0.14em] uppercase" style={{ color: 'var(--accent)' }}>
-                From our clients
-              </div>
-              <div className="mt-2 text-sm" style={{ color: 'rgba(255,255,255,0.74)' }}>
-                Sarah Jenkins<br />
-                Global CMO, Noon Group
-              </div>
-            </div>
-            <div className="lg:col-span-9">
-              <blockquote
-                className="font-sans font-normal m-0 leading-[1.1] tracking-[-0.03em]"
-                style={{ fontSize: 'clamp(24px, 3vw, 48px)', color: '#FAFAF8' }}
-              >
-                &quot;Qognition&apos;s architectural approach to SEO is simply unrivaled. They didn&apos;t just optimize our site —{' '}
-                <span style={{ color: 'var(--accent)' }}>they restructured our entire digital footprint for the AI era.&quot;</span>
-              </blockquote>
-            </div>
-          </div>
-        </ScrollReveal>
       </div>
     </section>
   );
@@ -662,45 +604,19 @@ function Coverage() {
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mt-14">
-          <div className="lg:col-span-7">
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2 gap-px"
-              style={{ background: 'var(--border)', border: '1px solid var(--border)' }}
-            >
-              {INDUSTRIES_DATA.map((ind, i) => (
-                <ScrollReveal key={ind.name} stagger={(i % 2) + 1}>
-                  <IndustryCell ind={ind} i={i} />
-                </ScrollReveal>
-              ))}
-            </div>
-            <div className="mt-6">
-              <Btn variant="ghost" href="/industries">All sectors →</Btn>
-            </div>
+        <div className="mt-14">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px"
+            style={{ background: 'var(--border)', border: '1px solid var(--border)' }}
+          >
+            {INDUSTRIES_DATA.map((ind, i) => (
+              <ScrollReveal key={ind.name} stagger={(i % 4) + 1}>
+                <IndustryCell ind={ind} i={i} />
+              </ScrollReveal>
+            ))}
           </div>
-
-          <div className="lg:col-span-5">
-            <ScrollReveal stagger={2}>
-              <div className="rf-studio-border p-6 sm:p-8" style={{ background: 'var(--surface)' }}>
-                <div className="font-mono text-[11px] tracking-[0.14em] mb-5" style={{ color: 'var(--accent)' }}>
-                  FIVE HUBS · 24H COVERAGE
-                </div>
-                <HubMap />
-                <div className="mt-6 grid gap-0" style={{ borderTop: '1px solid var(--border)' }}>
-                  {HUBS.map((h) => (
-                    <div
-                      key={h.code}
-                      className="grid gap-4 py-3.5 items-baseline"
-                      style={{ gridTemplateColumns: '50px 1fr auto', borderBottom: '1px solid var(--border)' }}
-                    >
-                      <span className="font-mono text-[11px] tracking-[0.14em]" style={{ color: 'var(--accent)' }}>{h.code}</span>
-                      <span className="text-sm font-medium tracking-[-0.015em]">{h.city}</span>
-                      <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>{h.tz}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </ScrollReveal>
+          <div className="mt-6">
+            <Btn variant="ghost" href="/industries">All sectors →</Btn>
           </div>
         </div>
       </div>
@@ -739,41 +655,6 @@ function IndustryCell({ ind, i }: { ind: typeof INDUSTRIES_DATA[0]; i: number })
         <span style={{ display: 'inline-block', transition: 'transform 0.4s ease', transform: hover ? 'translateX(6px)' : 'translateX(0)' }}>↗</span>
       </div>
     </Link>
-  );
-}
-
-function HubMap() {
-  const hubs = [
-    { name: 'New York', code: 'NYC', x: 285, y: 225 },
-    { name: 'London', code: 'LDN', x: 500, y: 185 },
-    { name: 'Dubai', code: 'DXB', x: 615, y: 255 },
-    { name: 'Bangalore', code: 'BLR', x: 705, y: 295 },
-    { name: 'Sydney', code: 'SYD', x: 875, y: 420 },
-  ];
-  return (
-    <svg viewBox="0 0 1000 520" width="100%" preserveAspectRatio="xMidYMid meet" style={{ display: 'block' }}>
-      <g>
-        {[[200,130,110,90],[240,250,90,110],[510,170,75,60],[560,280,130,130],[680,200,160,110],[820,230,80,60],[880,400,60,40]].map(([cx,cy,rx,ry],i) => (
-          <ellipse key={i} cx={cx} cy={cy} rx={rx} ry={ry} fill="rgba(0,0,0,0.03)" />
-        ))}
-      </g>
-      {hubs.map((h) => (
-        <g key={h.code}>
-          <circle cx={h.x} cy={h.y} r="16" fill="none" stroke="rgba(20,184,166,0.18)">
-            <animate attributeName="r" values="10;36;10" dur="2.8s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0.4;0;0.4" dur="2.8s" repeatCount="indefinite" />
-          </circle>
-          <circle cx={h.x} cy={h.y} r="8" fill="none" stroke="rgba(20,184,166,0.38)">
-            <animate attributeName="r" values="6;20;6" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
-            <animate attributeName="opacity" values="0.5;0;0.5" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
-          </circle>
-          <circle cx={h.x} cy={h.y} r="4" fill="var(--accent)" />
-          <circle cx={h.x} cy={h.y} r="8" fill="rgba(20,184,166,0.12)" />
-          <text x={h.x+14} y={h.y+4} fill="#0D0C0A" fontFamily="JetBrains Mono, monospace" fontSize="11" fontWeight="600">{h.code}</text>
-          <text x={h.x+14} y={h.y+20} fill="#9B9790" fontFamily="JetBrains Mono, monospace" fontSize="9">{h.name}</text>
-        </g>
-      ))}
-    </svg>
   );
 }
 

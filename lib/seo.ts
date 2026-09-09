@@ -5,7 +5,6 @@ import { INDUSTRIES } from '../data/industries';
 import { getLocationBySlug } from '../data/locations';
 import { REGIONS } from '../data/regions';
 import { SERVICES } from '../data/services';
-import { CASE_STUDIES } from '../data/work';
 import { DirectoryProduct, FAQ, Industry, Location, Service } from '../types';
 
 export const SITE_URL = 'https://www.qognitionagency.com';
@@ -75,7 +74,7 @@ export const SEO_OVERRIDES: Record<string, { title: string; description: string 
   '/case-studies': {
     title: 'Case Studies: Real Growth Results | Qognition Agency',
     description:
-      'See how Qognition helped clients like NovaPay and Opal Consulting grow traffic, leads and revenue, with real numbers behind every case study.'
+      '45 engagements across HVAC, dental and insurance in 10 states. Each opens with a dated audit of the live site and cites the third-party benchmarks it was measured against.'
   },
   '/free-seo-audit': {
     title: 'Free SEO Audit | Get Your Custom Report | Qognition',
@@ -233,11 +232,6 @@ export const directoryProductSchema = (product: DirectoryProduct, path: string) 
         price: product.pricing === 'Free' || product.pricing === 'Open Source' ? '0' : undefined,
         priceCurrency: 'USD',
         category: product.pricing
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: product.rating,
-        ratingCount: product.votesCount || 25
       }
     },
     {
@@ -255,12 +249,7 @@ export const directoryProductSchema = (product: DirectoryProduct, path: string) 
           '@type': 'Organization',
           name: SITE_NAME
         },
-        reviewBody: product.agencyVerdict,
-        reviewRating: {
-          '@type': 'Rating',
-          ratingValue: product.rating,
-          bestRating: 5
-        }
+        reviewBody: product.agencyVerdict
       },
       url: absoluteUrl(path)
     }
@@ -419,17 +408,6 @@ export const getServiceIndustryMetadata = (serviceSlug: string, industrySlug: st
     title: `${service.title} for ${industry.name} | Qognition Agency`,
     description: `${service.shortDescription} Qognition adapts ${service.title.toLowerCase()} for ${industry.name}, including strategy, implementation, and reporting.`,
     path: `/services/${service.id}/industries/${industry.id}`
-  });
-};
-
-export const getCaseStudyMetadata = (id: string): Metadata => {
-  const study = CASE_STUDIES.find((item) => item.id === id);
-  if (!study) return metadataFor({ title: 'Case Study Not Found', description: 'Case study not found.', path: `/case-studies/${id}`, noIndex: true });
-  return metadataFor({
-    title: `${study.title} | Case Study`,
-    description: `${study.title} for ${study.client}. See how Qognition delivered measurable digital growth.`,
-    path: `/case-studies/${study.id}`,
-    image: study.image
   });
 };
 

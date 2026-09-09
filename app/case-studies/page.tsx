@@ -1,75 +1,142 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { getCaseStudies } from '../../lib/sanityContent';
-import { breadcrumbSchema } from '../../lib/schema';
-import { metadataFor } from '../../lib/seo';
+
+import Breadcrumbs from '../../components/case-studies/Breadcrumbs';
+import IndexFilters from '../../components/case-studies/IndexFilters';
 import Heading from '../../components/ui/Heading';
+import Text from '../../components/ui/Text';
+import {
+  CASE_STUDIES,
+  LIBRARY_STATS,
+  NICHES,
+  SERVICES,
+  STATES,
+  nicheLabel,
+  serviceLabel,
+} from '../../data/case-studies';
+import { breadcrumbSchema } from '../../lib/schema';
+import { SITE_URL } from '../../lib/seo';
 
-// Title and description come from SEO_OVERRIDES['/case-studies'] in lib/seo.ts.
-export const metadata: Metadata = metadataFor({
+const description = `${LIBRARY_STATS.total} engagements across HVAC, dental and insurance in ${LIBRARY_STATS.states} US states. Each one opens with a dated audit of the live site and cites the third-party benchmarks it was measured against.`;
+
+export const metadata: Metadata = {
   title: 'Case Studies | Qognition',
-  description: 'Real results for ambitious brands. Explore our portfolio of successful digital marketing campaigns with measurable growth metrics.',
-  path: '/case-studies',
-});
+  description,
+  alternates: { canonical: `${SITE_URL}/case-studies` },
+  openGraph: {
+    title: 'Case Studies | Qognition',
+    description,
+    url: `${SITE_URL}/case-studies`,
+  },
+};
 
-export default async function Page() {
-  const CASE_STUDIES = await getCaseStudies();
+export default function Page() {
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'Case Studies',
+      description,
+      url: `${SITE_URL}/case-studies`,
+      about: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: CASE_STUDIES.length,
+        itemListElement: CASE_STUDIES.map((study, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `${SITE_URL}/case-studies/${study.id}`,
+          name: `${study.client} — ${study.headline}`,
+        })),
+      },
+    },
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Case Studies', path: '/case-studies' },
+    ]),
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              '@context': 'https://schema.org',
-              '@type': 'CollectionPage',
-              name: 'Case Studies',
-              url: 'https://www.qognitionagency.com/case-studies',
-              about: { '@type': 'Organization', name: 'Qognition' },
-            },
-            breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Case Studies', path: '/case-studies' }]),
-          ]),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="pt-24 md:pt-32 px-6 md:px-12 max-w-7xl mx-auto min-h-screen pb-32">
-        <header className="mb-24 text-center md:text-left">
-          <Heading level="h1" className="!text-6xl md:!text-9xl mb-8">Case Studies</Heading>
-          <p className="text-body text-[var(--text-muted)] max-w-2xl">
-            Real results for ambitious brands. We let the metrics speak for themselves.
-          </p>
-        </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-x-16 md:gap-y-32 max-w-7xl mx-auto pb-32">
-          {CASE_STUDIES.map((study, index) => (
-            <div key={study.id} className={`group ${index === 0 ? 'md:col-span-2' : ''}`}>
-              <Link href={`/case-studies/${study.id}`} className="block">
-                <div className="relative overflow-hidden rounded-xl mb-8 aspect-video md:aspect-[16/10]">
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors z-10 duration-500" />
-                  <div className="absolute top-4 right-4 z-20 w-12 h-12 bg-[var(--surface)] rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                    <ArrowRight className="text-[var(--accent)]" size={20} />
-                  </div>
-                  <img src={study.image} alt={study.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
-                    <span className="text-[var(--accent)] text-sm font-bold uppercase tracking-wider">{study.client}</span>
-                    <span className="text-xs text-[var(--text-muted)] uppercase tracking-widest">{study.industry}</span>
-                  </div>
-                  <h3 className="text-h3 text-[var(--text)] group-hover:text-[var(--accent)] transition-colors duration-300 font-semibold">
-                    {study.title}
-                  </h3>
-                  <div className="flex gap-2 flex-wrap mt-2">
-                    {study.tags.map((tag) => (
-                      <span key={tag} className="px-3 py-1 border border-[var(--border)] rounded-full text-xs text-[var(--text-muted)]">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+      <main className="min-h-screen px-6 pb-32 pt-24 md:px-12 md:pt-32">
+        <div className="mx-auto max-w-7xl">
+          <Breadcrumbs items={[{ name: 'Case Studies', href: '/case-studies' }]} />
+
+          <header className="mb-14 max-w-3xl">
+            <Heading level="h1" className="mb-6">
+              Case Studies
+            </Heading>
+            <Text className="mb-4">
+              {LIBRARY_STATS.total} engagements across{' '}
+              {LIBRARY_STATS.byNiche.map((n) => `${n.label} (${n.count})`).join(', ')}, in{' '}
+              {LIBRARY_STATS.states} states.
+            </Text>
+            <Text>
+              Every one opens the same way: a dated audit of the live site, a named diagnosis, and
+              the third-party benchmarks the work was measured against — each with a live source
+              link you can check.{' '}
+              <Link
+                href="/case-studies/methodology"
+                className="text-[var(--accent)] underline underline-offset-2"
+              >
+                How we measure this
               </Link>
+              .
+            </Text>
+          </header>
+
+          {/* ── Hub navigation: the internal-link spine ───────────────────── */}
+          <nav aria-label="Browse case studies" className="mb-14 space-y-4">
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+              <span className="text-meta font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                By industry
+              </span>
+              {NICHES.map((niche) => (
+                <Link
+                  key={niche}
+                  href={`/case-studies/industry/${niche}`}
+                  className="text-body text-[var(--accent)] underline underline-offset-2"
+                >
+                  {nicheLabel(niche)}
+                </Link>
+              ))}
             </div>
-          ))}
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+              <span className="text-meta font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                By service
+              </span>
+              {SERVICES.map((service) => (
+                <Link
+                  key={service}
+                  href={`/case-studies/service/${service}`}
+                  className="text-body text-[var(--accent)] underline underline-offset-2"
+                >
+                  {serviceLabel(service)}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+              <span className="text-meta font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+                By state
+              </span>
+              {STATES.map((state) => (
+                <Link
+                  key={state.code}
+                  href={`/case-studies/location/${state.code.toLowerCase()}`}
+                  className="text-body text-[var(--accent)] underline underline-offset-2"
+                >
+                  {state.name}
+                </Link>
+              ))}
+            </div>
+          </nav>
+
+          <IndexFilters studies={CASE_STUDIES} />
         </div>
       </main>
     </>

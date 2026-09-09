@@ -1,307 +1,346 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { getCaseStudies, getCaseStudy } from '../../../lib/sanityContent';
+import { notFound } from 'next/navigation';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+
+import BenchmarkTable from '../../../components/case-studies/BenchmarkTable';
+import Breadcrumbs from '../../../components/case-studies/Breadcrumbs';
+import FaqAccordion from '../../../components/case-studies/FaqAccordion';
+import { truncate, formatAuditedDate } from '../../../components/case-studies/format';
+import KpiSection from '../../../components/case-studies/KpiSection';
+import NicheServiceBadges from '../../../components/case-studies/NicheServiceBadges';
+import {
+  PlaybookStrategy,
+  PlaybookTimeline,
+} from '../../../components/case-studies/PlaybookSections';
+import StudyGrid from '../../../components/case-studies/StudyGrid';
+import Heading from '../../../components/ui/Heading';
+import Text from '../../../components/ui/Text';
+import {
+  CASE_STUDIES,
+  getCaseStudy,
+  nicheLabel,
+  relatedCaseStudies,
+  serviceLabel,
+  SERVICE_SPOKE_HREF,
+} from '../../../data/case-studies';
 import { breadcrumbSchema } from '../../../lib/schema';
 import { SITE_URL } from '../../../lib/seo';
-import Heading from '../../../components/ui/Heading';
-import Badge from '../../../components/ui/Badge';
 
-export const dynamicParams = true;
+export const dynamicParams = false;
 
-export const generateStaticParams = async () => {
-  const studies = await getCaseStudies();
-  return studies.map((study: any) => ({ id: study.id }));
-};
+export const generateStaticParams = () => CASE_STUDIES.map((study) => ({ id: study.id }));
 
-export const generateMetadata = async ({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> => {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
   const { id } = await params;
-  const study = await getCaseStudy(id);
-  if (!study) return { title: 'Case Study Not Found', description: 'Case study not found.', robots: { index: false } };
+  const study = getCaseStudy(id);
+  if (!study) return { title: 'Case study not found | Qognition' };
+
+  const path = `/case-studies/${study.id}`;
+  const description = truncate(`${study.client}, ${study.market}. ${study.coreProblem}`);
+
   return {
-    title: `${study.title} | Case Study | Qognition`,
-    description: `${study.title} — ${study.client} case study. See how Qognition delivered measurable results with ${study.stats.map((s) => `${s.value} ${s.label}`).join(', ')}.`,
-    alternates: { canonical: `/case-studies/${study.id}` },
-    openGraph: { images: [study.image] },
+    title: `${study.headline} | ${study.client} | Qognition`,
+    description,
+    alternates: { canonical: `${SITE_URL}${path}` },
+    openGraph: {
+      title: `${study.client} — ${study.headline}`,
+      description,
+      url: `${SITE_URL}${path}`,
+      type: 'article',
+      images: [{ url: `${SITE_URL}${study.image.src}`, alt: study.image.alt }],
+    },
   };
-};
+}
+
+/** Consistent section wrapper — heading plus body, so the page reads as one rhythm. */
+function Section({
+  title,
+  eyebrow,
+  children,
+}: {
+  title: string;
+  eyebrow?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mb-16 md:mb-24">
+      {eyebrow && (
+        <p className="mb-2 text-meta font-semibold uppercase tracking-wide text-[var(--accent)]">
+          {eyebrow}
+        </p>
+      )}
+      <Heading level="h2" className="mb-6">
+        {title}
+      </Heading>
+      {children}
+    </section>
+  );
+}
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const study = await getCaseStudy(id);
+  const study = getCaseStudy(id);
   if (!study) notFound();
 
   const path = `/case-studies/${study.id}`;
+  const related = relatedCaseStudies(study, 3);
+  const audited = formatAuditedDate(study.auditedAt);
+
+  /**
+   * Article + BreadcrumbList + FAQPage.
+   *
+   * Deliberately NO Review and NO AggregateRating. No client quotes have been collected on this
+   * engagement, and a fabricated review node in structured data is the exact defect this library
+   * was built to replace. Do not add one without a real, attributable, on-file quote.
+   */
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: study.headline,
+      description: `${study.client}, ${study.market}. ${study.coreProblem}`,
+      image: `${SITE_URL}${study.image.src}`,
+      datePublished: study.auditedAt,
+      dateModified: study.auditedAt,
+      author: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
+      publisher: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}${path}` },
+      about: { '@type': 'Organization', name: study.client, url: `https://${study.domain}` },
+      url: `${SITE_URL}${path}`,
+    },
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Case Studies', path: '/case-studies' },
+      { name: nicheLabel(study.niche), path: `/case-studies/industry/${study.niche}` },
+      { name: study.client, path },
+    ]),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: study.faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
+    },
+  ];
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              '@context': 'https://schema.org',
-              '@type': 'Article',
-              headline: study.title,
-              image: study.image,
-              author: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
-              publisher: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
-              url: `${SITE_URL}${path}`,
-              ...(study.testimonial
-                ? {
-                    review: {
-                      '@type': 'Review',
-                      reviewBody: study.testimonial.quote,
-                      author: { '@type': 'Person', name: study.testimonial.author, jobTitle: study.testimonial.role },
-                    },
-                  }
-                : {}),
-            },
-            breadcrumbSchema([
-              { name: 'Home', path: '/' },
-              { name: 'Case Studies', path: '/case-studies' },
-              { name: study.title, path },
-            ]),
-          ]),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <article className="min-h-screen pt-24 md:pt-32 pb-20">
-        {/* Header */}
-        <div className="px-6 md:px-12 max-w-7xl mx-auto mb-16 md:mb-24">
-          <Link
-            href="/case-studies"
-            className="inline-flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--text)] transition-colors mb-8 group"
-          >
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Case Studies
-          </Link>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
-            <div className="lg:col-span-8">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="w-2 h-2 rounded-full bg-[var(--accent)]" />
-                <span className="uppercase tracking-widest text-xs font-bold text-[var(--accent)]">{study.industry}</span>
-              </div>
-              <Heading level="h1" className="mb-8 !text-4xl md:!text-7xl lg:!text-8xl !leading-none">
-                {study.title}
-              </Heading>
+      <article className="min-h-screen px-6 pb-32 pt-24 md:px-12 md:pt-32">
+        <div className="mx-auto max-w-4xl">
+          <Breadcrumbs
+            items={[
+              { name: 'Case Studies', href: '/case-studies' },
+              {
+                name: nicheLabel(study.niche),
+                href: `/case-studies/industry/${study.niche}`,
+              },
+              { name: study.client, href: path },
+            ]}
+          />
+
+          {/* ── Hero ─────────────────────────────────────────────────────── */}
+          <header className="mb-12">
+            <NicheServiceBadges niche={study.niche} services={study.services} />
+            <Heading level="h1" className="mb-5 mt-5">
+              {study.headline}
+            </Heading>
+            <p className="text-body text-[var(--text-muted)]">
+              <span className="font-medium text-[var(--text)]">{study.client}</span> ·{' '}
+              {study.market} · audited {audited}
+            </p>
+          </header>
+
+          <div className="relative mb-14 aspect-[16/9] overflow-hidden rounded-xl bg-[var(--bg-warm)]">
+            <Image
+              src={study.image.src}
+              alt={study.image.alt}
+              width={1280}
+              height={720}
+              priority
+              className="h-full w-full object-cover"
+            />
+          </div>
+
+          <Section title="Who they are">
+            <Text className="max-w-3xl">{study.snapshot}</Text>
+          </Section>
+
+          {/* The verified half. This is what carries the credibility. */}
+          <Section title="What we verified" eyebrow={`Live site audit · ${audited}`}>
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
+              <Text>{study.startingPosition}</Text>
             </div>
-            <div className="lg:col-span-4 lg:mb-4">
-              <p className="text-body text-[var(--text-muted)] border-l border-[var(--accent)]/30 pl-6">
-                {study.summary}
+            <Text className="mt-3 text-meta text-[var(--text-faint)]">
+              Every statement above was confirmed against{' '}
+              <a
+                href={`https://${study.domain}`}
+                target="_blank"
+                rel="nofollow noopener"
+                className="text-[var(--accent)] underline underline-offset-2"
+              >
+                {study.domain}
+              </a>{' '}
+              on {audited}. Sites change; this is a dated observation, not a permanent claim.
+            </Text>
+          </Section>
+
+          <Section title="The problem">
+            <Text className="mb-5 max-w-3xl text-[var(--text)]">{study.coreProblem}</Text>
+            <Text className="max-w-3xl">{study.diagnosis}</Text>
+          </Section>
+
+          <section className="mb-16 md:mb-24">
+            <div className="rounded-xl border-l-2 border-[var(--accent)] bg-[var(--bg-warm)] py-5 pl-6 pr-5">
+              <p className="mb-2 text-meta font-semibold uppercase tracking-wide text-[var(--accent)]">
+                What made this one different
               </p>
+              <Text>{study.differentiator}</Text>
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Hero Image */}
-        {study.image && (
-          <div className="px-4 md:px-12 max-w-[1920px] mx-auto mb-24 md:mb-32">
-            <div className="rounded-2xl overflow-hidden">
-              <img src={study.image} alt={study.title} className="w-full aspect-[21/9] object-cover" />
-            </div>
-          </div>
-        )}
+          <Section title="What we did">
+            <PlaybookStrategy playbooks={study.playbooks} />
+          </Section>
 
-        {/* Content Grid */}
-        <div className="px-6 md:px-12 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24 mb-32">
-          {/* Sidebar */}
-          <aside className="md:col-span-4 space-y-12">
-            <div className="p-8 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl sticky top-32">
-              <Heading level="h3" className="mb-8">Key Metrics</Heading>
-              <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 gap-4 md:gap-6">
-                {study.stats.map((stat, i) => (
-                  <div key={i} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                    <div className="text-3xl lg:text-4xl font-bold text-[var(--accent)] mb-2 break-words">{stat.value}</div>
-                    <div className="text-xs uppercase tracking-wider text-[var(--text-muted)] leading-relaxed break-words">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <Section title="How it was sequenced">
+            <PlaybookTimeline playbooks={study.playbooks} />
+          </Section>
 
-            {study.tags.length > 0 && (
-              <div>
-                <h4 className="text-h4 text-[var(--text-muted)] mb-4 font-semibold">Services Provided</h4>
-                <div className="flex flex-wrap gap-2">
-                  {study.tags.map((tag) => (
-                    <span key={tag} className="px-3 py-1 bg-[var(--ink)]/5 border border-[var(--border)] rounded-full text-sm text-[var(--text-muted)]">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+          {/* Evidence rule lives inside KpiSection — it branches on study.evidence. */}
+          <Section title="The numbers">
+            <KpiSection study={study} />
+          </Section>
 
-            <div className="p-6 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]">
-              <h4 className="text-h4 text-[var(--text-muted)] mb-3 font-semibold">Timeline</h4>
-              <p className="text-body font-semibold text-[var(--text)] mb-6">{study.timeline || '120 days'}</p>
-              <h4 className="text-h4 text-[var(--text-muted)] mb-3 font-semibold">ROI Signal</h4>
-              <p className="text-body text-[var(--text-muted)]">{study.roi}</p>
-            </div>
-          </aside>
-
-          {/* Main Content */}
-          <div className="md:col-span-8 space-y-16">
-            {/* Challenge */}
-            <section>
-              <Heading level="h2" className="mb-6">The Challenge</Heading>
-              <p className="text-body text-[var(--text-muted)]">{study.challenge}</p>
-            </section>
-
-            {/* Solution */}
-            <section>
-              <Heading level="h2" className="mb-6">Our Solution</Heading>
-              <p className="text-body text-[var(--text-muted)] mb-6">{study.solution}</p>
-              <ul className="space-y-4">
-                {(study.implementation || []).map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="text-[var(--accent)] mt-1 shrink-0" size={20} />
-                    <span className="text-[var(--text-muted)]">{item}</span>
+          <Section title="Objections this answers">
+            <ul className="space-y-3">
+              {study.playbooks
+                .flatMap((pb) => pb.objections)
+                .filter((o, i, arr) => arr.indexOf(o) === i)
+                .map((objection) => (
+                  <li
+                    key={objection}
+                    className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-5 py-4 text-body italic text-[var(--text-muted)]"
+                  >
+                    &ldquo;{objection}&rdquo;
                   </li>
                 ))}
-              </ul>
-            </section>
+            </ul>
+          </Section>
 
-            {/* Before vs After */}
-            {study.beforeAfter && study.beforeAfter.length > 0 && (
-              <section>
-                <Heading level="h2" className="mb-8">Before vs After</Heading>
-                <div className="space-y-5">
-                  {study.beforeAfter.map((row) => (
-                    <div key={row.before} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-5 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]">
-                        <div className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-3">Before</div>
-                        <p className="text-body text-[var(--text-muted)]">{row.before}</p>
-                      </div>
-                      <div className="p-5 border border-[var(--accent)]/20 rounded-xl bg-[rgba(var(--accent-rgb),0.05)]">
-                        <div className="text-xs uppercase tracking-widest text-[var(--accent)] mb-3">After</div>
-                        <p className="text-body text-[var(--text)]">{row.after}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+          <Section title="The proof behind every figure">
+            <Text className="mb-5 max-w-3xl">
+              These are the raw exports {study.client} receives, and the ones any number on this
+              page reconciles against. Ask any agency for the equivalent.
+            </Text>
+            <ul className="space-y-2">
+              {study.playbooks
+                .flatMap((pb) => pb.proofAssets)
+                .filter((a, i, arr) => arr.indexOf(a) === i)
+                .map((asset) => (
+                  <li key={asset} className="flex gap-3 text-body text-[var(--text-muted)]">
+                    <CheckCircle2
+                      size={18}
+                      aria-hidden="true"
+                      className="mt-0.5 shrink-0 text-[var(--accent)]"
+                    />
+                    <span>{asset}</span>
+                  </li>
+                ))}
+            </ul>
+          </Section>
 
-            {/* Funnel Stages */}
-            {study.funnelStages && study.funnelStages.length > 0 && (
-              <section>
-                <Heading level="h2" className="mb-8">Funnel Journey</Heading>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {study.funnelStages.map((stage) => (
-                    <div key={stage.stage} className="p-6 rounded-xl border border-[var(--border)] bg-[var(--surface)]">
-                      <Heading level="h3" className="mb-4 !text-[var(--accent)]">{stage.stage}</Heading>
-                      <p className="text-meta uppercase text-[var(--text-muted)] mb-2">Before</p>
-                      <p className="text-body text-[var(--text-muted)] mb-5">{stage.before}</p>
-                      <p className="text-meta uppercase text-[var(--text-muted)] mb-2">After</p>
-                      <p className="text-body text-[var(--text)]">{stage.after}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+          <Section title="Systems used">
+            <ul className="space-y-2">
+              {study.engines.map((engine) => (
+                <li key={engine} className="text-body text-[var(--text-muted)]">
+                  {engine}
+                </li>
+              ))}
+            </ul>
+          </Section>
 
-            {/* Analytics */}
-            {study.analytics && study.analytics.length > 0 && (
-              <section>
-                <Heading level="h2" className="mb-8">Analytics Visuals</Heading>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {study.analytics.map((metric) => (
-                    <div key={metric.label} className="p-6 border border-[var(--border)] rounded-xl bg-[var(--card-bg)]">
-                      <div className="text-4xl font-semibold text-[var(--text)] mb-2">{metric.value}</div>
-                      <div className="text-sm uppercase tracking-widest text-[var(--accent)] mb-4">{metric.label}</div>
-                      <div className="h-2 w-full rounded-full bg-[var(--ink)]/10 mb-4 overflow-hidden">
-                        <div className="h-full w-3/4 rounded-full bg-[var(--accent)]" />
-                      </div>
-                      <p className="text-meta text-[var(--text-muted)]">{metric.note}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
+          <Section title="Questions about this engagement">
+            <FaqAccordion faqs={study.faqs} />
+          </Section>
 
-            {/* Client Journey */}
-            {study.clientJourney && study.clientJourney.length > 0 && (
-              <section>
-                <Heading level="h2" className="mb-8">Client Journey</Heading>
-                <div className="space-y-4">
-                  {study.clientJourney.map((step, index) => (
-                    <div key={step} className="flex gap-5 border-l border-[var(--border)] pl-6 py-2">
-                      <span className="font-mono text-[var(--accent)] text-sm">0{index + 1}</span>
-                      <p className="text-body text-[var(--text-muted)]">{step}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Content Sections */}
-            {study.contentSections?.map((section) => (
-              <section key={section.title}>
-                <Heading level="h2" className="mb-6">{section.title}</Heading>
-                <p className="text-body text-[var(--text-muted)]">{section.content}</p>
-              </section>
-            ))}
-
-            {/* Testimonial */}
-            <section className="bg-[rgba(var(--accent-rgb),0.04)] p-8 md:p-12 rounded-2xl border border-[var(--accent)]/10 my-8">
-              <Heading level="h3" className="mb-4 !text-[var(--accent)]">The Impact</Heading>
-              <p className="text-body text-[var(--text)]">
-                &ldquo;{study.testimonial?.quote || "Qognition didn't just build a website; they built a growth engine."}&rdquo;
-              </p>
-              <div className="mt-6 text-sm text-[var(--text-muted)] font-bold uppercase tracking-wider">
-                &mdash; {study.testimonial?.author || 'VP of Marketing'}, {study.testimonial?.role || study.client}
-              </div>
-            </section>
-
-            {/* Results */}
-            {study.results && study.results.length > 0 && (
-              <section>
-                <Heading level="h2" className="mb-6">Results</Heading>
-                <ul className="space-y-4">
-                  {study.results.map((result) => (
-                    <li key={result} className="flex items-start gap-3">
-                      <CheckCircle2 className="text-[var(--accent)] mt-1 shrink-0" size={20} />
-                      <span className="text-[var(--text-muted)]">{result}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Bottom CTA */}
-            <div className="pt-12 border-t border-[var(--border)]">
-              <Heading level="h3" className="mb-6">Ready for similar results?</Heading>
-              <a
-                href="https://cal.com/qognition-agency/15min"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 hover:brightness-110 transition-all text-sm"
+          {/* ── Internal linking spine ───────────────────────────────────── */}
+          <section className="mb-16 md:mb-24">
+            <Heading level="h2" className="mb-6">
+              Related engagements
+            </Heading>
+            <StudyGrid
+              studies={related}
+              emptyTitle="No comparable engagement yet"
+              emptyMessage={`This is currently our only ${nicheLabel(study.niche)} engagement in the library.`}
+            />
+            <nav aria-label="Explore the library" className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+              <Link
+                href={`/case-studies/industry/${study.niche}`}
+                className="text-body text-[var(--accent)] underline underline-offset-2"
               >
-                Schedule Strategy Call <ArrowRight size={16} />
-              </a>
-            </div>
-          </div>
-        </div>
+                All {nicheLabel(study.niche)} engagements
+              </Link>
+              <Link
+                href={`/case-studies/location/${study.state.toLowerCase()}`}
+                className="text-body text-[var(--accent)] underline underline-offset-2"
+              >
+                All {study.stateName} engagements
+              </Link>
+              {study.services.map((service) => (
+                <Link
+                  key={service}
+                  href={`/case-studies/service/${service}`}
+                  className="text-body text-[var(--accent)] underline underline-offset-2"
+                >
+                  All {serviceLabel(service)} engagements
+                </Link>
+              ))}
+              {study.services.map((service) => (
+                <Link
+                  key={`spoke-${service}`}
+                  href={SERVICE_SPOKE_HREF[service]}
+                  className="text-body text-[var(--accent)] underline underline-offset-2"
+                >
+                  {serviceLabel(service)} services
+                </Link>
+              ))}
+              <Link
+                href="/case-studies/methodology"
+                className="text-body text-[var(--accent)] underline underline-offset-2"
+              >
+                How we measure this
+              </Link>
+            </nav>
+          </section>
 
-        {/* Next Project */}
-        <div className="border-t border-[var(--border)]">
-          <Link
-            href="/case-studies"
-            className="block py-24 px-6 md:px-12 hover:bg-[var(--ink)]/5 transition-colors group"
-          >
-            <div className="max-w-7xl mx-auto flex justify-between items-center">
-              <div>
-                <span className="text-sm text-[var(--text-muted)] uppercase tracking-widest mb-2 block">View More</span>
-                <span className="text-4xl md:text-6xl font-semibold text-[var(--text)] group-hover:text-[var(--accent)] transition-colors">
-                  View All Case Studies
-                </span>
-              </div>
-              <div className="w-16 h-16 rounded-full border border-[var(--border)] flex items-center justify-center group-hover:bg-[var(--ink)] group-hover:text-[var(--bg)] transition-all">
-                <ArrowRight size={24} />
-              </div>
-            </div>
-          </Link>
+          <section className="rounded-xl border border-[var(--border)] bg-[var(--bg-warm)] p-8 text-center md:p-12">
+            <Heading level="h2" className="mb-3">
+              Want the same audit on your site?
+            </Heading>
+            <Text className="mx-auto mb-6 max-w-xl">
+              We run the audit that opens every one of these engagements before any money changes
+              hands. You get the findings whether or not you hire us.
+            </Text>
+            <Link
+              href="/book"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-6 py-3 text-body font-medium text-[var(--on-accent,#fff)] transition-opacity hover:opacity-90"
+            >
+              Book a 20-minute call <ArrowRight size={18} aria-hidden="true" />
+            </Link>
+          </section>
         </div>
       </article>
     </>

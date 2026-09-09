@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { INDUSTRIES } from '../../../../data/industries';
 import { SERVICES } from '../../../../data/services';
-import { CASE_STUDIES } from '../../../../data/work';
+import { studiesForTopic, nicheLabel } from '../../../../data/case-studies';
 import { getSubIndustryMetadata } from '../../../../lib/seo';
 import { breadcrumbSchema, faqSchema } from '../../../../lib/schema';
 import Heading from '../../../../components/ui/Heading';
@@ -166,13 +166,13 @@ export default async function Page({ params }: { params: Promise<{ industry: str
           <aside className="lg:col-span-4">
             <div className="sticky top-28 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
               <Heading level="h2" className="mb-5">Related Proof</Heading>
-              {CASE_STUDIES.slice(0, 3).map((study) => (
+              {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3).map((study) => (
                 <Link
                   key={study.id}
                   href={`/case-studies/${study.id}`}
                   className="mb-3 block rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 hover:border-[var(--accent)]/40 transition-all"
                 >
-                  <p className="text-meta uppercase text-[var(--accent)] mb-2">{study.industry}</p>
+                  <p className="text-meta uppercase text-[var(--accent)] mb-2">{nicheLabel(study.niche)} · {study.market}</p>
                   <h3 className="text-h3 text-[var(--text)] font-semibold">{study.client}</h3>
                 </Link>
               ))}
@@ -188,7 +188,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
                 </Link>
               </div>
               <a
-                href="https://cal.com/qognition-agency/15min"
+                href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"

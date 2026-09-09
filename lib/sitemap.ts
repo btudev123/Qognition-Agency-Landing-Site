@@ -7,7 +7,7 @@ import { LOCATIONS } from '../data/locations';
 import { REGIONS } from '../data/regions';
 import { COMPARISONS, FREE_TOOLS, GLOSSARY_TERMS, RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
 import { SERVICES, LOCATION_MATRIX_SERVICES } from '../data/services';
-import { CASE_STUDIES } from '../data/work';
+import { CASE_STUDIES, NICHES, SERVICES, STATES } from '../data/case-studies';
 import { TOOL_CATEGORIES } from '../constants';
 import { SITE_URL } from './seo';
 
@@ -212,15 +212,32 @@ export const resourceRoutes = (): SitemapEntry[] =>
     changefreq: 'monthly',
   }));
 
-export const caseStudyRoutes = (): SitemapEntry[] =>
-  CASE_STUDIES.map((study) => ({
+export const caseStudyRoutes = (): SitemapEntry[] => [
+  { path: '/case-studies/methodology', priority: 0.7, changefreq: 'monthly' },
+  ...NICHES.map((niche) => ({
+    path: `/case-studies/industry/${niche}`,
+    priority: 0.78,
+    changefreq: 'monthly' as const,
+  })),
+  ...SERVICES.map((service) => ({
+    path: `/case-studies/service/${service}`,
+    priority: 0.78,
+    changefreq: 'monthly' as const,
+  })),
+  ...STATES.map((state) => ({
+    path: `/case-studies/location/${state.code.toLowerCase()}`,
+    priority: 0.74,
+    changefreq: 'monthly' as const,
+  })),
+  ...CASE_STUDIES.map((study) => ({
     path: `/case-studies/${study.id}`,
     priority: 0.82,
-    changefreq: 'monthly',
-    title: study.title,
-    imageUrl: study.image?.startsWith('http') ? study.image : study.image ? `${SITE_URL}${study.image}` : undefined,
-    imageTitle: study.title,
-  }));
+    changefreq: 'monthly' as const,
+    title: study.headline,
+    imageUrl: `${SITE_URL}${study.image.src}`,
+    imageTitle: study.image.alt,
+  })),
+];
 
 export const glossaryRoutes = (): SitemapEntry[] =>
   GLOSSARY_TERMS.map((term) => ({

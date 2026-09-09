@@ -428,7 +428,7 @@ const buildGeneratedServiceSubPage = (service: Service, subService: SubService):
       { label: 'Locations', href: '/locations' },
       { label: 'Industries', href: '/industries' },
       { label: 'Tools Directory', href: '/directory' },
-      { label: 'Book a Strategy Call', href: 'https://cal.com/qognition-agency/15min' }
+      { label: 'Book a Strategy Call', href: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency' }
     ]
   };
 };

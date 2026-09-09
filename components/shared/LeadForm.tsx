@@ -230,7 +230,7 @@ export default function LeadForm({
             : 'A real person will read your message and respond within one business day. Want to talk sooner?'}
         </p>
         <a
-          href="https://cal.com/qognition-agency/15min"
+          href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"

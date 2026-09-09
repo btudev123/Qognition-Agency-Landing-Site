@@ -1,6 +1,6 @@
 import { AUDIT_OFFERS } from '../../data/auditOffers';
 import { B2B_MOFU_PAGES } from '../../data/b2bPages';
-import { CASE_STUDIES } from '../../data/work';
+import { CASE_STUDIES, nicheLabel } from '../../data/case-studies';
 import { BLOG_POSTS } from '../../data/blog';
 import { SERVICES } from '../../data/services';
 import { RESOURCES, FREE_TOOLS } from '../../data/seoExpansion';
@@ -46,12 +46,29 @@ const linesForPath = (path: string) => {
   const caseStudy = caseStudyMatch ? CASE_STUDIES.find((study) => study.id === caseStudyMatch[1]) : undefined;
   if (caseStudy) {
     return [
-      `# ${caseStudy.title}`,
+      `# ${caseStudy.headline}`,
       '',
-      caseStudy.summary || `${caseStudy.client} case study by Qognition Agency.`,
+      `${caseStudy.client} — ${caseStudy.market} — ${nicheLabel(caseStudy.niche)}`,
       '',
-      '## Results',
-      ...caseStudy.stats.map((stat) => `- ${stat.label}: ${stat.value}`),
+      caseStudy.snapshot,
+      '',
+      `## What we verified (audited ${caseStudy.auditedAt})`,
+      caseStudy.startingPosition,
+      '',
+      '## The problem',
+      `${caseStudy.coreProblem} ${caseStudy.diagnosis}`,
+      '',
+      caseStudy.evidence === 'verified'
+        ? '## Results, reconciled against client reporting'
+        : '## Targets this programme was set and measured against (not reported results)',
+      ...caseStudy.kpis.map((k) =>
+        caseStudy.evidence === 'verified'
+          ? `- ${k.label}: ${k.baseline} -> ${k.actual} (${k.unit})`
+          : `- ${k.label}: baseline ${k.baseline}, target ${k.target} (${k.change}; ${k.unit})`
+      ),
+      '',
+      '## Benchmarks cited',
+      ...caseStudy.benchmarks.map((b) => `- ${b.stat} — ${b.measures} (${b.source}, ${b.year}) ${b.url}`),
       '',
       `Canonical: ${SITE_URL}/case-studies/${caseStudy.id}`
     ];
@@ -68,7 +85,16 @@ const linesForPath = (path: string) => {
   }
 
   if (cleanPath === '/case-studies') {
-    return ['# Case Studies', '', ...CASE_STUDIES.map((study) => `- [${study.title}](${SITE_URL}/case-studies/${study.id}) - ${study.client}`)];
+    return [
+      '# Case Studies',
+      '',
+      `${CASE_STUDIES.length} engagements across HVAC, dental and insurance.`,
+      '',
+      ...CASE_STUDIES.map(
+        (study) =>
+          `- [${study.headline}](${SITE_URL}/case-studies/${study.id}) — ${study.client}, ${study.market} (${nicheLabel(study.niche)})`
+      ),
+    ];
   }
 
   if (cleanPath === '/free-tools') {

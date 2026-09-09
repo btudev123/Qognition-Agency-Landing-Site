@@ -125,7 +125,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               Let Qognition help you leverage AI marketing and SEO to grow your business.
             </p>
             <a
-              href="https://cal.com/qognition-agency/15min"
+              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 hover:brightness-110 transition-all text-sm"

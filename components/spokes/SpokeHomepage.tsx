@@ -87,19 +87,21 @@ function SpokeHeroSection({ data }: { data: SpokePageData }) {
           </div>
         </ScrollReveal>
 
-        {/* Stats row */}
-        <ScrollReveal stagger={450}>
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-t border-[var(--border)]">
-            {data.hero.stats.map((stat) => (
-              <div key={stat.label}>
-                <div className="text-3xl md:text-4xl font-semibold text-[var(--ink)]">
-                  <CountUp to={parseFloat(stat.value)} suffix={stat.value.replace(/[\d.]+/, '')} />
+        {/* Stats row — hidden until there's a sourced number to put in it */}
+        {data.hero.stats.length > 0 && (
+          <ScrollReveal stagger={450}>
+            <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-t border-[var(--border)]">
+              {data.hero.stats.map((stat) => (
+                <div key={stat.label}>
+                  <div className="text-3xl md:text-4xl font-semibold text-[var(--ink)]">
+                    <CountUp to={parseFloat(stat.value)} suffix={stat.value.replace(/[\d.]+/, '')} />
+                  </div>
+                  <div className="text-sm text-[var(--text-muted)] mt-1">{stat.label}</div>
                 </div>
-                <div className="text-sm text-[var(--text-muted)] mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
+              ))}
+            </div>
+          </ScrollReveal>
+        )}
       </div>
     </section>
   );
@@ -470,7 +472,7 @@ function SpokeFinalCTA({ data }: { data: SpokePageData }) {
               />
             </div>
           </ScrollReveal>
-          {/* Calendly */}
+          {/* Booking widget */}
           <ScrollReveal stagger={100}>
             <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.02)] overflow-hidden">
               <div className="px-6 pt-6 pb-2">
@@ -777,7 +779,7 @@ export function SubServicePage({
             </ScrollReveal>
           )}
 
-          {/* Final CTA: LeadForm + CalendlyEmbed */}
+          {/* Final CTA: LeadForm + booking widget */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <ScrollReveal>
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8">

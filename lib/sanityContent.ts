@@ -2,10 +2,11 @@ import 'server-only';
 
 import { sanityClient } from './sanity';
 import { BLOG_POSTS } from '../data/blog';
-import { CASE_STUDIES } from '../data/work';
 import { B2B_MOFU_PAGES } from '../data/b2bPages';
 import { GLOSSARY_TERMS } from '../data/seoExpansion';
-import type { CaseStudy, B2BMoFuPage, GlossaryTerm } from '../types';
+import { CASE_STUDIES, getCaseStudy as getLocalCaseStudy } from '../data/case-studies';
+import type { ResolvedCaseStudy } from '../data/case-studies';
+import type { B2BMoFuPage, GlossaryTerm } from '../types';
 
 /** The blog data is a literal array, so its element type is the contract. */
 export type BlogPost = (typeof BLOG_POSTS)[number];
@@ -91,43 +92,20 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 // ── Case studies ────────────────────────────────────────────────────────────
 
-const CASE_STUDY_FIELDS = `
-  "id": slug.current,
-  title,
-  client,
-  industry,
-  summary,
-  timeline,
-  roi,
-  challenge,
-  solution,
-  tags,
-  "image": coalesce(imagePath, "/default-og.svg"),
-  "stats": coalesce(stats[]{ label, value }, []),
-  "implementation": coalesce(implementation, []),
-  "results": coalesce(results, []),
-  "clientJourney": coalesce(clientJourney, []),
-  "beforeAfter": coalesce(beforeAfter[]{ before, after }, []),
-  "funnelStages": coalesce(funnelStages[]{ stage, before, after }, []),
-  "analytics": coalesce(analytics[]{ label, value, note }, [])
-`;
-
-export async function getCaseStudies(): Promise<CaseStudy[]> {
-  const result = await query<CaseStudy[]>(
-    `*[_type == "caseStudy" && defined(slug.current)] { ${CASE_STUDY_FIELDS} }`,
-    {},
-    [tagFor('caseStudy')],
-  );
-  return isEmpty(result) ? CASE_STUDIES : result!;
+/**
+ * Case studies are code, not CMS content.
+ *
+ * The Sanity `caseStudy` type holds zero documents and its schema predates the current record
+ * shape, so querying it could only ever return something that does not type-check. The library in
+ * `data/case-studies` is the single source of truth; these wrappers stay async so callers do not
+ * have to change.
+ */
+export async function getCaseStudies(): Promise<ResolvedCaseStudy[]> {
+  return CASE_STUDIES;
 }
 
-export async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
-  const result = await query<CaseStudy>(
-    `*[_type == "caseStudy" && slug.current == $slug][0] { ${CASE_STUDY_FIELDS} }`,
-    { slug },
-    [tagFor('caseStudy'), tagFor('caseStudy', slug)],
-  );
-  return result ?? CASE_STUDIES.find((s) => s.id === slug) ?? null;
+export async function getCaseStudy(slug: string): Promise<ResolvedCaseStudy | null> {
+  return getLocalCaseStudy(slug) ?? null;
 }
 
 // ── Pillar / guide pages ────────────────────────────────────────────────────

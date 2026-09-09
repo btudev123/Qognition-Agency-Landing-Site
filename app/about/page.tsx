@@ -106,7 +106,7 @@ export default function Page() {
           <Heading level="h2" className="mb-8 !text-4xl md:!text-6xl">Join the movement.</Heading>
           <p className="text-body text-[var(--text-muted)] mb-12 max-w-2xl mx-auto">We are always looking for world-class talent and ambitious partners.</p>
           <div className="flex flex-col md:flex-row justify-center gap-6 mb-12">
-            <a href="https://cal.com/qognition-agency/15min" target="_blank" rel="noopener noreferrer" className="rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-8 py-4 text-sm hover:brightness-110 transition-all">Book Strategy Call</a>
+            <a href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency" target="_blank" rel="noopener noreferrer" className="rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-8 py-4 text-sm hover:brightness-110 transition-all">Book Strategy Call</a>
             <a href="mailto:hello@qognitionagency.com" className="rounded-lg border border-[var(--border)] text-[var(--text)] font-medium px-8 py-4 text-sm hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all">Join the Team</a>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 text-left">

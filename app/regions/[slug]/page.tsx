@@ -153,7 +153,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <Heading level="h3">{region.name} Strategy</Heading>
                 <p className="text-body text-[var(--text-muted)]">{region.localStrategy || region.description}</p>
                 <a
-                  href="https://cal.com/qognition-agency/15min"
+                  href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"

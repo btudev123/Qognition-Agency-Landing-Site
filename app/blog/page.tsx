@@ -60,7 +60,7 @@ export default async function Page() {
 
           <div className="mt-16 text-center">
             <a
-              href="https://cal.com/qognition-agency/15min"
+              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 text-sm hover:brightness-110 transition-all"
