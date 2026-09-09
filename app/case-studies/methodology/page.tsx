@@ -165,12 +165,16 @@ export default function Page() {
                   key={stat.label}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5"
                 >
-                  <p className="text-3xl font-semibold text-[var(--accent)]">{stat.value}</p>
-                  <p className="mt-1 text-meta text-[var(--text-muted)]">{stat.label}</p>
+                  <Heading level="h3" className="text-[var(--accent)]">
+                    {stat.value}
+                  </Heading>
+                  <Text size="meta" className="mt-1">
+                    {stat.label}
+                  </Text>
                 </div>
               ))}
             </div>
-            <Text className="mt-4 text-meta text-[var(--text-faint)]">
+            <Text size="meta" tone="faint" className="mt-4">
               &ldquo;Reconciled to reporting&rdquo; counts engagements where every KPI has been
               matched to the client&apos;s own systems. The rest show targets, labelled as targets.
               This number moves as reporting cycles complete.

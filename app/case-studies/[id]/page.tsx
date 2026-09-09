@@ -183,7 +183,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <Text>{study.startingPosition}</Text>
             </div>
-            <Text className="mt-3 text-meta text-[var(--text-faint)]">
+            <Text size="meta" tone="faint" className="mt-3">
               Every statement above was confirmed against{' '}
               <a
                 href={`https://${study.domain}`}
