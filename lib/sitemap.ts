@@ -7,7 +7,9 @@ import { LOCATIONS } from '../data/locations';
 import { REGIONS } from '../data/regions';
 import { COMPARISONS, FREE_TOOLS, GLOSSARY_TERMS, RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
 import { SERVICES, LOCATION_MATRIX_SERVICES } from '../data/services';
-import { CASE_STUDIES, NICHES, SERVICES, STATES } from '../data/case-studies';
+// `SERVICES` collides with the marketing services above — these are the three case-study
+// service keys ('ai-seo' | 'ppc' | 'social'), not the site's service pages.
+import { CASE_STUDIES, NICHES, SERVICES as CASE_STUDY_SERVICES, STATES } from '../data/case-studies';
 import { TOOL_CATEGORIES } from '../constants';
 import { SITE_URL } from './seo';
 
@@ -219,7 +221,7 @@ export const caseStudyRoutes = (): SitemapEntry[] => [
     priority: 0.78,
     changefreq: 'monthly' as const,
   })),
-  ...SERVICES.map((service) => ({
+  ...CASE_STUDY_SERVICES.map((service) => ({
     path: `/case-studies/service/${service}`,
     priority: 0.78,
     changefreq: 'monthly' as const,
