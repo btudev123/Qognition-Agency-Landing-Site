@@ -1,11 +1,9 @@
 // ── Single source of truth for contact + booking ────────────────────────────
-
 // Booking. LeadConnector (GoHighLevel) is the booking system. BOOKING_LINK is
 // the PUBLIC widget URL used by both the inline embed and every "Book a call"
 // anchor. Swap it in one place and the whole site follows.
 export const BOOKING_LINK =
   "https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency";
-
 /** Script that drives the LeadConnector iframe auto-resize handshake. */
 export const BOOKING_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
 
