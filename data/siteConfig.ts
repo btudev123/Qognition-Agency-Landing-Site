@@ -23,3 +23,4 @@ export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 export const PHONE_NUMBER = WHATSAPP_NUMBER;
 export const PHONE_DISPLAY = WHATSAPP_DISPLAY;
 export const PHONE_LINK = `tel:+${WHATSAPP_NUMBER}`;
+
