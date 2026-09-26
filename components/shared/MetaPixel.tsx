@@ -3,6 +3,8 @@
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
+import { ConsentScripts } from './ConsentManager';
+import { hasConsent } from '../../lib/consent';
 
 /**
  * Meta (Facebook) Pixel.
@@ -21,6 +23,7 @@ function PixelPageViews({ pixelId }: { pixelId: string }) {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (!hasConsent('advertising')) return;
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
@@ -37,7 +40,7 @@ export default function MetaPixel() {
   if (!pixelId) return null;
 
   return (
-    <>
+    <ConsentScripts category="advertising">
       <Script id="meta-pixel" strategy="afterInteractive">
         {`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -61,6 +64,6 @@ fbq('track', 'PageView');`}
         />
       </noscript>
       <PixelPageViews pixelId={pixelId} />
-    </>
+    </ConsentScripts>
   );
 }

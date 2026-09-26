@@ -6,48 +6,12 @@ import { usePathname } from 'next/navigation';
 import { ArrowRight, X } from 'lucide-react';
 
 function getSpokePopup(pathname: string): { title: string; body: string; cta: string; href: string; note: string } {
-  if (pathname.startsWith('/marketing')) {
-    return {
-      title: 'Before you go...',
-      body: 'Get a free 12-page marketing diagnostic within 48 hours. SEO, paid media, content, and AI visibility — all assessed.',
-      cta: 'Get Free Marketing Audit',
-      href: '/marketing/audit',
-      note: 'Delivered within 48 hours. No credit card required.',
-    };
-  }
-  if (pathname.startsWith('/tech')) {
-    return {
-      title: 'Before you go...',
-      body: 'Get a free performance and stack audit within 48 hours. Lighthouse scores, Core Web Vitals, security, and architecture review.',
-      cta: 'Get Free Tech Audit',
-      href: '/tech/audit',
-      note: 'Delivered within 48 hours. No credit card required.',
-    };
-  }
-  if (pathname.startsWith('/finance')) {
-    return {
-      title: 'Before you go...',
-      body: 'Get a free finance health benchmark within 48 hours. Bookkeeping quality, cash flow, tax efficiency, and ops maturity assessed.',
-      cta: 'Get Free Finance Health Check',
-      href: '/finance/audit',
-      note: 'Delivered within 48 hours. No credit card required.',
-    };
-  }
-  if (pathname.startsWith('/automation')) {
-    return {
-      title: 'Before you go...',
-      body: 'Get a free automation opportunity map within 72 hours. Process mapping, ROI estimates, and a prioritized roadmap.',
-      cta: 'Get Free Automation Map',
-      href: '/automation/audit',
-      note: 'Delivered within 72 hours. No credit card required.',
-    };
-  }
   return {
-    title: 'Before you go — what is manual work costing you?',
-    body: 'Use our free ROI calculator to see how much time and money manual reporting is draining each year — and what you could save by automating it.',
-    cta: 'See My Savings (Free ROI Calculator)',
-    href: '/#roi-calculator',
-    note: 'Takes 30 seconds. No credit card. Custom report in your inbox.',
+    title: 'Before you go...',
+    body: 'Get a free AI Search Visibility Report within 48 hours. See how visible and citable your brand is across AI search.',
+    cta: 'Get My AI Search Visibility Report',
+    href: '/free-ai-audit',
+    note: 'Delivered within 48 hours. No credit card required.',
   };
 }
 

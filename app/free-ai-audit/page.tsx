@@ -1,26 +1,4 @@
 import type { Metadata } from 'next';
-import AuditLandingPage from '../../components/AuditLandingPage';
-import { getAuditOfferBySlug } from '../../data/auditOffers';
-import { breadcrumbSchema, faqSchema } from '../../lib/schema';
-import { metadataFor } from '../../lib/seo';
-
-const offer = getAuditOfferBySlug('free-ai-audit')!;
-
-export const metadata: Metadata = metadataFor({ title: offer.title, description: offer.description, path: `/${offer.slug}` });
-
-export default function Page() {
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            faqSchema(offer.faqs),
-            breadcrumbSchema([{ name: 'Home', path: '/' }, { name: offer.title, path: `/${offer.slug}` }]),
-          ]),
-        }}
-      />
-      <AuditLandingPage offer={offer} />
-    </>
-  );
-}
+import LocalAuditExperience from '../../components/LocalAuditExperience';
+export const metadata: Metadata = {title: 'AI Search Visibility Report | Qognition', description: 'A human-reviewed report on how visible and citable your brand is across AI search, delivered within 48 hours. See what was tested, when it was checked and what remains unknown.', alternates: {canonical: '/free-ai-audit'}};
+export default function Page(){return <LocalAuditExperience />;}

@@ -1,3 +1,4 @@
+import AIPlatforms from '../../../components/shared/AIPlatforms';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -81,6 +82,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               <p className="text-body text-[var(--text-muted)] mb-12 border-l-2 border-[var(--accent)] pl-6">
                 {service.fullDescription}
               </p>
+              <AIPlatforms compact />
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">

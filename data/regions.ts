@@ -4,7 +4,7 @@ const COMMON_FAQS = [
     { question: "Do you have local teams?", answer: "Yes, we have strategic hubs in these regions to ensure cultural context and timezone alignment." }
 ];
 
-export const REGIONS: Region[] = [
+const LEGACY_REGION_DATA: Region[] = [
   { 
     id: 'usa', 
     name: 'USA', 
@@ -240,3 +240,21 @@ export const REGIONS: Region[] = [
     ]
   }
 ];
+
+// Keep every legacy route, while removing claims without published evidence.
+// Coordinates in the historical data identify cities, not Qognition offices.
+const marketBriefs: Record<string, [string, string, string[]]> = {
+  usa: ['B2B growth programs for US buyers.', 'Define the purchasing committee, serviceable market and commercial questions before choosing channels.', ['Separate national software demand from regional industrial service demand.', 'Ask sales which objections delay a shortlist or procurement decision.']],
+  uk: ['B2B growth programs for the United Kingdom.', 'Connect specialist expertise with the questions UK buying teams use to assess a provider.', ['Distinguish corporate services from consumer enquiries.', 'Confirm terminology, language and sales ownership for UK campaigns.']],
+  uae: ['B2B growth programs for buyers in the UAE and Saudi Arabia.', 'Scope English and Arabic buyer journeys around the specific country and sector.', ['Validate Arabic terminology and right-to-left forms.', 'Agree country coverage and local sales follow-up before launch.']],
+  india: ['Search and demand programs for India-based B2B businesses.', 'Separate the company’s headquarters from the countries where its buyers evaluate suppliers.', ['For exporters, build content for destination-market buyer questions.', 'For domestic programs, validate language and regional requirements separately.']],
+  australia: ['B2B growth programs for Australian buyers.', 'Connect industrial, technology and professional-services capabilities to the relevant buying process.', ['Distinguish national solutions from region-specific service capabilities.', 'Validate the buyer’s procurement and delivery requirements.']],
+  europe: ['B2B growth programs across European markets.', 'Treat language, buyer expectations and market coverage as separate planning decisions.', ['Publish complete, reviewed translations rather than swapping country names.', 'Confirm privacy and outreach requirements with the appropriate adviser.']],
+  'middle-east': ['B2B growth programs for Middle Eastern markets.', 'Prioritize specific countries, languages and sectors before expanding a regional campaign.', ['Map buying roles and the evidence they require.', 'Use regional language expertise when reviewing claims and commercial terminology.']],
+  canada: ['B2B growth programs for Canadian buyers.', 'Map English and French buyer journeys to the provinces and sectors you can serve.', ['Review French content and form journeys before launching in Quebec.', 'Clarify how the offer differs from cross-border alternatives.']],
+  singapore: ['B2B growth programs for Singapore and selected Southeast Asian markets.', 'Use Singapore as a defined market, then assess each additional country on its own merits.', ['Distinguish regional headquarters from end-customer locations.', 'Validate language, payment and follow-up requirements before expansion.']],
+};
+export const REGIONS: Region[] = LEGACY_REGION_DATA.map(region => {
+  const brief = marketBriefs[region.id] || ['B2B growth programs for ' + region.name + '.', 'Agree priority buyers and markets before building the program.', ['Use sales feedback to choose commercial questions.']];
+  return { ...region, description: brief[0], localStrategy: brief[1], marketDynamics: brief[1], competitiveLandscape: 'Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.', localInsights: brief[2], officeCoordinates: '', relatedCaseStudy: undefined, stats: [], faqs: [{ question: 'How is delivery scoped for this market?', answer: 'We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office.' }] };
+});

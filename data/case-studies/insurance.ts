@@ -37,7 +37,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo'],
     tier: 'Growth',
-    retainerBand: '$3,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Two states, no addresses, and an https that downgrades itself',
     snapshot:
       'Independent agency running employee benefits, group health and business insurance alongside payroll, HR and PEO services, with offices in Colorado and Florida.',
@@ -72,7 +72,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ppc', 'ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Four Denver offices, one contact page, zero location pages',
     snapshot:
       'Family-owned Denver-metro independent agency with over 25 years in non-standard auto — SR22 filed same day, DUI-related coverage, plus home, renters, motorcycle, RV and boat. Bilingual. Progressive and Safeco appointed. Four active offices: Federal Boulevard and Leetsdale in Denver, East Colfax in Aurora, and Pecos in Westminster.',
@@ -113,7 +113,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo', 'ppc'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Forty years, four offices, two states — on an SMB website builder',
     snapshot:
       'Independent agency operating over 40 years across Fairfax, Fredericksburg and Woodbridge in Virginia plus a Texas office. Auto, homeowners, business, flood, life and health, with a carrier roster built heavily around non-standard auto — National General, Kemper, Dairyland, The General, Gainsco, Foremost, Progressive and Mercury.',
@@ -152,7 +152,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo'],
     tier: 'Essential',
-    retainerBand: '$1,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Founded 1923, running WordPress 5.9.5',
     snapshot:
       'Hampton Roads independent agency on Market Street in Suffolk, founded in 1923 — 103 years. Member of Keystone Insurers Group. Personal lines, commercial including surety bonds and professional liability, employee benefits, plus life, health, disability, long-term care and Medicare. Appointed by Progressive and Travelers.',
@@ -187,7 +187,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo', 'ppc'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Promises top national carriers, names two',
     snapshot:
       'Independent agency with offices in Annandale and Arlington, licensed across Virginia, Maryland, DC, North Carolina and Florida. Unusually broad line list for its size — personal, commercial, life, annuities, disability, dental, vision, long-term care, Medicare and group benefits. WordPress on a BrightFire agency template.',
@@ -226,7 +226,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ppc', 'ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'The best-built insurance site in the book, bidding on personal auto',
     snapshot:
       'Leesburg independent agency in Loudoun County with the deepest commercial line coverage in the insurance book — general liability, commercial auto and property, workers comp, surety bonds, professional liability, business interruption, commercial umbrella, hospitality, builders risk and commercial trucking — alongside personal, life, health and group benefits. AIG, Allied, Chubb, Erie, Liberty Mutual, Nationwide, Progressive, Travelers, Accident Fund, Builders Mutual and Berkley.',
@@ -267,7 +267,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo', 'ppc'],
     tier: 'Diagnostic',
-    retainerBand: 'Scoped after remediation',
+    retainerBand: 'Individually scoped',
     headline: 'The domain now points at the acquirer — decide what you want it to do',
     snapshot:
       'Longmont, Colorado independent agency covering home, auto, life, umbrella and business insurance. Acquired by Evertree Insurance Services in July 2023.',
@@ -303,7 +303,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo', 'social'],
     tier: 'Diagnostic',
-    retainerBand: 'Scoped after remediation',
+    retainerBand: 'Individually scoped',
     headline: 'Redirects to Lakeside Insurance, which never mentions FCI',
     snapshot:
       'Colorado independent agency. The domain redirects to Lakeside Insurance, a Broomfield CO agency with a second office in South Lyon, Michigan, running commercial, personal, industry-vertical and employee benefits lines.',
@@ -339,7 +339,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo'],
     tier: 'Diagnostic',
-    retainerBand: 'Scoped after remediation',
+    retainerBand: 'Individually scoped',
     headline: 'A carrier domain, frozen since 2020',
     snapshot:
       'OneBeacon was a specialty commercial insurer acquired by Intact Financial in 2017. It is a carrier, not an agency.',
@@ -376,7 +376,7 @@ export const INSURANCE_CASE_STUDIES: CaseStudy[] = [
     niche: 'insurance',
     services: ['ai-seo', 'social'],
     tier: 'Diagnostic',
-    retainerBand: 'Scoped after remediation',
+    retainerBand: 'Individually scoped',
     headline: 'A homeowners carrier in Louisiana, not a Virginia agency',
     snapshot:
       'Americas Insurance Company is an admitted homeowners and dwelling carrier based in Louisiana, distributing through independent agents. It runs both an Agent Portal and an Insured Portal.',

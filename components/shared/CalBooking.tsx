@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { BOOKING_LINK, BOOKING_EMBED_SCRIPT } from '../../data/siteConfig';
-import { pushDataLayer, trackMeta } from '../../lib/analytics';
+import { pushDataLayer } from '../../lib/analytics';
 
 // Seamless, responsive LeadConnector (GoHighLevel) booking widget. Inline by
 // default (no extra click on BOFU pages). form_embed.js posts height messages
@@ -14,9 +14,8 @@ export default function CalBooking({ minHeight = 620 }: { minHeight?: number }) 
   useEffect(() => {
     if (fired.current) return;
     fired.current = true;
-    pushDataLayer('cal_loaded');
-    // Browser-only: a booking view has no server-side twin to dedup against.
-    trackMeta('Schedule', { content_name: BOOKING_LINK });
+    pushDataLayer('booking_widget_view');
+    // Completed bookings are recorded in GHL. An iframe view is not a meeting.
   }, []);
 
   return (

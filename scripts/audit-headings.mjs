@@ -26,12 +26,12 @@ const RAW_SIZE = new RegExp(
 const CANONICAL_HEADING = /\btext-(display|h1|h2|h3|h4)\b/;
 const CANONICAL_TEXT = /\btext-(body|meta)\b/;
 
-const files = execSync('grep -rl "className" app components --include="*.tsx"', {
+const files = execSync('grep -rl "className" app components', {
   encoding: 'utf8',
 })
   .trim()
   .split('\n')
-  .filter(Boolean);
+  .filter((f) => f.endsWith('.tsx'));
 
 const violations = [];
 

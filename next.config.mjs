@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  outputFileTracingIncludes: { '/growth/[[...segments]]': ['./data/growth/geography/*.jsonl.gz', './data/growth/geography/manifest.json', './data/growth/geography/global-candidates.json'] },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
@@ -26,7 +27,7 @@ const nextConfig = {
       { source: '/marketing/visual-identity', destination: '/services/branding-creative/visual-identity', permanent: true },
       { source: '/marketing/cro', destination: '/services/cro-analytics', permanent: true },
       { source: '/marketing/social', destination: '/services/smm', permanent: true },
-      { source: '/marketing/audit', destination: '/free-seo-audit', permanent: true },
+      { source: '/marketing/audit', destination: '/free-ai-audit', permanent: true },
       // ── Tech sub-services (web-dev survives; rest map to nearest) ──
       { source: '/tech/websites', destination: '/services/web-development', permanent: true },
       { source: '/tech/web-apps', destination: '/services/web-development', permanent: true },
@@ -37,7 +38,7 @@ const nextConfig = {
       { source: '/tech/integrations', destination: '/services/web-development', permanent: true },
       { source: '/tech/mvp', destination: '/services/web-development', permanent: true },
       { source: '/tech/ai-agents', destination: '/services/email-automation', permanent: true },
-      { source: '/tech/audit', destination: '/free-seo-audit', permanent: true },
+      { source: '/tech/audit', destination: '/free-ai-audit', permanent: true },
       // ── Automation sub-services (email-automation survives) ──
       { source: '/automation/workflow-automation', destination: '/services/email-automation', permanent: true },
       { source: '/automation/crm-automation', destination: '/services/email-automation/crm-setup-management', permanent: true },
@@ -45,7 +46,7 @@ const nextConfig = {
       { source: '/automation/integrations', destination: '/services/email-automation', permanent: true },
       { source: '/automation/data-pipelines', destination: '/services/cro-analytics', permanent: true },
       { source: '/automation/no-code-stack', destination: '/services/web-development', permanent: true },
-      { source: '/automation/audit', destination: '/free-seo-audit', permanent: true },
+      { source: '/automation/audit', destination: '/free-ai-audit', permanent: true },
       // ── Spoke hubs + wildcard fallbacks (LAST) ──
       { source: '/marketing', destination: '/services', permanent: true },
       { source: '/marketing/:path*', destination: '/services', permanent: true },
@@ -54,6 +55,7 @@ const nextConfig = {
       { source: '/automation', destination: '/services/email-automation', permanent: true },
       { source: '/automation/:path*', destination: '/services/email-automation', permanent: true },
       // Finance fully retired → services hub
+      { source: '/finance/audit', destination: '/free-ai-audit', permanent: true },
       { source: '/finance', destination: '/services', permanent: true },
       { source: '/finance/:path*', destination: '/services', permanent: true },
     ];
@@ -91,17 +93,17 @@ const nextConfig = {
       },
       {
         source: '/resources/technical-seo-audit-checklist-nextjs',
-        destination: '/free-seo-audit',
+        destination: '/free-ai-audit',
         permanent: true
       },
       {
         source: '/resources/free-seo-audit-checklist',
-        destination: '/free-seo-audit',
+        destination: '/free-ai-audit',
         permanent: true
       },
       {
         source: '/resources/free-seo-audit',
-        destination: '/free-seo-audit',
+        destination: '/free-ai-audit',
         permanent: true
       },
       {
@@ -111,17 +113,38 @@ const nextConfig = {
       },
       {
         source: '/resources/branding-audit',
-        destination: '/branding-audit',
+        destination: '/free-ai-audit',
         permanent: true
       },
       {
         source: '/resources/social-media-audit',
-        destination: '/social-media-audit',
+        destination: '/free-ai-audit',
         permanent: true
       },
       {
         source: '/resources/free-llm-audit',
-        destination: '/free-llm-audit',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
+      // ── Retired standalone audits → single AI Search Visibility Report ──
+      {
+        source: '/free-seo-audit',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
+      {
+        source: '/free-llm-audit',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
+      {
+        source: '/branding-audit',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
+      {
+        source: '/social-media-audit',
+        destination: '/free-ai-audit',
         permanent: true
       }
     ];

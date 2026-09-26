@@ -329,7 +329,7 @@ function SpokePricingSection({ data }: { data: SpokePageData }) {
         <ScrollReveal>
           <Eyebrow>Pricing</Eyebrow>
           <h2 className="text-display text-[var(--ink)] mt-4 max-w-3xl font-semibold">
-            Transparent pricing. No surprises.
+            A scope that fits your business.
           </h2>
         </ScrollReveal>
 
@@ -349,7 +349,6 @@ function SpokePricingSection({ data }: { data: SpokePageData }) {
                   </span>
                 )}
                 <h3 className="text-h3 text-[var(--ink)] mb-2 font-semibold">{tier.name}</h3>
-                <div className="text-3xl font-bold text-[var(--ink)] mb-2">{tier.price}</div>
                 <p className="text-body text-[var(--text-muted)] mb-6">{tier.description}</p>
                 <ul className="space-y-3 mb-8 flex-1">
                   {tier.features.map((f) => (

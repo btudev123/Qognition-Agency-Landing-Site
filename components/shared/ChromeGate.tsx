@@ -34,12 +34,13 @@ export default function ChromeGate({
     return () => html.classList.add('scroll-smooth');
   }, [isStudio]);
 
-  if (isStudio) return <>{children}</>;
+  const isLocalized = /^\/(de|fr|nl|sv|da|nb|fi|ar|it|zh-Hans)(\/|$)/.test(pathname || '');
+  if (isStudio || isLocalized) return <>{children}</>;
 
   return (
     <>
       {header}
-      <main className="min-h-screen bg-[var(--bg)]">{children}</main>
+      <div id="page-content" className="min-h-screen bg-[var(--bg)]">{children}</div>
       {footer}
     </>
   );

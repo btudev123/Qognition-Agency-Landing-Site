@@ -557,7 +557,7 @@ Ignore generic warnings that do not affect your buyer journey. A score means lit
 
 ## Run the Audit
 
-Use Qognition's [Free SEO Audit](/free-seo-audit) to get a practical first-pass report. Then compare the findings with Search Console, analytics, CRM data, and competitor pages.
+Use Qognition's [AI Search Visibility Report](/free-ai-audit) to get a practical first-pass report. Then compare the findings with Search Console, analytics, CRM data, and competitor pages.
 
 ## Fix Order
 
@@ -614,7 +614,7 @@ Traditional SEO focuses heavily on ranking pages in search results. LLM visibili
 
 ## Run the Audit
 
-Use Qognition's [Free LLM Audit](/free-llm-audit) to check the technical discovery layer, then use the report to build missing source-of-truth pages.
+Use Qognition's [AI Search Visibility Report](/free-ai-audit) to check the technical discovery layer, then use the report to build missing source-of-truth pages.
 
 ## Frequently Asked Questions
 
@@ -657,7 +657,7 @@ Use case studies, testimonials, client journey details, before/after metrics, sc
 
 Design should make the company feel credible without hiding the offer. Typography, spacing, logo use, colors, button styles, and content hierarchy all affect trust.
 
-Run the [Branding Audit](/branding-audit) to identify the biggest clarity and trust gaps.
+Run the [AI Search Visibility Report](/free-ai-audit) to identify the biggest clarity and trust gaps.
 
 ## Frequently Asked Questions
 
@@ -700,7 +700,7 @@ Strong B2B social content usually includes education, contrarian lessons, client
 
 Send attention to a useful offer: a free audit, calculator, benchmark report, newsletter, webinar, or case study. Social media should not stop at impressions.
 
-Run the [Social Media Audit](/social-media-audit) to find your biggest gaps.
+Run the [AI Search Visibility Report](/free-ai-audit) to find your biggest gaps.
 
 ## Frequently Asked Questions
 

@@ -69,7 +69,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     relatedLinks: [
       { label: 'Next.js SEO', href: '/services/web-development/nextjs-seo' },
       { label: 'AI Search Visibility', href: '/services/ai-seo/ai-search-visibility' },
-      { label: 'Free SEO Audit', href: '/free-seo-audit' }
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' }
     ]
   },
   {
@@ -299,7 +299,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     faqs: serviceFaq('Next.js SEO'),
     relatedLinks: [
       { label: 'Technical SEO', href: '/services/seo/technical-seo' },
-      { label: 'Free SEO Audit', href: '/free-seo-audit' },
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
       { label: 'Website Traffic Estimator', href: '/free-tools/website-traffic-estimator' }
     ]
   },
@@ -791,19 +791,19 @@ export const TEAM_MEMBERS: TeamMember[] = [
 export const PRICING_PACKAGES = [
   {
     name: 'Growth Sprint',
-    price: 'From $3,500/mo',
+    price: 'Individually scoped',
     bestFor: 'SMBs and founder-led teams that need SEO, content, and conversion momentum.',
     includes: ['SEO and content roadmap', 'Technical fixes', 'Monthly reporting', 'Lead capture improvements']
   },
   {
     name: 'Performance Engine',
-    price: 'From $7,500/mo',
+    price: 'Individually scoped',
     bestFor: 'B2B teams scaling SEO, Google Ads, landing pages, and HubSpot reporting.',
     includes: ['SEO and paid media pods', 'Landing page experiments', 'CRM attribution', 'Biweekly strategy calls']
   },
   {
     name: 'Enterprise Authority',
-    price: 'Custom',
+    price: 'Individually scoped',
     bestFor: 'Multi-market teams that need AI search, scalable SEO pages, content operations, and executive reporting.',
     includes: ['Scalable SEO architecture', 'AI search visibility', 'Digital PR assets', 'Executive dashboards']
   }

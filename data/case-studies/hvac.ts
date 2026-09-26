@@ -43,7 +43,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: "Austin's oldest full-trade contractor was buying its own name back",
     snapshot:
       'Family-run Austin contractor operating since 1972 across HVAC, plumbing and electrical, covering 28 named towns from Georgetown to Wimberley. 4.8 stars across 5,127 Google reviews.',
@@ -82,7 +82,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc'],
     tier: 'Essential',
-    retainerBand: '$1,500/mo',
+    retainerBand: 'Individually scoped',
     headline: '45 years in El Paso, and the website could not take a booking',
     snapshot:
       'Woman- and minority-owned HVAC contractor serving El Paso, Socorro, Horizon City and Santa Teresa NM since 1980. Residential and commercial, NATE-certified, with in-house sheet metal fabrication. 4.6 stars across 623 Google reviews.',
@@ -117,7 +117,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ai-seo', 'ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Serving Houston since 1998, invisible to every AI assistant',
     snapshot:
       "West and Northwest Houston HVAC contractor operating since 1998, residential and commercial, running ServiceTitan scheduling and 60-month financing. Positioning line: 'No Upsells. No Nonsense.'",
@@ -156,7 +156,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: '42,000 systems installed and not one of them in an AI answer',
     snapshot:
       'Family-owned DFW contractor since 1990 running HVAC, plumbing, drain and sewer, and indoor air quality out of a single Fort Worth facility. 42,000+ systems installed. 4.8 stars across 4,531 Google reviews.',
@@ -195,7 +195,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Enterprise',
-    retainerBand: '$15,000+/mo',
+    retainerBand: 'Individually scoped',
     headline: 'A $17.76 service call is a great hook and a terrible measurement unit',
     snapshot:
       'Family-owned since 1962 across four North Texas locations — Fort Worth, Kennedale, Weatherford and Granbury — running HVAC, plumbing, electrical and solar with an in-house technician training centre. 4.9 stars across 864 Google reviews.',
@@ -236,7 +236,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: '48 years, 400-unit high-rise installs, six Google reviews',
     snapshot:
       'Dual-market contractor operating since 1978 out of New York City and Union, New Jersey. Residential service plus a genuine commercial and new-construction arm — duct fabrication, HVAC controls, piping, system startup and multi-site management, with capacity to install 400 units in a single high-rise development.',
@@ -271,7 +271,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'A century of Rochester goodwill, published on Blogspot',
     snapshot:
       'Residential HVAC contractor serving Rochester since 1923, covering 40+ surrounding towns from Fairport to Canandaigua. Gas furnaces, heat pumps, boilers, radiant, generators and IAQ. 4.7 stars across 592 Google reviews. 18-month 0% financing.',
@@ -310,7 +310,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc'],
     tier: 'Growth',
-    retainerBand: '$3,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Pages for five boroughs, three counties and Long Island — on 53 reviews',
     snapshot:
       'Family-owned HVAC contractor covering Manhattan, Brooklyn, Queens, the Bronx, Staten Island, eleven Westchester towns, Nassau and Suffolk. Residential and commercial, 24/7 emergency, maintenance agreements. 4.8 stars across 53 Google reviews.',
@@ -345,7 +345,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ai-seo', 'ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: '117 years of Manhattan PTAC expertise, none of it published',
     snapshot:
       'Manhattan residential HVAC specialist operating since 1909, working exclusively in private residences with a PTAC and through-the-wall niche and relationships with co-op and condo boards built across generations.',
@@ -384,7 +384,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Two Google profiles, two review counts, one confused local footprint',
     snapshot:
       'NYC contractor out of Northern Boulevard in Queens covering all four boroughs, with genuine commercial and refrigeration depth — chillers, cooling towers, VRF systems, rooftop units and commercial refrigeration alongside residential mini-splits and boilers.',
@@ -425,7 +425,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'One ad account, two states, two different auctions',
     snapshot:
       "41-year Spokane contractor running HVAC, plumbing, electrical and sheet metal across residential and commercial, including geothermal. Covers Spokane and Spokane Valley plus Coeur d'Alene, Post Falls and Hayden in Idaho — with separate Washington and Idaho phone numbers.",
@@ -460,7 +460,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Twelve Washington towns, six Oregon suburbs, no landing page for any of them',
     snapshot:
       '30-year pure-HVAC contractor in Vancouver WA serving both sides of the Columbia — Orchards, Hazel Dell, Salmon Creek, Battle Ground, Camas, Ridgefield and Woodland in Washington, plus Portland, Gresham, Clackamas, Happy Valley, Troutdale and Beaverton in Oregon.',
@@ -499,7 +499,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'On an HVAC agency template, buying leads like everyone else on it',
     snapshot:
       "36-year contractor serving Puyallup, Tacoma and the South Puget Sound across eighteen named cities. HVAC plus electrical and generator installation, indoor air quality and a filter delivery service. Positioned as 'Puyallup & Tacoma's Favorite HVAC & Electrical Company'.",
@@ -534,7 +534,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: '170,000 jobs of proof, none of it where assistants look',
     snapshot:
       'Two-location contractor since 1992 covering Pierce and Kitsap counties from Tacoma and Silverdale. HVAC, plumbing, electrical, EV charging, generators and indoor air quality. Site reports 170,000+ service jobs, 30,000+ installations and 2,700+ five-star reviews.',
@@ -572,7 +572,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'social'],
     tier: 'Growth',
-    retainerBand: '$3,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'The only contractor in Seattle who wants condo work, hiding on Wix',
     snapshot:
       'Seattle contractor on Eastlake Avenue, licensed since 2016 — the youngest business in the fifty. HVAC and electrical for homes and, distinctively, condominiums. Synchrony financing and online booking.',
@@ -612,7 +612,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Family-owned since 1965, and not one page for a single town it serves',
     snapshot:
       "Family-owned Westwood contractor since 1965, serving Greater Boston, eastern Massachusetts and southern New Hampshire. HVAC only — no plumbing, no electrical — across residential and a genuinely developed commercial arm offering equipment evaluations. Blog titled 'Hot Tips, Cool Ideas'.",
@@ -651,7 +651,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Ninety town pages, and nowhere does it say who they are',
     snapshot:
       'Weymouth-based multi-trade contractor covering roughly 90 named Greater Boston towns and every Boston neighbourhood. Plumbing and drain lead the offering, with HVAC, electrical, EV chargers and generators alongside. Licensed Master Plumbing, Gas-fitting and Sheet Metal corporation.',
@@ -686,7 +686,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ai-seo'],
     tier: 'Growth',
-    retainerBand: '$3,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Sixty-five years, no address on the site, and two 404s in the navigation',
     snapshot:
       "Springfield-based residential contractor serving Western Massachusetts and Northern Connecticut across HVAC, plumbing, electrical, generators and indoor air quality. Over 65 years in business. Blog branded as a 'Learning Hub'.",
@@ -724,7 +724,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'social'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Since 1948, with a heating oil route nobody else in the book has',
     snapshot:
       "Family-owned Walpole contractor since 1948, covering 45+ named MetroWest and South Shore towns. HVAC, plumbing, electrical, generators, indoor air quality — and, uniquely in this book, home heating oil delivery with automatic delivery and budget payment plans. 'Providing Comfort For Life.'",
@@ -764,7 +764,7 @@ export const HVAC_CASE_STUDIES: CaseStudy[] = [
     niche: 'hvac',
     services: ['ppc', 'ai-seo'],
     tier: 'Diagnostic',
-    retainerBand: 'Scoped after remediation',
+    retainerBand: 'Individually scoped',
     headline: "The apex domain doesn't resolve and there are two sites on it",
     snapshot:
       'Boston general home repair and renovation contractor — painting, drywall, trim, flooring, cabinets, kitchen and bath remodelling, decks — with furnace, boiler, AC, water heater, electrical and plumbing repair attached.',

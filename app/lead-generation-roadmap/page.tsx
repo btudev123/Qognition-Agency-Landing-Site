@@ -96,7 +96,7 @@ export default function Page() {
               Qognition helps law firms, clinics, consultants, SaaS teams, and B2B companies turn search demand into booked calls with SEO, Google Ads, conversion pages, AI search visibility, and HubSpot tracking.
             </p>
             <Link
-              href="/free-seo-audit"
+              href="/free-ai-audit"
               className="inline-flex rounded-lg bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"
             >
               Get Free Growth Audit

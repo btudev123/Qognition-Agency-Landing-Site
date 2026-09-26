@@ -48,7 +48,7 @@ export const B2B_MOFU_PAGES: B2BMoFuPage[] = [
     checklist: ['One clear ICP', 'One primary offer', 'Dedicated landing pages', 'CRM tracking', 'Proof-rich case studies', 'Five-email nurture'],
     faqs: baseFaqs('B2B marketing strategy'),
     relatedLinks: [
-      { label: 'Free SEO Audit', href: '/free-seo-audit' },
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
       { label: 'Case Studies', href: '/case-studies' },
       { label: 'Lead Generation Techniques', href: '/lead-generation-techniques' }
     ]
@@ -117,7 +117,7 @@ export const B2B_MOFU_PAGES: B2BMoFuPage[] = [
     faqs: baseFaqs('B2B content marketing'),
     relatedLinks: [
       { label: 'Content Strategy Services', href: '/services/seo/content-strategy' },
-      { label: 'Branding Audit', href: '/branding-audit' },
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
       { label: 'Blog', href: '/blog' }
     ]
   },
@@ -153,7 +153,7 @@ export const B2B_MOFU_PAGES: B2BMoFuPage[] = [
     relatedLinks: [
       { label: 'Lead Generation Techniques', href: '/lead-generation-techniques' },
       { label: 'HubSpot Lead Capture', href: '/glossary/hubspot-lead-capture' },
-      { label: 'Free LLM Audit', href: '/free-llm-audit' }
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
     ]
   },
   {
@@ -186,7 +186,7 @@ export const B2B_MOFU_PAGES: B2BMoFuPage[] = [
     checklist: ['Founder POV', 'Proof posts', 'Educational carousels', 'Short video', 'Audit CTA', 'Weekly reporting'],
     faqs: baseFaqs('B2B social media'),
     relatedLinks: [
-      { label: 'Social Media Audit', href: '/social-media-audit' },
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
       { label: 'LinkedIn Thought Leadership', href: '/services/smm/linkedin-thought-leadership' },
       { label: 'Case Studies', href: '/case-studies' }
     ]
@@ -263,7 +263,7 @@ export const B2B_MOFU_PAGES: B2BMoFuPage[] = [
       { label: 'AI Search Visibility Guide', href: '/improve-ai-search-visibility' },
       { label: 'Free AI Audit', href: '/free-ai-audit' },
       { label: 'AI Search Visibility Service', href: '/services/ai-seo' },
-      { label: 'Free SEO Audit', href: '/free-seo-audit' }
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
     ]
   },
   {
@@ -342,7 +342,7 @@ export const B2B_MOFU_PAGES: B2BMoFuPage[] = [
     relatedLinks: [
       { label: 'Free AI Audit', href: '/free-ai-audit' },
       { label: 'OpenAI API for SEO', href: '/openai-api-seo' },
-      { label: 'Free LLM Visibility Audit', href: '/free-llm-audit' },
+      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
       { label: 'AI Search Visibility Service', href: '/services/ai-seo' }
     ]
   }

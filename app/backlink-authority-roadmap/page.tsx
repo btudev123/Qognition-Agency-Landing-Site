@@ -62,7 +62,7 @@ export default function Page() {
               <p className="text-body mt-2 text-[var(--text-muted)]">The audits, B2B guides, glossary, calculators, and case studies are the pages worth pitching.</p>
             </div>
             <Link
-              href="/free-seo-audit"
+              href="/free-ai-audit"
               className="rounded-lg bg-[var(--accent)] px-6 py-3 text-center text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all shrink-0"
             >
               Open Free Audit

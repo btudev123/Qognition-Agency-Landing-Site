@@ -1,152 +1,77 @@
-# Lead Pipeline Integrations
+# Qognition lead capture and revenue funnel
 
-Resend for delivery, Meta Pixel + Conversions API for measurement, Upstash for
-rate limiting. **There is no CRM in this pipeline** — every lead is delivered by
-email to `AUDIT_NOTIFY_EMAIL` (`hello@qognitionagency.com`).
+Updated 2026-09-24. The implementation, rather than earlier setup notes, is the source of truth.
 
-## Architecture
+## System of record and acceptance
 
-`POST /api/lead` is the single lead endpoint. Every form on the site posts to it
-(`components/shared/LeadForm.tsx` and `components/shared/HeroRoiCalculator.tsx`).
-On each submission it:
+`POST /api/lead` validates the inquiry, checks a honeypot and an in-memory IP burst limit, then emails the agency inbox (`AUDIT_NOTIFY_EMAIL`, default `hello@qognitionagency.com`) through Resend. Email is the primary and required delivery path. GoHighLevel (LeadConnector) capture is best-effort and optional; a missing or failing CRM integration never turns a prospect away. A lead is accepted when either the notification email sends or GHL captures the contact. If neither succeeds, the lead is logged via `recordFailedLead` and the request returns a retryable `503`; the form keeps the same submission ID on an unchanged retry. There is no public Sanity lead storage, additional database, automatic retry queue, or guaranteed offline capture.
 
-1. Validates against `leadSchema` (`lib/validation.ts`) and drops honeypot hits.
-2. Rate-limits by hashed email + IP + device cookie.
-3. In parallel: an internal notification email to `AUDIT_NOTIFY_EMAIL`, a
-   confirmation email to the lead, and a Meta Conversions API `Lead` event.
-4. Returns `200` with a `delivery` summary, then — for audit requests that
-   supplied a website — runs the real audit **after** the response via Next.js
-   `after()` and emails the scored report with a PDF attachment.
+The API retains legacy `service`, `intent`, `contact`, `source_page`, `utm`, and `event_id` fields. New optional fields are `submission_id`, `context`, `qualification`, `consent`, and `attribution`; see `lib/validation.ts`. Existing integrations without consent still receive inquiry handling, but do not enroll in marketing email or send advertising events. A newsletter request requires affirmative email opt-in.
 
-`POST /api/audit` is the public/agent-facing endpoint (documented in
-`/.well-known/openapi.json`, used by the WebMCP `run_qognition_audit` tool). It
-shares the same scoring code in `lib/auditEngine.ts`, so a report is identical
-whichever door it comes in.
+GHL is authoritative for appointments, sales acceptance, opportunities, nurture, DND, and reporting. A calendar view is not a booking; the website emits `booking_widget_view`, never a `Schedule` conversion on iframe load. Website booking/lifecycle webhook ingestion and offline GA4 MQL/SQL uploads are deliberately deferred.
 
-Requests are rate-limited to one per day per email, IP, and device cookie.
-Local development uses an in-memory limiter; **production should set
-`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`** — the in-memory
-fallback is per-lambda and does not work across serverless instances.
+## Required GHL configuration
 
-## Failure behaviour
+Use the existing Qognition subaccount after verifying its owner and calendar. Create a server-only private integration with contact read/write scopes. Store its value through deployment secrets, never in source or a public variable.
 
-Delivery never blocks a submission: a prospect always sees success. That means
-failures are invisible unless you look for them, so:
+Set these names in the deployment environment:
 
-- Every failed channel logs `[Lead] delivery_failure {...}` with the channel,
-  status, error, email, and source page.
-- If the internal notification does not land, the raw lead is pushed to the
-  `leads:deadletter` Redis list (newest 500 kept) for replay.
-- The response body carries a `delivery` object you can inspect directly.
+| Variable | Purpose |
+| --- | --- |
+| `GHL_PRIVATE_INTEGRATION_TOKEN` | Scoped server-side API access |
+| `GHL_LOCATION_ID` | Verified Qognition GHL subaccount |
+| `GHL_INQUIRY_FIELD_ID` | Dedicated multiline contact field: latest complete inquiry JSON |
+| `GHL_SUBMISSION_FIELD_ID` | Dedicated multiline contact field: recent submission receipt JSON |
+| `GHL_QUALIFICATION_FIELD_ID` | Dedicated text field: website eligibility, `Lead` or `MQL` |
+| `GHL_MARKETING_CONSENT_FIELD_ID` | Dedicated text field: latest explicit website email choice |
+| `GHL_LOCALE_FIELD_ID` | Dedicated text field: preferred website language |
 
-**An environment variable can be registered on Vercel and still not reach the
-runtime.** Vercel bakes env vars in at *build* time, so a deployment built
-before a variable was added never sees it — the dashboard looks correct while
-every integration silently no-ops. Note also that `vercel env pull` cannot read
-back values on this project (they are stored non-readable), so a blank value in
-a pulled file proves nothing. **Verify against the running site, not the
-dashboard, and redeploy after any env change.**
+All five custom fields must be dedicated website fields, not an existing lifecycle, DND, ownership, or opportunity-stage field. Verify field type/length with a representative large inquiry before enabling production. The API checks readback to avoid accepting a provider response that silently dropped the inquiry.
 
-## Required environment variables
+Set contact duplicate handling to email-first matching and disallow duplicate email contacts. The adapter normalizes email, requests upsert without duplicate creation, and checks that an existing match was not replaced with a different contact. It patches only dedicated website custom fields and does not write `tags`, `assignedTo`, DND, or opportunity stages. An existing contact's name/company/website are not overwritten by an unauthenticated inquiry. A supplied phone is retained in the inquiry for sales review but is not used for contact matching, preventing a shared phone from merging separate email contacts.
 
-Add to `.env.local` locally and to Vercel Project Settings for production. See
-`.env.example` for the annotated list.
+## Qualification and sales handoff
 
-```bash
-RESEND_API_KEY=
-RESEND_FROM=Qognition Agency <hello@qognitionagency.com>
-AUDIT_NOTIFY_EMAIL=hello@qognitionagency.com
-UPSTASH_REDIS_REST_URL=
-UPSTASH_REDIS_REST_TOKEN=
-NEXT_PUBLIC_META_PIXEL_ID=
-META_CAPI_ACCESS_TOKEN=
-```
+Qualification version `2026-09-b2b-v1` establishes **eligibility for review** only. MQL eligibility requires all of: a stated B2B business, company website, stated 20-300 employee band or USD 3M-500M annual revenue band, and an audit/consultation/pricing request. Other inquiries remain Lead, with missing information recorded for a human. These are self-reported signals, not verified company facts. No automatic SQL or opportunity creation occurs in the website.
 
-Do not commit `.env.local`.
+Create native GHL workflows with:
 
-## Resend
+1. A new website inquiry trigger, internal notification and fallback owner. Preserve an existing owner. Create a review task and track response time.
+2. An MQL eligibility branch that alerts sales; only a salesperson accepting the need, buying involvement, commercial fit and next step can move the actual lifecycle to SQL.
+3. Nurture only when the latest explicit email choice is `opted-in` **and** current GHL DND permits the channel. A form checkbox must never reset a previous unsubscribe automatically.
+4. Workflow re-entry disabled for the nurture program. Stop nurture on reply, appointment booking, sales acceptance, disqualification, unsubscribe or DND changes. A repeat contact upsert must not restart it.
+5. Native calendar confirmation, rescheduling, cancellation, attendance and no-show tracking. Booking is separate from SQL acceptance. Verify real calendar duration before publishing duration promises.
+6. Locale branches for `en`, `de`, `fr`, `nl`, `sv`, `da`, `nb`, `fi`, `ar`, `it`, `zh-Hans`. Localize approved messages in GHL; website form and optional receipt language already use this preference.
 
-1. Verify the sending domain for `qognitionagency.com`.
-2. Create an API key → `RESEND_API_KEY`.
-3. Set `RESEND_FROM` to a verified sender.
-4. Set `AUDIT_NOTIFY_EMAIL` — this is where every lead lands.
+The site stores the latest complete inquiry and the most recent 20 receipt IDs/hashes. Configure a native GHL workflow to copy each new inquiry into a contact note if a complete historical inquiry log is needed. The website does not promise that history automatically. Recent identical retries return success without another write. Same-process races are serialized, but GHL read-modify-write is not a distributed transaction: simultaneous requests across serverless instances can race. Native duplicate policy and non-reentrant workflows are essential. This is not an exactly-once messaging system.
 
-If `RESEND_API_KEY` or `RESEND_FROM` is missing, `sendResendEmail` returns
-`{ok:false, skipped:true}` without calling Resend. The API still returns `200`;
-nothing is delivered. This is the single most important thing to verify.
+## Email delivery
 
-## Meta Pixel + Conversions API
+Resend is the primary receipt/notification mechanism. Every submission emails `AUDIT_NOTIFY_EMAIL` (the agency inbox) and sends a confirmation to the lead. Set `RESEND_API_KEY` and a verified `RESEND_FROM` sending domain. GHL native workflows are an optional secondary record and follow-up mechanism, not a dependency of acceptance.
 
-Two halves that must stay in lockstep:
+Optional email/CAPI tasks run after durable delivery. Failure does not lose the stored contact, but no automatic website replay is guaranteed. Failure logs contain a submission ID, not contact PII or provider credentials.
 
-- **Browser** — `components/shared/MetaPixel.tsx`, rendered from
-  `app/layout.tsx`. Loads `fbevents.js`, fires `PageView` on load and on client
-  route changes. Renders nothing unless `NEXT_PUBLIC_META_PIXEL_ID` is set.
-- **Server** — `lib/metaCapi.ts`. Posts to the Graph API `/{pixel}/events`
-  endpoint with SHA-256 hashed, normalized user data (`em`, `ph`, `fn`, `ln`)
-  plus unhashed IP, user agent, and the `_fbp` / `_fbc` cookies read off the
-  request. Match quality drops sharply without those cookies.
+The old `/api/audit` remains retired with HTTP 410. The single AI Search Visibility Report page (`/free-ai-audit`) requests a human review through `/api/lead`; no automated scored report or guaranteed AI citation is promised.
 
-### Deduplication contract
+## Consent and attribution
 
-Meta collapses a browser event and a server event into one conversion **only**
-when both `event_name` and `event_id` match. The flow:
+Render `ConsentManager` and `AcquisitionTracker` once in the root layout. Wrap analytics scripts in `ConsentScripts category="analytics"`; wrap advertising/visitor identification in the advertising category. MetaPixel gates itself. Do not leave tracking `noscript` iframes outside consent gates. A marketing-script environment flag is not visitor consent.
 
-1. The form calls `newEventId()` (`lib/analytics.ts`) **before** the POST.
-2. It sends that id as `event_id` in the `/api/lead` body.
-3. The server fires CAPI `Lead` with that exact id — never a regenerated one —
-   and echoes it back as `event_id` in the response.
-4. On success the form fires `fbq('track', 'Lead', {...}, { eventID })` with the
-   id the server echoed.
+The preference UI offers equal reject/save/allow controls, a persistent settings button, and translated labels. Analytics/advertising default on until an explicit choice is recorded (opt-out), so paid-funnel measurement fires by default while the banner still offers an equal opt-out. Revocation clears known tracking cookies and reloads to unload SDKs. Forms work with optional tracking rejected. Email marketing is an independent, unchecked form choice. Consent preferences and inquiry choices are versioned; current form preferences are sent with the request. Browser and server Meta events require advertising consent.
 
-If a client omits `event_id` (JS blocked, direct API call), the server generates
-one. That event simply will not dedup, which is correct — there is no twin.
+With analytics consent, session attribution records immutable first campaign/landing page, latest campaign, and referrer host. No query string or contact PII is sent into the dataLayer. Without consent, the necessary inquiry source page remains available but no session campaign history is stored. Report GA4 acquisition alongside GHL lifecycle outcomes using captured campaign, page, locale and segment context; do not claim complete person-level attribution.
 
-### Setup
+## Verification and launch gates
 
-1. Events Manager → Data Sources → Add → **Web** → copy the Pixel ID into
-   `NEXT_PUBLIC_META_PIXEL_ID`.
-2. That pixel → Settings → Conversions API → **Generate access token** →
-   `META_CAPI_ACCESS_TOKEN`. Server-only; never prefix it with `NEXT_PUBLIC_`.
-3. Set `META_TEST_EVENT_CODE` while validating so events land in Test Events
-   instead of production data. **Remove it before going live.**
+Run `node scripts/test-lead-funnel.cjs`. All network requests are mocked. The suite covers legacy payloads, MQL eligibility, missing configuration, unavailable CRM, preservation of existing sales state, readback failure, repeat/conflicting submissions, local concurrency, consent and attribution. Run typecheck and the production build afterward.
 
-## Verification
+`GET /api/integrations/status` reports configuration presence without proving credentials work. No live lead should be sent during routine tests. Before production launch, use an explicitly authorized test contact to prove contact/inquiry persistence, workflow re-entry behavior, receipt language, opt-out suppression and native booking records. Confirm `503` when credentials are disabled, and verify the same form can retry after restoration. Verify optional scripts are absent from network activity before consent and after revocation. Verify a calendar view never counts as a booking.
 
-Shallow config check (safe, public):
+GHL authorization, custom field IDs, pipeline/workflow setup, owner routing, sending-domain verification, and production secrets are external launch dependencies. Code alone does not provision them.
 
-```bash
-curl -s https://www.qognitionagency.com/api/integrations/status | python3 -m json.tool
-```
+## Provider references
 
-Deep check — actually calls Resend to prove the key works. Requires
-`INTEGRATIONS_STATUS_SECRET`:
-
-```bash
-curl -s -H "x-status-secret: $INTEGRATIONS_STATUS_SECRET" \
-  'https://www.qognitionagency.com/api/integrations/status?deep=1' | python3 -m json.tool
-```
-
-End-to-end lead + instant audit:
-
-```bash
-curl -s -X POST http://localhost:3000/api/lead \
-  -H "Content-Type: application/json" \
-  -d '{"service":"marketing","intent":"audit","source_page":"/free-seo-audit",
-       "contact":{"name":"Test Lead","email":"hello@qognitionagency.com","company_url":"example.com"},
-       "event_id":"test-dedup-001"}' | python3 -m json.tool
-```
-
-Public audit endpoint:
-
-```bash
-curl -s -X POST http://localhost:3000/api/audit \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://www.qognitionagency.com","email":"hello@qognitionagency.com","auditType":"seo","source":"Local integration test"}'
-```
-
-Meta deduplication — the check that proves the wiring: with
-`META_TEST_EVENT_CODE` set, submit a real form in a browser. Events Manager →
-Test Events must show one `Lead` received from **both Browser and Server**,
-marked **Deduplicated**. Two separate `Lead` events means the `event_id` is not
-surviving the round trip.
+- [Contact upsert and duplicate semantics](https://marketplace.gohighlevel.com/docs/2021-07-28/ghl/contacts/upsert-contact/)
+- [Contact lookup](https://marketplace.gohighlevel.com/docs/2021-07-28/ghl/contacts/get-duplicate-contact/)
+- [Private integration access](https://marketplace.gohighlevel.com/docs/Authorization/PrivateIntegrationsToken/)
+- [Webhook authenticity for a future event integration](https://marketplace.gohighlevel.com/docs/webhook/WebhookIntegrationGuide/): use current `X-GHL-Signature` Ed25519 verification, not the retired legacy RSA scheme.

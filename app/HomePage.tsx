@@ -233,7 +233,7 @@ function Hero() {
                   <Btn variant="accent" href={BOOKING_LINK} external>Book a Free Strategy Call →</Btn>
                 </MagneticBtn>
                 <MagneticBtn>
-                  <Btn variant="ghost" href="/free-seo-audit">Get free audit</Btn>
+                  <Btn variant="ghost" href="/free-ai-audit">Get free audit</Btn>
                 </MagneticBtn>
               </div>
             </ScrollReveal>
@@ -693,7 +693,7 @@ function FinalCTA() {
                 <Btn variant="accent" href={BOOKING_LINK} external>Book a call →</Btn>
               </MagneticBtn>
               <MagneticBtn>
-                <Btn variant="onDark" href="/free-seo-audit">Get free audit</Btn>
+                <Btn variant="onDark" href="/free-ai-audit">Get free audit</Btn>
               </MagneticBtn>
             </div>
           </ScrollReveal>

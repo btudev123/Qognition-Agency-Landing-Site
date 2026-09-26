@@ -396,7 +396,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                     { label: 'How to improve AI search visibility', href: '/improve-ai-search-visibility' },
                     { label: 'OpenAI API for SEO', href: '/openai-api-seo' },
                     { label: `Browse all ${product.category} tools`, href: `/directory/${product.categorySlug}` },
-                    { label: 'Free SEO audit', href: '/free-seo-audit' },
+                    { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
                     { label: 'Free AI visibility audit', href: '/free-ai-audit' },
                   ].map((link) => (
                     <li key={link.href}>

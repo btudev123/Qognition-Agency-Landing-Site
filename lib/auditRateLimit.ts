@@ -133,6 +133,7 @@ export const checkAuditRateLimit = (
   request: NextRequest,
   email: string,
   policy: RatePolicy = 'audit',
+  allowRepeat = false,
 ): RateLimitDecision => {
   const now = Date.now();
   prune(now);
@@ -149,7 +150,7 @@ export const checkAuditRateLimit = (
 
   // Has this exact person just done this?
   const existing = read(identityKey, now);
-  if (existing) {
+  if (existing && !allowRepeat) {
     return {
       ...base,
       allowed: false,

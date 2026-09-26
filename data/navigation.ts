@@ -43,7 +43,7 @@ const servicesMenu: SpokeMenu = {
   label: 'Services',
   href: '/services',
   blurb: 'Eleven integrated growth services — strategy, brand, web, SEO, AI search, paid media, content, social, video, email, and CRO.',
-  cta: { label: 'Get your free Growth Audit', href: '/free-seo-audit' },
+  cta: { label: 'Get your AI Search Visibility Report', href: '/free-ai-audit' },
   groups: SERVICES.map((service) => ({
     label: service.title,
     href: `/services/${service.id}`,

@@ -1,3 +1,7 @@
+import { getPublishedInsightPaths } from '../data/growth-insights';
+import { getGrowthSitemapEntries } from './growth/publication';
+import { getPublishedLocalePaths } from './growth-locales';
+import { isLegacyIndexable, isExistingRedirect } from './legacy-publication';
 import { BLOG_POSTS } from '../data/blog';
 import { B2B_MOFU_PAGES } from '../data/b2bPages';
 import { DIRECTORY_PRODUCTS } from '../data/directoryProducts';
@@ -24,11 +28,13 @@ export type SitemapEntry = {
   publishedAt?: string;
 };
 
-const today = new Date().toISOString();
+const xml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');
 
-// Ordered by content importance for LLM/SEO crawl budget
+// Partition discovery by page family. Sitemap order does not control rankings.
 export const sitemapIndexes = [
-  'spokes',       // highest value — operating partner core pages
+  'growth',
+  'insights',
+  'translations',
   'core',         // hub pages, audits, conversion
   'services',     // service pages
   'case-studies', // proof / E-E-A-T
@@ -46,22 +52,18 @@ export const sitemapIndexes = [
 ];
 
 export const coreRoutes = (): SitemapEntry[] => [
-  { path: '/', priority: 1.0, changefreq: 'weekly', title: 'Qognition — The Operating Partner for Founders' },
+  { path: '/', priority: 1.0, changefreq: 'weekly', title: 'Qognition — AI-native B2B Growth' },
   { path: '/about', priority: 0.82, changefreq: 'monthly', title: 'About Qognition' },
   { path: '/team', priority: 0.74, changefreq: 'monthly', title: 'Our Team' },
   { path: '/process', priority: 0.78, changefreq: 'monthly', title: 'How We Work' },
-  { path: '/pricing', priority: 0.90, changefreq: 'weekly', title: 'Transparent Pricing' },
+  { path: '/pricing', priority: 0.90, changefreq: 'weekly', title: 'Tailored Growth Engagements' },
   { path: '/book', priority: 0.88, changefreq: 'weekly', title: 'Book a Strategy Call' },
   { path: '/contact', priority: 0.82, changefreq: 'monthly', title: 'Contact Qognition' },
   { path: '/case-studies', priority: 0.88, changefreq: 'monthly', title: 'Case Studies' },
   { path: '/blog', priority: 0.82, changefreq: 'weekly', title: 'Blog' },
   { path: '/resources', priority: 0.86, changefreq: 'weekly', title: 'Resources' },
   { path: '/comparisons', priority: 0.84, changefreq: 'weekly', title: 'Agency Comparisons' },
-  { path: '/free-seo-audit', priority: 0.94, changefreq: 'weekly', title: 'Free SEO Audit' },
-  { path: '/free-ai-audit', priority: 0.92, changefreq: 'weekly', title: 'Free AI Search Audit' },
-  { path: '/free-llm-audit', priority: 0.92, changefreq: 'weekly', title: 'Free LLM Visibility Audit' },
-  { path: '/branding-audit', priority: 0.88, changefreq: 'weekly', title: 'Free Branding Audit' },
-  { path: '/social-media-audit', priority: 0.88, changefreq: 'weekly', title: 'Free Social Media Audit' },
+  { path: '/free-ai-audit', priority: 0.94, changefreq: 'weekly', title: 'AI Search Visibility Report' },
   { path: '/free-tools', priority: 0.86, changefreq: 'weekly', title: 'Free Marketing Tools' },
   { path: '/glossary', priority: 0.80, changefreq: 'weekly', title: 'Marketing Glossary' },
   { path: '/services', priority: 0.92, changefreq: 'weekly', title: 'All Services' },
@@ -98,19 +100,15 @@ export const spokeRoutes = (): SitemapEntry[] => {
 
   const spokeHubs: SitemapEntry[] = [
     { path: '/marketing', priority: 0.96, changefreq: 'weekly', title: 'AI-Native Growth Marketing' },
-    { path: '/marketing/audit', priority: 0.97, changefreq: 'weekly', title: 'Free Marketing + AI Search Audit' },
     { path: '/marketing/book', priority: 0.88, changefreq: 'weekly', title: 'Book a Marketing Strategy Call' },
     { path: '/marketing/pricing', priority: 0.88, changefreq: 'weekly', title: 'Marketing Pricing' },
     { path: '/tech', priority: 0.93, changefreq: 'weekly', title: 'Revenue-Focused Engineering' },
-    { path: '/tech/audit', priority: 0.94, changefreq: 'weekly', title: 'Free Tech + Performance Audit' },
     { path: '/tech/book', priority: 0.86, changefreq: 'weekly', title: 'Book a Tech Scoping Call' },
     { path: '/tech/pricing', priority: 0.86, changefreq: 'weekly', title: 'Tech Pricing' },
     { path: '/finance', priority: 0.90, changefreq: 'weekly', title: 'Financial Operations for Founders' },
-    { path: '/finance/audit', priority: 0.91, changefreq: 'weekly', title: 'Free Finance Health Check' },
     { path: '/finance/book', priority: 0.84, changefreq: 'weekly', title: 'Book a Finance Discovery Call' },
     { path: '/finance/pricing', priority: 0.84, changefreq: 'weekly', title: 'Finance Pricing' },
     { path: '/automation', priority: 0.92, changefreq: 'weekly', title: 'AI Agents & Intelligent Automation' },
-    { path: '/automation/audit', priority: 0.93, changefreq: 'weekly', title: 'Free Automation Opportunity Map' },
     { path: '/automation/book', priority: 0.86, changefreq: 'weekly', title: 'Book an Automation Strategy Call' },
     { path: '/automation/pricing', priority: 0.86, changefreq: 'weekly', title: 'Automation Pricing' },
   ];
@@ -300,6 +298,9 @@ export const directoryRoutes = (): SitemapEntry[] => [
 
 export const routesForSitemap = (name: string): SitemapEntry[] => {
   const map: Record<string, () => SitemapEntry[]> = {
+    insights: () => getPublishedInsightPaths().map(path => ({path, lastmod:'2026-09-24'})),
+    growth: () => getGrowthSitemapEntries().map(page => ({path: page.path, lastmod: page.lastModified})),
+    translations: () => getPublishedLocalePaths().map(path => ({path, lastmod: '2026-09-24'})),
     core: coreRoutes,
     spokes: spokeRoutes,
     services: serviceRoutes,
@@ -316,7 +317,7 @@ export const routesForSitemap = (name: string): SitemapEntry[] => {
     global: globalRoutes,
     languages: languageRoutes,
   };
-  return map[name]?.() || [];
+  return (map[name]?.() || []).filter((entry, index, all) => isLegacyIndexable(entry.path) && !isExistingRedirect(entry.path) && all.findIndex(other => other.path === entry.path) === index);
 };
 
 const hasImages = (entries: SitemapEntry[]) => entries.some((e) => e.imageUrl);
@@ -328,7 +329,6 @@ ${sitemapIndexes
   .map(
     (name) => `  <sitemap>
     <loc>${SITE_URL}/sitemaps/${name}.xml</loc>
-    <lastmod>${today}</lastmod>
   </sitemap>`
   )
   .join('\n')}
@@ -336,7 +336,7 @@ ${sitemapIndexes
 
 export const renderUrlSet = (entries: SitemapEntry[]) => {
   const withImages = hasImages(entries);
-  const withNews = hasNews(entries);
+  const withNews = false;
 
   const namespaces = [
     'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
@@ -344,32 +344,20 @@ export const renderUrlSet = (entries: SitemapEntry[]) => {
     withNews ? 'xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"' : '',
   ].filter(Boolean).join('\n        ');
 
-  const urlNodes = entries
+  const urlNodes = entries.filter(entry => isLegacyIndexable(entry.path) && !isExistingRedirect(entry.path))
     .map((entry) => {
       const imageBlock =
         entry.imageUrl
           ? `
     <image:image>
-      <image:loc>${entry.imageUrl}</image:loc>${entry.imageTitle ? `\n      <image:title>${entry.imageTitle.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</image:title>` : ''}
+      <image:loc>${xml(entry.imageUrl)}</image:loc>${entry.imageTitle ? `\n      <image:title>${entry.imageTitle.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</image:title>` : ''}
     </image:image>`
           : '';
 
-      const newsBlock =
-        entry.publishedAt && entry.title
-          ? `
-    <news:news>
-      <news:publication>
-        <news:name>Qognition Agency</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>${entry.publishedAt}</news:publication_date>
-      <news:title>${entry.title.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</news:title>
-    </news:news>`
-          : '';
+      const newsBlock = '';
 
       return `  <url>
-    <loc>${SITE_URL}${entry.path === '/' ? '' : entry.path}</loc>
-    <lastmod>${entry.lastmod || today}</lastmod>
+    <loc>${xml(SITE_URL + (entry.path === '/' ? '' : entry.path))}</loc>${entry.lastmod ? `\n    <lastmod>${xml(entry.lastmod)}</lastmod>` : ''}
     <changefreq>${entry.changefreq || 'weekly'}</changefreq>
     <priority>${(entry.priority || 0.7).toFixed(2)}</priority>${imageBlock}${newsBlock}
   </url>`;

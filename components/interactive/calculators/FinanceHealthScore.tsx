@@ -128,7 +128,7 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              window.location.href = '/finance/audit';
+              window.location.href = '/free-ai-audit';
             }}
           >
             <button

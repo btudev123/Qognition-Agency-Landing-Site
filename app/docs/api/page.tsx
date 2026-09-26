@@ -37,7 +37,7 @@ export default function Page() {
           <Link href="/.well-known/openapi.json" className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-bold uppercase tracking-widest text-[var(--accent-deep)] hover:bg-[var(--ink)] hover:text-[var(--bg)]">
             OpenAPI JSON
           </Link>
-          <Link href="/free-seo-audit" className="rounded-full border border-[var(--ink)]/20 px-6 py-3 text-sm font-bold uppercase tracking-widest text-[var(--ink)] hover:border-[var(--accent)] hover:text-[var(--accent)]">
+          <Link href="/free-ai-audit" className="rounded-full border border-[var(--ink)]/20 px-6 py-3 text-sm font-bold uppercase tracking-widest text-[var(--ink)] hover:border-[var(--accent)] hover:text-[var(--accent)]">
             Run Audit
           </Link>
         </div>
