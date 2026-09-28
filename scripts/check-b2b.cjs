@@ -86,9 +86,12 @@ for (const vertical of META_VERTICALS) {
     /* Optional chaining, because assert.ok builds its message eagerly and this
        branch is reached with `publication` undefined on every spine row. */
     `B2B meta-vertical "${vertical.id}" is ${vertical.publication?.state} but that slug is owned by ` +
-    `data/industries.ts. /industries/${vertical.id} will keep rendering the legacy page and this ` +
-    `entity will silently have no page at all. Rename the meta-vertical id, or get an operator ` +
-    `decision to re-point the legacy hub. See lib/b2b/registry.ts.`
+    `data/industries.ts. /industries/${vertical.id} will keep rendering the legacy HUB and this ` +
+    `entity will silently have no page at all.\n` +
+    `Its SUB-NICHES are not blocked: since 2026-09-28 lib/b2b/registry.ts resolves per sub-slug, so ` +
+    `any slug legacy does not own falls through to the B2B branch. Only the hub itself collides. ` +
+    `Leave the meta-vertical at spine and promote the sub-niches, or get an operator decision to ` +
+    `re-point the legacy hub.`
   );
   spineCollisions.push(vertical.id);
 }
@@ -399,7 +402,8 @@ console.log(
 );
 if (spineCollisions.length) {
   console.log(
-    `  note: ${spineCollisions.length} meta-vertical id(s) collide with data/industries.ts and are ` +
-    `held at spine: ${spineCollisions.join(', ')}. Legacy owns those URLs.`
+    `  note: ${spineCollisions.length} meta-vertical hub id(s) collide with data/industries.ts and ` +
+    `stay at spine: ${spineCollisions.join(', ')}. Legacy owns the HUB url only; sub-niches under ` +
+    `it resolve through the B2B branch and can publish.`
   );
 }

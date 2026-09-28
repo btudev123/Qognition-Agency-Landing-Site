@@ -89,10 +89,33 @@ export function resolveIndustry(slug: string): IndustryRecord | undefined {
 }
 
 export function resolveSubIndustry(industrySlug: string, subSlug: string): SubIndustryRecord | undefined {
+  /* Legacy wins per sub-slug, NOT per parent.
+   *
+   * This used to return undefined for any sub-slug under a legacy-owned parent,
+   * which meant one id collision blocked every child. `financial-services`
+   * exists in both data/industries.ts (6 subs: wealth-management,
+   * investment-advisory, fintech, mutual-funds, insurance, financial-planning)
+   * and META_VERTICALS (7 sub-niches, including commercial-insurance). So
+   * /industries/financial-services/commercial-insurance 404'd, and commercial
+   * insurance is both the flagship and the one vertical Iris found genuinely
+   * uncontested across two research passes.
+   *
+   * Resolving per sub-slug keeps every guarantee that mattered. A legacy sub is
+   * matched FIRST and takes the literal early return, so all 66 existing URLs
+   * render byte-identically. Only a slug legacy does not own can reach the B2B
+   * branch, so no existing page changes and no existing URL moves.
+   *
+   * The parent hub stays legacy, because /industries/financial-services is a
+   * live indexed page and §9 freezes it. A B2B child therefore hangs off a
+   * legacy hub. That is a real inconsistency and it is the cheaper of the two:
+   * the alternative is renaming the vertical and shipping
+   * /industries/financial-services-b2b, which splits the entity across two URLs
+   * in exactly the way §9's entity-consistency argument warns against. */
   const legacyIndustry = INDUSTRIES.find((item) => item.id === industrySlug);
   if (legacyIndustry) {
     const sub = legacyIndustry.subIndustries.find((item) => item.slug === subSlug);
-    return sub ? { source: 'legacy', industry: legacyIndustry, data: sub } : undefined;
+    if (sub) return { source: 'legacy', industry: legacyIndustry, data: sub };
+    // Not a legacy sub. Fall through to the B2B branch below.
   }
 
   const vertical = getMetaVertical(industrySlug);

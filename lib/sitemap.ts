@@ -8,6 +8,7 @@ import { DIRECTORY_PRODUCTS } from '../data/directoryProducts';
 import { GLOBAL_MARKETS, LANGUAGE_SEO_PAGES } from '../data/internationalSeo';
 import { INDUSTRIES } from '../data/industries';
 import { isPublishedIndustry, isPublishedSubIndustry } from './industryPublication';
+import { b2bSitemapPaths } from './b2b/registry';
 import { LOCATIONS } from '../data/locations';
 import { REGIONS } from '../data/regions';
 import { COMPARISONS, FREE_TOOLS, GLOSSARY_TERMS, RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
@@ -148,6 +149,19 @@ export const serviceRoutes = (): SitemapEntry[] => [
    The allowlist currently contains every live URL, so this filter removes
    nothing today; it removes everything added tomorrow without a decision. */
 export const industryRoutes = (): SitemapEntry[] => [
+  /* Published B2B entities. This was exported from lib/b2b/registry.ts and called
+     from nowhere, so a `published` promotion would have produced a page that is
+     index:true, absent from the sitemap, and absent from every internal link,
+     with every gate green. Owen found it.
+
+     It contributes ZERO entries today because publishedEntities() is empty, and
+     scripts/check-industry-gate.cjs asserts the sitemap total, so the wiring is
+     provably inert until someone deliberately promotes something. */
+  ...b2bSitemapPaths().map((path) => ({
+    path,
+    priority: 0.90,
+    changefreq: 'weekly' as const,
+  })),
   ...INDUSTRIES.filter((industry) => isPublishedIndustry(industry.id)).map((industry) => ({
     path: `/industries/${industry.id}`,
     priority: 0.90,
