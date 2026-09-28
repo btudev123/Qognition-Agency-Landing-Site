@@ -124,4 +124,32 @@ assert.equal(
   `If intended, re-snapshot and name the reviewer.`
 );
 
-console.log(`\u2713 glossary set: ${live.length} slugs, frozen and intact.`);
+/* The blind spot in the set comparison above, closed.
+ *
+ * data/seoExpansion.ts:736 computes relatedTerms POSITIONALLY:
+ *     [all[(index + 7) % all.length], all[(index + 19) % ...], all[(index + 31) % ...]]
+ * over the ALREADY-TRUNCATED array. So inserting or removing one upstream row in
+ * SERVICES, INDUSTRIES or LOCATIONS renumbers every index and rewires the
+ * internal related-links block on all 320 pages. If the change happens to
+ * preserve the published slug set, the assertion above passes and a site-wide
+ * crawl-graph rewrite ships as a data edit.
+ *
+ * Found by Nadia on 2026-09-28 reviewing the gate I wrote earlier the same day.
+ * The set check was necessary and not sufficient. */
+const liveGraph = require('node:crypto').createHash('sha256')
+  .update(GLOSSARY_TERMS.map((t) => `${t.slug}>${(t.relatedTerms || []).join(',')}`).join('\n'))
+  .digest('hex');
+if (snapshot.relatedGraphSha256) {
+  assert.equal(
+    liveGraph, snapshot.relatedGraphSha256,
+    'The /glossary related-links graph changed while the published slug set stayed the same.\n' +
+    'relatedTerms is positional, so an upstream row insert or delete rewires the internal links on\n' +
+    'all 320 pages without changing which pages exist. That is a site-wide crawl-graph change\n' +
+    'disguised as a data edit. If deliberate, re-run `pnpm snapshot:glossary` and say why.'
+  );
+}
+
+console.log(
+  `\u2713 glossary set: ${live.length} slugs, frozen` +
+  (snapshot.relatedGraphSha256 ? ', related-links graph unchanged.' : ' (related graph not yet fingerprinted).')
+);
