@@ -147,7 +147,13 @@ export const META_VERTICALS: readonly MetaVertical[] = [
     tier: 'S',
     why: 'Technical buyers who use assistants to build a shortlist but rate them 4.7 out of 10 for trust, so AI search is a shortlist channel and not a traffic channel.',
     subNiches: [
-      { id: 'cnc-machining', label: 'CNC machining' },
+      /* DRAFT, not published. Renders at its URL, noindex, absent from the
+         sitemap, linked from nothing indexable. Promoted so the Type B template
+         can be reviewed at a real URL. Authored body lives at
+         data/b2b/bodies/manufacturing-industrial/cnc-machining.ts. Promotion to
+         'published' requires a named reviewer, a review date, and the ceiling in
+         scripts/check-b2b.cjs raised in the same commit. */
+      { id: 'cnc-machining', label: 'CNC machining', publication: { state: 'draft' } },
       { id: 'sheet-metal', label: 'Sheet metal fabrication' },
       { id: 'injection-moulding', label: 'Injection moulding' },
       { id: 'additive-manufacturing', label: '3D printing and additive' },
@@ -161,6 +167,12 @@ export const META_VERTICALS: readonly MetaVertical[] = [
       { id: 'textile-food-equipment', label: 'Textile, apparel and food processing equipment' },
       { id: 'quality-inspection-iso', label: 'Quality and inspection services, ISO consultants' },
     ],
+    /* DRAFT. Same terms as the sub-niche above. This is the only meta-vertical
+       promoted, and it was chosen because its id collides with nothing in
+       data/industries.ts — `financial-services` appears in BOTH taxonomies and
+       legacy owns that URL, so promoting it would silently produce no page. See
+       the header comment in lib/b2b/registry.ts. */
+    publication: { state: 'draft' },
   },
   {
     id: 'logistics-supply-chain',

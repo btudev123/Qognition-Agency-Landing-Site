@@ -135,11 +135,21 @@ body {
    (#14B8A6, 2.49:1). WCAG 2.1 SC 1.4.11 requires 3:1 for focus indicators, so
    the brighter teal failed on every focusable element on the site. growth.css:23
    already used the correct value; this brings globals.css in line. */
+/* `summary` and `details` were in the [data-theme="dark"] rule below and NOT in
+   this one, so every <details> disclosure on a light section had no visible
+   focus indicator at all — a keyboard user tabbing through an FAQ could not see
+   where they were. That is SC 2.4.7, and it affects five components that use
+   <details> today: Navigation, LeadForm, home/Faqs, GrowthLocalizedPage and
+   b2b/blocks. The asymmetry between the two rules is what shows it was an
+   oversight rather than a decision. Adding a ring never removes one, so no
+   existing page loses anything. */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
+summary:focus-visible,
+details:focus-visible,
 [tabindex]:focus-visible {
   outline: 2px solid var(--accent-deep);
   outline-offset: 3px;
