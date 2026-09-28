@@ -118,6 +118,14 @@ export function isPublishedSubIndustry(industryId: string, slug: string): boolea
   return isPublishedIndustry(industryId) && PUBLISHED_SUB_INDUSTRIES.has(`${industryId}/${slug}`);
 }
 
+/* Exported so scripts/check-industry-gate.cjs can iterate the ALLOWLIST rather
+   than the data. Iterating the data and asking "is it in the data" is a
+   tautology, which is what that assertion was until Owen caught it: the ghost it
+   is meant to find is an allowlist entry with no matching row, and only the
+   allowlist can reveal that. */
+export const publishedIndustryIds = (): readonly string[] => [...PUBLISHED_INDUSTRIES];
+export const publishedSubIndustryKeys = (): readonly string[] => [...PUBLISHED_SUB_INDUSTRIES];
+
 /** Counts, exported so a gate script can assert the frozen set has not drifted. */
 export const PUBLISHED_INDUSTRY_COUNT = PUBLISHED_INDUSTRIES.size;
 export const PUBLISHED_SUB_INDUSTRY_COUNT = PUBLISHED_SUB_INDUSTRIES.size;

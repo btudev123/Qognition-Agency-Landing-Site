@@ -20,12 +20,15 @@ const { INDUSTRIES } = require('../data/industries.ts');
 const {
   isPublishedIndustry,
   isPublishedSubIndustry,
+  publishedIndustryIds,
+  publishedSubIndustryKeys,
   PUBLISHED_INDUSTRY_COUNT,
   PUBLISHED_SUB_INDUSTRY_COUNT,
 } = require('../lib/industryPublication.ts');
 const { routesForSitemap, sitemapIndexes } = require('../lib/sitemap.ts');
 const { GLOSSARY_TERMS } = require('../data/seoExpansion.ts');
 const { studiesForTopic, getCaseStudy } = require('../data/case-studies/index.ts');
+const { LOCATIONS } = require('../data/locations.ts');
 const fs = require('node:fs');
 
 /* Raise these two numbers only in a commit that also publishes the pages. */
@@ -42,12 +45,19 @@ assert.equal(
   `Published sub-industry count moved to ${PUBLISHED_SUB_INDUSTRY_COUNT}. Same rule.`
 );
 
-/* No allowlist entry may be a ghost. An id that no longer exists in the data is
-   a 404 in the sitemap, which is worse than an unpublished page. */
+/* No allowlist entry may be a ghost: an id on the allowlist with no matching row
+   in the data is a 404 in the sitemap, which is worse than an unpublished page.
+   This iterates the ALLOWLIST. The previous version iterated INDUSTRIES and asked
+   whether each was in INDUSTRIES, which is always true and caught nothing. */
 const liveIndustries = new Set(INDUSTRIES.map((i) => i.id));
-for (const industry of INDUSTRIES) {
-  if (!isPublishedIndustry(industry.id)) continue;
-  assert.ok(liveIndustries.has(industry.id), `allowlisted industry missing from data: ${industry.id}`);
+for (const id of publishedIndustryIds()) {
+  assert.ok(liveIndustries.has(id), `allowlisted industry "${id}" has no row in data/industries.ts`);
+}
+const liveSubKeys = new Set(
+  INDUSTRIES.flatMap((i) => i.subIndustries.map((s) => `${i.id}/${s.slug}`))
+);
+for (const key of publishedSubIndustryKeys()) {
+  assert.ok(liveSubKeys.has(key), `allowlisted sub-industry "${key}" has no row in data/industries.ts`);
 }
 let publishedSubs = 0;
 for (const industry of INDUSTRIES) {
@@ -140,7 +150,13 @@ assert.equal(
 const liveGraph = require('node:crypto').createHash('sha256')
   .update(GLOSSARY_TERMS.map((t) => `${t.slug}>${(t.relatedTerms || []).join(',')}`).join('\n'))
   .digest('hex');
-if (snapshot.relatedGraphSha256) {
+assert.ok(
+  snapshot.relatedGraphSha256,
+  'glossary-published-slugs.json has no relatedGraphSha256. It is the only thing standing between\n' +
+  'a set-preserving rotation of relatedTerms and a site-wide internal-link rewrite. Re-run\n' +
+  '`pnpm snapshot:glossary` to restore it; do not delete the field.'
+);
+{
   assert.equal(
     liveGraph, snapshot.relatedGraphSha256,
     'The /glossary related-links graph changed while the published slug set stayed the same.\n' +
@@ -208,12 +224,50 @@ for (const industry of INDUSTRIES) {
   }
 }
 
+/* The other three call sites. The hub mapping above froze ONE of the four
+ * consumers of studiesForTopic, which is how a change measured only on hubs
+ * shipped a regression to 340 location pages and 59 sub-pages. Owen found it.
+ *
+ * Every proof heading in the codebase now renders only when its call returns
+ * something, so an empty result omits the section instead of leaving a bare
+ * <h2>. These assertions freeze the counts so a future data or pattern edit
+ * cannot move them silently in either direction. */
+const SUB_INDUSTRY_PAGES_WITH_PROOF = 7;
+const LOCATION_PAGES_WITH_PROOF = LOCATIONS.length;
+
+let subWithProof = 0;
+for (const industry of INDUSTRIES) {
+  for (const sub of industry.subIndustries) {
+    if (studiesForTopic(`${industry.name} ${sub.name}`, 3).length > 0) subWithProof += 1;
+  }
+}
+assert.equal(
+  subWithProof, SUB_INDUSTRY_PAGES_WITH_PROOF,
+  `${subWithProof} sub-industry pages render a proof block, expected ${SUB_INDUSTRY_PAGES_WITH_PROOF}.\n` +
+  `Moving this up means pages are borrowing a study from another vertical (CLAUDE.md §11); moving it\n` +
+  `down means internal links to /case-studies/* were deleted from live indexed pages. Both need a\n` +
+  `deliberate decision, not a pattern tweak.`
+);
+
+let locWithProof = 0;
+for (const location of LOCATIONS) {
+  if (studiesForTopic(location.name, 4, { fallback: 'spread' }).length > 0) locWithProof += 1;
+}
+assert.equal(
+  locWithProof, LOCATION_PAGES_WITH_PROOF,
+  `${locWithProof} of ${LOCATIONS.length} location pages render a proof block, expected all of them.\n` +
+  `Location pages assert no vertical, so they opt into the 'spread' fallback and should never be\n` +
+  `empty. An empty one means ~4 internal links to /case-studies/* were dropped from a live indexed\n` +
+  `page, which is what happened on 2026-09-28 when the fallback was removed without measuring here.`
+);
+
 console.log(
   `\u2713 industry proof: ${Object.values(EXPECTED_INDUSTRY_PROOF).filter(Boolean).length} of ` +
-  `${INDUSTRIES.length} hubs render a case study, each from its own vertical.`
+  `${INDUSTRIES.length} hubs, ${subWithProof} of 66 sub-pages, ${locWithProof} of ${LOCATIONS.length} ` +
+  `location pages render a case study. Every proof heading is guarded on emptiness.`
 );
 
 console.log(
   `\u2713 glossary set: ${live.length} slugs, frozen` +
-  (snapshot.relatedGraphSha256 ? ', related-links graph unchanged.' : ' (related graph not yet fingerprinted).')
+  ', related-links graph unchanged.'
 );

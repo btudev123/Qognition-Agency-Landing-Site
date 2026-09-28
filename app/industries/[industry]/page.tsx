@@ -278,8 +278,13 @@ function LegacyIndustryPage({ industry }: { industry: Industry }) {
 
             <aside className="lg:col-span-4">
               <div className="sticky top-28 p-7 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl space-y-6">
+                {/* The heading was outside the guard, so 10 of 11 hubs rendered
+                    "Case Study Reference" over nothing once the proof block
+                    stopped borrowing a study from another vertical. */}
                 <div>
+                  {relatedCaseStudy && (
                   <Heading level="h3" className="mb-3">Case Study Reference</Heading>
+                  )}
                   {relatedCaseStudy && (
                     <Link
                       href={`/case-studies/${relatedCaseStudy.id}`}

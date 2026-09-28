@@ -232,7 +232,12 @@ function LegacySubIndustryPage({
 
           <aside className="lg:col-span-4">
             <div className="sticky top-28 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
-              <Heading level="h2" className="mb-5">Related Proof</Heading>
+              {/* Guarded. The heading sat outside the map, so the 59 of 66
+                  sub-pages with no matching study rendered a bare "Related
+                  Proof" over nothing. §4 says omit the section. */}
+              {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3).length > 0 && (
+                <Heading level="h2" className="mb-5">Related Proof</Heading>
+              )}
               {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3).map((study) => (
                 <Link
                   key={study.id}

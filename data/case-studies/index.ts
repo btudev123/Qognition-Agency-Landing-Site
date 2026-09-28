@@ -195,7 +195,28 @@ const TOPIC_HINTS: { niche: Niche; patterns: RegExp }[] = [
   { niche: 'insurance', patterns: /insur|financ|broker|agency|risk|underwrit|bond|claim|benefit/i },
 ];
 
-export const studiesForTopic = (topic: string, limit = 4): ResolvedCaseStudy[] => {
+/**
+ * `fallback` decides what "no keyword match" means, and the two answers are
+ * different because the two page types make different claims.
+ *
+ *   'none' (default) — an INDUSTRY page. The heading says "Related Proof" beside
+ *     a named vertical, so a study from another vertical is a claim of
+ *     experience we do not have. CLAUDE.md §11. Returns empty; the caller omits
+ *     the section.
+ *
+ *   'spread' — a LOCATION page. "Digital Marketing Agency in <City>" asserts no
+ *     vertical, so showing our actual work under "Case Studies" claims only that
+ *     it is our work, which is true. These pages carry ~1,360 internal links to
+ *     /case-studies/* and silently dropping them was a regression, not a fix.
+ *
+ * Defaulting to 'none' means a new caller has to opt IN to the looser behaviour,
+ * which is the right direction for a default in a proof block.
+ */
+export const studiesForTopic = (
+  topic: string,
+  limit = 4,
+  { fallback = 'none' }: { fallback?: 'none' | 'spread' } = {}
+): ResolvedCaseStudy[] => {
   const hit = TOPIC_HINTS.find((h) => h.patterns.test(topic));
   if (hit) {
     const matches = byNiche(hit.niche);
@@ -227,7 +248,17 @@ export const studiesForTopic = (topic: string, limit = 4): ResolvedCaseStudy[] =
    * template omits a section. Every caller is a .map(), so empty renders nothing;
    * app/industries/[industry]/page.tsx destructures and already guards on
    * undefined. */
-  return [];
+  if (fallback === 'none') return [];
+
+  // 'spread': one from each niche in turn, so the mix stays representative.
+  const spread: ResolvedCaseStudy[] = [];
+  for (let i = 0; spread.length < limit && i < 20; i += 1) {
+    for (const n of NICHES) {
+      const pick = byNiche(n)[i];
+      if (pick && spread.length < limit) spread.push(pick);
+    }
+  }
+  return spread;
 };
 
 /** The single most striking KPI on a study, for card display. */
