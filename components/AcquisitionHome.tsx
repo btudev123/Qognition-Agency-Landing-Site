@@ -5,6 +5,7 @@ import Industries from './home/Industries';
 import Programme from './home/Programme';
 import Evidence from './home/Evidence';
 import FourLayers from './home/FourLayers';
+import BuyingProblem from './home/BuyingProblem';
 
 export default function AcquisitionHome() {
   return <main id="main-content" className="growth-home">
@@ -30,7 +31,7 @@ export default function AcquisitionHome() {
       </div>
       <AIPlatforms />
     </section>
-    <section className="growth-tension"><div className="growth-shell growth-split"><p className="growth-eyebrow">THE OPPORTUNITY</p><div><h2>Your buyers are building a shortlist.<br /><span>Give them a reason to include you.</span></h2><p>Complex B2B purchases start long before a form submission. We connect the answers buyers need, the evidence they trust and the next step that brings them to your team.</p></div></div></section>
+    <BuyingProblem />
     <FourLayers />
     <Industries />
     <Programme />
