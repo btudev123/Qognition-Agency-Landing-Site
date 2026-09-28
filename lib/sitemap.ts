@@ -7,6 +7,7 @@ import { B2B_MOFU_PAGES } from '../data/b2bPages';
 import { DIRECTORY_PRODUCTS } from '../data/directoryProducts';
 import { GLOBAL_MARKETS, LANGUAGE_SEO_PAGES } from '../data/internationalSeo';
 import { INDUSTRIES } from '../data/industries';
+import { isPublishedIndustry, isPublishedSubIndustry } from './industryPublication';
 import { LOCATIONS } from '../data/locations';
 import { REGIONS } from '../data/regions';
 import { COMPARISONS, FREE_TOOLS, GLOSSARY_TERMS, RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
@@ -141,20 +142,27 @@ export const serviceRoutes = (): SitemapEntry[] => [
   })),
 ];
 
+/* Gated by lib/industryPublication.ts. Before that gate existed, adding a row to
+   INDUSTRIES put an indexable page in the sitemap at priority 0.90 with no
+   review step anywhere in between, which is how 2,161 location pages happened.
+   The allowlist currently contains every live URL, so this filter removes
+   nothing today; it removes everything added tomorrow without a decision. */
 export const industryRoutes = (): SitemapEntry[] => [
-  ...INDUSTRIES.map((industry) => ({
+  ...INDUSTRIES.filter((industry) => isPublishedIndustry(industry.id)).map((industry) => ({
     path: `/industries/${industry.id}`,
     priority: 0.90,
     changefreq: 'weekly' as const,
     title: industry.name,
   })),
   ...INDUSTRIES.flatMap((industry) =>
-    industry.subIndustries.map((subIndustry) => ({
-      path: `/industries/${industry.id}/${subIndustry.slug}`,
-      priority: 0.84,
-      changefreq: 'weekly' as const,
-      title: subIndustry.name,
-    }))
+    industry.subIndustries
+      .filter((subIndustry) => isPublishedSubIndustry(industry.id, subIndustry.slug))
+      .map((subIndustry) => ({
+        path: `/industries/${industry.id}/${subIndustry.slug}`,
+        priority: 0.84,
+        changefreq: 'weekly' as const,
+        title: subIndustry.name,
+      }))
   ),
 ];
 
@@ -174,8 +182,12 @@ export const programmaticRoutes = (): SitemapEntry[] => [
       changefreq: 'weekly' as const,
     }))
   ),
+  /* SERVICES x INDUSTRIES. This is the multiplying term and the reason the gate
+     matters more here than anywhere else: one unreviewed industry row becomes
+     eleven indexable service-by-industry URLs, each with an interpolated meta
+     title. CLAUDE.md §11 forbids the pattern by name. */
   ...SERVICES.flatMap((service) =>
-    INDUSTRIES.map((industry) => ({
+    INDUSTRIES.filter((industry) => isPublishedIndustry(industry.id)).map((industry) => ({
       path: `/services/${service.id}/industries/${industry.id}`,
       priority: 0.78,
       changefreq: 'weekly' as const,

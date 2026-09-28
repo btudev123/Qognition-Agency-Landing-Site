@@ -10,8 +10,9 @@
     "typography": "node scripts/audit-headings.mjs",
     "budget": "node scripts/check-served-page.mjs --report",
     "typecheck": "tsc --noEmit",
-    "gates": "node scripts/audit-headings.mjs && node scripts/check-css-invariants.mjs && node scripts/test-growth.cjs && node scripts/check-publication.cjs --check",
-    "register": "node scripts/check-publication.cjs"
+    "gates": "node scripts/audit-headings.mjs && node scripts/check-css-invariants.mjs && node scripts/test-growth.cjs && node scripts/check-publication.cjs --check && node scripts/check-industry-gate.cjs",
+    "register": "node scripts/check-publication.cjs",
+    "snapshot:glossary": "node scripts/snapshot-glossary.cjs"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

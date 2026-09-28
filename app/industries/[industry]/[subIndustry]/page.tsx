@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { isPublishedSubIndustry } from '../../../../lib/industryPublication';
 import { INDUSTRIES } from '../../../../data/industries';
 import { SERVICES } from '../../../../data/services';
 import { studiesForTopic, nicheLabel } from '../../../../data/case-studies';
@@ -11,12 +12,18 @@ import Heading from '../../../../components/ui/Heading';
 
 export const dynamicParams = false;
 
+/* Gated by lib/industryPublication.ts: an industry row that is not on the
+   frozen allowlist generates no params, so its URL 404s rather than rendering a
+   page nobody reviewed. dynamicParams is false on this route, so this is the
+   whole gate. */
 export const generateStaticParams = () =>
   INDUSTRIES.flatMap((industry) =>
-    industry.subIndustries.map((subIndustry) => ({
-      industry: industry.id,
-      subIndustry: subIndustry.slug,
-    }))
+    industry.subIndustries
+      .filter((subIndustry) => isPublishedSubIndustry(industry.id, subIndustry.slug))
+      .map((subIndustry) => ({
+        industry: industry.id,
+        subIndustry: subIndustry.slug,
+      }))
   );
 
 export const generateMetadata = async ({
