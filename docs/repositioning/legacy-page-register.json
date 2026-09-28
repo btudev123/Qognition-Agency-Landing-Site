@@ -102,37 +102,10 @@
       "reason": "Preserve URL and current search availability; hidden from new primary navigation."
     },
     {
-      "path": "/free-seo-audit",
-      "priority": 0.94,
-      "changefreq": "weekly",
-      "title": "Free SEO Audit",
-      "group": "core",
-      "status": "retained-indexability",
-      "reason": "Preserve URL and current search availability; hidden from new primary navigation."
-    },
-    {
       "path": "/free-ai-audit",
       "priority": 0.92,
       "changefreq": "weekly",
       "title": "Free AI Search Audit",
-      "group": "core",
-      "status": "retained-indexability",
-      "reason": "Preserve URL and current search availability; hidden from new primary navigation."
-    },
-    {
-      "path": "/branding-audit",
-      "priority": 0.88,
-      "changefreq": "weekly",
-      "title": "Free Branding Audit",
-      "group": "core",
-      "status": "retained-indexability",
-      "reason": "Preserve URL and current search availability; hidden from new primary navigation."
-    },
-    {
-      "path": "/social-media-audit",
-      "priority": 0.88,
-      "changefreq": "weekly",
-      "title": "Free Social Media Audit",
       "group": "core",
       "status": "retained-indexability",
       "reason": "Preserve URL and current search availability; hidden from new primary navigation."
@@ -6040,31 +6013,7 @@
       "reason": "Preserve URL and current search availability; hidden from new primary navigation."
     },
     {
-      "path": "/free-seo-audit",
-      "priority": 0.82,
-      "changefreq": "monthly",
-      "group": "resources",
-      "status": "retained-indexability",
-      "reason": "Preserve URL and current search availability; hidden from new primary navigation."
-    },
-    {
       "path": "/free-ai-audit",
-      "priority": 0.82,
-      "changefreq": "monthly",
-      "group": "resources",
-      "status": "retained-indexability",
-      "reason": "Preserve URL and current search availability; hidden from new primary navigation."
-    },
-    {
-      "path": "/branding-audit",
-      "priority": 0.82,
-      "changefreq": "monthly",
-      "group": "resources",
-      "status": "retained-indexability",
-      "reason": "Preserve URL and current search availability; hidden from new primary navigation."
-    },
-    {
-      "path": "/social-media-audit",
       "priority": 0.82,
       "changefreq": "monthly",
       "group": "resources",
@@ -36975,21 +36924,72 @@
       "reason": "Pre-existing redirect; omitted from current XML sitemap."
     },
     {
+      "path": "/free-seo-audit",
+      "priority": 0.94,
+      "changefreq": "weekly",
+      "title": "Free SEO Audit",
+      "group": "core",
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
+    },
+    {
       "path": "/free-llm-audit",
       "priority": 0.92,
       "changefreq": "weekly",
       "title": "Free LLM Visibility Audit",
       "group": "core",
-      "status": "retained-noindex",
-      "reason": "Reviewed duplicate offer; URL retained, excluded from sitemap."
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
+    },
+    {
+      "path": "/branding-audit",
+      "priority": 0.88,
+      "changefreq": "weekly",
+      "title": "Free Branding Audit",
+      "group": "core",
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
+    },
+    {
+      "path": "/social-media-audit",
+      "priority": 0.88,
+      "changefreq": "weekly",
+      "title": "Free Social Media Audit",
+      "group": "core",
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
+    },
+    {
+      "path": "/free-seo-audit",
+      "priority": 0.82,
+      "changefreq": "monthly",
+      "group": "resources",
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
+    },
+    {
+      "path": "/branding-audit",
+      "priority": 0.82,
+      "changefreq": "monthly",
+      "group": "resources",
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
+    },
+    {
+      "path": "/social-media-audit",
+      "priority": 0.82,
+      "changefreq": "monthly",
+      "group": "resources",
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
     },
     {
       "path": "/free-llm-audit",
       "priority": 0.82,
       "changefreq": "monthly",
       "group": "resources",
-      "status": "retained-noindex",
-      "reason": "Reviewed duplicate offer; URL retained, excluded from sitemap."
+      "status": "existing-redirect-preserved",
+      "reason": "Pre-existing redirect; omitted from current XML sitemap."
     }
   ]
 }

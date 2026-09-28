@@ -30,5 +30,16 @@ for(const row of baseline.entries){
  else if(!isLegacyIndexable(row.path))reviewed.push({...row,status:'retained-noindex',reason:'Reviewed duplicate offer; URL retained, excluded from sitemap.'});
  else {assert.ok(entries.some(e=>e.path===row.path),'Legacy route disappeared from discovery: '+row.path);preserved.push({...row,status:'retained-indexability',reason:'Preserve URL and current search availability; hidden from new primary navigation.'});}
 }
-fs.writeFileSync('docs/repositioning/legacy-page-register.json',JSON.stringify({reviewedAt:'2026-09-24',preservedUrls:baseline.entries.length,records:[...preserved,...reviewed]},null,2));
+// The register is an audit artefact, not build output. In --check mode (used by
+// `pnpm build` and CI) it is compared, never written: a script that mutates a
+// tracked file during a build is a landmine, and a silent rewrite is how the
+// committed register drifted out of date in the first place.
+const registerPath = 'docs/repositioning/legacy-page-register.json';
+const register = JSON.stringify({reviewedAt:'2026-09-24',preservedUrls:baseline.entries.length,records:[...preserved,...reviewed]},null,2);
+if (process.argv.includes('--check')) {
+  const onDisk = fs.existsSync(registerPath) ? fs.readFileSync(registerPath,'utf8') : '';
+  assert.equal(register, onDisk, 'Legacy page register is stale. Run `node scripts/check-publication.cjs` (no --check) and commit the result.');
+} else {
+  fs.writeFileSync(registerPath, register);
+}
 console.log(JSON.stringify({pass:true,platforms:13,legacyEntries:baseline.entries.length,preservedDiscovery:preserved.length,reviewedExceptions:reviewed.length,sitemapEntries:entries.length,localizedRoutes:50},null,2));

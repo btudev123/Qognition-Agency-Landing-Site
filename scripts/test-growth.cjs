@@ -64,20 +64,18 @@ async function main() {
   }
   assert.equal(pub.getGrowthPage('/growth/programs/ai-search-pumps-every-city'), undefined);
   assert.ok(!sitemap.some((entry) => entry.path.endsWith('/places')));
+  // The 17 GeoNames shards were removed in 006e80e. They served only noindex
+  // place-reference pages and shipped 74MB into every function bundle. The
+  // manifest is kept, so coverage and lineage still assert; the per-shard size
+  // checks and the search-path assertions went with the data they read.
+  // scripts/import-growth-geography.py regenerates the corpus if it is ever
+  // needed again, at which point restore the assertions removed here.
   assert.equal(geo.geographyCoverage.countries, 17);
   for (const country of geo.geographyManifest.countries) {
     assert.ok(country.sourceRecords >= country.catalogRecords);
     assert.equal(country.populatedPlaces + country.administrativeAreas, country.catalogRecords);
     assert.match(country.sourceSha256, /^[a-f0-9]{64}$/);
-    assert.ok(fs.statSync(path.join(root,'data/growth/geography',country.countryCode.toLowerCase()+'.jsonl.gz')).size > 0);
   }
-  const singapore = await geo.searchGrowthPlaces('SG', {query:'Singapore', limit: 5});
-  assert.ok(singapore.items.length > 0);
-  assert.ok(singapore.items.every((place) => place.countryCode === 'SG' && !['PPLH','PPLQ','PPLW'].includes(place.featureCode)));
-  await assert.rejects(() => geo.searchGrowthPlaces('../../etc/passwd'));
-  const page1 = await geo.searchGrowthPlaces('US', {limit: 2});
-  const page2 = await geo.searchGrowthPlaces('US', {limit: 2, after: page1.nextOffset});
-  assert.ok(page1.hasMore && page2.items.every((place) => !page1.items.some((other) => other.id === place.id)));
   console.log(JSON.stringify({ passed: true, sectors: data.growthSectors.length, niches: data.growthNiches.filter((niche) => !niche.parentId).length, subniches: data.growthNiches.filter((niche) => niche.parentId).length, services: data.growthServices.length, legacySubservices: data.legacyGrowthServiceMappings.length, programs: data.growthPrograms.length, publishedPages: pub.getPublishedGrowthPages().length, indexablePages: sitemap.length, geography: geo.geographyCoverage }, null, 2));
 }
 module.exports = { load };
