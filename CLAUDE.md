@@ -51,6 +51,29 @@ tracked, assets produced.
 
 ---
 
+### The tools we build
+
+Qognition Labs (qognitionlabs.com) is the engineering arm. Four products, and they are the AI-native
+proof: we run the work on software we wrote.
+
+| Product | Does |
+|---|---|
+| **G.O.L.E.M** | AI visibility tracking. Visibility scoring per prompt and model, brand mention detection by name/alias/domain, citation analysis by source category, competitor share-of-voice, query fan-out. Raw answers, cited URLs and model versions are persisted, so every metric re-derives from a stored answer with a date. |
+| **Scriblr** | Content production for AI citation. |
+| **LinkersPro** | AI backlink generation. Earned mention and authority acquisition. |
+| **M.A.R.S** | Multi-agent routing. Lead routing, speed-to-lead, attribution. |
+
+**Not "Linkdex."** That was a real third-party SEO platform brand and carries a trademark question.
+LinkersPro is also already the name in 38 strings across `data/case-studies/*.ts`, so it stays.
+
+G.O.L.E.M's auditability is the line worth putting on the site: every number traces to a stored
+answer with a date. That is the claims discipline in §4, expressed as a product.
+
+**Product screens on the site are illustrative interface, never client data.** The contract in
+`docs/adr/0006-product-screen-contract.md` enforces this structurally: sample brand names are a
+closed union with `.example` domains, so a real company name is a compile error, and
+`provenance: 'illustrative'` is a required single-member union rather than an optional flag.
+
 ## 2. Who we sell to
 
 | | |
