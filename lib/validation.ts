@@ -60,6 +60,43 @@ export const leadSchema = z.object({
    * JS-blocked tags still submits, their event just won't have a browser twin.
    */
   event_id: z.string().max(64).optional(),
+  submission_id: z.string().min(8).max(80).regex(/^[a-zA-Z0-9_-]+$/).optional(),
+  context: z.object({
+    locale: z.enum(['en', 'de', 'fr', 'nl', 'sv', 'da', 'nb', 'fi', 'ar', 'it', 'zh-Hans']).optional(),
+    stage: z.enum(['tofu', 'mofu', 'bofu']).optional(),
+    page_id: z.string().max(240).optional(),
+    pillar: z.enum(['ai-search', 'demand', 'abm', 'revenue-systems']).optional(),
+    service_id: z.string().max(100).optional(),
+    industry_id: z.string().max(100).optional(),
+    niche_id: z.string().max(100).optional(),
+    subniche_id: z.string().max(100).optional(),
+    country_id: z.string().max(100).optional(),
+    region_id: z.string().max(100).optional(),
+    city_id: z.string().max(100).optional(),
+    asset_id: z.string().max(100).optional(),
+  }).optional(),
+  qualification: z.object({
+    business_model: z.enum(['b2b', 'b2c', 'mixed', 'unknown']).optional(),
+    role: z.string().max(120).optional(),
+    employee_band: z.enum(['1-19', '20-99', '100-300', '301+', 'unknown']).optional(),
+    revenue_band: z.enum(['under-3m', '3m-10m', '10m-50m', '50m-500m', 'over-500m', 'unknown']).optional(),
+    revenue_basis: z.enum(['annual-revenue', 'arr', 'unknown']).optional(),
+    objective: z.string().max(1000).optional(),
+    timeframe: z.enum(['now', '1-3-months', '3-6-months', 'researching']).optional(),
+  }).optional(),
+  consent: z.object({
+    email_marketing: z.boolean(),
+    analytics: z.boolean(),
+    advertising: z.boolean(),
+    policy_version: z.string().min(1).max(50),
+    recorded_at: z.string().datetime(),
+  }).optional(),
+  attribution: z.object({
+    first_touch: utmSchema,
+    last_touch: utmSchema,
+    landing_page: z.string().max(500).optional(),
+    referrer_host: z.string().max(250).optional(),
+  }).optional(),
   honeypot: z.preprocess(
     (value) => {
       if (typeof value !== 'string') return undefined;

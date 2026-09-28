@@ -61,6 +61,25 @@ const nextConfig = {
     ];
     return [
       ...spokeRedirects,
+      // ── Recovered ranking asset ──────────────────────────────────────────
+      // /glossary/ai-seo-and-sge-strategy-audit was deleted from the glossary
+      // data but still holds ~1,497 impressions/quarter at avg position 7.9 for
+      // "sge seo audits" and "sge ai seo audits" (Search Console, 25 Jun–24 Sep
+      // 2026). It currently returns 404, so that demand is being thrown away.
+      // Point it at the audit offer, which is the matching intent.
+      // TODO: re-point to /audit when the snapshot page ships. Re-point, never
+      // chain. Better still, restore a real definitional page at this URL that
+      // links to the audit, since the query is informational-commercial.
+      {
+        source: '/glossary/ai-seo-and-sge-strategy-audit',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
+      {
+        source: '/glossary/ai-seo-and-sge-strategy-strategy',
+        destination: '/free-ai-audit',
+        permanent: true
+      },
       {
         source: '/locations/usa',
         destination: '/regions/usa',

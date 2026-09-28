@@ -4,23 +4,23 @@
   "description": "Premier digital marketing agency offering SEO, PPC, social media marketing, web development, and AI-powered solutions.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#050505",
+  "background_color": "#00C2A8",
   "theme_color": "#00C2A8",
   "icons": [
     {
-      "src": "/favicon-192x192.png",
+      "src": "/favicon-192x192.png?v=teal",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/favicon-512x512.png",
+      "src": "/favicon-512x512.png?v=teal",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/apple-touch-icon.png",
+      "src": "/apple-touch-icon.png?v=teal",
       "sizes": "180x180",
       "type": "image/png"
     }
