@@ -23,10 +23,26 @@ dedicated AEO-for-manufacturers page with a measurement method close to ours; Th
 industrial-equipment GEO case; ranked lists of manufacturing, legal and professional-services GEO
 agencies now exist. Do not restore that sentence.
 
-What survives every source: **nobody publishes a named client with a dated, reproducible
-measurement.** Thrive's case is unnamed and undated. Gorilla 76 anonymises by policy. First Page
-Sage ranks itself first on its own list. The differentiator is the dated, re-derivable observation,
-not being first into a vertical.
+What survives every source, and it got stronger on second pass: **nobody publishes a named client
+with a dated, reproducible measurement.**
+
+Vertical AI-search positioning now exists in all fifteen meta-verticals, so occupancy is gone as an
+argument. But in eleven of them the visible supply is **self-ranking listicles**: the publisher puts
+itself at number one and no entry carries a dated client result, including the publisher's own.
+Four opened directly, four times the same shape — First Page Sage (legal), RevenueZen (professional
+services), Siana (remodeling), Bluelinks (construction). Bluelinks alone publishes these for eleven
+verticals; its construction list claims 83 agencies studied on seven weighted criteria that **sum to
+105%**. Of the genuine vertical specialists opened directly (Spiral, Carnegie, Fintel Connect,
+Siana), one names a client and none publishes a dated reproducible measurement.
+
+That is the claim to lead with, because a reader can check it on the day they read it, it does not
+require us to have run a panel, and it ages well.
+
+**Blocklisted number: Thrive's "+5,556% increase in AI referral traffic".** Attributed on Thrive's
+own page to "2025 internal performance results" with no client, no method and no date. It has now
+travelled into manufacturing and construction carried by third parties who drop the caveat. It is
+the most-travelled unverifiable figure in this category. Never repeat it, and never write a rebuttal
+of it phrased so as to imply we measured it.
 
 **Commercial insurance remains genuinely uncontested.** No equivalent entrant was found. Lead the
 occupancy argument only there.
