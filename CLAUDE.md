@@ -172,9 +172,33 @@ two rebuilds the location pages a second time.
 **Our buyer:** owner, CEO, marketing or growth leader. **Our client's buyer:** procurement, engineers,
 IT leaders, finance leaders. Keep these distinct on every page.
 
-**Where we have actually delivered**, as distinct from where we sell: managed IT and cloud,
-cybersecurity, and B2B SaaS (partial), all white-label under NDA, which is why no client is named.
-Everything else is capability and method, and the pages must say so rather than implying a history.
+### Where we have actually delivered, as distinct from where we sell
+
+Two records, and conflating them produces a false claim in either direction.
+
+**The B2B record is white-label and unnameable.** Managed IT and cloud, cybersecurity, and B2B SaaS
+(partial). Four engagements, and the source document states that the work "was delivered through
+white-label arrangements under signed NDAs", so **every one of them** is unnameable. That is why no
+client is named, and saying so in the sentence is worth doing: it explains the anonymity instead of
+leaving the reader to assume the client does not exist.
+
+The same document holds the scope and duration at arm's length too ("service scopes and durations
+reflect Qognition's supplied account of its work"), so the honest label on the whole engagement
+record is **reported**, not observed. Every figure in it is an illustrative model output and is
+blocklisted in `docs/research/b2b-vertical-substance.md` §2.2. None may appear in copy, a chart, a
+deck, an ad or a proposal.
+
+**There is also a named record, and it is not under NDA.** 45 case studies: 19 HVAC, 20 dental, 6
+commercial insurance. So **never write that all our delivery is white-label** — it is not, and the
+case-study library contradicts it on the same domain. The quantifier is scoped to the three B2B
+verticals or it is wrong. Insurance is diagnostic only and every KPI in it is a target, not a result.
+
+HVAC and dental are local consumer services and fall outside the ICP in §2, so they are not proof
+for a B2B buyer and must never be rendered as related proof on a B2B page. Eight of eleven industry
+hubs did exactly that until 2026-09-28; `scripts/check-industry-gate.cjs` now freezes the mapping.
+
+Everything outside these two records is capability and method, and the pages must say so rather than
+implying a history.
 
 **Not a fit**, and these are the only disqualifiers: pre-revenue, B2C, low-ticket transactional,
 needs leads this week, wants a one-off project, cannot edit their own website, or has no sales
