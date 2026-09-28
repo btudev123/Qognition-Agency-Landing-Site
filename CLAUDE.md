@@ -15,9 +15,21 @@ referring to spokes, they are dead. Do not rebuild them.
 **Offer:** AI search visibility for B2B firms. GEO, AI SEO, AEO, entity optimisation, citation
 tracking and prompt monitoring, delivered as one retainer.
 
-**Wedge:** verticals where no AI-search agency has published a single case study. Every serious
-competitor (Radyant, LoudFace, Omnius, Minuttia, Graphite, Omniscient) proves exclusively in B2B
-SaaS. We prove in insurance, professional services, IT services and manufacturing.
+**Wedge:** evidence quality, not vertical occupancy.
+
+The earlier claim here was "no AI-search agency has published a case study outside B2B SaaS." That
+was **falsified on 2026-09-28** (`docs/research/b2b-vertical-substance.md`). Gorilla 76 publishes a
+dedicated AEO-for-manufacturers page with a measurement method close to ours; Thrive publishes an
+industrial-equipment GEO case; ranked lists of manufacturing, legal and professional-services GEO
+agencies now exist. Do not restore that sentence.
+
+What survives every source: **nobody publishes a named client with a dated, reproducible
+measurement.** Thrive's case is unnamed and undated. Gorilla 76 anonymises by policy. First Page
+Sage ranks itself first on its own list. The differentiator is the dated, re-derivable observation,
+not being first into a vertical.
+
+**Commercial insurance remains genuinely uncontested.** No equivalent entrant was found. Lead the
+occupancy argument only there.
 
 **Bundling is not a differentiator.** Six competitors already sell "SEO and AI search as one motion".
 Describe the scope, never lead with it. Lead with the vertical.
@@ -37,7 +49,11 @@ All four are in every retainer and are never sold separately. Technical SEO, on-
 authority work are in the box too. Tiers differ by **scope only**: locations covered, prompts
 tracked, assets produced.
 
-**B2B PPC** is a separate offer, priced as a percentage of ad spend with a monthly minimum.
+**B2B PPC is a real service we run for these clients, not a footnote.** Operator, 2026-09-28: "they
+are our customers, we run ppc ads and do seo, ai seo, geo for them." It sits alongside the four
+layers rather than inside them, because it is priced as a percentage of ad spend with a monthly
+minimum and the four layers are priced by scope. A vertical page may sell paid media in the same
+breath as organic; it may not imply PPC is bundled into the retainer price.
 
 ### Positioning copy
 
@@ -80,12 +96,46 @@ closed union with `.example` domains, so a real company name is a compile error,
 |---|---|
 | Revenue | $3M to $1B+, **building for $3M–$50M first** |
 | Staff | 20 to 1,000+, **building for 20–200 first** |
-| Flagship vertical | US commercial and specialty insurance agencies, MGAs, wholesale brokers, 5–50 producers |
-| Secondary | B2B professional services (CPA/tax advisory, corporate law boutiques, management advisory); IT services (MSPs, MSSPs, cybersecurity consultancies, cloud partners) |
 | Markets | US primary, Australia secondary. USD only |
+| ICP taxonomy | **`data/b2b/verticals.ts` is canonical.** 15 meta-verticals, 120 sub-niches |
+
+### The ICP taxonomy is locked
+
+Locked by the operator on **2026-09-28**. The authoritative list lives in `data/b2b/verticals.ts`,
+not in prose here, so that it has one representation a script can read.
+
+**These are our customers.** Every row is a kind of firm we sell to and for whom we run paid media,
+SEO, AI SEO and GEO. A row is **not** evidence we have worked in that vertical. §11 forbids implying
+experience because a page or a row exists.
+
+The 15 meta-verticals, by demand tier:
+
+| Tier | Meta-verticals |
+|---|---|
+| **S** | SaaS and Software · Professional and Business Services · Manufacturing and Industrial · Technology and IT Services |
+| **A** | Healthcare and Life Sciences · Financial Services · Logistics, Supply Chain and Transportation · Emerging and Micro-Niches |
+| **B** | Construction, Real Estate and Built Environment · Energy and Utilities · Education and Training · Hospitality, Travel and Events · Agriculture and Food · Media, Marketing and Creative · Government, Nonprofit and Institutional |
+
+Commercial insurance is a sub-niche of Financial Services, and is the flagship because it is the one
+vertical with no equivalent competitor. It is no longer the only vertical the site addresses.
+
+**Nothing in that file generates a route.** Every entity defaults to `state: 'spine'`: no page, no
+sitemap entry, 404 on request. Promotion to `published` requires a named reviewer, a review date,
+and the published ceiling raised in the same commit. `data/industries.ts` has no publication field
+at all, which is exactly how 2,161 location pages reached the sitemap. Do not repeat it.
+
+**The buyer split governs every page built from this taxonomy.** Family B is the prompt our client's
+buyer asks ("find ISO 9001 and AS9100 certified CNC machining suppliers") — we run it, record it,
+publish the observation, and can never be the cited answer to it. Family Q is the prompt our buyer
+asks ("why doesn't ChatGPT recommend my machine shop") — that is what a page targets. Confusing the
+two rebuilds the location pages a second time.
 
 **Our buyer:** owner, CEO, marketing or growth leader. **Our client's buyer:** procurement, engineers,
 IT leaders, finance leaders. Keep these distinct on every page.
+
+**Where we have actually delivered**, as distinct from where we sell: managed IT and cloud,
+cybersecurity, and B2B SaaS (partial), all white-label under NDA, which is why no client is named.
+Everything else is capability and method, and the pages must say so rather than implying a history.
 
 **Not a fit:** pre-revenue, low-ticket transactional, needs leads this week, wants a one-off project,
 cannot edit their own website, or has no sales process that follows up.
@@ -245,12 +295,18 @@ Events, `snake_case`, defined once in `lib/analytics.ts`:
 
 ## 9. Design
 
-**Dark is the primary surface.** Near-black ground, large display type, teal accents, bordered card
-grids with mono uppercase labels. This is the language of the design the operator chose, and it is
-already built in the repo. Light is retained for long-form reading surfaces (articles, docs, legal).
+**The site alternates light and dark, and that rhythm is the design.** Light hero on warm off-white,
+dark near-black CTA and feature bands, light content, dark again. Large display type, teal accents,
+bordered card grids with mono uppercase labels. Do not flatten this to one surface. The operator
+confirmed the existing qognitionagency.com treatment on 2026-09-28: keep it exactly.
 
-Dark tokens are scoped to `[data-theme="dark"]`, never `:root`, so a per-route split stays
-expressible without an `!important` war. `app/layout.tsx` imports at most two stylesheets.
+Dark sections are scoped, never applied at `:root`, so the alternation stays expressible without an
+`!important` war. `app/layout.tsx` imports at most two stylesheets.
+
+**This is a rebrand, not a redesign.** Every template on qognitionagency.com is kept: the homepage,
+`/case-studies`, `/services/[service]`, `/industries/[industry]`. **Meta titles, descriptions, URLs
+and internal linking do not change.** The work is repositioning the copy from generalist digital
+marketing to AI SEO and GEO for B2B firms, and widening the industry coverage.
 
 Strong typography, generous spacing, restrained motion, accessible contrast and visible focus states,
 excellent mobile.

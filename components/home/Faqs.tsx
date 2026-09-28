@@ -29,7 +29,7 @@ export const HOME_FAQS = [
   },
   {
     q: 'Can you show me results from a firm like mine?',
-    a: 'Not yet, and we will not manufacture one. This category is young and the published case studies in it are almost entirely B2B SaaS. What we can show you is the method, the measurement, and a snapshot of your own situation before you pay anything. If proof of prior results in your exact vertical is your buying requirement, we are not your vendor yet, and we will tell you that on the call.',
+    a: 'Usually yes, with one limit we state up front. A large share of our delivery has been white-label under NDA, which means we can walk you through the scope, the method and what we changed, but we cannot name the client or arrange a reference call on that work. We have delivered in managed IT and cloud, cybersecurity, and B2B SaaS. Where we have not worked in your exact vertical we say so, rather than stretching an adjacent case to fit, because the standards vocabulary and the buying committee change between verticals and a case that does not transfer is worse than no case. Either way you get a snapshot of your own situation, with your prompts and your competitors, before you pay anything.',
   },
   {
     q: 'How long before anything moves?',
