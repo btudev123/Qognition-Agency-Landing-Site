@@ -1,12 +1,11 @@
 import Link from 'next/link';
-import { ArrowUpRight, ArrowRight, Search, Target, Workflow, Radar } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Search, Target, Workflow } from 'lucide-react';
 import AIPlatforms from './shared/AIPlatforms';
-import { GROWTH_PILLARS } from '../data/growthPositioning';
 import Industries from './home/Industries';
 import Programme from './home/Programme';
 import Evidence from './home/Evidence';
+import FourLayers from './home/FourLayers';
 
-const icons = [Search, Radar, Target, Workflow];
 export default function AcquisitionHome() {
   return <main id="main-content" className="growth-home">
     <section className="growth-hero growth-shell">
@@ -32,9 +31,7 @@ export default function AcquisitionHome() {
       <AIPlatforms />
     </section>
     <section className="growth-tension"><div className="growth-shell growth-split"><p className="growth-eyebrow">THE OPPORTUNITY</p><div><h2>Your buyers are building a shortlist.<br /><span>Give them a reason to include you.</span></h2><p>Complex B2B purchases start long before a form submission. We connect the answers buyers need, the evidence they trust and the next step that brings them to your team.</p></div></div></section>
-    <section className="growth-shell growth-section" id="services"><div className="growth-section-head"><div><p className="growth-eyebrow">FOUR CONNECTED DISCIPLINES</p><h2>A growth program.<br />Built around your buyers.</h2></div><Link href="/services" className="growth-text-link">Explore our services <ArrowUpRight size={18} /></Link></div>
-      <div className="growth-pillar-grid">{GROWTH_PILLARS.map((pillar, i) => { const Icon = icons[i]; return <article key={pillar.slug} className="growth-pillar"><div className="growth-card-top"><span>{pillar.number}</span><Icon size={25} strokeWidth={1.4} /></div><h3><Link href={pillar.href}>{pillar.name} <ArrowUpRight size={24} /></Link></h3><p className="growth-pillar-outcome">{pillar.outcome}</p><p>{pillar.description}</p><ul>{pillar.services.map(service => <li key={service}>{service}</li>)}</ul></article>; })}</div>
-    </section>
+    <FourLayers />
     <Industries />
     <Programme />
     <Evidence />
