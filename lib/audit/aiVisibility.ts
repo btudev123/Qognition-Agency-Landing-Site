@@ -63,8 +63,18 @@ const REQUESTED_MODEL = 'sonar-pro';
  * Hard ceiling on the AI call, well inside the route's `maxDuration = 60`.
  * The crawl runs first and can take ~25s of its own in the worst case, so this
  * is sized to leave the crawl's result intact even when the provider hangs.
+ *
+ * IT COVERS THE RESPONSE BODY, NOT JUST THE HEADERS, and that is the whole
+ * reason the read below is written the way it is. `clearTimeout` used to sit in
+ * the `finally` of the fetch block, which runs the moment headers arrive, so a
+ * provider that answered its headers and then hung on the body ran with the
+ * AbortController already disarmed and no ceiling of its own. On Vercel that
+ * reaches `maxDuration = 60`, the function is killed, and the visitor gets a 504
+ * instead of their 28 crawl checks.
+ *
+ * Exported so the test can assert it stays inside the route budget.
  */
-const AI_TIMEOUT_MS = 22_000;
+export const AI_TIMEOUT_MS = 22_000;
 
 /** Cap the stored answer. It is evidence, not a document; a runaway response is a bug. */
 const MAX_ANSWER_CHARS = 20_000;
@@ -170,6 +180,12 @@ export interface ObserveArgs {
   readonly now: Date;
   /** Injected so tests never reach the network. Defaults to global fetch. */
   readonly fetchImpl?: typeof fetch;
+  /**
+   * The ceiling, in ms. Injected by the test for the same reason `fetchImpl` and
+   * `now` are: a 22-second assertion is an assertion nobody runs. Production
+   * never passes it, so `AI_TIMEOUT_MS` is the only value that ships.
+   */
+  readonly timeoutMs?: number;
 }
 
 const NOT_CHECKED_MESSAGE: Record<NotCheckedReason, string> = {
@@ -206,11 +222,24 @@ export async function observeAiVisibility(args: ObserveArgs): Promise<AiVisibili
 
   const doFetch = args.fetchImpl ?? fetch;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), args.timeoutMs ?? AI_TIMEOUT_MS);
 
-  let response: Response;
+  // One deadline for the whole exchange, headers and body alike. `fetch` applies
+  // the signal to the connection; nothing applies it to a `json()` that a
+  // well-behaved-looking response never settles, so the read races the same
+  // abort. The catch is marked handled here because the abort can fire while the
+  // fetch is still in flight, before anything is racing this promise, and an
+  // unobserved rejection would take the whole request down.
+  const deadline = new Promise<never>((_, reject) => {
+    const onAbort = () => reject(new Error('ai_deadline_exceeded'));
+    if (controller.signal.aborted) onAbort();
+    else controller.signal.addEventListener('abort', onAbort, { once: true });
+  });
+  void deadline.catch(() => {});
+
+  let payload: PerplexityResponse;
   try {
-    response = await doFetch(API_URL, {
+    const response = await doFetch(API_URL, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${env.PERPLEXITY_API_KEY}`,
@@ -222,26 +251,25 @@ export async function observeAiVisibility(args: ObserveArgs): Promise<AiVisibili
       }),
       signal: controller.signal,
     });
+
+    if (!response.ok) {
+      // 429 is the provider-side spend cap doing exactly its job, and 401 is a key
+      // that was registered empty. Both are our problem, not the visitor's, so the
+      // rendered message never blames them.
+      return notChecked(response.status >= 400 && response.status < 500 ? 'provider_refused' : 'provider_unavailable');
+    }
+
+    payload = (await Promise.race([response.json(), deadline])) as PerplexityResponse;
   } catch {
     // Never log the error object: it can carry the Authorization header on some
-    // runtimes. The reason code is all the caller needs.
+    // runtimes. The reason code is all the caller needs. A transport error, an
+    // unparseable body and a body that never arrives are the same thing to the
+    // visitor: the answer engine did not respond.
     return notChecked('provider_unavailable');
   } finally {
+    // Past the body read, not before it. This line being one block higher was
+    // the 504.
     clearTimeout(timer);
-  }
-
-  if (!response.ok) {
-    // 429 is the provider-side spend cap doing exactly its job, and 401 is a key
-    // that was registered empty. Both are our problem, not the visitor's, so the
-    // rendered message never blames them.
-    return notChecked(response.status >= 400 && response.status < 500 ? 'provider_refused' : 'provider_unavailable');
-  }
-
-  let payload: PerplexityResponse;
-  try {
-    payload = (await response.json()) as PerplexityResponse;
-  } catch {
-    return notChecked('provider_unavailable');
   }
 
   const rawAnswer = payload?.choices?.[0]?.message?.content;
@@ -360,9 +388,38 @@ const candidateVendors = (target: AuditTarget, urlsCited: readonly string[]): st
   return [...names];
 };
 
+/**
+ * Domain labels that are ordinary words before they are anybody's brand.
+ *
+ * precision.com yields the label "precision", which appears in almost every
+ * machining answer as plain English, clears the boundary check, and was
+ * therefore reported as the prospect being named in an answer that named
+ * nobody. group.io yields "group" and did the same against "No specific group
+ * stands out."
+ *
+ * The cost is that a firm genuinely called Precision is never reported by its
+ * domain label. That is the trade this module makes everywhere: a missed
+ * mention is recoverable, an invented one is not.
+ *
+ * `[UNVERIFIED: this list is hand-written and necessarily incomplete. It is the
+ * second of two guards, not the only one — the capitalisation rule in
+ * findVendorSpans catches generic usage regardless of whether the word is
+ * listed here. Worth revisiting against the first fifty live runs.]`
+ */
+const GENERIC_HOST_LABELS = new Set([
+  'advanced', 'agency', 'associates', 'best', 'company', 'consulting', 'consultants', 'contract',
+  'custom', 'digital', 'direct', 'engineering', 'equipment', 'expert', 'experts', 'first', 'general',
+  'global', 'group', 'industrial', 'industries', 'industry', 'international', 'labs', 'machine',
+  'machining', 'manufacturing', 'metal', 'metals', 'national', 'online', 'partners', 'plastics',
+  'precision', 'premier', 'products', 'professional', 'quality', 'service', 'services', 'solutions',
+  'standard', 'studio', 'supplies', 'supply', 'systems', 'technologies', 'technology', 'tools',
+  'works',
+]);
+
 const brandFromHostname = (hostname: string): string | null => {
   const label = hostname.toLowerCase().replace(/^www\./, '').split('.')[0];
   if (!label || label.length < 3) return null;
+  if (GENERIC_HOST_LABELS.has(label)) return null;
   return label;
 };
 
@@ -389,6 +446,16 @@ const brandFromUrl = (url: string): string | null => {
  *   real mention is a recoverable error; inventing one is not, and the `limits`
  *   line says so on the page rather than hiding it.
  *
+ * THAT SENTENCE WAS FALSE UNTIL THE CAPITALISATION RULE BELOW EXISTED, and it is
+ * worth saying how rather than quietly fixing it. Presence in the text was the
+ * only test, so any candidate that happened to be a common noun — "precision"
+ * from precision.com, "group" from group.io — matched the ordinary English in
+ * an answer that named nobody and was reported as the prospect being named. It
+ * over-reported, on the one claim the product rests on. Two guards now stand
+ * between a common noun and `vendorsNamed`: GENERIC_HOST_LABELS above, and the
+ * rule here that a span with no capital letter in it is a word being used as a
+ * word, not a firm being named.
+ *
  * Matching is case-insensitive and ignores spacing and punctuation, so the
  * domain label `bravomachining` matches the answer's "Bravo Machining". That is
  * a normalisation, NOT a fuzzy guess: the span still records a real, contiguous
@@ -398,7 +465,8 @@ const brandFromUrl = (url: string): string | null => {
  *
  * Still missed, and listed so nobody assumes otherwise: a firm the answer calls
  * "Bravo" when its domain says "bravomachining" (a substring, not a spacing
- * variant), and any firm named in the answer that was neither cited nor the
+ * variant), a firm the answer writes entirely in lower case, and any firm named
+ * in the answer that was neither cited nor the
  * target. `[UNVERIFIED: what share of real Perplexity answers name a firm they
  * do not also cite. Worth measuring on the first fifty live runs before anyone
  * treats vendorsNamed as a complete list.]`
@@ -441,18 +509,26 @@ const findVendorSpans = (rawAnswer: string, candidates: readonly string[]): Vend
     if ((before && /[a-z0-9]/i.test(before)) || (after && /[a-z0-9]/i.test(after))) continue;
 
     if (seen.has(start)) continue;
-    seen.add(start);
 
     // The text exactly as the answer wrote it, so the downstream offset check
     // is an identity comparison and cannot drift.
     const matchedText = rawAnswer.slice(start, end);
+
+    // A firm being named in prose is capitalised. A span with no capital letter
+    // anywhere in it is the answer using a word as a word: "suppliers in
+    // precision machining", "no specific group stands out". Testing the ANSWER's
+    // spelling rather than the candidate's is the point — the claim being made
+    // is about what the answer said, not about what we hoped to find. Keeps
+    // "eBay" and "3M", drops "precision". Under-reports a brand an answer wrote
+    // in lower case, which is the safe direction.
+    if (!/[A-Z]/.test(matchedText)) continue;
+
+    seen.add(start);
     spans.push({ name: matchedText, matchedText, offset: start });
   }
 
   return spans.sort((a, b) => a.offset - b.offset);
 };
-
-const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const isoDate = (now: Date): `${number}-${number}-${number}` =>
   now.toISOString().slice(0, 10) as `${number}-${number}-${number}`;

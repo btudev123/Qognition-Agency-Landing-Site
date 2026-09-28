@@ -133,7 +133,7 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
     'Directories and marketplaces occupy the cited slots. Ask an assistant for a supplier with a ' +
     'capability and a certification and it answers with the aggregators that publish structured, ' +
     'filterable supplier data, because that is the shape of content the question needs and almost ' +
-    'no manufacturer publishes it. Most industrial sites publish capability — what machines are on ' +
+    'no manufacturer publishes it. Most industrial sites publish capability: what machines are on ' +
     'the floor. Almost none publish qualification: what auditing this firm actually involves, which ' +
     'certificate covers which scope, what the real minimum order is. The second is what the buyer ' +
     'filters on, and its absence is why the directory gets named instead.',
@@ -185,7 +185,7 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
         'The first pass is almost never content volume. It is making the qualification facts ' +
         'machine-readable: certificate scope as text rather than a scanned PDF, tolerance and ' +
         'material capability as stated ranges and grades rather than adjectives, quantity bands ' +
-        'named, and the entity — one company name, one description, one address — consistent ' +
+        'named, and the entity (one company name, one description, one address) consistent ' +
         'everywhere it appears. Most industrial sites have the facts. They have them in a brochure ' +
         'download that nothing can read.',
     },

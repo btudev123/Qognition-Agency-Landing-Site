@@ -71,11 +71,21 @@ export interface StoredAnswer {
   /**
    * Optional, and this is a deliberate weakening that should be read before it
    * is relied on. When present, the validator checks each span byte-for-byte
-   * against `rawAnswer`. When absent, it falls back to a substring check of the
-   * row's `vendorsNamed` against `rawAnswer`, which still catches an invented
-   * firm but not a misattributed one. Spans are always populated by the live
-   * audit; they are optional so a human transcribing a real Gemini answer is
-   * not forced to count characters by hand and get it wrong.
+   * against `rawAnswer` AND checks that it stands at a word boundary there. When
+   * absent, it falls back to searching `rawAnswer` for each of the row's
+   * `vendorsNamed` as a whole word.
+   *
+   * What the fallback gives up is the OFFSET, and with it the ability to say
+   * which of several occurrences was the naming. What it does not give up is the
+   * word boundary. This comment used to claim the fallback "still catches an
+   * invented firm but not a misattributed one", and that was false in the
+   * direction that matters: it was a raw substring test, so `vendorsNamed:
+   * ['Delta']` validated against "Deltaform Industries is unrelated." Delta is
+   * an invented firm and it passed.
+   *
+   * Spans are always populated by the live audit; they are optional so a human
+   * transcribing a real Gemini answer is not forced to count characters by hand
+   * and get it wrong.
    */
   readonly vendorSpans?: readonly VendorSpan[];
 }

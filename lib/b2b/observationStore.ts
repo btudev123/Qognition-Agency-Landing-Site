@@ -23,6 +23,8 @@
  */
 import { OBSERVATION_RUNS, STORED_ANSWERS } from '../../data/b2b/observations';
 import type { StoredAnswer, VendorSpan } from '../../data/b2b/observations/evidence';
+import { getMetaVertical, getSubNiche } from '../../data/b2b/verticals';
+import { resolveIndustry, resolveSubIndustry } from './registry';
 import type { ObservationRun, ObservationStore, ObservationView, ObservedRow } from './observations';
 
 export { OBSERVATION_RUNS, STORED_ANSWERS };
@@ -94,6 +96,8 @@ export function answerFor(
  *   - a prompt that drifted between the row and the answer
  *   - firstRunAt / lastRunAt that do not match the rows they claim to summarise
  *   - an empty `limits` line, which CLAUDE.md §4 requires
+ *   - an `entityPath` that names no page, which is how a real observation taken
+ *     for one niche gets rendered under another niche's label
  *
  * Throws with the entity path and the offending value, because a gate that
  * fails without naming the record is a gate nobody can act on.
@@ -134,6 +138,8 @@ export function assertObservationRecordsValid(
   for (const run of runs) {
     const at = `[${run.entityPath}]`;
 
+    assertEntityPathIsBound(run.entityPath);
+
     if (seenPaths.has(run.entityPath)) {
       throw new Error(
         `${at} has more than one observation run. The store would show whichever it found first, ` +
@@ -166,13 +172,123 @@ export function assertObservationRecordsValid(
   }
 }
 
+/**
+ * Per-prospect audit runs. `lib/audit/aiVisibility.ts` stamps one run per
+ * request with `audit:<hostname>` because a one-off audit has no entity in the
+ * B2B taxonomy, and the audited host is the honest identifier.
+ *
+ * It is a separate namespace on purpose: nothing looks it up, so it renders on
+ * no page, and `scripts/test-b2b-observations.cjs` asserts no committed record
+ * ever uses it.
+ */
+const AUDIT_NAMESPACE = 'audit:';
+
+/**
+ * The entityPath has to name a page that would actually render this run.
+ *
+ * It was bound to nothing. Any string validated, including
+ * `/industries/totally/made-up` and `/industries/law-legal` — a legacy page that
+ * renders no observation block at all. That mattered because it is the one
+ * remaining way a fabricated observation gets onto a page: every other field is
+ * checked against the stored answer, so the only thing left to forge is WHICH
+ * ENTITY a real answer belongs to. A run taken for one niche, committed under
+ * another niche's path, renders under that entity's label via
+ * components/b2b/VerticalHubPage.tsx with both gates green.
+ *
+ * This cannot check that the prompts were the right prompts for the niche — that
+ * is the reviewer's job, and it is named in the commit. It can check that the
+ * path is a page, and that the page is ours to put an observation on.
+ *
+ * Resolution goes through lib/b2b/registry.ts, the same function the route
+ * calls, so the gate and the renderer cannot disagree about who owns a URL.
+ */
+const assertEntityPathIsBound = (entityPath: string): void => {
+  if (entityPath.startsWith(AUDIT_NAMESPACE)) {
+    const hostname = entityPath.slice(AUDIT_NAMESPACE.length).trim();
+    if (!hostname) {
+      throw new Error(
+        `"${entityPath}" is in the "audit:" namespace but names no hostname. The audited host is the ` +
+        'only identifier a per-prospect run has; without it the run identifies nothing.',
+      );
+    }
+    return;
+  }
+
+  const [empty, root, industry, subIndustry, ...rest] = entityPath.split('/');
+  if (empty !== '' || root !== 'industries' || !industry || rest.length > 0) {
+    throw new Error(
+      `entityPath "${entityPath}" is not shaped like a B2B entity URL, so there is no page it can ` +
+      'render on. Expected "/industries/<vertical>" or "/industries/<vertical>/<sub-niche>", or ' +
+      '"audit:<hostname>" for a per-prospect audit run.',
+    );
+  }
+
+  if (resolveIndustry(industry)?.source === 'legacy') {
+    throw new Error(
+      `entityPath "${entityPath}" is owned by a LEGACY industry in data/industries.ts. Legacy wins in ` +
+      'lib/b2b/registry.ts, that template renders no observation block, and an observation recorded ' +
+      'against it is evidence attached to a page that will never show it. Rename the entity or get an ' +
+      'operator decision to re-point the legacy hub.',
+    );
+  }
+
+  const record = subIndustry ? resolveSubIndustry(industry, subIndustry) : resolveIndustry(industry);
+  if (record?.source === 'b2b') return;
+
+  const exists = subIndustry ? getSubNiche(industry, subIndustry) : getMetaVertical(industry);
+  throw new Error(
+    exists
+      ? `entityPath "${entityPath}" is a real row in data/b2b/verticals.ts but it is not routable: a ` +
+        'spine entity has no page and 404s on request, and a routable one with no authored body does ' +
+        'the same. Promote the entity and author its body in the commit that adds this run, or the ' +
+        'observation is a measurement of a page nobody can read.'
+      : `entityPath "${entityPath}" does not resolve to any entity in data/b2b/verticals.ts. An ` +
+        'observation filed under a path that names no page renders nowhere, or renders under an ' +
+        'entity it was not taken for. Both are worse than not publishing it.',
+  );
+};
+
+/**
+ * Does a slice of the answer stand on its own, or is it buried inside a word?
+ *
+ * The same test `findVendorSpans` in lib/audit/aiVisibility.ts applies when it
+ * produces a span, applied here to the records it does not produce. "Delta" at
+ * offset 0 of "Deltaform Industries" is a real byte-for-byte match and a
+ * misattribution; "Delta Aero," followed by a comma is a real naming.
+ */
+const isWordBounded = (text: string, start: number, end: number): boolean => {
+  const before = text[start - 1];
+  const after = text[end];
+  return !(before && /[a-z0-9]/i.test(before)) && !(after && /[a-z0-9]/i.test(after));
+};
+
+/** Is `name` present in `text` as a whole word, at any offset? */
+const namedAtWordBoundary = (text: string, name: string): boolean => {
+  if (!name) return false;
+  for (let at = text.indexOf(name); at >= 0; at = text.indexOf(name, at + 1)) {
+    if (isWordBounded(text, at, at + name.length)) return true;
+  }
+  return false;
+};
+
 const assertSpanResolves = (answer: StoredAnswer, span: VendorSpan): void => {
-  const slice = answer.rawAnswer.slice(span.offset, span.offset + span.matchedText.length);
+  const end = span.offset + span.matchedText.length;
+  const slice = answer.rawAnswer.slice(span.offset, end);
   if (slice !== span.matchedText) {
     throw new Error(
       `[${answer.answerId}] claims "${span.name}" appears at offset ${span.offset}, but the stored ` +
       'answer does not match there. Either the answer was edited after the fact, or the span was ' +
       'written by hand.',
+    );
+  }
+  /* The offset check alone passes for a span sitting INSIDE a longer word, and a
+     vendor proven by a span never reaches the fallback below. Boundary-checking
+     only the fallback would have left this door open. */
+  if (!isWordBounded(answer.rawAnswer, span.offset, end)) {
+    throw new Error(
+      `[${answer.answerId}] has a span for "${span.name}" at offset ${span.offset} that lands inside a ` +
+      `longer word: "${answer.rawAnswer.slice(Math.max(0, span.offset - 12), end + 12)}". A match with ` +
+      'no word boundary is a different firm, or no firm at all.',
     );
   }
 };
@@ -216,7 +332,13 @@ const assertRowBackedByAnswer = (
   const spanNames = new Set((answer.vendorSpans ?? []).map((span) => span.name));
   for (const vendor of row.vendorsNamed) {
     const provenBySpan = spanNames.has(vendor);
-    const provenByText = answer.rawAnswer.includes(vendor);
+    // A WORD-bounded occurrence, not a raw substring. `includes` accepted
+    // "Delta" against "Deltaform Industries is unrelated." and "aero" against
+    // "aerospace manufacturing" — an invented firm and a trade, both reported as
+    // named. findVendorSpans has boundary-checked since it was written, so the
+    // gate was weaker than the code it guards, on precisely the hand-authored
+    // records that carry no spans and reach this line instead.
+    const provenByText = namedAtWordBoundary(answer.rawAnswer, vendor);
     if (!provenBySpan && !provenByText) {
       throw new Error(
         `${at} says the answer named "${vendor}", but that firm is not named anywhere in stored ` +

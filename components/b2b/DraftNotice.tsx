@@ -26,7 +26,7 @@ export default function DraftNotice({ path }: { path: string }) {
           style={{ background: 'var(--s-surface-2)', border: '1px solid var(--s-rule-strong)' }}
         >
           <span className="font-mono text-meta tracking-[0.14em] uppercase" style={{ color: 'var(--s-accent)' }}>
-            Draft &mdash; not published
+            Draft: not published
           </span>
           <p className="text-meta mt-2 m-0 max-w-[80ch]" style={{ color: 'var(--s-text-muted)' }}>
             <span className="font-mono">{path}</span> is marked <span className="font-mono">draft</span>{' '}

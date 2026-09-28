@@ -131,6 +131,57 @@ for (const [key, body] of B2B_BODIES) {
   );
 }
 
+/* ── 3. No em dashes in anything that renders. CLAUDE.md §10 bans them by name.
+ *
+ * Nothing enforced it, and three had already landed: two in the manufacturing
+ * hub body and an `&mdash;` in the draft banner. It is a copy rule, so it is
+ * scoped to copy:
+ *
+ *   Bodies are checked as VALUES, by walking the authored objects rather than
+ *   their source text. A doc comment in data/b2b cannot false-positive, because
+ *   this never reads one.
+ *
+ *   Components are checked as source with comments stripped first. Every em dash
+ *   in components/b2b today is in a doc comment explaining the module, which is
+ *   not copy and is not what §10 is about.
+ *
+ * Deliberately scoped to the B2B surface, which is what this gate owns. The same
+ * rule applied site-wide is an operator call: it would need a pass over legacy
+ * copy first, and a gate that starts red teaches people to skip it. */
+const EM_DASH = /—|&mdash;|&#8212;/;
+
+const stringsIn = (value, out = []) => {
+  if (typeof value === 'string') out.push(value);
+  else if (Array.isArray(value)) for (const item of value) stringsIn(item, out);
+  else if (value && typeof value === 'object') for (const item of Object.values(value)) stringsIn(item, out);
+  return out;
+};
+
+for (const [key, body] of B2B_BODIES) {
+  for (const text of stringsIn(body)) {
+    assert.ok(
+      !EM_DASH.test(text),
+      `${key} has an em dash in rendered copy: "${text.slice(0, 120)}". CLAUDE.md §10: no em dashes. ` +
+      `Use a colon, a full stop, or brackets.`
+    );
+  }
+}
+
+const b2bComponents = fs.readdirSync('components/b2b')
+  .filter((name) => name.endsWith('.tsx'))
+  .map((name) => path.join('components/b2b', name));
+assert.ok(b2bComponents.length > 0, 'components/b2b has no .tsx files. This check is reading nothing.');
+
+for (const file of b2bComponents) {
+  const copy = fs.readFileSync(file, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/^\s*\/\/.*$/gm, ' ');
+  assert.ok(
+    !EM_DASH.test(copy),
+    `${file} has an em dash outside a comment, so it reaches the page. CLAUDE.md §10: no em dashes.`
+  );
+}
+
 /* Published entities carry a named reviewer. The union already stops
    `reviewer: 'TBD'`; this stops a published entity whose publication variant was
    written without one at all through a cast. */
@@ -155,10 +206,32 @@ for (const file of [
   const src = fs.readFileSync(file, 'utf8');
   if (file === 'lib/sitemap.ts') {
     /* sitemap.ts may one day import the B2B registry for the PUBLISHED set. What
-       it must never do is feed programmaticRoutes, which is SERVICES x N. */
-    const programmatic = src.slice(src.indexOf('programmaticRoutes'));
+       it must never do is feed programmaticRoutes, which is SERVICES x N.
+
+       The window is bounded by the NEXT top-level declaration, not by a
+       character count. It used to slice 1,500 characters from the first mention
+       of the name. The function is 836 characters, so that window covered it and
+       664 characters of blogRoutes as well, and it would have failed this
+       assertion for an import that had nothing to do with programmaticRoutes. It
+       worked by coincidence of the current file layout, and it fails in the
+       other direction too: the day the function grows past 1,500 characters the
+       window stops covering the end of it. */
+    const start = src.indexOf('export const programmaticRoutes');
+    assert.notEqual(
+      start, -1,
+      'lib/sitemap.ts no longer declares `export const programmaticRoutes`. It was renamed, moved or ' +
+      'removed, and this gate has been reading a window around nothing. Re-point it at the function ' +
+      'that multiplies against SERVICES.'
+    );
+    const nextDeclaration = src.slice(start + 1).search(/\n(export )?const /);
+    assert.notEqual(
+      nextDeclaration, -1,
+      'programmaticRoutes is the last declaration in lib/sitemap.ts, so this check cannot find where ' +
+      'it ends. Bound it explicitly rather than letting it read to the end of the file.'
+    );
+    const programmatic = src.slice(start, start + 1 + nextDeclaration);
     assert.ok(
-      !/data\/b2b|lib\/b2b/.test(programmatic.slice(0, 1500)),
+      !/data\/b2b|lib\/b2b/.test(programmatic),
       'lib/sitemap.ts#programmaticRoutes references the B2B spine. That function multiplies against ' +
       'SERVICES and is the mechanism CLAUDE.md §11 forbids by name.'
     );
