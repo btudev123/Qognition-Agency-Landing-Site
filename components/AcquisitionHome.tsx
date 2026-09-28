@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight, Search, Target, Workflow, Radar } from 'lucide-react';
 import AIPlatforms from './shared/AIPlatforms';
-import { GROWTH_PILLARS, GROWTH_SECTOR_LINKS } from '../data/growthPositioning';
+import { GROWTH_PILLARS } from '../data/growthPositioning';
+import Industries from './home/Industries';
 
 const icons = [Search, Radar, Target, Workflow];
 export default function AcquisitionHome() {
@@ -32,7 +33,7 @@ export default function AcquisitionHome() {
     <section className="growth-shell growth-section" id="services"><div className="growth-section-head"><div><p className="growth-eyebrow">FOUR CONNECTED DISCIPLINES</p><h2>A growth program.<br />Built around your buyers.</h2></div><Link href="/services" className="growth-text-link">Explore our services <ArrowUpRight size={18} /></Link></div>
       <div className="growth-pillar-grid">{GROWTH_PILLARS.map((pillar, i) => { const Icon = icons[i]; return <article key={pillar.slug} className="growth-pillar"><div className="growth-card-top"><span>{pillar.number}</span><Icon size={25} strokeWidth={1.4} /></div><h3><Link href={pillar.href}>{pillar.name} <ArrowUpRight size={24} /></Link></h3><p className="growth-pillar-outcome">{pillar.outcome}</p><p>{pillar.description}</p><ul>{pillar.services.map(service => <li key={service}>{service}</li>)}</ul></article>; })}</div>
     </section>
-    <section className="growth-dark"><div className="growth-shell growth-section"><div className="growth-section-head"><div><p className="growth-eyebrow">BUILT FOR COMPLEX B2B</p><h2>Your expertise is specific.<br />Your growth strategy should be too.</h2></div><p>For businesses where a better-fit customer matters more than another unqualified click.</p></div><div className="growth-sector-grid">{GROWTH_SECTOR_LINKS.map(([name, slug, detail], index) => <Link href={`/growth/industries/${slug}`} key={slug} className="growth-sector"><span className="growth-sector-index">0{index + 1}</span><div><h3>{name}</h3><p>{detail}</p></div><ArrowUpRight size={22} /></Link>)}</div></div></section>
+    <Industries />
     <section className="growth-shell growth-section"><div className="growth-section-head"><div><p className="growth-eyebrow">HOW WE WORK</p><h2>Understand the opportunity.<br />Then do the work.</h2></div><Link href="/process" className="growth-text-link">Our approach <ArrowUpRight size={18} /></Link></div><ol className="growth-process-grid">{[
       ['01', 'Find the commercial gap', 'Agree your priority buyers, markets and offers. Review your website, search data, competitor coverage, conversion paths and sales feedback.'],
       ['02', 'Build the connected program', 'Prioritize the pages, campaigns and systems that help those buyers move forward. Give every deliverable an owner and a clear purpose.'],
