@@ -1,0 +1,190 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS — qognitionagency.com
+   Spec: docs/design/tokens.md   Owner: Elena (creative)   Written: 2026-09-28
+
+   INERT UNTIL IMPORTED. Add to app/layout.tsx AFTER the other two, so this file
+   wins the cascade against the legacy :root blocks it re-points:
+
+       import './globals.css';
+       import './growth.css';
+       import './tokens.css';   // <- add this line, last
+
+   This file EXTENDS. It does not replace globals.css or growth.css. It adds the
+   full ramps, then re-points the legacy variable names at the new ramp so that
+   existing components inherit the corrected palette without being rewritten.
+
+   Every contrast ratio in the comments is computed against #FFFFFF (page) or
+   #0D0C0A (ink) using WCAG 2.1 relative luminance. AA normal text needs 4.5:1,
+   AA large text and non-text UI need 3:1, AAA normal text needs 7:1.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── TEAL RAMP ──────────────────────────────────────────────────────────────
+     Ratios: [vs white] / [vs ink #0D0C0A] */
+  --teal-50:  #F0FDFA;  /* 1.04 / 18.75  tint fill only */
+  --teal-100: #CCFBF1;  /* 1.13 / 17.35  selected row, band fill */
+  --teal-200: #99F6E4;  /* 1.26 / 15.51  text on ink-900 panels */
+  --teal-300: #5EEAD4;  /* 1.48 / 13.22  text on ink-900 panels */
+  --teal-400: #2DD4BF;  /* 1.86 / 10.50  accent text on dark only */
+  --teal-500: #14B8A6;  /* 2.49 /  7.86  graphic fill. NEVER text on white */
+  --teal-600: #0D9488;  /* 3.74 /  5.22  non-text UI boundaries (>=3:1) */
+  --teal-700: #0F766E;  /* 5.47 /  3.57  accent text on white, primary CTA fill */
+  --teal-800: #115E59;  /* 7.58 /  2.58  CTA hover fill, AAA accent text */
+  --teal-900: #134E4A;  /* 9.48 /  2.06  dark teal panel */
+  --teal-950: #042F2E;  /* 14.47/  1.53  deepest, rules on dark */
+
+  /* ── NEUTRAL RAMP ─────────────────────────────────────────────────────────── */
+  --white:    #FFFFFF;  /*  1.00  page background. The default. */
+  --ink-050:  #F6F5F2;  /*  1.09  zebra rows, inset panels */
+  --ink-100:  #E8E5DF;  /*  1.26  hairlines, card borders */
+  --ink-200:  #D5D1C8;  /*  1.52  structural rules, table grid */
+  --ink-300:  #948E85;  /*  3.25  interactive borders, disabled glyphs. NEVER text */
+  --ink-400:  #757068;  /*  4.91  faint labels. The smallest-contrast text allowed */
+  --ink-500:  #5C574F;  /*  7.16  muted prose (AAA) */
+  --ink-700:  #34312C;  /* 12.95  secondary text, table values */
+  --ink-900:  #0D0C0A;  /* 19.55  primary text, dark panel background */
+
+  /* ── SEMANTIC ROLES ───────────────────────────────────────────────────────── */
+  --surface-page:      var(--white);
+  --surface-inset:     var(--ink-050);   /* zebra, quiet panels */
+  --surface-accent:    var(--teal-50);   /* "present" cell fill */
+  --surface-invert:    var(--ink-900);   /* the one dark band on the site */
+
+  --text-strong:       var(--ink-900);
+  --text-secondary:    var(--ink-700);
+  --text-body-muted:   var(--ink-500);
+  --text-label:        var(--ink-400);
+  --text-on-invert:    var(--white);
+  --text-accent:       var(--teal-700);  /* 5.47:1 on white */
+  --text-accent-aaa:   var(--teal-800);  /* 7.58:1 on white, use at meta size */
+  --text-accent-invert:var(--teal-300);  /* 13.22:1 on ink-900 */
+
+  --rule-hairline:     var(--ink-100);   /* decorative separation */
+  --rule-structural:   var(--ink-200);   /* table grid, section divides */
+  --rule-interactive:  var(--ink-300);   /* input and control borders, 3.25:1 */
+
+  --cta-fill:          var(--teal-700);
+  --cta-fill-hover:    var(--teal-800);
+  --cta-fill-active:   var(--teal-900);
+  --cta-text:          var(--white);     /* 5.47:1 on cta-fill */
+
+  --focus-ring:        var(--ink-900);   /* 19.55:1 on white, 3:1+ on every fill */
+  --focus-ring-invert: var(--white);
+  --focus-ring-width:  2px;
+  --focus-ring-offset: 2px;
+
+  --danger:            #9F1239;          /* 8.02:1 on white. Forms and system errors only. */
+  --danger-tint:       #FFF1F2;
+
+  /* ── RE-POINTED LEGACY NAMES ──────────────────────────────────────────────────
+     These names are consumed all over app/ and components/. Re-pointing them here
+     corrects the palette site-wide without touching a component.
+
+     The load-bearing change: --accent moves from teal-500 (2.49:1 on white, a
+     contrast failure everywhere it is used as text) to teal-700 (5.47:1, passes).
+     Graphic fills that genuinely want the brighter teal now use --accent-fill. */
+  --bg:            var(--white);
+  --bg-warm:       var(--ink-050);
+  --surface:       var(--white);
+  --card-bg:       var(--white);
+
+  --accent:        var(--teal-700);   /* text + CTA fill. Was teal-500. */
+  --accent-fill:   var(--teal-500);   /* graphics, diagram strokes, dots. Not text. */
+  --accent-deep:   var(--teal-800);   /* hover fill */
+  --accent-on:     var(--white);      /* text colour that sits on --accent */
+  --accent-tint:   var(--teal-50);    /* solid tint, preferred over alpha on white */
+  --accent-pale:   var(--teal-50);
+  --accent-light:  var(--teal-50);
+  --accent-glow:   var(--teal-400);
+  --accent-rgb:    15, 118, 110;
+
+  --ink:           var(--ink-900);
+  --ink-soft:      var(--ink-700);
+  --text:          var(--ink-900);
+  --text-muted:    var(--ink-500);
+  --text-faint:    var(--ink-400);    /* was #8E8A82 at 3.44:1, an AA failure */
+
+  --border:        var(--ink-100);
+  --border-strong: var(--ink-300);
+
+  --dark-bg:       var(--ink-900);
+  --dark-surface:  #161513;
+  --on-dark:       var(--white);
+  --on-dark-soft:  #C7C3BB;           /* 11.0:1 on ink-900 */
+
+  /* ── RADII ────────────────────────────────────────────────────────────────── */
+  --radius-none:  0px;
+  --radius-sm:    4px;    /* buttons, inputs, chips */
+  --radius-md:    8px;    /* cards, panels, tables */
+  --radius-lg:   12px;    /* the snapshot panel, modals */
+  --radius-pill: 999px;   /* status chips only */
+  --radius:      var(--radius-sm);   /* legacy: Tailwind `rounded`. Was 0px. */
+  --radius-lg-legacy: var(--radius-md);
+
+  /* ── ELEVATION ────────────────────────────────────────────────────────────────
+     A content card is defined by a 1px --rule-hairline border, not a shadow.
+     Shadow means "this is floating above the page". Three levels, no more. */
+  --elev-0: none;
+  --elev-1: 0 1px 2px rgba(13, 12, 10, 0.06);   /* hover lift on interactive cards */
+  --elev-2: 0 4px 12px rgba(13, 12, 10, 0.08);  /* sticky bar, mobile nav sheet */
+  --elev-3: 0 12px 32px rgba(13, 12, 10, 0.12); /* modal, popover, dropdown */
+
+  /* ── MOTION ───────────────────────────────────────────────────────────────────
+     320ms is the ceiling. Nothing on this site animates for longer. */
+  --dur-instant: 80ms;
+  --dur-fast:   140ms;
+  --dur-base:   200ms;
+  --dur-slow:   320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+
+  /* ── LAYOUT ───────────────────────────────────────────────────────────────── */
+  --container-content: 1200px;  /* prose and section content */
+  --container-wide:    1320px;  /* nav, footer, full-bleed tables */
+  --measure:           68ch;    /* prose line length ceiling */
+  --gutter:            20px;
+  --section-y:         64px;
+}
+
+@media (min-width: 640px)  { :root { --gutter: 32px; --section-y: 96px; } }
+@media (min-width: 1024px) { :root { --gutter: 48px; --section-y: 128px; } }
+
+/* ── FOCUS ──────────────────────────────────────────────────────────────────────
+   The old ring was 2px of --accent at teal-500, which is 2.49:1 against white and
+   fails SC 1.4.11. Ink is 19.55:1 against white and at least 3:1 against every
+   fill in the palette, so one ring colour works everywhere on light surfaces. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+.on-invert :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: var(--focus-ring-invert);
+}
+
+/* ── TABULAR NUMERALS ───────────────────────────────────────────────────────────
+   Every measured value on the site (positions, dates, counts) uses these so that
+   columns of numbers align. Applied by the measurement components, not globally. */
+.tabular { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+
+/* ── MONO = MACHINE-RECORDED FACT ───────────────────────────────────────────────
+   Reserved for: verbatim prompts, domains and URLs, timestamps, platform version
+   strings, positions. Never for headings, prose, labels or decoration. */
+.fact {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ── MOTION, REDUCED ────────────────────────────────────────────────────────────
+   globals.css already has a prefers-reduced-motion block. This adds the rule that
+   block cannot enforce: reveal components must render visible content without JS
+   and without animation, so nothing may start at opacity:0 in markup. */
+@media (prefers-reduced-motion: reduce) {
+  .rf-reveal, .rf-mask > span, .rf-page-wrap {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
