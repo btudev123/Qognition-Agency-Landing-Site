@@ -6,6 +6,9 @@ import Programme from './home/Programme';
 import Evidence from './home/Evidence';
 import FourLayers from './home/FourLayers';
 import BuyingProblem from './home/BuyingProblem';
+import Snapshot from './home/Snapshot';
+import Fit from './home/Fit';
+import Faqs from './home/Faqs';
 
 export default function AcquisitionHome() {
   return <main id="main-content" className="growth-home">
@@ -36,11 +39,8 @@ export default function AcquisitionHome() {
     <Industries />
     <Programme />
     <Evidence />
-    <section className="growth-shell growth-section growth-home-faq"><p className="growth-eyebrow">BEFORE WE TALK</p><h2>A few useful answers.</h2>{[
-      ['Do we need all four services?', 'Start with the constraint that matters most. We scope the work around your buyers, existing team and commercial priorities, then connect other disciplines where they help.'],
-      ['Can you work alongside our team or agency?', 'Yes. We agree ownership, access and review responsibilities before work begins. Your specialists remain an essential source of product and customer knowledge.'],
-      ['Which AI platforms will you measure?', 'We agree the platforms, countries, languages and commercial questions relevant to your buyers. A repeatable sample documents what appeared and when; it does not guarantee future recommendations.'],
-      ['How are engagements priced?', 'Scope depends on your markets, website, content needs and implementation capacity. The proposal defines deliverables, responsibilities, measurement and review dates.'],
-    ].map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</section>
+    <Snapshot />
+    <Fit />
+    <Faqs />
   </main>;
 }
