@@ -25,6 +25,7 @@ const {
 } = require('../lib/industryPublication.ts');
 const { routesForSitemap, sitemapIndexes } = require('../lib/sitemap.ts');
 const { GLOSSARY_TERMS } = require('../data/seoExpansion.ts');
+const { studiesForTopic, getCaseStudy } = require('../data/case-studies/index.ts');
 const fs = require('node:fs');
 
 /* Raise these two numbers only in a commit that also publishes the pages. */
@@ -148,6 +149,69 @@ if (snapshot.relatedGraphSha256) {
     'disguised as a data edit. If deliberate, re-run `pnpm snapshot:glossary` and say why.'
   );
 }
+
+/* ── The proof block on an industry page ─────────────────────────────────────
+ *
+ * Measured 2026-09-28, before the fix: 8 of 11 industry hubs rendered
+ * fox-service-company, a residential HVAC, plumbing and electrical contractor,
+ * as their related case study. Law firms, accountants, consultants,
+ * manufacturers, industrial trade and waste management all showed a home
+ * services contractor as proof of work in their field. /industries/care-homes
+ * showed a dental practice; /industries/elder-care showed the HVAC contractor,
+ * because its name is "Elder Home Services" and the hvac hint matched on
+ * `home service`.
+ *
+ * CLAUDE.md §11 forbids implying experience in a vertical because a page exists.
+ * This implied it through the RENDER, so no rewrite of the page copy could have
+ * fixed it, and every industry page was carrying it in production.
+ *
+ * The mapping is frozen rather than re-derived, for the reason given in
+ * lib/industryPublication.ts: a rule derived from the data agrees with the data
+ * by construction and gates nothing. Widening a TOPIC_HINTS pattern is the exact
+ * edit that caused this, and it must not be possible to make it quietly. */
+const EXPECTED_INDUSTRY_PROOF = {
+  'law-legal': null,
+  'accounting-cpa': null,
+  'financial-services': 'alliance-insurance-group',
+  consulting: null,
+  'real-estate': null,
+  manufacturing: null,
+  coaching: null,
+  'industrial-trade': null,
+  'care-homes': null,
+  'elder-care': null,
+  'waste-management': null,
+};
+for (const industry of INDUSTRIES) {
+  const [resolved] = studiesForTopic(`${industry.name} ${industry.id}`, 1);
+  const actual = resolved ? resolved.id : null;
+  const expected = EXPECTED_INDUSTRY_PROOF[industry.id];
+  assert.equal(
+    actual, expected === undefined ? null : expected,
+    `/industries/${industry.id} would render case study "${actual}" as proof, expected ` +
+    `${expected === undefined ? 'nothing (new industry, no proof approved)' : JSON.stringify(expected)}.\n` +
+    `A page must not show a case study from an unrelated vertical: that implies experience we do ` +
+    `not have (CLAUDE.md §11) and it does it through the render, where copy cannot correct it.\n` +
+    `If this industry genuinely has a matching study, add it here by id in the same commit.`
+  );
+  if (actual) assert.ok(getCaseStudy(actual), `${industry.id} proof "${actual}" does not resolve`);
+}
+/* Dangling refs. All 11 industries carried caseStudyRef values pointing at
+   studies from the retired era (fintech-scale, saas-brand, retail-ai); none
+   resolved. They are removed, and a new one must resolve. */
+for (const industry of INDUSTRIES) {
+  if (industry.caseStudyRef) {
+    assert.ok(
+      getCaseStudy(industry.caseStudyRef),
+      `${industry.id} has caseStudyRef "${industry.caseStudyRef}" which resolves to nothing.`
+    );
+  }
+}
+
+console.log(
+  `\u2713 industry proof: ${Object.values(EXPECTED_INDUSTRY_PROOF).filter(Boolean).length} of ` +
+  `${INDUSTRIES.length} hubs render a case study, each from its own vertical.`
+);
 
 console.log(
   `\u2713 glossary set: ${live.length} slugs, frozen` +

@@ -179,8 +179,19 @@ export const LIBRARY_STATS = {
  * Deterministic — same input, same output, so the internal link graph is stable between builds.
  */
 const TOPIC_HINTS: { niche: Niche; patterns: RegExp }[] = [
-  { niche: 'hvac', patterns: /hvac|heating|cooling|air condition|plumb|home service|trade|contractor|construction|facilit|property|maintenance/i },
-  { niche: 'dental', patterns: /dental|dentist|health|medical|clinic|practice|patient|ortho|care|wellness/i },
+  /* 'trade', 'property', 'facilit', 'construction' and 'maintenance' were removed
+     on 2026-09-28. Each matched B2B industries that are not home services, and
+     because hvac is first in this list its match won: "Industrial Trade" matched
+     on `trade` and "Real Estate" on `property`, so both rendered a residential
+     HVAC contractor as their proof. The remaining tokens all name the trade
+     itself, which is what a hint is supposed to do. */
+  { niche: 'hvac', patterns: /hvac|heating|cooling|air condition|plumb|contractor/i },
+  /* 'care' removed with 'home service' above. "Elder Home Services" matched the
+     hvac hint on `home service`, and "Care Homes" matched this one on `care`, so
+     an elder care provider was shown an HVAC contractor and a care home operator
+     was shown a dental practice. A token that appears inside "care homes",
+     "urgent care" and "managed care" identifies no niche. */
+  { niche: 'dental', patterns: /dental|dentist|orthodont|clinic|patient/i },
   { niche: 'insurance', patterns: /insur|financ|broker|agency|risk|underwrit|bond|claim|benefit/i },
 ];
 
@@ -191,15 +202,32 @@ export const studiesForTopic = (topic: string, limit = 4): ResolvedCaseStudy[] =
     if (matches.length >= limit) return matches.slice(0, limit);
     return [...matches, ...CASE_STUDIES.filter((s) => s.niche !== hit.niche)].slice(0, limit);
   }
-  // No signal: one from each niche in turn, so the spread stays representative.
-  const spread: ResolvedCaseStudy[] = [];
-  for (let i = 0; spread.length < limit && i < 20; i += 1) {
-    for (const n of NICHES) {
-      const pick = byNiche(n)[i];
-      if (pick && spread.length < limit) spread.push(pick);
-    }
-  }
-  return spread;
+  /* NO SIGNAL MEANS NO STUDY. This returns empty, and callers render nothing.
+   *
+   * It used to return "a spread across all three niches". The comment above this
+   * function still describes the intent correctly — "rather than silently showing
+   * dental studies on an aerospace page" — but the spread did exactly that,
+   * because NICHES is ['hvac','dental','insurance'] and at limit 1 the loop
+   * always returned the first HVAC record.
+   *
+   * Measured on 2026-09-28, before the fix: 8 of the 11 industry hub pages
+   * rendered fox-service-company, a residential HVAC, plumbing and electrical
+   * contractor, as their related case study. Law firms, accountants, consultants,
+   * manufacturers, industrial trade and waste management were all shown a home
+   * services contractor as proof of our work in their field. /industries/
+   * care-homes was shown a dental practice.
+   *
+   * That is CLAUDE.md §11, which forbids implying experience in a vertical
+   * because a page exists, and it was implying it through the render rather than
+   * through the copy, so no amount of rewriting the page could have fixed it.
+   * docs/seo/b2b-niche-architecture.md rule 6 already says a proof block must
+   * resolve to an explicit case-study id rather than a fuzzy match.
+   *
+   * §4 says omit the section rather than fill it. An empty array is how a
+   * template omits a section. Every caller is a .map(), so empty renders nothing;
+   * app/industries/[industry]/page.tsx destructures and already guards on
+   * undefined. */
+  return [];
 };
 
 /** The single most striking KPI on a study, for card display. */

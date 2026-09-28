@@ -64,7 +64,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['High CPA for leads', 'Difficulty differentiating', 'Strict advertising regulations'],
     solutions: ['Authority SEO', 'Professional Content Strategy', 'Local Services Ads'],
     relatedServices: ['seo', 'web-development'],
-    caseStudyRef: 'fintech-scale',
     faqs: [
         { question: "Do you understand bar association advertising rules?", answer: "Yes, we ensure all campaigns are compliant with local and state bar advertising ethics." },
         { question: "How do you improve lead quality?", answer: "We use negative keywords, pre-qualifying forms, and high-intent content to filter out tire-kickers." },
@@ -86,7 +85,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Commoditization of services', 'Seasonal revenue dips', 'Client retention'],
     solutions: ['Lifecycle Email Marketing', 'Niche Authority Content', 'Automated Onboarding'],
     relatedServices: ['seo', 'ppc'],
-    caseStudyRef: 'fintech-scale',
     faqs: [
         { question: "Can you help us target high-net-worth individuals?", answer: "Yes, our paid media and audience strategies can specifically target wealth brackets and business owners." },
         ...COMMON_FAQS
@@ -107,7 +105,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['YMYL Google Filters', 'Long sales cycles', 'Complex compliance requirements'],
     solutions: ['YMYL-Optimized SEO', 'Thought Leadership Content', 'Secure Web Architecture'],
     relatedServices: ['seo', 'ppc'],
-    caseStudyRef: 'fintech-scale',
     faqs: [
         { question: "How do you handle YMYL pages?", answer: "We strictly adhere to Google's 'Your Money Your Life' guidelines, ensuring all content is reviewed by qualified experts." },
         ...COMMON_FAQS
@@ -128,7 +125,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Long sales cycles', 'Measuring ROI', 'Differentiating methodology'],
     solutions: ['Account Based Marketing', 'Interactive Case Studies', 'Personal Branding'],
     relatedServices: ['smm', 'web-development'],
-    caseStudyRef: 'saas-brand',
     faqs: [
         { question: "Do you write the thought leadership content?", answer: "We interview your subject matter experts and have our technical writers craft the final assets to ensure accuracy." },
         ...COMMON_FAQS
@@ -149,7 +145,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Lead quality', 'Market volatility', 'Visual presentation'],
     solutions: ['High-End Web Design', 'Lead Gen Funnels', 'Virtual Tour Integration'],
     relatedServices: ['web-development', 'smm'],
-    caseStudyRef: 'saas-brand',
     faqs: [
         { question: "Can you integrate with IDX/MLS?", answer: "Yes, we build custom IDX/MLS integrations for real-time property listings on your site." },
         ...COMMON_FAQS
@@ -170,7 +165,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Complex product specs', 'Niche audiences', 'Legacy sales channels'],
     solutions: ['Technical Catalog SEO', 'LinkedIn Sales Nav', 'Digital Catalogs'],
     relatedServices: ['seo', 'web-development'],
-    caseStudyRef: 'fintech-scale',
     faqs: [
         { question: "Do you understand technical specs?", answer: "Our team includes technical writers familiar with industrial terminology and spec sheets." },
         ...COMMON_FAQS
@@ -191,7 +185,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Filling cohorts', 'Demonstrating ROI', 'Skeptical audiences'],
     solutions: ['Webinar Funnels', 'Social Proof Engines', 'Community Management'],
     relatedServices: ['smm', 'ppc'],
-    caseStudyRef: 'retail-ai',
     faqs: [
         { question: "Can you help with course launches?", answer: "Yes, we specialize in 'Launch Formula' style campaigns to maximize enrollment windows." },
         ...COMMON_FAQS
@@ -212,7 +205,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Low digital literacy', 'Global competition', 'Supply chain disruptions'],
     solutions: ['Digital Catalogs', 'Trade Portal SEO', 'Whatsapp Automation'],
     relatedServices: ['web-development', 'seo'],
-    caseStudyRef: 'fintech-scale',
     faqs: [
         { question: "Do you handle multi-lingual sites?", answer: "Yes, we build international SEO architectures to target specific export markets." },
         ...COMMON_FAQS
@@ -233,7 +225,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Trust deficits', 'Adult children decision makers', 'High emotional stakes'],
     solutions: ['Reputation Management', 'Video Testimonials', 'Empathetic Copywriting'],
     relatedServices: ['seo', 'smm'],
-    caseStudyRef: 'saas-brand',
     faqs: [
         { question: "How do you target the families?", answer: "We target the adult children (40-60s) via Facebook and Search who are researching care for their parents." },
         ...COMMON_FAQS
@@ -254,7 +245,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Negative industry perception', 'Staffing shortages', 'Occupancy rates'],
     solutions: ['Staff Recruitment Marketing', 'Virtual Reality Tours', 'Review Generation'],
     relatedServices: ['smm', 'web-development'],
-    caseStudyRef: 'saas-brand',
     faqs: [
         { question: "Do you help with staff recruitment?", answer: "Yes, we run employer branding campaigns to attract nurses and care staff." },
         ...COMMON_FAQS
@@ -275,7 +265,6 @@ export const INDUSTRIES: Industry[] = [
     painPoints: ['Low public interest', 'Regulatory pressure', 'Contract competition'],
     solutions: ['Green/Sustainability Branding', 'Municipal Tender Support', 'Local SEO'],
     relatedServices: ['seo', 'web-development'],
-    caseStudyRef: 'fintech-scale',
     faqs: [
         { question: "Can you help with municipal contracts?", answer: "We can build the digital authority and proposal assets needed to win government tenders." },
         ...COMMON_FAQS
