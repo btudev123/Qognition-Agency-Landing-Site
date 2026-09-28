@@ -140,8 +140,9 @@ required loosening the gate for no real gain. The table uses `text-body leading-
 Rules:
 
 - **13px is the floor.** No rendered text on the site is smaller than `text-meta`. `growth.css`
-  currently ships 9px, 10px and 11px labels in fourteen places. Those are an accessibility problem
-  and a credibility problem. They all become `text-meta` with uppercase and `0.08em` tracking.
+  currently ships text below 13px in more than twenty declarations, including 9px, 10px and 11px
+  labels. Those are an accessibility problem and a credibility problem. They all become `text-meta`
+  with uppercase and `0.08em` tracking where they are labels.
 - Weights: 400 body, 500 for table values and UI labels, 600 for headings. Three weights, no more.
   `next/font` loads Geist at 400/500/600 only.
 - Measure: `--measure` 68ch. Prose never exceeds it. Table cells are exempt.
@@ -280,12 +281,13 @@ Also in `growth.css`, independent of colour:
 - `:focus-visible { outline: 2px solid #0f766e; outline-offset: 5px; }` — teal-700 at 5.47:1 does
   pass 3:1, so this one is not a failure, but it must move to `var(--focus-ring)` for consistency
   with the ink ring everywhere else. Offset drops from 5px to 2px.
-- All `font-size` values below 13px become `text-meta`. Affected selectors: `.growth-eyebrow` (11px),
+- All `font-size` values below 13px become `text-meta`. The 9 to 11px offenders: `.growth-eyebrow` (11px),
   `.growth-system-top` (9px), `.growth-query > span` (9px), `.growth-node-number` (10px),
   `.growth-system-caption` (10px), `.ai-platforms-label` (10px), `.growth-card-top > span` (11px),
   `.growth-pillar ul` (11px), `.growth-sector-index` (10px), `.growth-process-grid li > span` (11px),
   `.growth-footer-grid h3` (11px), `.growth-footer-bottom` (10px), `.rf-img-placeholder::after`
-  (10px), `.rf-section-divider::after` (10px).
+  (10px), `.rf-section-divider::after` (10px). A further set sits at 12px and also moves up:
+  `.ai-platform`, `.growth-sector p`, `.growth-footer-grid > div > a`, `.growth-language-menu`.
 - `.growth-hero { padding-top: 160px }` and `.growth-page { padding-top: 155px }` are compensating
   for an absolutely positioned nav. Keep the compensation, express it as one variable.
 
@@ -344,7 +346,7 @@ Found while reading the code for this spec. Each is a real AA failure or a broke
 | `components/ui/Button.tsx` | `primary` is `bg-[var(--accent)] text-[var(--accent-deep)]`. With the old tokens that is teal-500 on teal-700: **2.20:1**. | `bg-[var(--cta-fill)] text-[var(--cta-text)] hover:bg-[var(--cta-fill-hover)]`. Drop `hover:brightness-110`, which cannot be contrast-checked. |
 | `components/ui/Button.tsx` | `sizeClasses` uses `text-sm` / `text-base`, which are outside the canonical scale. The gate does not catch it because `<button>` is not `<p>` or a heading. | `text-meta` for `sm`, `text-body` for `md` and `lg`. |
 | `components/ui/Input.tsx` | `focus:outline-none` with only a 20%-opacity accent ring. No visible focus indicator that meets 3:1. | Remove `focus:outline-none`. Let the global `:focus-visible` ink ring apply. |
-| `components/ui/Input.tsx` | Error text is `text-red-400` (`#F87171`, **3.01:1** on white) and the border is `red-500/50`. | `text-[var(--danger)]` and `border-[var(--danger)]`. |
+| `components/ui/Input.tsx` | Error text is `text-red-400` (`#F87171`, **2.77:1** on white) and the border is `red-500/50`. | `text-[var(--danger)]` and `border-[var(--danger)]`. |
 | `components/ui/Input.tsx` | Label is `text-sm`, off-scale. | `text-meta font-medium`. |
 | `components/ui/Input.tsx` | Error is rendered but not associated with the input. | Add `aria-invalid`, `aria-describedby` pointing at the error `id`, and `role="alert"` on the message. |
 | `app/globals.css` | Focus ring is `2px solid var(--accent)` at teal-500, **2.49:1**. | Handled by `tokens.css`. Delete the old rule when convenient. |

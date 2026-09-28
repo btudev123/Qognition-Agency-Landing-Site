@@ -41,7 +41,10 @@ tracked, assets produced.
 
 ### Positioning copy
 
-- **H1:** "Your buyers are asking ChatGPT who to hire. We make sure it says you."
+- **H1:** "Your buyers are asking ChatGPT who to hire. Most firms have never checked the answer."
+  (An earlier draft read "We make sure it says you." That promised placement in a third-party
+  system, which §4 forbids. The current line keeps the tension, is verifiable, and makes the free
+  snapshot the obvious next step.)
 - **Sales line:** "You rank in Maps, but ChatGPT names your competitor."
 - Emphasis order sitewide: AI SEO and GEO first; SEO and Local SEO as the supporting layers that make
   them work.
