@@ -62,14 +62,12 @@ const VERTICALS: Vertical[] = [
 
 export default function Industries() {
   return (
-    /* data-theme is set per section rather than on <main> while the page is
-       migrating section by section (ADR-0005 §6). Every commit leaves `/` a
-       valid page, so the dark attribute cannot go on the shared parent until
-       the last light `growth-*` section is gone. It moves up then. */
+    /* Dark feature band. data-theme="dark" remaps the --s-* surface roles under
+       this element; nothing here branches on ground. CLAUDE.md §9. */
     <section
       data-theme="dark"
       className="py-20 sm:py-28"
-      style={{ borderTop: '1px solid var(--d-rule-hairline)' }}
+      style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
     >
       <Shell>
         <ScrollReveal>
@@ -77,7 +75,7 @@ export default function Industries() {
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[20ch] font-semibold">
             <MaskReveal>We sell to three kinds of firm.</MaskReveal>
           </h2>
-          <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--d-text-muted)' }}>
+          <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
             Firms doing $3M to $50M in revenue, with 20 to 200 staff, selling a considered purchase
             to another business. We are US-first, with Australian clients served in USD.
           </p>
@@ -89,10 +87,10 @@ export default function Industries() {
             paints a 2px seam wherever a cell is missing at a breakpoint. */}
         <ScrollReveal stagger={2} className="mt-12">
           <div
-            className="grid grid-cols-1 sm:grid-cols-2 [&>article]:border-r [&>article]:border-b [&>article]:border-[var(--d-rule-hairline)]"
+            className="grid grid-cols-1 sm:grid-cols-2 [&>article]:border-r [&>article]:border-b [&>article]:border-[var(--s-rule-hairline)]"
             style={{
-              borderTop: '1px solid var(--d-rule-hairline)',
-              borderLeft: '1px solid var(--d-rule-hairline)',
+              borderTop: '1px solid var(--s-rule-hairline)',
+              borderLeft: '1px solid var(--s-rule-hairline)',
             }}
           >
             {VERTICALS.map((v, i) => (
@@ -110,17 +108,17 @@ export default function Industries() {
                 <div>
                   <div
                     className="font-mono text-meta tracking-[0.14em] uppercase"
-                    style={{ color: v.flagship ? 'var(--d-accent)' : 'var(--d-text-faint)' }}
+                    style={{ color: v.flagship ? 'var(--s-accent)' : 'var(--s-text-faint)' }}
                   >
                     {String(i + 1).padStart(2, '0')} / 03
                     {v.flagship && <span className="ml-4">Flagship vertical</span>}
                   </div>
                   <h3 className="text-h3 font-sans mt-4 mb-2 font-semibold">{v.name}</h3>
-                  <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--d-text-muted)' }}>
+                  <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
                     {v.detail}
                   </p>
                 </div>
-                <p className="text-meta mt-6 mb-0 max-w-[62ch]" style={{ color: 'var(--d-text-faint)' }}>
+                <p className="text-meta mt-6 mb-0 max-w-[62ch]" style={{ color: 'var(--s-text-faint)' }}>
                   <span className="font-mono tracking-[0.12em] uppercase">Their buyer</span> {v.buyer}
                 </p>
               </article>

@@ -23,10 +23,16 @@ import ExitIntentPopup from './shared/ExitIntentPopup';
  * entire section client-renders, the budget in ADR-0005 §5 fails, and nothing
  * about the diff looks wrong.
  *
- * data-theme="dark" now sits here rather than on each section, because the last
- * light growth-* block is gone. Dark is the primary surface (CLAUDE.md §9);
- * long-form reading surfaces — /insights and /case-studies bodies, /legal —
- * omit the attribute and inherit the :root light tokens.
+ * THE LIGHT/DARK ALTERNATION IS THE DESIGN, NOT A THEME CHOICE (CLAUDE.md §9).
+ * Light hero on warm off-white, dark feature band, light content, dark band,
+ * light, and a dark CTA to close. Do not flatten it to one surface in either
+ * direction — the operator confirmed the existing qognitionagency.com treatment
+ * and it is kept exactly.
+ *
+ * Mechanically: a section is dark by carrying data-theme="dark", which remaps
+ * the --s-* surface roles in globals.css to the dark ramp. No component branches
+ * on ground, and nothing is set at :root, so a dark band inside a light page
+ * needs no !important anywhere.
  *
  * Section order is docs/copy/home.md, with two departures, both recorded there:
  * the client-logo strip is not rendered (no logos with written permission, so
@@ -35,7 +41,7 @@ import ExitIntentPopup from './shared/ExitIntentPopup';
  */
 export default function AcquisitionHome() {
   return (
-    <main id="main-content" data-theme="dark">
+    <main id="main-content">
       <Hero />
       <BuyingProblem />
       <FourLayers />

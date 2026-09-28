@@ -74,47 +74,68 @@ for (const file of files) {
   }
 }
 
-/* 4: the hero H1 and its subhead are one claim.
+/* 4: no hero line asserts a present state of a third-party AI system.
  *
- * "Your buyers are asking ChatGPT who to hire" on its own is an unsourced
- * assertion about buyer behaviour. The subhead — "Most firms have never checked
- * the answer" — is what turns it into a description of our own work, which is
- * the form CLAUDE.md §4 permits. Shipping the first half without the second is
- * a claims violation that would read as a styling change in a diff, so it is a
- * gate rather than a comment.
+ * "Your buyers are asking ChatGPT who to hire" is an unsourced claim about
+ * buyer behaviour with no platform, prompt set or date behind it. It shipped
+ * with a qualifying subhead that made it a description of our own work; when
+ * the subhead was cut, the H1 was rewritten to describe our work directly
+ * rather than reinstating the bare assertion.
  *
- * Scoped to the file, not the section: if the hero is ever split across
- * components this check fails loudly rather than silently passing on a file
- * that no longer contains the H1. */
+ * The rule that survives the rewrite is the general one, so this checks the
+ * general one: the <h1> must not contain a present-state claim about what an
+ * AI system or a population of buyers is doing. A claim about what WE do is
+ * verifiable on its face and passes.
+ *
+ * CLAUDE.md §4. This is a gate rather than a comment because the failure is a
+ * copy edit that looks harmless in a diff.
+ */
 const HERO = 'components/home/Hero.tsx';
-const HERO_CLAIM = 'asking ChatGPT who to hire';
-const HERO_QUALIFIER = 'never checked the answer';
+const HERO_BANNED = [
+  /buyers?\s+(are\s+)?ask(ing)?\s+(AI|ChatGPT|Perplexity|Gemini|Claude)/i,
+  /(AI|ChatGPT|Perplexity|Gemini|Claude)\s+(is|are)\s+(naming|recommending|telling)/i,
+  /\b(most|many|\d+%\s+of)\s+(firms|companies|buyers)\b/i,
+  /never\s+checked\s+the\s+answer/i,
+];
 
 try {
   const hero = readFileSync(HERO, 'utf8');
-  if (hero.includes(HERO_CLAIM) && !hero.includes(HERO_QUALIFIER)) {
-    record(
-      HERO,
-      lineOf(hero, hero.indexOf(HERO_CLAIM)),
-      'hero H1 ships its claim without its qualifier — "' +
-        HERO_QUALIFIER +
-        '" must appear in the same file (CLAUDE.md §1 and §4)',
-      HERO_CLAIM
-    );
+  const h1 = hero.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
+  if (!h1) {
+    violations.push({
+      file: HERO,
+      line: 0,
+      message: 'hero has no <h1>. Every page carries exactly one, and this is the one.',
+      snippet: '',
+    });
+  } else {
+    const text = h1[1].replace(/<[^>]+>/g, ' ').replace(/[{}'"]/g, ' ').replace(/\s+/g, ' ');
+    for (const rule of HERO_BANNED) {
+      if (rule.test(text)) {
+        record(
+          HERO,
+          lineOf(hero, h1.index),
+          'hero H1 asserts a present state of a third-party AI system or of buyer behaviour. ' +
+            'Describe what we do instead — that is verifiable and needs no grounding sentence (CLAUDE.md §4)',
+          text.trim()
+        );
+        break;
+      }
+    }
   }
 } catch {
   violations.push({
     file: HERO,
     line: 0,
     message:
-      'hero file not found. The H1/subhead claim check cannot run, so it fails rather than passes. Update HERO in this script if the hero moved.',
+      'hero file not found, so the H1 claim rule cannot run. It fails rather than passes. Update HERO in this script if the hero moved.',
     snippet: '',
   });
 }
 
 if (violations.length === 0) {
   console.log(`✓ typography: ${files.length} files clean — one scale, no drift.`);
-  console.log('✓ hero claim: H1 and its qualifying subhead ship together.');
+  console.log('✓ hero claim: H1 asserts nothing about a third-party system.');
   process.exit(0);
 }
 

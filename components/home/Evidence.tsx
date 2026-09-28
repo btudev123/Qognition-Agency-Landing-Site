@@ -68,21 +68,21 @@ export default function Evidence() {
   const kpis = featured?.kpis.slice(0, 3) ?? [];
 
   return (
-    <section data-theme="dark" className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--d-rule-hairline)' }}>
+    <section data-theme="dark" className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <Shell>
         <ScrollReveal>
           <Eyebrow accent>Evidence</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[24ch] font-semibold">
             <MaskReveal>What we can prove today, and what we cannot.</MaskReveal>
           </h2>
-          <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+          <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
             Nobody in this category has a long results record in insurance or professional services,
             including us. The category is roughly two years old. Rather than fill that gap with
             numbers, here is the evidence that does exist.
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px mt-12" style={{ background: 'var(--d-rule-hairline)' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px mt-12" style={{ background: 'var(--s-rule-hairline)' }}>
           {SOURCES.map((s, i) => (
             <ScrollReveal key={s.title} stagger={i + 1}>
               <a
@@ -90,7 +90,7 @@ export default function Evidence() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rf-hoverable rf-card flex h-full flex-col p-7 sm:p-9"
-                style={{ background: 'var(--d-bg)' }}
+                style={{ background: 'var(--s-bg)' }}
               >
                 <span className="flex items-center gap-3">
                   <span className="rf-dot w-2 h-2 rounded-full" aria-hidden="true" />
@@ -99,19 +99,19 @@ export default function Evidence() {
                   </span>
                 </span>
                 <h3 className="text-h3 font-sans mt-7 m-0 font-semibold">{s.title}</h3>
-                <p className="text-body mt-4 m-0 flex-1" style={{ color: 'var(--d-text-muted)' }}>
+                <p className="text-body mt-4 m-0 flex-1" style={{ color: 'var(--s-text-muted)' }}>
                   {s.body}
                 </p>
-                <p className="text-meta mt-5 m-0" style={{ color: 'var(--d-text-faint)' }}>
+                <p className="text-meta mt-5 m-0" style={{ color: 'var(--s-text-faint)' }}>
                   {s.caveat}
                 </p>
                 <span
                   className="mt-6 pt-5 font-mono text-meta tracking-[0.1em] flex items-start justify-between gap-4"
-                  style={{ borderTop: '1px solid var(--d-rule-hairline)', color: 'var(--d-accent)' }}
+                  style={{ borderTop: '1px solid var(--s-rule-hairline)', color: 'var(--s-accent)' }}
                 >
                   <span>
                     {s.source}
-                    <span className="block mt-1" style={{ color: 'var(--d-text-faint)' }}>
+                    <span className="block mt-1" style={{ color: 'var(--s-text-faint)' }}>
                       {s.date}
                     </span>
                   </span>
@@ -125,19 +125,19 @@ export default function Evidence() {
         </div>
 
         {/* Dated observations, not a state. */}
-        <ScrollReveal stagger={3} className="mt-12 pt-8" style={{ borderTop: '1px solid var(--d-rule)' }}>
+        <ScrollReveal stagger={3} className="mt-12 pt-8" style={{ borderTop: '1px solid var(--s-rule)' }}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
             <h3 className="text-h3 font-sans m-0 lg:col-span-5 font-semibold">
               Dated observations, not a state
             </h3>
             <div className="lg:col-span-7">
-              <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+              <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
                 An AI answer is not a ranking. Ask the same question twice and you can get two
                 answers. So we never tell a client they are invisible in AI search. We tell them
                 what we saw, on which platform, from which prompts, on which date, and we run the
                 same set again on a schedule so the comparison means something.
               </p>
-              <p className="text-body mt-4 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+              <p className="text-body mt-4 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
                 Every number we put in front of a client carries the platform, the prompt set and
                 the date it was observed.
               </p>
@@ -154,7 +154,7 @@ export default function Evidence() {
             <Link
               href={`/case-studies/${featured.id}`}
               className="rf-hoverable rf-card block p-7 sm:p-9"
-              style={{ border: '1px solid var(--d-rule)' }}
+              style={{ border: '1px solid var(--s-rule)' }}
             >
               <span className="flex flex-wrap items-center gap-x-4 gap-y-2">
                 <span className="rf-card-label font-mono text-meta tracking-[0.14em] uppercase">
@@ -167,8 +167,8 @@ export default function Evidence() {
                 <span
                   className="font-mono text-meta tracking-[0.14em] uppercase px-2 py-1"
                   style={{
-                    border: '1px solid var(--d-rule-strong)',
-                    color: 'var(--d-text-faint)',
+                    border: '1px solid var(--s-rule-strong)',
+                    color: 'var(--s-text-faint)',
                   }}
                 >
                   {evidence === 'verified' ? 'Reconciled results' : 'Targets, not results'}
@@ -176,25 +176,25 @@ export default function Evidence() {
               </span>
 
               <h3 className="text-h3 font-sans mt-6 m-0 font-semibold">{featured.headline}</h3>
-              <p className="text-body mt-3 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+              <p className="text-body mt-3 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
                 {featured.coreProblem}
               </p>
 
               <span
                 className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-7 pt-6"
-                style={{ borderTop: '1px solid var(--d-rule-hairline)' }}
+                style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
               >
                 {kpis.map((k) => (
                   <span key={k.label} className="block">
                     <span
                       className="block text-h3 font-sans font-medium"
-                      style={{ color: 'var(--d-accent)', fontFeatureSettings: '"tnum"' }}
+                      style={{ color: 'var(--s-accent)', fontFeatureSettings: '"tnum"' }}
                     >
                       {k.actual ?? k.target}
                     </span>
                     <span
                       className="block font-mono text-meta tracking-[0.1em] uppercase mt-2"
-                      style={{ color: 'var(--d-text-faint)' }}
+                      style={{ color: 'var(--s-text-faint)' }}
                     >
                       {k.label}
                       {!k.actual && ' (target)'}
@@ -203,7 +203,7 @@ export default function Evidence() {
                 ))}
               </span>
             </Link>
-            <p className="text-meta mt-4 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-faint)' }}>
+            <p className="text-meta mt-4 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-faint)' }}>
               These figures are the targets the engagement is scoped against, derived from category
               benchmarks. They are not reported results. They are relabelled the moment client
               reporting is reconciled against them, and not before.

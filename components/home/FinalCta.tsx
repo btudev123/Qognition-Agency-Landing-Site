@@ -15,7 +15,7 @@ import { GradientMesh, Shell } from './primitives';
  *
  * 2. `rf-gradient-text-dark` on "Ready" is gone. A gradient headline has no
  *    single foreground colour, so it cannot be verified against AA. The same
- *    visual idea, checkable: a solid --d-accent-display word inside a --d-text
+ *    visual idea, checkable: a solid --s-accent-display word inside a --s-text
  *    heading. tokens-dark.md §8.
  *
  * 3. The size is text-display, not clamp(56px, 9vw, 180px). 180px is outside
@@ -30,7 +30,7 @@ import { GradientMesh, Shell } from './primitives';
  */
 export default function FinalCta() {
   return (
-    <section data-theme="dark" className="relative overflow-hidden py-24 sm:py-32" style={{ borderTop: '1px solid var(--d-rule-hairline)' }}>
+    <section data-theme="dark" className="relative overflow-hidden py-24 sm:py-32" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <GradientMesh />
       <Shell>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
@@ -38,13 +38,13 @@ export default function FinalCta() {
             <h2 className="text-display font-sans m-0 max-w-[16ch]">
               <MaskReveal>See what the assistants</MaskReveal>{' '}
               <MaskReveal delay={0.08}>
-                <span style={{ color: 'var(--d-accent-display)' }}>say about you.</span>
+                <span style={{ color: 'var(--s-accent-display)' }}>say about you.</span>
               </MaskReveal>
             </h2>
           </ScrollReveal>
 
           <ScrollReveal stagger={2} className="lg:col-span-5">
-            <p className="text-body m-0 max-w-[56ch]" style={{ color: 'var(--d-text-muted)' }}>
+            <p className="text-body m-0 max-w-[56ch]" style={{ color: 'var(--s-text-muted)' }}>
               We will run a sample of your buyers’ prompts, crawl your site, and send you what we
               found with the date on it. If the answer is that you are already well positioned, we
               will tell you that too.

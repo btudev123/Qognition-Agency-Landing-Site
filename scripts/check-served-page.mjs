@@ -1,5 +1,13 @@
 #!/usr/bin/env node
-/* Client JS budget gate for `/`.  ADR-0005 §5.
+/* Post-build assertions against the HTML `/` actually serves.
+ *
+ * Everything in here needs a running server, so they share one `next start`
+ * rather than paying the startup cost twice.
+ *
+ *   1. Client JS budget. ADR-0005 §5.
+ *   2. No content hidden behind an animation that may never run.
+ *
+ * ── 1. CLIENT JS BUDGET ────────────────────────────────────────────────────
  *
  * Budget: 40KB gzip of ROUTE-SPECIFIC client JS on `/`, defined as
  *
@@ -19,9 +27,26 @@
  * be able to fail there, which is why it is a `pnpm` script and not a local
  * convenience.
  *
- * Usage:  node scripts/check-bundle-budget.mjs [--report]
- *         --report  print the number and exit 0 regardless (for capturing a
- *                   baseline before the budget is meaningful)
+ * ── 2. NO CONTENT HIDDEN BEHIND AN ANIMATION ───────────────────────────────
+ *
+ * `.rf-mask > span` translates 110% down inside an `overflow: hidden` parent,
+ * so the text is entirely outside its box until `.is-in` is added by an
+ * IntersectionObserver. That shipped: a production build served 66 masked spans
+ * and zero `is-in`, which means every masked heading on the homepage — the H1
+ * included — was invisible in the server response and stayed invisible forever
+ * if JS failed, was blocked, or had not run yet.
+ *
+ * The fix gates the hidden start state on `.js-anim`, set synchronously before
+ * paint. This check asserts the fix holds: any `rf-mask` in the served HTML must
+ * be accompanied either by `is-in` on the element or by `js-anim` somewhere in
+ * the document, and the gating rule must be present in the stylesheet.
+ *
+ * It is checked against served HTML rather than source because the failure is
+ * invisible in a code review — the component looks correct, the CSS looks
+ * correct, and only the combination is wrong.
+ *
+ * Usage:  node scripts/check-served-page.mjs [--report]
+ *         --report  print the numbers and exit 0 regardless
  */
 import { spawn } from 'node:child_process';
 import { readFile, access } from 'node:fs/promises';
@@ -119,9 +144,47 @@ try {
     console.log(`  (${all.missing.length} referenced chunk(s) not found on disk, not counted)`);
   }
 
+  /* ── 2. hidden-content check ─────────────────────────────────────────── */
+
+  const maskCount = (routeHtml.match(/rf-mask/g) || []).length;
+  const isInCount = (routeHtml.match(/is-in/g) || []).length;
+  const hasJsAnimHook = /js-anim/.test(routeHtml);
+
+  // The stylesheet must gate the hidden start state, not apply it unconditionally.
+  const cssHref = routeHtml.match(/\/_next\/static\/[^"]*\.css/)?.[0];
+  let cssGated = false;
+  if (cssHref) {
+    const css = await fetch(`${base}${cssHref}`).then((r) => r.text());
+    const ungated = /(^|})\s*\.rf-mask\s*>\s*span\s*\{[^}]*translateY\(110%\)/.test(css);
+    const gated = /\.js-anim\s+\.rf-mask\s*>\s*span\s*\{[^}]*translateY\(110%\)/.test(css);
+    cssGated = gated && !ungated;
+  }
+
+  let hiddenContentOk = true;
+  if (maskCount > 0 && isInCount === 0 && !hasJsAnimHook) {
+    console.error(
+      `✗ hidden content: ${ROUTE} serves ${maskCount} masked element(s) with no \`is-in\` and no \`js-anim\` hook.`
+    );
+    console.error('  Those headings are translated outside their clipping box and never come back');
+    console.error('  if JS does not run. Content first, motion second. app/globals.css.');
+    hiddenContentOk = false;
+  } else if (maskCount > 0 && !cssGated) {
+    console.error(
+      '✗ hidden content: the .rf-mask start state is not gated on .js-anim in the served stylesheet.'
+    );
+    console.error('  An ungated translateY(110%) hides the heading in the server response.');
+    hiddenContentOk = false;
+  } else {
+    console.log(
+      `✓ hidden content: ${maskCount} masked element(s) on ${ROUTE}, start state gated on .js-anim.`
+    );
+  }
+
   if (reportOnly) {
     console.log('✓ bundle budget: report only, not enforced.');
-    process.exitCode = 0;
+    process.exitCode = hiddenContentOk ? 0 : 1;
+  } else if (!hiddenContentOk) {
+    process.exitCode = 1;
   } else if (only.total > BUDGET_BYTES) {
     console.error(
       `✗ bundle budget: ${ROUTE} ships ${kb(only.total)} of route-specific client JS, over the ${kb(BUDGET_BYTES)} budget in ADR-0005 §5.`
@@ -134,7 +197,7 @@ try {
     console.log(`✓ bundle budget: ${ROUTE} at ${kb(only.total)} of ${kb(BUDGET_BYTES)} route-specific client JS.`);
   }
 } catch (err) {
-  console.error(`✗ bundle budget: ${err.message}`);
+  console.error(`✗ served-page checks: ${err.message}`);
   process.exitCode = 1;
 } finally {
   server?.kill('SIGTERM');

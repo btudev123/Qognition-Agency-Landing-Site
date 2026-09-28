@@ -35,18 +35,18 @@ function List({ title, items, accent }: { title: string; items: string[]; accent
     <div>
       <h3
         className="text-h4 font-sans m-0 pb-4 font-semibold"
-        style={{ borderBottom: `1px solid ${accent ? 'var(--d-accent-graphic)' : 'var(--d-rule-strong)'}` }}
+        style={{ borderBottom: `1px solid ${accent ? 'var(--s-accent-graphic)' : 'var(--s-rule-strong)'}` }}
       >
         {title}
       </h3>
       <ul className="list-none p-0 m-0 mt-5 grid gap-4">
         {items.map((item) => (
-          <li key={item} className="text-body flex gap-3" style={{ color: 'var(--d-text-muted)' }}>
+          <li key={item} className="text-body flex gap-3" style={{ color: 'var(--s-text-muted)' }}>
             <span
               className="mt-2 w-1.5 h-1.5 flex-shrink-0"
               style={{
-                background: accent ? 'var(--d-accent-graphic)' : 'transparent',
-                border: accent ? 'none' : '1px solid var(--d-rule-strong)',
+                background: accent ? 'var(--s-accent-graphic)' : 'transparent',
+                border: accent ? 'none' : '1px solid var(--s-rule-strong)',
               }}
               aria-hidden="true"
             />
@@ -60,14 +60,14 @@ function List({ title, items, accent }: { title: string; items: string[]; accent
 
 export default function Fit() {
   return (
-    <section data-theme="dark" className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--d-rule-hairline)' }}>
+    <section className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <Shell>
         <ScrollReveal>
           <Eyebrow>Fit</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[22ch] font-semibold">
             <MaskReveal>We would rather say no at the snapshot stage.</MaskReveal>
           </h2>
-          <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--d-text-muted)' }}>
+          <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
             Than bill you for six months of the wrong thing.
           </p>
         </ScrollReveal>

@@ -107,6 +107,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${geist.variable} scroll-smooth`}>
       <body className="font-sans">
+        {/* Marks the document as able to run entrance animations.
+            SYNCHRONOUS AND BEFORE PAINT, deliberately. The hidden start states
+            for .rf-mask and .rf-reveal in globals.css are gated on .js-anim, so
+            without this class every masked heading renders at its final
+            position instead of being translated 110% outside its clipping box
+            and waiting for an IntersectionObserver that may never run.
+            Adding the class on mount instead would paint the text visible,
+            then hide it, then animate it back in.
+            Skipped entirely under prefers-reduced-motion, so those users get
+            static content with no transform rather than a zeroed transition. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('js-anim')}}catch(e){}",
+          }}
+        />
         <ConsentManager />
         <AcquisitionTracker />
         <ConsentScripts category="advertising">

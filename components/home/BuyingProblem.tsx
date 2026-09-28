@@ -19,7 +19,7 @@ import { Eyebrow, Shell } from './primitives';
  */
 export default function BuyingProblem() {
   return (
-    <section data-theme="dark" className="py-16 sm:py-24" style={{ background: 'var(--d-surface-1)', borderBlock: '1px solid var(--d-rule-hairline)' }}>
+    <section data-theme="dark" className="py-16 sm:py-24" style={{ borderBlock: '1px solid var(--s-rule-hairline)' }}>
       <Shell>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
           <ScrollReveal className="lg:col-span-4">
@@ -34,18 +34,18 @@ export default function BuyingProblem() {
             </ScrollReveal>
 
             <ScrollReveal stagger={2}>
-              <p className="text-body mt-6 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+              <p className="text-body mt-6 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
                 A commercial buyer researching a vendor now asks an assistant first. They describe
                 their situation in a sentence, get three or four named firms back, and start their
                 shortlist there. By the time anyone contacts you, the comparison has already
                 happened somewhere you cannot see.
               </p>
-              <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+              <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
                 That is a different problem from ranking. A search result gives the buyer ten
                 options and lets them choose. An assistant gives them three and explains why. If you
                 are not one of the three, there is no page two to be on.
               </p>
-              <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+              <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
                 The mechanics are not mysterious. An assistant assembles an answer from sources it
                 retrieves, and most of those sources are not your website. They are directories,
                 association listings, review platforms, trade press, forums and comparison pages.
@@ -57,9 +57,9 @@ export default function BuyingProblem() {
             <ScrollReveal stagger={3}>
               <blockquote
                 className="mt-10 pl-6 m-0"
-                style={{ borderLeft: '2px solid var(--d-accent-graphic)' }}
+                style={{ borderLeft: '2px solid var(--s-accent-graphic)' }}
               >
-                <p className="text-h3 font-sans m-0 font-medium" style={{ color: 'var(--d-text)' }}>
+                <p className="text-h3 font-sans m-0 font-medium" style={{ color: 'var(--s-text)' }}>
                   You cannot sell to a buyer who never reached your website.
                 </p>
               </blockquote>

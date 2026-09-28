@@ -136,8 +136,8 @@ export default function ExitIntentPopup() {
         aria-describedby="exit-intent-body"
         className="relative w-full max-w-md p-8"
         style={{
-          background: 'var(--d-surface-1)',
-          border: '1px solid var(--d-rule)',
+          background: 'var(--s-surface-1)',
+          border: '1px solid var(--s-rule)',
           boxShadow: 'var(--d-elev-overlay)',
         }}
       >
@@ -146,7 +146,7 @@ export default function ExitIntentPopup() {
           type="button"
           onClick={dismiss}
           className="absolute top-2 right-2 inline-flex items-center justify-center w-11 h-11"
-          style={{ color: 'var(--d-text-muted)' }}
+          style={{ color: 'var(--s-text-muted)' }}
           aria-label="Close"
         >
           <X size={18} aria-hidden="true" />
@@ -155,7 +155,7 @@ export default function ExitIntentPopup() {
         <h2 id="exit-intent-title" className="text-h3 font-sans m-0 pr-10 font-semibold">
           {OFFER.title}
         </h2>
-        <p id="exit-intent-body" className="text-body mt-4 m-0" style={{ color: 'var(--d-text-muted)' }}>
+        <p id="exit-intent-body" className="text-body mt-4 m-0" style={{ color: 'var(--s-text-muted)' }}>
           {OFFER.body}
         </p>
 
@@ -163,7 +163,7 @@ export default function ExitIntentPopup() {
           {OFFER.cta}
         </Link>
 
-        <p className="text-meta mt-4 m-0" style={{ color: 'var(--d-text-faint)' }}>
+        <p className="text-meta mt-4 m-0" style={{ color: 'var(--s-text-faint)' }}>
           {OFFER.note}
         </p>
       </div>

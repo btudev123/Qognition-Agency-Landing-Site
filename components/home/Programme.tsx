@@ -58,7 +58,7 @@ const PHASES = [
 
 export default function Programme() {
   return (
-    <section data-theme="dark" className="relative overflow-hidden py-20 sm:py-28" style={{ borderTop: '1px solid var(--d-rule-hairline)' }}>
+    <section className="relative overflow-hidden py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <GhostWord>PROCESS</GhostWord>
 
       <Shell>
@@ -70,7 +70,7 @@ export default function Programme() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-6">
-            <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--d-text-muted)' }}>
+            <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
               One retainer, one team, a fixed rhythm.
             </p>
           </ScrollReveal>
@@ -92,8 +92,8 @@ export default function Programme() {
                     className="absolute left-0 hidden lg:block w-3 h-3 rounded-full"
                     style={{
                       top: -6,
-                      background: 'var(--d-bg)',
-                      border: `2px solid ${i === 0 ? 'var(--d-accent-graphic)' : 'var(--d-rule-strong)'}`,
+                      background: 'var(--s-bg)',
+                      border: `2px solid ${i === 0 ? 'var(--s-accent-graphic)' : 'var(--s-rule-strong)'}`,
                     }}
                     aria-hidden="true"
                   />
@@ -116,17 +116,17 @@ export default function Programme() {
 
                   <div
                     className="relative font-mono text-meta tracking-[0.14em] uppercase"
-                    style={{ color: 'var(--d-text-faint)' }}
+                    style={{ color: 'var(--s-text-faint)' }}
                   >
                     {p.n} · {p.window}
                   </div>
                   <h3 className="text-h3 font-sans relative mt-4 m-0 font-semibold">{p.title}</h3>
-                  <p className="text-body mt-4 m-0" style={{ color: 'var(--d-text-muted)' }}>
+                  <p className="text-body mt-4 m-0" style={{ color: 'var(--s-text-muted)' }}>
                     {p.body}
                   </p>
                   <p
                     className="text-meta mt-4 m-0 pl-4"
-                    style={{ color: 'var(--d-text-faint)', borderLeft: '1px solid var(--d-rule)' }}
+                    style={{ color: 'var(--s-text-faint)', borderLeft: '1px solid var(--s-rule)' }}
                   >
                     {p.deliverable}
                   </p>
@@ -139,8 +139,8 @@ export default function Programme() {
         {/* This paragraph is the point of the section. It replaces
             "every quarter your CAC drops", and it is not a hedge — it is the
             differentiator. CLAUDE.md §4. */}
-        <ScrollReveal stagger={5} className="mt-16 pt-8" style={{ borderTop: '1px solid var(--d-rule)' }}>
-          <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--d-text)' }}>
+        <ScrollReveal stagger={5} className="mt-16 pt-8" style={{ borderTop: '1px solid var(--s-rule)' }}>
+          <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--s-text)' }}>
             We do not control ChatGPT, Google or Perplexity, and we will not tell you when you will
             appear in them. What we commit to is the work, the measurement, and the dated record of
             both.

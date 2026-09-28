@@ -32,6 +32,55 @@
   --border-strong: rgba(0, 0, 0, 0.14);
   --card-bg: #FFFFFF;
 
+  /* ── SURFACE ROLES ───────────────────────────────────────────────────────
+     The site alternates light and dark and that rhythm IS the design
+     (CLAUDE.md §9): light hero on warm off-white, dark CTA and feature bands,
+     light content, dark again. It must never be flattened to one surface.
+
+     These --s-* roles are what every component reads. :root defines the light
+     values; [data-theme="dark"] below remaps the same names to the dark ramp.
+     So a section changes ground by gaining one attribute, and not one component
+     has to know which ground it is on.
+
+     Every ratio below was computed, not copied. Against --bg #F8F5EF unless
+     stated.
+     ─────────────────────────────────────────────────────────────────────── */
+  --s-bg:             #F8F5EF;   /* page, warm off-white */
+  --s-surface-1:      #FFFFFF;   /* card field */
+  --s-surface-2:      #F0EDE4;   /* raised band */
+  /* Hover LIFTS toward white on light and DARKENS on dark, which is not an
+     inconsistency — it is the only direction that works on each ground. A
+     darker hover on the warm off-white ground drops --s-text-faint from 4.53:1
+     to 3.95:1 and --s-accent from 5.03 to 4.39, so the cheapest-looking
+     "one step darker" would have broken AA on two tokens at the moment a user
+     interacts. Computed, not assumed. */
+  --s-surface-3:      #FDFCFA;   /* hover / selected. never a resting surface */
+
+  --s-text:           #0D0C0A;   /* 17.97 */
+  --s-text-muted:     #6B6760;   /*  5.17 */
+  /* NOT --text-faint #8E8A82. That is 3.16:1 here and fails AA for text at any
+     size; it is used as label and caption colour across the site today, which
+     is a live defect the rest of the repo still has. #747068 is the lightest
+     warm neutral in the same hue family that clears 4.5:1. */
+  --s-text-faint:     #747068;   /*  4.53 */
+
+  --s-accent:         #0F766E;   /*  5.03  teal-700. accent text, active state */
+  --s-accent-display: #115E59;   /*  6.97  teal-800. accent word in display type */
+  --s-accent-graphic: #0D9488;   /*  3.44  teal-600. strokes, dots, fills. >=3:1 */
+
+  --s-rule-hairline:  rgba(0, 0, 0, 0.09);   /* decorative */
+  --s-rule:           rgba(0, 0, 0, 0.16);   /* decorative */
+  /* 3.30:1 composited. The only rule value allowed to be the sole thing telling
+     you a control exists. --border-strong rgba(0,0,0,0.14) is 1.37:1 and was
+     being used for exactly that. */
+  --s-rule-strong:    rgba(0, 0, 0, 0.45);
+
+  --s-cta-bg:         #0F766E;
+  --s-cta-bg-hover:   #115E59;   /* hover raises contrast: 5.47 -> 7.58 on white */
+  --s-cta-fg:         #FFFFFF;
+
+  --s-ghost-ink:      rgba(0, 0, 0, 0.030);
+
   /* Primary control fill. Light ground: white on teal-700, 5.47:1. This pair
      inverts on dark (ink on teal-400, 10.64:1) and a component cannot know
      which ground it is on, so it reads these rather than hardcoding either.
@@ -125,22 +174,42 @@ textarea:focus-visible,
 
 /* ─── REVEAL ANIMATIONS ───────────────────────────────────────────────────── */
 
-/* 8px rise over 200ms. It was 40px over 1000ms, which is four times the
-   ceiling in docs/design/motion.md §4 and reads as the page assembling itself
-   rather than as content arriving.
+/* ─────────────────────────────────────────────────────────────────────────
+   THE HIDDEN START STATE IS GATED ON `.js-anim`, AND THAT IS NOT OPTIONAL.
 
-   `opacity: 1` in the resting state is deliberate and must stay: no reveal
-   component may start at `opacity: 0` in the DOM, or the page is blank with JS
-   off and the H1 stops being an LCP candidate. The reveal is the 8px, not a
-   fade-in. */
+   `.rf-mask > span` translates 110% down, which puts the text entirely outside
+   its `overflow: hidden` parent. It came back only when `.is-in` was added, and
+   `.is-in` is added client-side by an IntersectionObserver. So in the server
+   response every masked heading on the page was invisible — 66 masked spans,
+   zero `is-in`, verified against a production build — and it stayed invisible
+   forever if JS failed, was blocked, or simply had not run yet. That is not a
+   delayed animation. That is permanently hidden content, and it was live.
+
+   `.js-anim` is added to <html> by a synchronous inline script in
+   app/layout.tsx, before first paint. The ordering matters: adding the class on
+   mount instead would paint the text visible, then hide it, then animate it
+   back, which is worse than the bug it was fixing.
+
+   So: content is visible by default and the motion is the enhancement, never
+   the prerequisite. If the class is absent for any reason — JS off, script
+   blocked, reduced motion — everything renders at its final position with no
+   transform at all.
+
+   scripts/check-served-page.mjs fails the build if `/` ever serves a masked
+   element without `is-in` and without a `js-anim` ancestor. This class of bug
+   is invisible in a code review and instantly obvious to a visitor.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* 8px rise over 200ms. It was 40px over 1000ms, four times the ceiling in
+   docs/design/motion.md §4, and it read as the page assembling itself rather
+   than as content arriving. Opacity is never animated: a reveal that starts at
+   opacity 0 is the same bug in a different property. */
 .rf-reveal {
   opacity: 1;
-  transform: translateY(8px);
   transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.rf-reveal.is-in {
-  transform: translateY(0);
-}
+.js-anim .rf-reveal { transform: translateY(8px); }
+.js-anim .rf-reveal.is-in { transform: translateY(0); }
 
 /* Mask reveal — text wipes up */
 .rf-mask {
@@ -151,11 +220,11 @@ textarea:focus-visible,
 }
 .rf-mask > span {
   display: inline-block;
-  transform: translateY(110%);
   transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--d, 0s);
 }
-.rf-mask.is-in > span { transform: translateY(0); }
+.js-anim .rf-mask > span { transform: translateY(110%); }
+.js-anim .rf-mask.is-in > span { transform: translateY(0); }
 
 /* Page transition */
 .rf-page-wrap {
@@ -527,6 +596,32 @@ textarea:focus-visible,
   color: var(--d-text);
   --logo-accent: var(--d-accent);
 
+  /* The same surface roles, remapped. This block is the entire mechanism by
+     which a section alternates ground: it gains data-theme="dark" and every
+     --s-* underneath it resolves to the dark ramp. No component branches. */
+  --s-bg:             var(--d-bg);
+  --s-surface-1:      var(--d-surface-1);
+  --s-surface-2:      var(--d-surface-2);
+  --s-surface-3:      var(--d-surface-3);
+
+  --s-text:           var(--d-text);
+  --s-text-muted:     var(--d-text-muted);
+  --s-text-faint:     var(--d-text-faint);
+
+  --s-accent:         var(--d-accent);
+  --s-accent-display: var(--d-accent-display);
+  --s-accent-graphic: var(--d-accent-graphic);
+
+  --s-rule-hairline:  var(--d-rule-hairline);
+  --s-rule:           var(--d-rule);
+  --s-rule-strong:    var(--d-rule-strong);
+
+  --s-cta-bg:         var(--d-cta-fill);
+  --s-cta-bg-hover:   var(--d-cta-fill-hover);
+  --s-cta-fg:         var(--d-cta-text);
+
+  --s-ghost-ink:      rgba(255, 255, 255, 0.022);
+
   /* Ink on teal, never white on teal — white on teal-400 is 1.59:1. */
   --btn-primary-bg:       var(--d-cta-fill);        /* #2DD4BF */
   --btn-primary-bg-hover: var(--d-cta-fill-hover);  /* #5EEAD4, 13.39:1 */
@@ -591,7 +686,7 @@ textarea:focus-visible,
   line-height: 1;
   white-space: nowrap;
   padding-left: 5%;
-  color: var(--rf-ghost-ink, rgba(255,255,255,0.022));
+  color: var(--s-ghost-ink);
 }
 
 @keyframes rf-ghost-drift {
@@ -646,27 +741,33 @@ textarea:focus-visible,
    two glow layers on one hover is one too many. tokens-dark.md §8. */
 .rf-card {
   background: transparent;
-  color: var(--d-text);
+  color: var(--s-text);
 }
+/* Two cues, because neither one survives every ground on its own: the fill step
+   is invisible on a white card, and the inset ring is what carries the state to
+   anyone who cannot see a 1.06 luminance change. The ring is --s-rule-strong,
+   which clears 3:1 on all six surfaces, so it is a real non-text indicator
+   under SC 1.4.11 rather than decoration. The teal bloom stays at the 0.06
+   ceiling from tokens-dark.md §8. */
 .rf-card:hover,
 .rf-card:focus-visible {
-  background: var(--d-surface-3);
-  box-shadow: inset 0 0 80px rgba(20, 184, 166, 0.06);
+  background: var(--s-surface-3);
+  box-shadow: inset 0 0 0 1px var(--s-rule-strong), inset 0 0 80px rgba(20, 184, 166, 0.06);
 }
 
 .rf-card .rf-dot {
-  background: var(--d-rule-strong);
+  background: var(--s-rule-strong);
   transition: background 0.45s ease, box-shadow 0.45s ease;
 }
 .rf-card:hover .rf-dot,
 .rf-card:focus-visible .rf-dot {
-  background: var(--d-accent-graphic);
+  background: var(--s-accent-graphic);
   box-shadow: 0 0 12px rgba(20, 184, 166, 0.5);
 }
 
-.rf-card .rf-card-label { color: var(--d-text-faint); transition: color 0.45s ease; }
+.rf-card .rf-card-label { color: var(--s-text-faint); transition: color 0.45s ease; }
 .rf-card:hover .rf-card-label,
-.rf-card:focus-visible .rf-card-label { color: var(--d-accent); }
+.rf-card:focus-visible .rf-card-label { color: var(--s-accent); }
 
 /* sub-items fade up from 0.45 rather than from 0 — at 0 they are invisible and
    the card reads as empty until a pointer touches it, which no keyboard or
@@ -685,12 +786,12 @@ textarea:focus-visible,
 /* industry cell — the invert. On a light ground it went to near-black; on a
    dark ground the equivalent step is --d-surface-3, which is the token whose
    whole job is "hover, never at rest". */
-.rf-cell { background: var(--d-bg); color: var(--d-text); }
+.rf-cell { background: var(--s-bg); color: var(--s-text); }
 .rf-cell:hover,
-.rf-cell:focus-visible { background: var(--d-surface-3); }
-.rf-cell .rf-cell-meta { color: var(--d-text-faint); transition: color 0.4s ease; }
+.rf-cell:focus-visible { background: var(--s-surface-3); }
+.rf-cell .rf-cell-meta { color: var(--s-text-faint); transition: color 0.4s ease; }
 .rf-cell:hover .rf-cell-meta,
-.rf-cell:focus-visible .rf-cell-meta { color: var(--d-accent); }
+.rf-cell:focus-visible .rf-cell-meta { color: var(--s-accent); }
 
 /* ═══ BUTTONS ═════════════════════════════════════════════════════════════
    min-height 44px is the pointer target floor, not a style choice. */
@@ -715,25 +816,25 @@ textarea:focus-visible,
 /* ink on teal, never white on teal — white on teal-400 is 1.59:1.
    Hover moves to teal-300, which raises contrast rather than lowering it. */
 .rf-btn--primary {
-  background: var(--d-cta-fill);
-  color: var(--d-cta-text);
-  border-color: var(--d-cta-fill);
+  background: var(--s-cta-bg);
+  color: var(--s-cta-fg);
+  border-color: var(--s-cta-bg);
 }
 .rf-btn--primary:hover,
 .rf-btn--primary:focus-visible {
-  background: var(--d-cta-fill-hover);
-  border-color: var(--d-cta-fill-hover);
+  background: var(--s-cta-bg-hover);
+  border-color: var(--s-cta-bg-hover);
 }
 
 .rf-btn--secondary {
   background: transparent;
-  color: var(--d-text);
-  border-color: var(--d-rule-strong);
+  color: var(--s-text);
+  border-color: var(--s-rule-strong);
 }
 .rf-btn--secondary:hover,
 .rf-btn--secondary:focus-visible {
-  background: var(--d-surface-3);
-  border-color: var(--d-text);
+  background: var(--s-surface-3);
+  border-color: var(--s-text);
 }
 
 /* ═══ MONO LABEL ══════════════════════════════════════════════════════════ */
@@ -746,7 +847,7 @@ textarea:focus-visible,
   font-size: 13px;          /* the 13px mono floor from docs/design/tokens.md */
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--d-text-faint);
+  color: var(--s-text-faint);
 }
 .rf-eyebrow::before {
   content: '';
@@ -755,7 +856,7 @@ textarea:focus-visible,
   background: currentColor;
   flex-shrink: 0;
 }
-.rf-eyebrow--accent { color: var(--d-accent); }
+.rf-eyebrow--accent { color: var(--s-accent); }
 
 /* ═══ MARQUEE ═════════════════════════════════════════════════════════════
    Edge fades read from --rf-marquee-edge so the same component works on either
@@ -771,8 +872,8 @@ textarea:focus-visible,
   z-index: 2;
   pointer-events: none;
 }
-.rf-marquee::before { left: 0;  background: linear-gradient(to right, var(--rf-marquee-edge, var(--d-bg)), transparent); }
-.rf-marquee::after  { right: 0; background: linear-gradient(to left,  var(--rf-marquee-edge, var(--d-bg)), transparent); }
+.rf-marquee::before { left: 0;  background: linear-gradient(to right, var(--rf-marquee-edge, var(--s-bg)), transparent); }
+.rf-marquee::after  { right: 0; background: linear-gradient(to left,  var(--rf-marquee-edge, var(--s-bg)), transparent); }
 .rf-marquee-track {
   display: inline-flex;
   gap: 56px;
@@ -786,7 +887,7 @@ textarea:focus-visible,
    behind a 500ms delay, so the timeline finished drawing itself two seconds
    after the reader had already read the four steps. motion.md §4 row 6. */
 .rf-rail {
-  background: linear-gradient(to right, var(--d-accent-graphic), var(--d-rule-hairline));
+  background: linear-gradient(to right, var(--s-accent-graphic), var(--s-rule-hairline));
   transform-origin: left;
   animation: rf-rail-draw 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }

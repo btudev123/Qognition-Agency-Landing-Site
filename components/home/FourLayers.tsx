@@ -50,7 +50,7 @@ const LAYERS = [
 
 export default function FourLayers() {
   return (
-    <section data-theme="dark" className="relative overflow-hidden py-20 sm:py-28" style={{ borderTop: '1px solid var(--d-rule-hairline)' }}>
+    <section className="relative overflow-hidden py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <GhostWord>SURFACES</GhostWord>
 
       <Shell>
@@ -64,7 +64,7 @@ export default function FourLayers() {
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-6">
-            <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--d-text-muted)' }}>
+            <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
               Most of this industry uses these four words interchangeably. They are four different
               places, run by different systems, and they respond to different work.
             </p>
@@ -81,25 +81,25 @@ export default function FourLayers() {
                 The four search surfaces Qognition works on, what each one is, and what moves it
               </caption>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--d-rule)' }}>
+                <tr style={{ borderBottom: '1px solid var(--s-rule)' }}>
                   <th
                     scope="col"
                     className="font-mono text-meta tracking-[0.14em] uppercase font-normal py-3 pr-6 align-bottom w-[16%]"
-                    style={{ color: 'var(--d-text-faint)' }}
+                    style={{ color: 'var(--s-text-faint)' }}
                   >
                     Layer
                   </th>
                   <th
                     scope="col"
                     className="font-mono text-meta tracking-[0.14em] uppercase font-normal py-3 pr-6 align-bottom w-[38%]"
-                    style={{ color: 'var(--d-text-faint)' }}
+                    style={{ color: 'var(--s-text-faint)' }}
                   >
                     The surface
                   </th>
                   <th
                     scope="col"
                     className="font-mono text-meta tracking-[0.14em] uppercase font-normal py-3 align-bottom"
-                    style={{ color: 'var(--d-text-faint)' }}
+                    style={{ color: 'var(--s-text-faint)' }}
                   >
                     What actually moves it
                   </th>
@@ -107,18 +107,18 @@ export default function FourLayers() {
               </thead>
               <tbody>
                 {LAYERS.map((l) => (
-                  <tr key={l.layer} style={{ borderBottom: '1px solid var(--d-rule-hairline)' }}>
+                  <tr key={l.layer} style={{ borderBottom: '1px solid var(--s-rule-hairline)' }}>
                     <th
                       scope="row"
                       className="text-h4 font-sans font-semibold py-6 pr-6 align-top"
-                      style={{ color: 'var(--d-accent)' }}
+                      style={{ color: 'var(--s-accent)' }}
                     >
                       {l.layer}
                     </th>
-                    <td className="text-body py-6 pr-6 align-top" style={{ color: 'var(--d-text)' }}>
+                    <td className="text-body py-6 pr-6 align-top" style={{ color: 'var(--s-text)' }}>
                       {l.surface}
                     </td>
-                    <td className="text-body py-6 align-top" style={{ color: 'var(--d-text-muted)' }}>
+                    <td className="text-body py-6 align-top" style={{ color: 'var(--s-text-muted)' }}>
                       {l.moves}
                     </td>
                   </tr>
@@ -129,7 +129,7 @@ export default function FourLayers() {
         </ScrollReveal>
 
         <ScrollReveal stagger={4}>
-          <p className="text-body mt-10 m-0 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+          <p className="text-body mt-10 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
             All four are in every retainer. We do not sell them separately, because the last two do
             not work without the first two. Tiers differ by scope: locations covered, prompts
             tracked, assets produced.

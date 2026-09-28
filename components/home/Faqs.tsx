@@ -47,7 +47,7 @@ export const HOME_FAQS = [
 
 export default function Faqs() {
   return (
-    <section data-theme="dark" className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--d-rule-hairline)' }}>
+    <section className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -65,7 +65,7 @@ export default function Faqs() {
 
           <ScrollReveal stagger={2} className="lg:col-span-8">
             {HOME_FAQS.map((f) => (
-              <details key={f.q} className="group" style={{ borderTop: '1px solid var(--d-rule-hairline)' }}>
+              <details key={f.q} className="group" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
                 {/* min-h 44px on the summary is the pointer target floor, and
                     list-none plus the webkit marker reset removes the native
                     triangle without removing the disclosure semantics. */}
@@ -76,12 +76,12 @@ export default function Faqs() {
                   <span
                     className="font-mono flex-shrink-0 transition-transform duration-200 group-open:rotate-45"
                     aria-hidden="true"
-                    style={{ color: 'var(--d-accent)' }}
+                    style={{ color: 'var(--s-accent)' }}
                   >
                     +
                   </span>
                 </summary>
-                <p className="text-body mt-0 mb-6 max-w-[72ch]" style={{ color: 'var(--d-text-muted)' }}>
+                <p className="text-body mt-0 mb-6 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
                   {f.a}
                 </p>
               </details>
