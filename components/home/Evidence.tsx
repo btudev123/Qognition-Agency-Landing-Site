@@ -56,9 +56,21 @@ const SOURCES = [
     body: 'Search Console added generative AI performance reporting, rolled out to all sites worldwide on 31 August 2026. It reports impressions from AI Overviews, AI Mode and generative AI features in Discover, broken out by page, country and date.',
     caveat:
       'It does not report clicks. So we can show you movement on Google’s AI surfaces from Google’s own numbers, and we cannot show you traffic from them.',
-    source: 'Google Search Central, Introducing Search generative AI performance reports',
-    date: 'Published by Google',
-    href: 'https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports',
+    /* Cites Google's Search Console Help documentation, not the June 2026 Search
+       Central announcement that was here before.
+
+       The announcement is dated 2026/06 in its own URL and introduces a phased
+       rollout. It cannot support the sentence above it, which asserts a 31 August
+       2026 worldwide completion. A card arguing that we date our claims must not
+       link to a source that disagrees with its own date, so the link now points
+       at the page that carries the statement verbatim: "As of August 31, 2026,
+       we've rolled out these insights to all websites worldwide."
+
+       Verified against the live Help page on 2026-09-28. It also confirms the
+       caveat directly: the report defines impressions and never mentions clicks. */
+    source: 'Google Search Console Help, Generative AI performance report (Search)',
+    date: 'Verified 28 September 2026',
+    href: 'https://support.google.com/webmasters/answer/16984139',
   },
 ];
 

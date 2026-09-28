@@ -11,7 +11,14 @@ const sources = {
   ai: { label: 'Google: optimizing for generative AI features', url: 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide' },
   spam: { label: 'Google Search spam policies', url: 'https://developers.google.com/search/docs/essentials/spam-policies' },
   bots: { label: 'OpenAI crawler controls', url: 'https://developers.openai.com/api/docs/bots' },
-  googleReporting: { label: 'Google: Search generative AI performance reports', url: 'https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports' },
+  // Points at Google's Search Console Help documentation rather than the June 2026
+  // Search Central announcement. The announcement introduces a phased rollout and
+  // is dated 2026/06 in its own URL; it cannot source the "worldwide availability
+  // on August 31" sentence it was attached to. The Help page carries that
+  // statement verbatim ("As of August 31, 2026, we've rolled out these insights to
+  // all websites worldwide") and also confirms the impressions-only limit.
+  // Verified against the live page 2026-09-28.
+  googleReporting: { label: 'Google Search Console Help: Generative AI performance report', url: 'https://support.google.com/webmasters/answer/16984139' },
   bingReporting: { label: 'Bing: AI visibility insights', url: 'https://blogs.bing.com/search/2026/6/New-AI-Visibility-Insights-in-Bing-Webmaster-Tools-Intents-Topics-Citation-Share-Compare/' },
   noindex: { label: 'Google: controlling indexing', url: 'https://developers.google.com/search/docs/crawling-indexing/block-indexing' },
   sitemap: { label: 'Google: building a sitemap', url: 'https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap' },
