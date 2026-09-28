@@ -4,6 +4,7 @@ import AIPlatforms from './shared/AIPlatforms';
 import { GROWTH_PILLARS } from '../data/growthPositioning';
 import Industries from './home/Industries';
 import Programme from './home/Programme';
+import Evidence from './home/Evidence';
 
 const icons = [Search, Radar, Target, Workflow];
 export default function AcquisitionHome() {
@@ -36,7 +37,7 @@ export default function AcquisitionHome() {
     </section>
     <Industries />
     <Programme />
-    <section className="growth-shell growth-section growth-measure"><div><p className="growth-eyebrow">MEASURE WHAT MOVES THE BUSINESS</p><h2>Visibility is the start.<br />Pipeline is the conversation.</h2><p>We distinguish what a platform shows, what a visitor does and what sales confirms. Your reporting connects those signals without treating every mention or meeting as a customer.</p><Link href="/insights" className="growth-text-link">Explore the growth library <ArrowRight size={18} /></Link></div><div className="growth-metrics-list">{[['Search visibility', 'Relevant rankings, observed answers and citations'], ['Qualified interest', 'Enquiries, account fit and stated intent'], ['Sales readiness', 'Accepted leads and confirmed buying needs'], ['Commercial progress', 'Opportunities, proposals and won business']].map(([name, description]) => <div key={name}><h3>{name}</h3><p>{description}</p></div>)}</div></section>
+    <Evidence />
     <section className="growth-shell growth-section growth-home-faq"><p className="growth-eyebrow">BEFORE WE TALK</p><h2>A few useful answers.</h2>{[
       ['Do we need all four services?', 'Start with the constraint that matters most. We scope the work around your buyers, existing team and commercial priorities, then connect other disciplines where they help.'],
       ['Can you work alongside our team or agency?', 'Yes. We agree ownership, access and review responsibilities before work begins. Your specialists remain an essential source of product and customer knowledge.'],
