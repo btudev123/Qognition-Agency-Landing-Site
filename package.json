@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/audit-headings.mjs && node scripts/test-growth.cjs && node scripts/check-publication.cjs --check && next build",
+    "build": "pnpm gates && next build && node scripts/check-bundle-budget.mjs",
     "start": "next start",
     "typography": "node scripts/audit-headings.mjs",
+    "budget": "node scripts/check-bundle-budget.mjs --report",
     "typecheck": "tsc --noEmit",
-    "gates": "node scripts/audit-headings.mjs && node scripts/test-growth.cjs && node scripts/check-publication.cjs --check",
+    "gates": "node scripts/audit-headings.mjs && node scripts/check-css-invariants.mjs && node scripts/test-growth.cjs && node scripts/check-publication.cjs --check",
     "register": "node scripts/check-publication.cjs"
   },
   "dependencies": {
