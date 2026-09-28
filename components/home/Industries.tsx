@@ -89,7 +89,7 @@ export default function Industries() {
             paints a 2px seam wherever a cell is missing at a breakpoint. */}
         <ScrollReveal stagger={2} className="mt-12">
           <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [&>article]:border-r [&>article]:border-b [&>article]:border-[var(--d-rule-hairline)]"
+            className="grid grid-cols-1 sm:grid-cols-2 [&>article]:border-r [&>article]:border-b [&>article]:border-[var(--d-rule-hairline)]"
             style={{
               borderTop: '1px solid var(--d-rule-hairline)',
               borderLeft: '1px solid var(--d-rule-hairline)',
@@ -98,8 +98,13 @@ export default function Industries() {
             {VERTICALS.map((v, i) => (
               <article
                 key={v.name}
+                /* Two columns, not three. At three the flagship spans the full
+                   row and the two remaining cells leave one slot empty, which
+                   breaks the lattice's right edge and reads as a rendering bug
+                   rather than as an open grid. At two, every row fills exactly
+                   at every width. */
                 className={`flex flex-col justify-between p-6 sm:p-8 min-h-[220px] ${
-                  v.flagship ? 'sm:col-span-2 lg:col-span-3' : ''
+                  v.flagship ? 'sm:col-span-2' : ''
                 }`}
               >
                 <div>

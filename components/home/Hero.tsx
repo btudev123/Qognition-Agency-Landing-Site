@@ -191,7 +191,7 @@ export default function Hero() {
                     style={{ borderBottom: '1px solid var(--d-rule-hairline)' }}
                   >
                     <span
-                      className="font-mono text-meta tracking-[0.1em] uppercase w-[92px] flex-shrink-0"
+                      className="font-mono text-meta tracking-[0.1em] uppercase w-[76px] sm:w-[92px] flex-shrink-0"
                       style={{ color: 'var(--d-accent)' }}
                     >
                       {s.layer}

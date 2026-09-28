@@ -1,46 +1,52 @@
-import Link from 'next/link';
-import { ArrowUpRight, ArrowRight, Search, Target, Workflow } from 'lucide-react';
-import AIPlatforms from './shared/AIPlatforms';
+import Hero from './home/Hero';
+import BuyingProblem from './home/BuyingProblem';
+import FourLayers from './home/FourLayers';
 import Industries from './home/Industries';
 import Programme from './home/Programme';
 import Evidence from './home/Evidence';
-import FourLayers from './home/FourLayers';
-import BuyingProblem from './home/BuyingProblem';
 import Snapshot from './home/Snapshot';
 import Fit from './home/Fit';
 import Faqs from './home/Faqs';
+import FinalCta from './home/FinalCta';
+import ExitIntentPopup from './shared/ExitIntentPopup';
 
+/* The homepage. `/` renders this; it is the only consumer.
+ *
+ * Every section below is a SERVER COMPONENT. The only client code that reaches
+ * this route is ScrollReveal and MaskReveal — two IntersectionObserver
+ * wrappers, used strictly as wrappers around server children — plus the
+ * exit-intent listener. ADR-0005 §2.
+ *
+ * THE MISTAKE TO WATCH FOR, and the one Owen should look for first: a section
+ * authored with the reveal wrapper INSIDE a client section instead of a server
+ * parent passing {children} into the wrapper. Do it the wrong way round and the
+ * entire section client-renders, the budget in ADR-0005 §5 fails, and nothing
+ * about the diff looks wrong.
+ *
+ * data-theme="dark" now sits here rather than on each section, because the last
+ * light growth-* block is gone. Dark is the primary surface (CLAUDE.md §9);
+ * long-form reading surfaces — /insights and /case-studies bodies, /legal —
+ * omit the attribute and inherit the :root light tokens.
+ *
+ * Section order is docs/copy/home.md, with two departures, both recorded there:
+ * the client-logo strip is not rendered (no logos with written permission, so
+ * §4 says omit rather than fill), and the competitor-gap block is not rendered
+ * (carries [NEEDS DATA] for a dated audit that does not exist).
+ */
 export default function AcquisitionHome() {
-  return <main id="main-content" className="growth-home">
-    <section className="growth-hero growth-shell">
-      <div className="growth-eyebrow"><span className="growth-dot" /> AI-native B2B growth agency</div>
-      <div className="growth-hero-grid">
-        <div>
-          <h1 className="text-display growth-display">Get found.<br />Get shortlisted.<br /><span>Build pipeline.</span></h1>
-          <p className="growth-hero-copy">Help buyers discover your business across Google and AI search. Turn that visibility into qualified demand with content, paid media, ABM and connected revenue systems.</p>
-          <div className="growth-actions"><Link href="/book" className="growth-button">Discuss your growth plan <ArrowUpRight size={18} /></Link><Link href="/free-ai-audit" className="growth-text-link">Request an AI visibility audit <ArrowRight size={17} /></Link></div>
-        </div>
-        <aside className="growth-system" aria-label="How discovery connects to revenue">
-          <div className="growth-system-top"><span>THE CONNECTED BUYER JOURNEY</span><span className="growth-dot" /></div>
-          <div className="growth-query"><span>YOUR NEXT BUYER IS ASKING</span><p>“Who can solve<br /><strong>this problem?</strong>”</p></div>
-          <div className="growth-system-line" aria-hidden="true" />
-          <div className="growth-system-node"><Search size={19} /><div><strong>Discovery</strong><span>Google · AI search · expert content</span></div><span className="growth-node-number">01</span></div>
-          <div className="growth-system-line" aria-hidden="true" />
-          <div className="growth-system-node"><Target size={19} /><div><strong>Consideration</strong><span>Relevant proof · clear next steps</span></div><span className="growth-node-number">02</span></div>
-          <div className="growth-system-line" aria-hidden="true" />
-          <div className="growth-system-node growth-system-node--active"><Workflow size={19} /><div><strong>Qualified pipeline</strong><span>Sales conversations · opportunities</span></div><ArrowUpRight size={20} /></div>
-          <p className="growth-system-caption">One strategy. Connected from the first question to the sales conversation.</p>
-        </aside>
-      </div>
-      <AIPlatforms />
-    </section>
-    <BuyingProblem />
-    <FourLayers />
-    <Industries />
-    <Programme />
-    <Evidence />
-    <Snapshot />
-    <Fit />
-    <Faqs />
-  </main>;
+  return (
+    <main id="main-content" data-theme="dark">
+      <Hero />
+      <BuyingProblem />
+      <FourLayers />
+      <Industries />
+      <Programme />
+      <Evidence />
+      <Snapshot />
+      <Fit />
+      <Faqs />
+      <FinalCta />
+      <ExitIntentPopup />
+    </main>
+  );
 }

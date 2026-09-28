@@ -22,9 +22,12 @@ export const absoluteUrl = (path = '/') => `${SITE_URL}${path === '/' ? '' : pat
  * Anything not listed here keeps the generated title.
  */
 export const SEO_OVERRIDES: Record<string, { title: string; description: string }> = {
+  // Homepage title and description are the /-row of this map, not app/page.tsx.
+  // docs/copy/home.md carries the source of both.
   '/': {
-    title: 'AI-native B2B Growth Agency | AI Search, Demand & ABM | Qognition',
-    description: 'Get found. Get shortlisted. Build pipeline. Qognition connects AI search, demand generation, ABM and revenue systems for B2B businesses.'
+    title: 'AI Search Visibility for B2B Firms | Qognition Agency',
+    description:
+      'We get B2B firms named when buyers ask ChatGPT, Perplexity and Google AI who to hire. GEO, AI SEO, SEO and Local SEO in one retainer. Start with a free snapshot.'
   },
   '/services': {
     title: 'Digital Marketing Services: SEO, PPC, GEO & Content | Qognition',
