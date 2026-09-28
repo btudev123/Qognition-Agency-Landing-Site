@@ -92,12 +92,35 @@ closed union with `.example` domains, so a real company name is a compile error,
 
 ## 2. Who we sell to
 
+### The ICP, final. Locked by the operator 2026-09-28.
+
+> **Any B2B company doing $3M to $1B+ in revenue, with 20 to 10,000+ staff, that needs AI SEO, SEO
+> or PPC.**
+
+That sentence is the gate, and it is the whole gate. Read it literally before narrowing it.
+
 | | |
 |---|---|
-| Revenue | $3M to $1B+, **building for $3M–$50M first** |
-| Staff | 20 to 1,000+, **building for 20–200 first** |
+| Revenue | $3M to $1B+ |
+| Staff | 20 to 10,000+ |
+| Business model | B2B. Not B2C, not B2B2C where the buyer is a consumer |
+| Need | AI SEO, SEO or PPC. **Any one of the three qualifies.** Not all three |
 | Markets | US primary, Australia secondary. USD only |
-| ICP taxonomy | **`data/b2b/verticals.ts` is canonical.** 15 meta-verticals, 120 sub-niches |
+| Go-to-market taxonomy | **`data/b2b/verticals.ts`.** 15 meta-verticals, 120 sub-niches |
+
+**The taxonomy is a route to market, not a qualifier.** This is the distinction that matters and it
+is easy to get backwards. A B2B firm inside the revenue and staff band qualifies whether or not its
+industry appears in `verticals.ts`. The 15 verticals exist because a page has to be written to
+somebody in particular and a generic page converts nobody — not because a prospect outside them is
+disqualified. A well-fitting inbound lead from an industry we never listed is a lead, and it routes
+to a qualification call like any other.
+
+**Any one of the three services qualifies.** A firm that wants only PPC is in the ICP. A firm that
+wants only classic SEO is in the ICP. Do not write copy that requires a prospect to want AI search
+before we will talk to them; AI search is what we lead with, not a condition of entry.
+
+The upper bound moved today. It previously read "20 to 1,000+ staff, building for 20–200 first."
+The staged-build hedges are gone: the operator states the band plainly and the site should too.
 
 ### The ICP taxonomy is locked
 
@@ -137,10 +160,12 @@ IT leaders, finance leaders. Keep these distinct on every page.
 cybersecurity, and B2B SaaS (partial), all white-label under NDA, which is why no client is named.
 Everything else is capability and method, and the pages must say so rather than implying a history.
 
-**Not a fit:** pre-revenue, low-ticket transactional, needs leads this week, wants a one-off project,
-cannot edit their own website, or has no sales process that follows up.
+**Not a fit**, and these are the only disqualifiers: pre-revenue, B2C, low-ticket transactional,
+needs leads this week, wants a one-off project, cannot edit their own website, or has no sales
+process that follows up. Every one of these is about whether the work can succeed, not about which
+industry the prospect is in.
 
-Larger firms stay eligible as inbound and route to a qualification call.
+Firms above the band stay eligible as inbound and route to a qualification call.
 
 ---
 
