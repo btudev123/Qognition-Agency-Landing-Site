@@ -3,6 +3,7 @@ import { ArrowUpRight, ArrowRight, Search, Target, Workflow, Radar } from 'lucid
 import AIPlatforms from './shared/AIPlatforms';
 import { GROWTH_PILLARS } from '../data/growthPositioning';
 import Industries from './home/Industries';
+import Programme from './home/Programme';
 
 const icons = [Search, Radar, Target, Workflow];
 export default function AcquisitionHome() {
@@ -34,11 +35,7 @@ export default function AcquisitionHome() {
       <div className="growth-pillar-grid">{GROWTH_PILLARS.map((pillar, i) => { const Icon = icons[i]; return <article key={pillar.slug} className="growth-pillar"><div className="growth-card-top"><span>{pillar.number}</span><Icon size={25} strokeWidth={1.4} /></div><h3><Link href={pillar.href}>{pillar.name} <ArrowUpRight size={24} /></Link></h3><p className="growth-pillar-outcome">{pillar.outcome}</p><p>{pillar.description}</p><ul>{pillar.services.map(service => <li key={service}>{service}</li>)}</ul></article>; })}</div>
     </section>
     <Industries />
-    <section className="growth-shell growth-section"><div className="growth-section-head"><div><p className="growth-eyebrow">HOW WE WORK</p><h2>Understand the opportunity.<br />Then do the work.</h2></div><Link href="/process" className="growth-text-link">Our approach <ArrowUpRight size={18} /></Link></div><ol className="growth-process-grid">{[
-      ['01', 'Find the commercial gap', 'Agree your priority buyers, markets and offers. Review your website, search data, competitor coverage, conversion paths and sales feedback.'],
-      ['02', 'Build the connected program', 'Prioritize the pages, campaigns and systems that help those buyers move forward. Give every deliverable an owner and a clear purpose.'],
-      ['03', 'Measure and improve', 'Review visibility, qualified enquiries and pipeline together. Use what sales learns to decide what to improve next.'],
-    ].map(([num, title, body]) => <li key={num}><span>{num}</span><h3>{title}</h3><p>{body}</p></li>)}</ol></section>
+    <Programme />
     <section className="growth-shell growth-section growth-measure"><div><p className="growth-eyebrow">MEASURE WHAT MOVES THE BUSINESS</p><h2>Visibility is the start.<br />Pipeline is the conversation.</h2><p>We distinguish what a platform shows, what a visitor does and what sales confirms. Your reporting connects those signals without treating every mention or meeting as a customer.</p><Link href="/insights" className="growth-text-link">Explore the growth library <ArrowRight size={18} /></Link></div><div className="growth-metrics-list">{[['Search visibility', 'Relevant rankings, observed answers and citations'], ['Qualified interest', 'Enquiries, account fit and stated intent'], ['Sales readiness', 'Accepted leads and confirmed buying needs'], ['Commercial progress', 'Opportunities, proposals and won business']].map(([name, description]) => <div key={name}><h3>{name}</h3><p>{description}</p></div>)}</div></section>
     <section className="growth-shell growth-section growth-home-faq"><p className="growth-eyebrow">BEFORE WE TALK</p><h2>A few useful answers.</h2>{[
       ['Do we need all four services?', 'Start with the constraint that matters most. We scope the work around your buyers, existing team and commercial priorities, then connect other disciplines where they help.'],
