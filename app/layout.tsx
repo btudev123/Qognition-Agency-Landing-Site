@@ -4,6 +4,7 @@ import { Geist } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import './growth.css';
+import { organizationSchema } from '../lib/schema';
 import { SITE_URL } from '../lib/seo';
 import Navigation from '../components/shared/Navigation';
 import Footer from '../components/shared/Footer';
@@ -70,28 +71,12 @@ export const viewport: Viewport = {
   themeColor: '#080808',
 };
 
-const organizationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Qognition',
-  url: SITE_URL,
-  logo: `${SITE_URL}/favicon.png`,
-  description:
-    'AI-native B2B growth agency connecting AI search, demand generation, ABM and revenue systems.',
-  knowsAbout: ['AI Search', 'Demand Generation', 'Account-Based Marketing', 'Revenue Operations'],
-  sameAs: [
-    'https://www.linkedin.com/company/qognition-tech',
-    'https://twitter.com/qognition_tech',
-    'https://www.instagram.com/qognition_agency/',
-    'https://www.facebook.com/qognitiontech',
-    'https://www.youtube.com/@QognitionAgency',
-  ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    email: 'hello@qognitionagency.com',
-    contactType: 'sales',
-  },
-};
+// One Organization definition for the whole site, imported from lib/schema.ts.
+// This file previously declared its own inline copy while lib/schema.ts declared
+// another, so /contact and every other page described Qognition differently.
+// Two Organization nodes on one domain is a split entity, and entity clarity is
+// the thing this business sells.
+const orgSchema = organizationSchema();
 
 const websiteSchema = {
   '@context': 'https://schema.org',
@@ -164,7 +149,7 @@ gtag('config', '${GA4_ID}');`}
         )}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
         <script
           type="application/ld+json"

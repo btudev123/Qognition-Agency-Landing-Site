@@ -1,4 +1,5 @@
 import { SITE_URL } from './seo';
+import { HQ_CITY, HQ_REGION, HQ_COUNTRY } from '../data/siteConfig';
 import type { SpokeConfig } from './spokes';
 
 const absoluteUrl = (path: string) => `${SITE_URL}${path}`;
@@ -11,8 +12,24 @@ export function organizationSchema() {
     url: SITE_URL,
     logo: `${SITE_URL}/favicon.png`,
     description:
-      'AI-native B2B growth agency connecting AI search, demand generation, ABM and revenue systems.',
-    knowsAbout: ['AI Search', 'Demand Generation', 'Account-Based Marketing', 'Revenue Operations'],
+      'B2B AI search visibility agency. We get established B2B firms found when their buyers ask an AI which vendor to hire.',
+    knowsAbout: [
+      'AI Search Visibility',
+      'Generative Engine Optimization',
+      'AI SEO',
+      'Answer Engine Optimization',
+      'Local SEO',
+      'Search Engine Optimization',
+      'Entity Optimization',
+    ],
+    // One address, matching the third-party directory listings. Entity
+    // resolution depends on this string being identical everywhere.
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: HQ_CITY,
+      addressRegion: HQ_REGION,
+      addressCountry: HQ_COUNTRY,
+    },
     sameAs: [
       'https://www.linkedin.com/company/qognition-tech',
       'https://twitter.com/qognition_tech',
