@@ -48,9 +48,9 @@ body {
   cursor: auto;
 }
 
-@media (max-width: 1023px) {
-  body { cursor: auto; }
-}
+/* The `@media (max-width: 1023px) { body { cursor: auto } }` block that sat here
+   was a no-op — `body` sets `cursor: auto` six lines above. Deleted rather than
+   converted to a min-width rule (ADR-0004 §4). */
 
 ::selection {
   background: var(--accent);
@@ -77,21 +77,11 @@ textarea:focus-visible,
 
 /* ─── TYPOGRAPHY ──────────────────────────────────────────────────────────── */
 
-/* Gradient text — light sections (ink → accent) */
-.rf-gradient-text {
-  background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Gradient text — dark sections (white → accent) */
-.rf-gradient-text-dark {
-  background: linear-gradient(135deg, #FAFAF8 0%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* `.rf-gradient-text` and `.rf-gradient-text-dark` were deleted here. A gradient
+   headline has no single foreground colour, so it cannot be verified against
+   AA, so it cannot ship on a site whose accessibility bar is AA. The same
+   visual idea, checkable: a solid --d-accent-display word inside a --d-text
+   heading. docs/design/motion.md §2, docs/design/tokens-dark.md §8. */
 
 /* ─── LINK HOVER ──────────────────────────────────────────────────────────── */
 
@@ -114,14 +104,20 @@ textarea:focus-visible,
 
 /* ─── REVEAL ANIMATIONS ───────────────────────────────────────────────────── */
 
+/* 8px rise over 200ms. It was 40px over 1000ms, which is four times the
+   ceiling in docs/design/motion.md §4 and reads as the page assembling itself
+   rather than as content arriving.
+
+   `opacity: 1` in the resting state is deliberate and must stay: no reveal
+   component may start at `opacity: 0` in the DOM, or the page is blank with JS
+   off and the H1 stops being an LCP candidate. The reveal is the 8px, not a
+   fade-in. */
 .rf-reveal {
   opacity: 1;
-  transform: translateY(40px);
-  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(8px);
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .rf-reveal.is-in {
-  opacity: 1;
   transform: translateY(0);
 }
 
@@ -171,30 +167,9 @@ textarea:focus-visible,
   50%       { opacity: 0.38; }
 }
 
-/* ─── FLOATING ────────────────────────────────────────────────────────────── */
-
-@keyframes rf-float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-18px); }
-}
-.rf-float { animation: rf-float 6s ease-in-out infinite; }
-
-/* ─── HERO SINE WAVE ANIMATIONS ───────────────────────────────────────────── */
-
-@keyframes hero-wave-1 {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  33%       { transform: translateY(-30px) scale(1.008); }
-  66%       { transform: translateY(20px) scale(0.994); }
-}
-@keyframes hero-wave-2 {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  33%       { transform: translateY(24px) scale(0.994); }
-  66%       { transform: translateY(-22px) scale(1.008); }
-}
-@keyframes hero-wave-3 {
-  0%, 100% { transform: translateY(0px) scaleX(1); }
-  50%       { transform: translateY(-16px) scaleX(1.012); }
-}
+/* `.rf-float` and `hero-wave-1/2/3` deleted. A permanently floating element is
+   decoration with a permanent CPU cost; the wave keyframes had no callers at
+   all. docs/design/motion.md §2. */
 
 /* ─── ANIMATED GRADIENT MESH ORBS ─────────────────────────────────────────── */
 
@@ -214,21 +189,9 @@ textarea:focus-visible,
   66%       { transform: translate(-4%, -5%) scale(1.10); }
 }
 
-/* ─── GLOW PULSE ──────────────────────────────────────────────────────────── */
-
-@keyframes rf-glow {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.9; }
-}
-
-/* ─── NOISE TEXTURE ───────────────────────────────────────────────────────── */
-
-.rf-noise {
-  position: fixed; inset: 0;
-  width: 100%; height: 100%;
-  pointer-events: none; z-index: 9998;
-  opacity: 0.032; mix-blend-mode: overlay;
-}
+/* `rf-glow` and `.rf-noise` deleted. Neither had a caller — the noise overlay
+   that actually ships is `.rf-noise-layer`, scoped inside
+   components/NoiseLayer.tsx. docs/design/motion.md §2. */
 
 /* ─── IMAGE PLACEHOLDER (dark sections) ───────────────────────────────────── */
 
@@ -271,18 +234,9 @@ textarea:focus-visible,
 .rf-studio-border { border: 1px solid var(--border); transition: border-color 0.4s ease; }
 .rf-studio-border:hover { border-color: var(--border-strong); }
 
-/* ─── SPOKE CARD GLOW ─────────────────────────────────────────────────────── */
-
-.rf-spoke-glow { position: relative; }
-.rf-spoke-glow::before {
-  content: '';
-  position: absolute; inset: -20px;
-  background: radial-gradient(circle at 50% 50%, var(--spoke-glow, transparent) 0%, transparent 65%);
-  opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none; z-index: 0;
-}
-.rf-spoke-glow:hover::before { opacity: 1; }
+/* `.rf-spoke-glow` deleted. The card hover already carries an inset glow, and
+   two glow layers on one hover is one too many. Replaced by `.rf-card` below.
+   docs/design/tokens-dark.md §8, docs/design/motion.md §2. */
 
 /* ─── CUSTOM CURSOR ───────────────────────────────────────────────────────── */
 
@@ -469,9 +423,345 @@ textarea:focus-visible,
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+
+    /* A scroll-driven animation has no duration, so zeroing animation-duration
+       above does nothing to it — the timeline still drives the keyframes off
+       scroll position. This is the line that actually stops .rf-ghost.
+       ADR-0005 §4. Do not remove it when tidying the rule above. */
+    animation-timeline: none !important;
   }
   html { scroll-behavior: auto; }
   .rf-reveal { opacity: 1 !important; transform: none !important; }
   .rf-mask > span { transform: none !important; }
-  .rf-float { animation: none !important; }
+
+  /* With the timeline off, the ghost wordmark needs a resting position or it
+     sits at the `from` keyframe. Mid-scroll is the composed position. */
+  .rf-ghost > span { transform: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK SURFACE LAYER
+   ═══════════════════════════════════════════════════════════════════════════
+
+   Spec: docs/design/tokens-dark.md (Elena, 2026-09-28). CLAUDE.md §9: dark is
+   the primary surface; light is retained for long-form reading surfaces.
+
+   Scoped to [data-theme="dark"], never :root, so the per-route split stays
+   expressible from one attribute without an !important war on every light page
+   (ADR-0004 §2.2). A route opts in by setting the attribute on its wrapper; a
+   route that omits it inherits the :root light tokens unchanged.
+
+   These live in globals.css rather than a new app/tokens-dark.css because
+   app/layout.tsx imports at most two stylesheets and it already imports two
+   (globals.css, growth.css). A third import is not available until ADR-0004 T3
+   deletes growth.css.
+
+   Teal values are written as literals here with their verified ratios. The
+   named ramp (--teal-400 etc.) lives in the inert app/tokens.css and lands on
+   :root in ADR-0004 T1; when it does, these five declarations point at it
+   instead. Duplicating three hex values for one tranche beats doing T1's
+   palette merge inside an ADR-0005 commit, where nobody would review it.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] {
+  /* surfaces — warm-neutral, same hue family as --ink #0D0C0A.
+     Contrast figures are vs #FFFFFF. */
+  --d-bg:             #0A0A09;   /* 19.81  page. nothing is darker */
+  --d-surface-1:      #131312;   /* 18.59  card field, section band */
+  --d-surface-2:      #1C1C1A;   /* 17.07  raised: popover, sticky bar */
+  --d-surface-3:      #262623;   /* 15.19  hover / selected. never at rest */
+
+  /* text — every ratio below is against --d-surface-3, the lightest surface,
+     so each token is valid on all four without a lookup */
+  --d-text:           #F5F4F1;   /* 13.81 */
+  --d-text-muted:     #A8A49B;   /*  6.11 */
+  --d-text-faint:     #918D84;   /*  4.59  the floor. nothing below it */
+
+  /* accent. Note the inversion from the light page: teal-500, banned as text
+     on white at 2.49:1, is a workhorse here at 6.11:1. teal-700 (--accent-deep,
+     the light focus ring) is 2.87:1 on dark and is banned here. */
+  --d-accent:         #2DD4BF;   /* teal-400  8.16  accent text, active state */
+  --d-accent-display: #5EEAD4;   /* teal-300 11.12  accent word in display */
+  --d-accent-graphic: #14B8A6;   /* teal-500  6.11  strokes, dots, fills */
+
+  /* cta — ink on teal, never white on teal (white on teal-400 is 1.59:1).
+     Hover raises contrast, as it must. */
+  --d-cta-fill:       #2DD4BF;   /* 10.64 against --d-cta-text */
+  --d-cta-fill-hover: #5EEAD4;   /* 13.39 against --d-cta-text */
+  --d-cta-text:       #0A0A09;
+
+  /* rules. hairline and rule are decorative and must never be the only thing
+     telling you a control exists; --d-rule-strong clears 3:1 on all four
+     surfaces and is the one to use for that. */
+  --d-rule-hairline:  rgba(255,255,255,0.09);
+  --d-rule:           rgba(255,255,255,0.16);
+  --d-rule-strong:    rgba(255,255,255,0.34);  /* 3.05 */
+  --d-focus-ring:     #FFFFFF;                 /* 15.19 */
+
+  --d-elev-overlay:   0 16px 48px rgba(0,0,0,0.6);
+}
+
+[data-theme="dark"] {
+  background: var(--d-bg);
+  color: var(--d-text);
+}
+
+/* The light ring is --accent-deep #0F766E at 5.47:1 on white. On --d-surface-3
+   that same teal is 2.87:1 and fails SC 1.4.11, so the ring inverts to white
+   here. tokens-dark.md §4. */
+[data-theme="dark"] a:focus-visible,
+[data-theme="dark"] button:focus-visible,
+[data-theme="dark"] input:focus-visible,
+[data-theme="dark"] select:focus-visible,
+[data-theme="dark"] textarea:focus-visible,
+[data-theme="dark"] summary:focus-visible,
+[data-theme="dark"] details:focus-visible,
+[data-theme="dark"] [tabindex]:focus-visible {
+  outline: 2px solid var(--d-focus-ring);
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] ::selection {
+  background: var(--d-accent);
+  color: var(--d-bg);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar { background: var(--d-bg); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.32); }
+
+/* Optical weight drops on dark: light text on a dark field reads heavier than
+   the same weight on white. tokens-dark.md §9. One rule, not a new token. */
+[data-theme="dark"] .text-display,
+[data-theme="dark"] .text-h1 { font-weight: 500; letter-spacing: -0.035em; }
+
+/* ═══ GHOST WORDMARK — the two parallax background words ══════════════════
+   Was two framer-motion useScroll/useTransform subscriptions, which forced
+   'use client' onto the two largest sections of the page. It is a decorative
+   background translation, so it became a scroll-driven CSS animation and the
+   sections went back to being server components. ADR-0005 §4.
+
+   Outside the @supports block the word renders at its mid-scroll position and
+   never moves. That costs a user nothing, which is the constraint that makes
+   the fallback acceptable — nothing meaningful may ever be attached to this. */
+
+.rf-ghost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.rf-ghost > span {
+  font-size: clamp(110px, 22vw, 320px);
+  font-weight: 700;
+  letter-spacing: -0.07em;
+  line-height: 1;
+  white-space: nowrap;
+  padding-left: 5%;
+  color: var(--rf-ghost-ink, rgba(255,255,255,0.022));
+}
+
+@keyframes rf-ghost-drift {
+  from { transform: translateY(var(--rf-ghost-from, 40px)); }
+  to   { transform: translateY(var(--rf-ghost-to, -40px)); }
+}
+
+/* Two ceilings, both from docs/design/motion.md §3.1, and the defaults below sit
+   exactly on them:
+     amplitude  80px total across the section  (40 up, 40 down)
+     rate       0.04 for a giant background word
+
+   The orphaned app/HomePage.tsx ran SERVICES at ±60px, which is 120px total and
+   over the amplitude cap. It comes down to ±40px here.
+
+   No parallax below 1024px (motion.md §3.4). Touch scrolling is momentum-driven,
+   so a scroll-linked transform reads as jank rather than depth, and the
+   compositing cost lands on the weakest devices in the traffic. Expressing that
+   as a media query around the @supports means no component has to know. */
+@media (min-width: 1024px) {
+  @supports (animation-timeline: view()) {
+    .rf-ghost > span {
+      animation: rf-ghost-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+
+/* ═══ HOVERABLE CARDS ══════════════════════════════════════════════════════
+   Three useState(false) hover flags in the orphaned app/HomePage.tsx responded
+   to onMouseEnter only, so every one of those cards was invisible to keyboard
+   users — a WCAG 2.4.7 gap. Every :hover below therefore carries a matching
+   :focus-visible, and the state left React entirely. ADR-0005 §3. */
+
+.rf-hoverable {
+  text-decoration: none;
+  transition: background 0.45s ease, color 0.4s ease, box-shadow 0.45s ease;
+}
+
+/* the arrow that slides on hover */
+.rf-arrow {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rf-hoverable:hover .rf-arrow,
+.rf-hoverable:focus-visible .rf-arrow { transform: translateX(6px); }
+
+/* service / layer card on a dark field.
+   One background step to --d-surface-3 plus an inset bloom at the 0.06 ceiling.
+   The separate .rf-spoke-glow ::before halo is deliberately not used with this;
+   two glow layers on one hover is one too many. tokens-dark.md §8. */
+.rf-card {
+  background: transparent;
+  color: var(--d-text);
+}
+.rf-card:hover,
+.rf-card:focus-visible {
+  background: var(--d-surface-3);
+  box-shadow: inset 0 0 80px rgba(20, 184, 166, 0.06);
+}
+
+.rf-card .rf-dot {
+  background: var(--d-rule-strong);
+  transition: background 0.45s ease, box-shadow 0.45s ease;
+}
+.rf-card:hover .rf-dot,
+.rf-card:focus-visible .rf-dot {
+  background: var(--d-accent-graphic);
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.5);
+}
+
+.rf-card .rf-card-label { color: var(--d-text-faint); transition: color 0.45s ease; }
+.rf-card:hover .rf-card-label,
+.rf-card:focus-visible .rf-card-label { color: var(--d-accent); }
+
+/* sub-items fade up from 0.45 rather than from 0 — at 0 they are invisible and
+   the card reads as empty until a pointer touches it, which no keyboard or
+   touch user ever does. */
+.rf-card .rf-sub {
+  opacity: 0.45;
+  transform: translateX(-4px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.rf-card:hover .rf-sub,
+.rf-card:focus-visible .rf-sub { opacity: 1; transform: none; }
+.rf-card .rf-sub:nth-child(2) { transition-delay: 0.04s; }
+.rf-card .rf-sub:nth-child(3) { transition-delay: 0.08s; }
+.rf-card .rf-sub:nth-child(4) { transition-delay: 0.12s; }
+
+/* industry cell — the invert. On a light ground it went to near-black; on a
+   dark ground the equivalent step is --d-surface-3, which is the token whose
+   whole job is "hover, never at rest". */
+.rf-cell { background: var(--d-bg); color: var(--d-text); }
+.rf-cell:hover,
+.rf-cell:focus-visible { background: var(--d-surface-3); }
+.rf-cell .rf-cell-meta { color: var(--d-text-faint); transition: color 0.4s ease; }
+.rf-cell:hover .rf-cell-meta,
+.rf-cell:focus-visible .rf-cell-meta { color: var(--d-accent); }
+
+/* ═══ BUTTONS ═════════════════════════════════════════════════════════════
+   min-height 44px is the pointer target floor, not a style choice. */
+
+.rf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 14px 26px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+/* ink on teal, never white on teal — white on teal-400 is 1.59:1.
+   Hover moves to teal-300, which raises contrast rather than lowering it. */
+.rf-btn--primary {
+  background: var(--d-cta-fill);
+  color: var(--d-cta-text);
+  border-color: var(--d-cta-fill);
+}
+.rf-btn--primary:hover,
+.rf-btn--primary:focus-visible {
+  background: var(--d-cta-fill-hover);
+  border-color: var(--d-cta-fill-hover);
+}
+
+.rf-btn--secondary {
+  background: transparent;
+  color: var(--d-text);
+  border-color: var(--d-rule-strong);
+}
+.rf-btn--secondary:hover,
+.rf-btn--secondary:focus-visible {
+  background: var(--d-surface-3);
+  border-color: var(--d-text);
+}
+
+/* ═══ MONO LABEL ══════════════════════════════════════════════════════════ */
+
+.rf-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;          /* the 13px mono floor from docs/design/tokens.md */
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--d-text-faint);
+}
+.rf-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.rf-eyebrow--accent { color: var(--d-accent); }
+
+/* ═══ MARQUEE ═════════════════════════════════════════════════════════════
+   Edge fades read from --rf-marquee-edge so the same component works on either
+   ground without the caller passing a colour. */
+
+.rf-marquee { position: relative; overflow: hidden; white-space: nowrap; padding: 14px 0; }
+.rf-marquee::before,
+.rf-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.rf-marquee::before { left: 0;  background: linear-gradient(to right, var(--rf-marquee-edge, var(--d-bg)), transparent); }
+.rf-marquee::after  { right: 0; background: linear-gradient(to left,  var(--rf-marquee-edge, var(--d-bg)), transparent); }
+.rf-marquee-track {
+  display: inline-flex;
+  gap: 56px;
+  animation: rf-marquee var(--rf-marquee-speed, 60s) linear infinite;
+  will-change: transform;
+}
+
+/* ═══ TIMELINE RAIL ═══════════════════════════════════════════════════════ */
+
+/* 320ms, no delay. The orphaned file drew this rule with `rf-page-in` at 1500ms
+   behind a 500ms delay, so the timeline finished drawing itself two seconds
+   after the reader had already read the four steps. motion.md §4 row 6. */
+.rf-rail {
+  background: linear-gradient(to right, var(--d-accent-graphic), var(--d-rule-hairline));
+  transform-origin: left;
+  animation: rf-rail-draw 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes rf-rail-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }

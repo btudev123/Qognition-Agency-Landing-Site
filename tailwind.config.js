@@ -21,6 +21,26 @@ export default {
         border: 'var(--border)',
         'border-strong': 'var(--border-strong)',
         'card-bg': 'var(--card-bg)',
+
+        /* Dark surface layer. Additive — no key above changes. These resolve
+           only inside a [data-theme="dark"] subtree; outside one the custom
+           property is undefined and the utility paints nothing, which is the
+           intended failure mode: a dark utility on a light page is a bug and
+           should look like one. See app/globals.css and
+           docs/design/tokens-dark.md. */
+        'd-bg': 'var(--d-bg)',
+        'd-1': 'var(--d-surface-1)',
+        'd-2': 'var(--d-surface-2)',
+        'd-3': 'var(--d-surface-3)',
+        'd-text': 'var(--d-text)',
+        'd-muted': 'var(--d-text-muted)',
+        'd-faint': 'var(--d-text-faint)',
+        'd-accent': 'var(--d-accent)',
+        'd-accent-display': 'var(--d-accent-display)',
+        'd-accent-graphic': 'var(--d-accent-graphic)',
+        'd-rule': 'var(--d-rule-hairline)',
+        'd-rule-2': 'var(--d-rule)',
+        'd-rule-3': 'var(--d-rule-strong)',
       },
       fontFamily: {
         sans: ['var(--font-geist)', 'Geist', 'Inter Tight', 'system-ui', 'sans-serif'],
@@ -63,14 +83,6 @@ export default {
           '33%': { transform: 'translate(3%, 7%) scale(0.98)' },
           '66%': { transform: 'translate(-4%, -5%) scale(1.10)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-18px)' },
-        },
-        glow: {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '0.9' },
-        },
       },
       animation: {
         'slide-up': 'slide-up 0.3s ease-out',
@@ -82,8 +94,6 @@ export default {
         'orb-drift-a': 'orb-drift 18s ease-in-out infinite',
         'orb-drift-b': 'orb-drift-b 24s ease-in-out infinite 4s',
         'orb-drift-c': 'orb-drift-c 30s ease-in-out infinite 10s',
-        float: 'float 6s ease-in-out infinite',
-        glow: 'glow 3s ease-in-out infinite',
       },
     },
   },
