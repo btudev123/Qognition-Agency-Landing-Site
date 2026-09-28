@@ -61,11 +61,17 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.28); }
 
+/* Focus ring uses --accent-deep (#0F766E, 5.47:1 on white), not --accent
+   (#14B8A6, 2.49:1). WCAG 2.1 SC 1.4.11 requires 3:1 for focus indicators, so
+   the brighter teal failed on every focusable element on the site. growth.css:23
+   already used the correct value; this brings globals.css in line. */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-deep);
   outline-offset: 3px;
 }
 

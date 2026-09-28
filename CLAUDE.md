@@ -222,8 +222,19 @@ Events, `snake_case`, defined once in `lib/analytics.ts`:
 
 ## 9. Design
 
-White background, near-black text, teal accents and CTAs. Strong typography, generous spacing,
-restrained motion, accessible contrast and visible focus states, excellent mobile.
+**Dark is the primary surface.** Near-black ground, large display type, teal accents, bordered card
+grids with mono uppercase labels. This is the language of the design the operator chose, and it is
+already built in the repo. Light is retained for long-form reading surfaces (articles, docs, legal).
+
+Dark tokens are scoped to `[data-theme="dark"]`, never `:root`, so a per-route split stays
+expressible without an `!important` war. `app/layout.tsx` imports at most two stylesheets.
+
+Strong typography, generous spacing, restrained motion, accessible contrast and visible focus states,
+excellent mobile.
+
+**The focus ring is `--accent-deep` (#0F766E, 5.47:1), never `--accent` (#14B8A6, 2.49:1).** The
+brighter teal fails WCAG 2.1 SC 1.4.11 and was the site-wide focus indicator until 2026-09-28. Use
+`--accent-fill` for graphics that are not text or indicators.
 
 - Real screenshots, diagrams and evidence. **No decorative dashboards with invented metrics.**
 - No stock photography of people in offices.
