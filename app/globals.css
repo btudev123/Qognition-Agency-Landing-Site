@@ -32,6 +32,27 @@
   --border-strong: rgba(0, 0, 0, 0.14);
   --card-bg: #FFFFFF;
 
+  /* Primary control fill. Light ground: white on teal-700, 5.47:1. This pair
+     inverts on dark (ink on teal-400, 10.64:1) and a component cannot know
+     which ground it is on, so it reads these rather than hardcoding either.
+     components/ui/Button.tsx previously shipped teal-500 under teal-700 text at
+     2.20:1. */
+  --btn-primary-bg:       var(--accent-deep);   /* #0F766E */
+  --btn-primary-bg-hover: #115E59;              /* teal-800, 7.58:1 — hover raises contrast */
+  --btn-primary-fg:       #FFFFFF;
+
+  /* Error text, 5.95:1 on --bg #F8F5EF. Tailwind's red-400, which shipped
+     before, is 2.54:1 there. Colour is never the only error signal — see the
+     aria-invalid / aria-describedby pair in components/ui/Input.tsx. */
+  --error-text: #B91C1C;
+
+  /* The logo tail. teal-700 on light (5.47:1, clears the 3:1 graphic
+     threshold with room); teal-400 under [data-theme="dark"], where teal-700
+     is 2.87:1 and fails. Never --accent #14B8A6, which is 2.49:1 and is
+     graphics-only per CLAUDE.md §9 — the tail is a brand element that has to
+     hold at 16px. */
+  --logo-accent: var(--accent-deep);
+
   --radius: 0px;
   --radius-lg: 0px;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
@@ -504,6 +525,14 @@ textarea:focus-visible,
 [data-theme="dark"] {
   background: var(--d-bg);
   color: var(--d-text);
+  --logo-accent: var(--d-accent);
+
+  /* Ink on teal, never white on teal — white on teal-400 is 1.59:1. */
+  --btn-primary-bg:       var(--d-cta-fill);        /* #2DD4BF */
+  --btn-primary-bg-hover: var(--d-cta-fill-hover);  /* #5EEAD4, 13.39:1 */
+  --btn-primary-fg:       var(--d-cta-text);        /* #0A0A09, 10.64:1 */
+
+  --error-text: #FDA4AF;                            /* 9.83:1 on --d-surface-3 */
 }
 
 /* The light ring is --accent-deep #0F766E at 5.47:1 on white. On --d-surface-3
@@ -765,3 +794,38 @@ textarea:focus-visible,
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
+
+/* ═══ LOGO ════════════════════════════════════════════════════════════════
+   docs/design/logo.md §4 and §5. Clear space is 0.22 × --logo-size on all four
+   sides, which is the mark's stroke width doubled. Nothing — no rule, no nav
+   link, no button edge, no viewport edge — enters it. */
+
+.logo { padding: calc(var(--logo-size) * 0.22); }
+
+/* Composition changes at exactly one breakpoint. Swapping the lockup for the
+   mark at three different widths causes three layout shifts, and that is why
+   header logos look unstable. Below 360px the wordmark drops and the mark
+   stands alone; the anchor keeps its aria-label, so the accessible name never
+   changes. */
+.logo-word { display: none; }
+@media (min-width: 360px) { .logo-word { display: inline; } }
+
+/* --logo-size steps, mobile-first on the canonical min-width vocabulary
+   (ADR-0004 §4). 360px is the one custom step, and it is the composition
+   breakpoint above, so it is stated once and reused rather than invented
+   twice. */
+.growth-nav .logo { --logo-size: 22px; }
+@media (min-width:  360px) { .growth-nav .logo { --logo-size: 24px; } }
+@media (min-width:  768px) { .growth-nav .logo { --logo-size: 26px; } }
+@media (min-width: 1024px) { .growth-nav .logo { --logo-size: 28px; } }
+@media (min-width: 1280px) { .growth-nav .logo { --logo-size: 30px; } }
+
+/* The footer lockup is a sign-off rather than a control, which is the one place
+   it is allowed to be larger than the nav. logo.md §5.
+
+   The footer field is #111f19, a dark ground that is not yet inside a
+   [data-theme="dark"] subtree, so --logo-accent would otherwise resolve to the
+   light-page teal-700 at roughly 1.8:1 there. teal-400 is ~9.5:1 on that field.
+   This override goes away when ADR-0004 T2 brings the footer onto the canonical
+   token layer and it can carry the attribute instead. */
+.growth-footer .logo { --logo-size: 36px; --logo-accent: #2DD4BF; }

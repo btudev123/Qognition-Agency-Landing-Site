@@ -53,14 +53,24 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // Icon set is generated from public/brand/mark.svg by scripts/build-icons.mjs.
+  // The SVG carries its own prefers-color-scheme block, so one file covers a tab
+  // on light or dark browser chrome; the PNGs are the fallback and the home
+  // screen. ?v=3 busts the cached raster set, which included a 343KB
+  // "favicon.svg" that contained no path data at all — one base64 PNG in an
+  // <svg> wrapper.
+  manifest: '/manifest.json',
   icons: {
     icon: [
-      { url: '/favicon-16x16.png?v=teal', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png?v=teal', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon.png?v=teal', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon.svg?v=3', type: 'image/svg+xml' },
+      { url: '/favicon-16x16.png?v=3', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png?v=3', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-48x48.png?v=3', sizes: '48x48', type: 'image/png' },
+      { url: '/icon-192.png?v=3', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png?v=3', sizes: '512x512', type: 'image/png' },
     ],
-    apple: [{ url: '/apple-touch-icon.png?v=teal', sizes: '180x180', type: 'image/png' }],
-    shortcut: ['/favicon-32x32.png?v=teal'],
+    apple: [{ url: '/apple-touch-icon.png?v=3', sizes: '180x180', type: 'image/png' }],
+    shortcut: ['/favicon-32x32.png?v=3'],
   },
   authors: [{ name: 'Qognition Agency' }],
 };
@@ -68,7 +78,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#080808',
+  themeColor: '#0A0A09',
 };
 
 // One Organization definition for the whole site, imported from lib/schema.ts.

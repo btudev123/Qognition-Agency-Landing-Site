@@ -10,7 +10,7 @@ export function organizationSchema() {
     '@type': 'Organization',
     name: 'Qognition',
     url: SITE_URL,
-    logo: `${SITE_URL}/favicon.png`,
+    logo: `${SITE_URL}/icon-512.png`,
     description:
       'B2B AI search visibility agency. We get established B2B firms found when their buyers ask an AI which vendor to hire.',
     knowsAbout: [
