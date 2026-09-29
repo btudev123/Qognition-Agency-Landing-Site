@@ -90,10 +90,16 @@ proof: we run the work on software we wrote.
 
 | Product | Does |
 |---|---|
-| **G.O.L.E.M** | AI visibility tracking. Visibility scoring per prompt and model, brand mention detection by name/alias/domain, citation analysis by source category, competitor share-of-voice, query fan-out. Raw answers, cited URLs and model versions are persisted, so every metric re-derives from a stored answer with a date. |
-| **Scriblr** | Content production for AI citation. |
-| **LinkersPro** | AI backlink generation. Earned mention and authority acquisition. |
-| **M.A.R.S** | Multi-agent routing. Lead routing, speed-to-lead, attribution. |
+| **Scriblr** | **AI citation and GEO tracking.** Visibility per prompt and model, brand mention detection by name, alias and domain, citation analysis by source category, competitor share of voice, query fan-out. Raw answers, cited URLs and model versions are persisted, so every metric re-derives from a stored answer with a date. |
+| **LinkersPro** | Authority and link acquisition. |
+| **M.A.R.S.** | Lead routing, outreach and booking attribution. |
+
+**The ICP lock names three engines, not four, and Scriblr owns citation tracking.**
+`docs/icp-positioning.md` (operator-locked v2.0.0, 2026-09-29) lists exactly LinkersPro, Scriblr and
+M.A.R.S. as the in-house engines nameable as proof. G.O.L.E.M does not appear. This file previously
+gave citation tracking to G.O.L.E.M and content production to Scriblr; the locked file is newer and
+is the operator's own, so it wins and G.O.L.E.M is not referenced on the site. Do not reintroduce it
+without an operator decision, and do not quietly split the citation-tracking job across two names.
 
 **Not "Linkdex."** That was a real third-party SEO platform brand and carries a trademark question.
 LinkersPro is also already the name in 38 strings across `data/case-studies/*.ts`, so it stays.
@@ -121,8 +127,9 @@ That sentence is the gate, and it is the whole gate. Read it literally before na
 | Staff | 20 to 10,000+ |
 | Business model | B2B. Not B2C, not B2B2C where the buyer is a consumer |
 | Need | AI SEO, SEO or PPC. **Any one of the three qualifies.** Not all three |
-| Markets | US primary, Australia secondary. USD only |
-| Go-to-market taxonomy | **`data/b2b/verticals.ts`.** 15 meta-verticals, 120 sub-niches |
+| Retainer | **$3,000 to $20,000 per month.** Never show, mention or build a plan below $3,000 |
+| Markets | USA > Canada > Australia > UK > Netherlands > Germany > Sweden > Denmark > Norway > Finland > Switzerland > UAE, plus Singapore and Ireland. USD only |
+| Go-to-market taxonomy | **`data/b2b/icp/icp-taxonomy.json`**, operator-locked v2.0.0. 21 industries, 341 sub-industries, 2,376 niches, 8,823 sub-niches |
 
 **The taxonomy is a route to market, not a qualifier.** This is the distinction that matters and it
 is easy to get backwards. A B2B firm inside the revenue and staff band qualifies whether or not its
