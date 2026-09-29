@@ -1,10 +1,19 @@
 # B2B niche page architecture
 
 Author: Nadia (search).
-**Revision 3, 2026-09-29.** Supersedes revision 2 of 2026-09-28, which was written against a
-120-sub-niche spine. The operator has since locked a **11,561-entity** taxonomy
-(`data/b2b/icp/icp-taxonomy.json`, v2.0.0) and supplied 682 AI prompts and 1,023 PPC keywords with it.
-Branch `b2b-ai-search`, HEAD `9299e1d`.
+**Revision 4, 2026-09-29.** Supersedes revision 3 of the same day. Revision 3 recommended
+**level 2 always, level 3 conditionally, level 4 never**. The operator has seen that recommendation
+and the cost attached to it and has **decided to build all four levels**. That is settled and this
+revision is written to it. Branch `b2b-ai-search`, HEAD `fbf62aa`.
+
+**What the override does and does not move.** §1.7 no longer decides *whether* a level exists. It
+still decides *what a page at that level must contain to be worth publishing*, and the reasoning that
+argued against level 4 now stands as the quality bar for it — restated in §1.7.2 as a screen with a
+number attached. The wave gate mechanism in §8.3 is untouched; test 7 still decides whether to keep
+scaling a level, and it acquires a level-4 counterpart rather than a replacement.
+
+Revision 3's own header, for the record: the taxonomy is `data/b2b/icp/icp-taxonomy.json` v2.0.0,
+11,561 entities, with 682 supplied AI prompts and 1,023 supplied PPC keywords.
 
 Status: **recommendation, not approved.** Not reviewed by Ruth (brand-guard). No page publishes off
 this document until the open decisions in §0.3 are settled and the wave gate in §8 is green.
@@ -24,6 +33,19 @@ programme this domain has ever attempted.
 waves in pages. At four levels and 11,561 entities, a page count is the wrong unit — it makes an
 8,823-row leaf level look like an 8,823-page decision, which it is not. §1.6 restates the wave in the
 unit that actually binds.
+
+## What changed since revision 3
+
+| # | Change | Where it lands |
+|---|---|---|
+| 1 | **The operator overrode the level verdict. All four levels get pages.** §1.7's job narrows from scope to quality | §1.7, rewritten |
+| 2 | **§1.7.2 is now a screen, not a refusal.** Six gates, one of which is a prerequisite the repo does not currently satisfy. Expected pass rate stated and labelled an estimate | §1.7.2 |
+| 3 | **A hard arithmetic result: under §8.2 assertions 3, 4 and 23 as written, a level-4 page can produce exactly zero compliant prompts.** A leaf has no entities beneath it, so the composition rule yields nothing, and the two supplied prompts belong to the sub-industry. This is not a judgement; it is a count. It forces an amendment to assertion 23 and a new external prompt source, and both are Wave 0 items | §1.7.2, §8.2 assertions 3 / 23 |
+| 4 | **Assertion 25 is amended.** Level-4 ids may be fragment anchors on a parent page. Route segments and sitemap entries stay forbidden for any entity that fails the screen | §8.2 assertion 25 |
+| 5 | **Waves re-cut as two passes per cohort.** Pass 1 publishes level 2 and level 3, exactly as before. Pass 2 publishes that cohort's level-4 survivors, and only after test 7 has passed on pass 1. Level 4 never enters a cohort whose level 3 did not earn parent-independent impressions | §1.6 |
+| 6 | **New gate test 7b**, the level-4 counterpart of test 7, measured against the level-3 parent. Failing it stops level 4 programme-wide, not cohort-wide | §8.3 |
+| 7 | **Wave 0 grew by four items**, three of them from the site-wide audit written the same day (`docs/seo/site-optimisation-audit.md`): the `/industries` entry link ships 20 hard 404s, the site renders every URL dynamically with `no-store`, and the gates' blast-radius greps point at a dead file | §1.6 Wave 0 |
+| 8 | **The glossary content-model fix still comes first**, and the operator's decision strengthens the case a fourth time | §7.5 |
 
 ## What changed since revision 2
 
@@ -104,8 +126,11 @@ Three things follow immediately and they run through the rest of this document.
 - **Level 3 is the only level with a build instruction.** `fit` and `priority` exist on the niche and
   nowhere else. Rule 8's build order is expressed in a field that only 2,376 of the 11,561 entities
   have.
-- **Level 4 has no operator input of any kind.** 8,823 rows of `{id, slug, name}`. A page there would
-  be built entirely from a name. That is the whole argument of §1.7 and it is arithmetic, not taste.
+- **Level 4 has no operator input of any kind.** 8,823 rows of `{id, slug, name}`. A page there is
+  built entirely from a name unless it brings its own observation, its own standards and its own
+  specifier. The operator has decided these get pages; §1.7.2.2 is the screen that decides which ones,
+  and §1.7.2.1 is the arithmetic that says none of them can publish until a prompt source exists that
+  the taxonomy does not contain.
 
 Sub-niche depth: min 0, median 4, mean 3.71, p90 5, max 10. Eight niches have zero sub-niches. 8,759
 of the 8,823 sub-niche slugs are unique; 62 slugs are reused across 126 entities
@@ -322,7 +347,7 @@ it. Two rules follow:
 | **A. Industry hub** | `/industries/<industry>` | 1 | 21 | **21, last** | Head and mid-tail commercial queries; the crawl hub; the entity anchor |
 | **A2. Sub-industry page** | `/industries/<industry>/<sub-industry>` | 2 | 341 | **313** (those with ≥1 priority-A child) | The **editorial unit**. The only level the operator gave prompts, keywords, buyer titles and client value to |
 | **B. Niche page** | `/industries/<industry>/<sub-industry>/<niche>` | 3 | 2,376 | **conditional — see §1.7** | Mid-tail commercial and problem-aware queries; the citation surface |
-| **—. Sub-niche** | *no URL* | 4 | 8,823 | **0** | On-page section, schema value and internal-anchor vocabulary. §1.7. |
+| **B2. Sub-niche page** | `/industries/<industry>/<sub-industry>/<niche>/<sub-niche>` | 4 | 8,823 (3,669 under an A niche) | **conditional — ~185–440 estimated, see §1.7.2.2** | Family B observation depth and capability coverage. **Never a Family Q surface** (§3.3). A failing sub-niche is an anchored section on its niche page, not a URL |
 | **C. Prompt-set library** | `/insights/<industry>-buyer-prompts` | — | 21 | **21, one per industry, last** | Citation magnet and lead magnet. The literal prompt set, published |
 | **D. Comparison** | `/comparisons/<slug>` | — | — | **~10** | Highest purchase intent on the site. Hand-written only |
 | **E. Annual observation report** | `/insights/<slug>` | — | — | **4/year** | External citation and link acquisition. See `docs/seo/b2b-offpage-authority.md` §4 |
@@ -427,37 +452,58 @@ PPC keywords, and it is therefore the smallest unit that can be researched, writ
 one piece of work. Everything above it is an aggregation of it; everything below it is a section of it
 until proven otherwise.
 
-> **A wave is one industry's priority-A cohort:** its sub-industry pages that have at least one
-> priority-A child, plus the level-3 priority-A niches inside them that pass the §1.7 screen, plus the
-> industry hub — published together and gated together.
+> **A wave is one industry's priority-A cohort, published in two passes:**
+> **pass 1** is its sub-industry pages that have at least one priority-A child, plus the level-3
+> priority-A niches inside them that pass the §1.7.1 screen, plus the industry hub.
+> **Pass 2** is the level-4 survivors of the §1.7.2.2 screen beneath the niches pass 1 published, and
+> it runs only after pass 1 has passed gate test 7.
+> Each pass is published together and gated together. A cohort that fails test 7 never has a pass 2.
 
-Twenty-one waves, one per industry. Measured cohort sizes, before the §1.7 screen removes level-3
-pages:
+**Why two passes rather than one bigger cohort, and it is the whole of the level-4 design.** Test 7
+asks whether a level-3 page earns impressions for queries its level-2 parent does not. That is the
+question "is this the right level to be scaling", and it is the same question at level 4 one rung down.
+If level 3 did not earn parent-independent demand, publishing its children is splitting the same demand
+three ways instead of two, with reviewer hours attached. Sequencing the passes means the answer is
+always in hand before the next rung is built, and it costs nothing extra: the level-4 screen for a
+cohort runs during that cohort's own 90-day gate window, which is otherwise dead time.
 
-| Industry | A niches | Sub-industries with ≥1 A | Cohort pages (L2+L3) | A: AI SEO | A: PPC | A: Both |
-|---|---:|---:|---:|---:|---:|---:|
-| `saas-and-software` | 80 | 16 | 96 | 26 | 0 | 54 |
-| `healthcare-and-life-sciences` | 55 | 18 | 73 | 27 | 2 | 26 |
-| `manufacturing-and-industrial` | 55 | 18 | 73 | 23 | 0 | 32 |
-| `technology-and-it-services` | 55 | 16 | 71 | 11 | 0 | 44 |
-| `emerging-and-micro-niches` | 53 | 17 | 70 | 28 | 0 | 25 |
-| `professional-and-business-services` | 53 | 16 | 69 | 29 | 2 | 22 |
-| `automotive-heavy-equipment-and-mobility` | 51 | 16 | 67 | 14 | 3 | 34 |
-| `financial-services` | 50 | 15 | 65 | 26 | 1 | 23 |
-| `environmental-engineering-and-testing` | 46 | 16 | 62 | 15 | 2 | 29 |
-| `franchising-and-multi-location` | 45 | 17 | 62 | 11 | 0 | 34 |
-| `logistics-supply-chain-and-transportation` | 42 | 16 | 58 | 20 | 0 | 22 |
-| `commercial-and-facility-services` | 40 | 16 | 56 | 14 | 0 | 26 |
-| `government-nonprofit-and-institutional` | 37 | 16 | 53 | 27 | 0 | 10 |
-| `aerospace-and-aviation` | 37 | 14 | 51 | 18 | 0 | 19 |
-| `energy-and-utilities` | 36 | 13 | 49 | 19 | 2 | 15 |
-| `agriculture-and-food` | 35 | 14 | 49 | 11 | 2 | 22 |
-| `hospitality-travel-and-events` | 31 | 14 | 45 | 9 | 1 | 21 |
-| `education-and-training` | 30 | 13 | 43 | 15 | 0 | 15 |
-| `retail-cpg-and-brand-enablement` | 25 | 13 | 38 | 7 | 0 | 18 |
-| `construction-real-estate-and-built-environment` | 22 | 11 | 33 | 8 | 0 | 14 |
-| `media-marketing-and-creative` | 10 | 8 | 18 | 7 | 0 | 3 |
-| **Total** | **888** | **313** | **1,201** (+21 hubs = **1,222**) | **365** | **15** | **508** |
+Twenty-one waves, one per industry. Measured cohort sizes, before the §1.7.1 screen removes level-3
+pages. The final column is new in revision 4: the level-4 population that pass 2 screens, which is the
+sub-niches beneath that industry's priority-A niches — **3,669 across all 21 industries, of which
+§1.7.2.3 expects 185–440 to publish.** It is a screening workload, not a page count, and that is the
+distinction the operator should hold on to:
+
+| Industry | A niches | Sub-inds with ≥1 A | Pass 1 pages (L2+L3) | Pass 2 screening pool (L4) | A: AI SEO | A: PPC | A: Both |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `saas-and-software` | 80 | 16 | 96 | 310 | 26 | 0 | 54 |
+| `healthcare-and-life-sciences` | 55 | 18 | 73 | 218 | 27 | 2 | 26 |
+| `manufacturing-and-industrial` | 55 | 18 | 73 | 236 | 23 | 0 | 32 |
+| `technology-and-it-services` | 55 | 16 | 71 | 233 | 11 | 0 | 44 |
+| `professional-and-business-services` | 53 | 16 | 69 | 239 | 29 | 2 | 22 |
+| `emerging-and-micro-niches` | 53 | 17 | 70 | 205 | 28 | 0 | 25 |
+| `automotive-heavy-equipment-and-mobility` | 51 | 16 | 67 | 197 | 14 | 3 | 34 |
+| `financial-services` | 50 | 15 | 65 | 185 | 26 | 1 | 23 |
+| `environmental-engineering-and-testing` | 46 | 16 | 62 | 215 | 15 | 2 | 29 |
+| `franchising-and-multi-location` | 45 | 17 | 62 | 180 | 11 | 0 | 34 |
+| `logistics-supply-chain-and-transportation` | 42 | 16 | 58 | 169 | 20 | 0 | 22 |
+| `commercial-and-facility-services` | 40 | 16 | 56 | 187 | 14 | 0 | 26 |
+| `government-nonprofit-and-institutional` | 37 | 16 | 53 | 142 | 27 | 0 | 10 |
+| `aerospace-and-aviation` | 37 | 14 | 51 | 151 | 18 | 0 | 19 |
+| `energy-and-utilities` | 36 | 13 | 49 | 140 | 19 | 2 | 15 |
+| `agriculture-and-food` | 35 | 14 | 49 | 146 | 11 | 2 | 22 |
+| `hospitality-travel-and-events` | 31 | 14 | 45 | 126 | 9 | 1 | 21 |
+| `education-and-training` | 30 | 13 | 43 | 133 | 15 | 0 | 15 |
+| `retail-cpg-and-brand-enablement` | 25 | 13 | 38 | 122 | 7 | 0 | 18 |
+| `construction-real-estate-and-built-environment` | 22 | 11 | 33 | 97 | 8 | 0 | 14 |
+| `media-marketing-and-creative` | 10 | 8 | 18 | 38 | 7 | 0 | 3 |
+| **Total** | **888** | **313** | **1,201** (+21 hubs = **1,222**) | **3,669** | **365** | **15** | **508** |
+
+**Read the fifth column as hours, not as URLs.** It is the number of level-4 entities whose §1.7.2.2
+screen has to be run for that industry, and gate L4-1 is a panel run — ≥8 prompts × ≥3 engines each.
+Screening all 3,669 is roughly 88,000 observations before a single level-4 page is written. Nobody
+should run 3,669 screens. §1.6's two-pass structure exists so that a cohort screens 20–40 entities at a
+time, inside a gate window it is already waiting out, and so that a cohort whose level 3 failed test 7
+screens none at all.
 
 **Why the industry and not the sub-industry is the wave unit, and it is not tidiness.** A sub-industry
 cohort is one level-2 page plus a median of three A niches: four pages. The §8.3 entry test asserts
@@ -498,17 +544,30 @@ cohort of 18–96 pages is worked through as 4–24 promotion cohorts across 1�
 cohort per ADR-0008 §6.2, gate cohort = ≤25 pages per ADR-0007 §7. Neither document changes; only the
 statement that they are different units.]`
 
-#### Wave 0 — plumbing. Still zero new pages, and it grew
+#### Wave 0 — plumbing. Still zero new pages, and it grew again
 
-| Item | Status |
-|---|---|
-| `/industries` publication gate, `lib/industryPublication.ts` + `scripts/check-industry-gate.cjs` | **DONE**, commit `e483547` |
-| **The glossary content-model fix, §7.4 step 1** | Outstanding. Still ahead of every wave — reasoning restated for this scale in §7.5 |
-| **An `ICP_PUBLISHED_CEILING` assertion over `data/b2b/icp`** | **New and urgent.** Nothing currently gates 11,561 entities. §8.5 |
-| **Decision 7: which spine is the URL source** | New. §0.3 |
-| **Decision 8: rule 7's canonical-id list, and the 2,371 / 2,376 reconciliation** | New. §0.3 |
-| The observation store and the first prompt runs (`OPERATOR-DECISIONS` blocker on `runAudit()`) | Outstanding |
-| The Family Q derivation run once, per §3.3, and committed before any page cites it | New |
+| # | Item | Status |
+|---|---|---|
+| 1 | `/industries` publication gate, `lib/industryPublication.ts` + `scripts/check-industry-gate.cjs` | **DONE**, commit `e483547` |
+| 2 | `ICP_PUBLISHED_CEILING` over `data/b2b/icp` | **DONE**, commit `d90172c`. `scripts/check-icp.cjs`, ceiling 0, asserted against the real sitemap |
+| 3 | **The `/industries` entry link ships 20 hard 404s** | **NEW and first.** Commit `fbf62aa` links all 21 ICP industries; 20 are hard 404s (`dynamicParams = false`) and the twenty-first resolves to the legacy spine. Measured in `docs/seo/site-optimisation-audit.md` §2.4. Fix: link only when `publishedIcpPaths()` contains the target, plain text otherwise. Rollback in that document §9.2 |
+| 4 | **The glossary content-model fix, §7.4 step 1** | Outstanding. Still the publication blocker for every wave. §7.5 |
+| 5 | **The site renders every URL dynamically and serves `no-store`** | **NEW.** 34 of 4,422 URLs prerender; `app/layout.tsx:104` is the single cause. Publishing ~1,200 pages onto that origin multiplies their crawl cost, and gate tests 3 and 7 are measurements of whether pages were crawled. Audit §6.1, rollback §9.1 |
+| 6 | **The gates' blast-radius greps point at a dead file** | **NEW.** `check-b2b.cjs` §4 greps `data/navigation.ts`, which nothing imports. The live header is `components/shared/Navigation.tsx` and `app/industries/page.tsx` now imports the ICP spine; neither is in any gate. Audit §2.5 |
+| 7 | **Slug disjointness asserted, not excepted** | `check-icp.cjs` excepts `financial-services` rather than recording a decision about which spine owns that URL. §8.5 item 2 is half-landed |
+| 8 | **The external prompt-capture source for level 4** | **NEW and it blocks every level-4 page.** §1.7.2.1. Without it no leaf can satisfy assertions 3 and 4 at all. Pass 2 of every wave is blocked until this exists, and pass 1 is not |
+| 9 | Decision 7: which spine is the URL source | §0.3 |
+| 10 | Decision 8: rule 7's canonical-id list, and the 2,371 / 2,376 reconciliation | §0.3 |
+| 11 | The observation store and the first prompt runs (`OPERATOR-DECISIONS` blocker on `runAudit()`) | Outstanding. Now blocks gate L4-1 as well as assertion 3 |
+| 12 | The Family Q derivation run once, per §3.3, committed before any page cites it | Outstanding |
+| 13 | The blast-radius grep extended to `data/b2b/icp` explicitly | §8.5 item 3. Not landed |
+
+Items 3, 5 and 6 are new in revision 4 and all three come from the site-wide audit written the same
+day. Item 8 is new and is the one created by the operator's own decision.
+
+**Items 4 and 8 are publication blockers; items 3, 5, 6, 7 and 13 are not.** They are things that make
+the first wave cost more than it should and they should land first because they are cheap, not because
+they gate.
 
 #### Wave 1 — and it is designed to answer §1.7 with data, not just judgement
 
@@ -544,10 +603,40 @@ one industry pair, one quarter. This is a **directional read, not a causal one**
 as one. It is still strictly better than the alternative, which is deciding 2,376 URLs on taste. It
 also costs nothing extra: arm 2's copy has to be written either way, as sections.
 
+**Wave 1 pass 2 — the first level-4 screens, and they are the cheapest ones anyone will ever run.**
+The five sub-industries above carry **96** level-4 entities beneath their 22 priority-A niches. Pass 2
+does **not** publish them on a schedule. It runs the §1.7.2.2 screen on all 96 during Wave 1's own
+90-day gate window and records the six outcomes per entity, and it publishes whichever survive — if
+any — only once test 7 has passed on pass 1.
+
+Two reasons to take the whole 96 rather than a sample. First, 96 screens is two to three weeks of panel time
+and it is the only way to replace §1.7.2.3's 5–12% estimate with a measurement before the number is
+used to plan a multi-year programme. Second, these five sub-industries split evenly across
+`technology-and-it-services` and `saas-and-software`, which are the two verticals where I expect
+level 4 to do **worst** — product-feature labels with no registry vocabulary. A pass rate measured
+there is a floor, and a floor is the honest thing to plan against.
+
+`[NEEDS DATA: the 96 §1.7.2.2 screen records — six gate outcomes, reviewer and date per entity. Until
+they exist, 5–12% is a judgement and must be reported as one.]`
+
 #### Waves 2 onward
 
 Order: **evidence first, then operator priority density, then vocabulary depth and off-page fit.** Not
-A-count alone.
+A-count alone. **The ordering below is unchanged from revision 3** — level 4 does not reorder anything,
+because it is always a second pass over a cohort pass 1 already published.
+
+Two amendments the four-level decision makes to the schedule, and only two:
+
+1. **Every row below is now pass 1.** Its pass 2 runs one gate cycle behind it and is conditional on
+   test 7. Pass 2 of wave *N* and pass 1 of wave *N+1* run in the same window — different cohorts,
+   different gates, no interaction — so the calendar does **not** double. What doubles is the number of
+   gate results to read, and §9's reporting has to keep them apart by level or it is unreadable.
+2. **Wave 6 moves up in importance without moving in position.** `environmental-engineering-and-testing`
+   and Wave 7's `aerospace-and-aviation` are the two industries where gate L4-2 has a real chance —
+   NELAP/TNI, A2LA, ISO/IEC 17025, FAA Part 145, AS9100, Nadcap are exactly the discriminating
+   standards a level-4 page needs. If §1.7.2.3's 5–12% is going to be beaten anywhere, it is there, and
+   Wave 1's floor plus Wave 6's ceiling are the two numbers that should decide whether level 4 keeps
+   scaling.
 
 | Wave | Industry | Cohort (pre-screen) | Why here | Gate to enter |
 |---|---|---:|---|---|
@@ -570,14 +659,28 @@ observation block.
 #### The rate, restated
 
 ```
-waves per year = reviewer hours per year ÷ (cohort pages × hours per page review)
+pass-1 waves per year = reviewer hours per year ÷ (cohort pages × hours per page review)
+
+pass-2 waves per year = min(
+  pass-1 waves per year,                                      # a pass 2 needs a pass 1
+  screener hours per year ÷ (cohort L4 entities × hours per §1.7.2.2 screen)
+)
 ```
 
-`[NEEDS DATA: reviewer hours available per month]` and `[NEEDS DATA: measured hours per page review,
-first ten pages]`. At revision 2's plausible 15–25 pages/month and the §1.7 screen removing roughly
-half of level 3, a median 56-page cohort is a 1.5–3 month build plus a 90-day gate, so **two to three
-industries per year**. The full priority-A programme is therefore a multi-year commitment, and I would
-rather say that now than have it discovered at wave 4.
+`[NEEDS DATA: reviewer hours available per month]`, `[NEEDS DATA: measured hours per page review,
+first ten pages]` and, new in revision 4, `[NEEDS DATA: measured hours per §1.7.2.2 screen, first
+twenty entities — the panel run, the standards check and the record]`. At revision 2's plausible
+15–25 pages/month and the §1.7.1 screen removing roughly half of level 3, a median 56-page pass-1
+cohort is a 1.5–3 month build plus a 90-day gate, so **two to three industries per year**.
+
+**Level 4 does not change that rate. It changes what the gate windows are used for.** A pass-1 cohort
+spends 90 days waiting for its gate; screening its 100–250 level-4 entities fits inside that window if
+the screen costs under roughly an hour each, and does not if it costs three. That is the single number
+that decides whether the four-level programme runs at the same calendar pace as the three-level one,
+and nobody has measured it. It is the first thing Wave 1 pass 2 produces.
+
+The full priority-A programme across four levels is **about 1,210 to 1,465 pages over multiple
+years**, and I would rather say that now than have it discovered at wave 4.
 
 I am not arguing the taxonomy down. Every row stays in the file. Priorities B and C stay at spine and
 their release condition is unchanged from revision 2 (§1.6 in that revision, restated): one inbound
@@ -587,17 +690,25 @@ Neither is a volume estimate.
 
 ### 1.7 Which level earns a page
 
-**This is the section that decides the size of the programme, and it is the one to argue with.**
+**Revision 3 used this section to decide whether a level exists. The operator has settled that: all
+four do. This section now decides what a page at each level must contain to be worth publishing, and
+that is still the thing to argue with — it is what stands between 11,561 rows and the `/locations/*`
+pattern.**
 
 Revision 2 §1.3 argued one strong page per sub-niche beats industry × service. That argument survives
-and is unchanged. What it did not have to answer is the harder question this taxonomy asks: given four
-levels, **at which level does an entity have demand of its own, rather than being a section of its
-parent?**
+and is unchanged. The question this taxonomy asks is still: given four levels, **at which level does an
+entity have demand of its own, rather than being a section of its parent?** The answer is no longer
+"and if not, no page" — it is "and if not, a page has to earn the difference on the page itself, or it
+is an anchored section."
 
-#### 1.7.1 The test, stated before the answers
+Two screens, not one. §1.7.1 is the level-3 screen and is unchanged from revision 3. §1.7.2.2 is the
+level-4 screen and is new, stricter, and prefixed by a prerequisite the repo does not yet satisfy.
 
-An entity earns its own URL when all four hold. Any one failing puts it on its parent's page as a
-section.
+#### 1.7.1 The test for level 3, stated before the answers
+
+An entity at level 3 earns its own URL when all four hold. Any one failing puts it on its parent's page
+as a section. **Level 4 does not use this test — it uses §1.7.2.2, which is these four plus two more,
+with numbers attached, because the data behind a level-4 entity is a name.**
 
 | # | Test | Why it is the test |
 |---|---|---|
@@ -606,46 +717,123 @@ section.
 | 3 | **A distinct comparison axis.** The 3–5 axes buyers compare on differ from the parent's. | §4.1 block 6. If the axes are the same, blocks 4, 6 and 7 are the same, and §8.2 assertion 8's 40% shingle bar is unpassable. |
 | 4 | **A distinct observation.** Running its prompts returns a materially different set of cited domains from its parent's. | This is a measurement, so it can only be applied after the first panel run. It is the tiebreak, and Wave 1's arm split is how it gets taken. |
 
-#### 1.7.2 Level 4 — sub-niche. **No page. All three fit types. No exceptions.**
+#### 1.7.2 Level 4 — sub-niche. **Pages, under a screen I would sign. Expect a minority to pass.**
 
-8,823 entities, and this is not a close call.
+8,823 entities. The operator has decided these get pages; revision 3's argument against them is below
+as the quality bar, because none of it was wrong — it was an argument about what a page built from a
+name can contain, and that constraint did not move when the decision did.
 
-- **There is no operator input at level 4.** `{id, slug, name}`. A page built from a name is a template
-  by definition. §8.2 assertion 8 requires ≥40% unique 5-gram shingles against every other published
-  page in the family; with a median of four siblings sharing one parent's entire vocabulary, buyer,
-  standards set and comparison axis, that bar is arithmetically unreachable.
-- **The sub-niches under a niche are capabilities of the same firm, not different firms.** `16.01.01`
-  Heavy maintenance (C/D-check) providers has sub-niches `Narrowbody heavy checks`,
-  `Widebody heavy checks`, `Regional jet & turboprop checks`, `Structural repair & corrosion
-  programs`. One MRO does all four. Qognition's buyer there is one VP of Business Development with
-  one budget. Four URLs, one buyer, one offer — that is the industry × service grid rotated ninety
-  degrees, and §1.3 already killed it.
-- **The demand that exists at level 4 is Family B demand.** "narrowbody heavy maintenance checks in
-  Europe" is typed by an airline's fleet planner. Nobody types "narrowbody heavy checks marketing
-  agency". §1.1 forbids building a ranking target on the client's buyer's query, and level 4 is that
-  failure at 8,823× scale.
-- **Test 2 cannot be passed at level 4 in principle.** A sub-niche is a capability of a firm that has
-  already been identified at level 3. There is no separate buyer, so there is no separate question
-  about that buyer's visibility, so there is no Family Q prompt to be cited for. §3.3.
+**What has not changed about the data.** A level-4 entity is `{id, slug, name}`. No buyer titles, no
+client value, no `geo_angle`, no supplied prompts, no supplied keywords. Median 4 siblings per parent
+niche, measured; 8 niches have no sub-niches at all, 1,009 have exactly 4. The sub-niches under a niche
+are usually capabilities of the same firm rather than different firms — one MRO does narrowbody heavy
+checks, widebody heavy checks, regional jet checks and structural repair, and Qognition's buyer there
+is one VP of Business Development with one budget.
 
-**What level 4 is for instead, and it is genuinely valuable.** Three jobs, all on the parent's page:
+So the screen has to do the work the data does not.
 
-1. **The coverage grid.** A table on the level-3 (or level-2) page listing the sub-niches as the
-   capabilities the buyer's own customers ask for. Tabular, server-rendered, extractable — §3.4.
-2. **The entity vocabulary.** 8,823 rows of capability language, spelled the way the industry spells
-   it. This is exactly what §3.4's entity-consistency requirement needs and it is the operator's
-   words, not ours.
-3. **The prompt qualifier bank, which solves a real scaling problem.** §8.2 assertion 3 requires ≥8
-   distinct prompts per page and assertion 4 forbids sharing a prompt with any other page. The
-   operator supplied two per sub-industry. The other six must come from somewhere, and inventing them
-   breaches rule 10's spirit. Level 4 is the source. Worked example, `18.02` Specialty, Industrial
-   Cleaning & Restoration — supplied: *"cleanroom cleaning contractors experienced with GMP
-   pharmaceutical facilities"*. Level-4 rows under `18.02.01` are `Semiconductor fab cleanroom
-   services`, `Compounding pharmacy cleanroom cleaning`, `Biotech lab & vivarium cleaning`. Three more
-   distinct prompts, in the operator's vocabulary, derived not invented. **This is how assertion 4
-   stays passable at scale.**
+##### 1.7.2.1 The blocker that the decision creates, and it is arithmetic
 
-If Kyle needs one sentence for ADR-0008: **level 4 is data, never a route.**
+This is the part to read first, because it is not a matter of taste and it blocks every level-4 page
+until someone decides what to do about it.
+
+§8.2 assertion 3 requires **≥8 distinct prompts** per published page. Assertion 4 forbids sharing a
+prompt string with any other page. Assertion 23 requires every prompt to be **either verbatim from
+that sub-industry's two supplied `ai_prompts`, or a supplied prompt composed with a `sub_niches[].name`
+from an entity beneath the page**.
+
+A level-4 entity is a leaf. **There is nothing beneath it.** So the composition rule yields zero
+prompts, and the two verbatim prompts belong to the sub-industry and are already spent by the level-2
+page. A level-4 page can therefore produce **exactly zero assertion-23-compliant prompts.**
+
+At the aggregate, measured over the locked taxonomy:
+
+| Scope | Distinct prompts demanded by assertions 3 + 4 | Maximum supply under assertion 23 | Deficit |
+|---|---:|---:|---:|
+| All four levels, all priorities | 92,320 | 18,328 | **73,992** |
+| All four levels, priority A only | 38,960 | 7,964 | **30,996** |
+| Sub-industries where supply ≥ demand | **0 of 341** | | |
+
+Method: per sub-industry, demand = 8 × (1 level-2 + N level-3 + M level-4); supply = 2 verbatim +
+2 × M compositions. Reproducible from `data/b2b/icp/icp-taxonomy.json`.
+
+Three ways out, and only one of them is honest:
+
+1. **Widen assertion 23 to allow a leaf to compose with its own name.** Yields 2 prompts per level-4
+   page. Necessary, nowhere near sufficient. Adopt it, but do not pretend it solves anything.
+2. **Lower assertion 3 below 8 for level 4.** With (1) that means a two-prompt panel. Two prompt cells
+   is an anecdote, not an observation, and a month-on-month comparison of a two-cell panel is worse
+   than no comparison because it looks like a measurement. Reject.
+3. **Admit a new, external, dated prompt source.** Captured autocomplete, People-Also-Ask, forum and
+   community question text, or the assistants' own follow-up suggestions — each captured with an
+   engine, a date and a method, and committed. This is the only route that produces eight genuine
+   prompts per leaf without inventing one, and rule 10 forbids inventing one.
+
+**Recommendation: adopt (1) and require (3). No level-4 page publishes until a dated external
+prompt-capture source exists in the repo and the capture method is written down.** That is a Wave 0
+item, it is new, and it has a cost nobody has priced.
+`[NEEDS DATA: the external prompt-capture source and its method — engine, date, query seed, and how
+duplicates against supplied prompts are removed.]`
+
+##### 1.7.2.2 The screen: six gates, all must pass
+
+Applied **only** to sub-niches beneath a priority-A niche that has itself published a level-3 page
+(rule 8, and §1.6's two-pass wave). 3,669 entities are in that population, measured, not 8,823.
+
+| # | Gate | Why this is the bar | Measured or judged |
+|---|---|---|---|
+| **L4-1** | **Its own panel returns a different answer.** ≥8 prompts, ≥3 engines, and the Jaccard similarity between its cited-domain set and its level-3 parent's cited-domain set is **≤0.60** in the same window | §1.7.1 test 4, promoted from tiebreak to first gate and given a number. A leaf whose prompts return the parent's sources has no separate thing to say, and the observation block is the only non-templatable thing on the page (§0.4) | Measured, after the panel runs |
+| **L4-2** | **A discriminating standard.** Of the ≥6 standards terms assertion 6 requires, **≥3 must not appear on the parent page or on any sibling's page**, each with a `standardBody` | Three of six may honestly be inherited. Three may not. This is what separates `Structural repair & corrosion programs` — which has its own SRM, CPCP and airworthiness-directive vocabulary — from `Widebody heavy checks`, which is the parent with a size adjective | Measured against published pages |
+| **L4-3** | **A discriminating specifier.** At least one buyer title or named buying-committee role that the level-3 parent does not carry | Assertion 7 at the level where it is hardest. If the same person signs, it is a section | Judged by the reviewer, recorded |
+| **L4-4** | **Shingle uniqueness against the hard case.** Assertion 8's ≥40% family-wide bar unchanged, **plus ≥55% against its own level-3 parent and against each published sibling** | The family-wide bar is easy for a leaf; siblings are the test. Revision 3 called 40% arithmetically unreachable at level 4 and that is true *of a templated page*. It is reachable for a page whose observation block, standards set and comparison axis are its own — which is the point of L4-1 to L4-3 | Measured |
+| **L4-5** | **Prose that is not the parent's.** Assertion 9's ≥900 words unchanged, **of which ≥700 must not appear on the parent page** | Stops a leaf being the parent with a coverage grid on top | Measured |
+| **L4-6** | **Prompt supply, per §1.7.2.1.** Eight distinct prompts exist for this entity from a committed source, **and** removing them from the parent's pool leaves the parent still satisfying assertion 3 | The consequence nobody noticed: level 4 was the vocabulary that made assertions 3 and 4 passable for levels 2 and 3. Promoting a leaf to a page consumes that supply. A leaf may not starve its parent | Measured |
+
+A sub-niche that fails any gate is a **section with a stable fragment anchor** on its level-3 parent —
+`/industries/<i>/<s>/<n>#<sub-niche-slug>` — written to the same standard, linked from the parent's
+coverage grid, and quotable and citable by an assistant at that fragment. It keeps every job §1.7.2 of
+revision 3 gave it (coverage grid, entity vocabulary, prompt qualifier bank) and gains addressability.
+**That is what "level 4 gets pages" should mean for the ones that fail**, and it costs a slug in an
+`id` attribute.
+
+##### 1.7.2.3 What fraction I expect to pass, and it is a judgement
+
+**Roughly 5–12% of the 3,669 priority-A sub-niches. Call it 185 to 440 pages.** That is an estimate
+from taxonomy shape and buyer structure. It is not a measurement and there is no keyword export in
+this repo to check it against. State it that way in front of the operator.
+
+The reasoning, gate by gate:
+
+- **L4-6 is currently 0%** and stays 0% until §1.7.2.1's external prompt source exists. Nothing passes
+  before that lands. This is the binding gate today.
+- **L4-1** is the one that decides it once L4-6 clears. Four siblings that are capabilities of one firm
+  will return heavily overlapping cited-domain sets. I expect 10–20% to come in at or below 0.60
+  Jaccard, concentrated in the industries where a capability has its own registry.
+- **L4-2** favours the same industries — manufacturing, aerospace, environmental testing, energy,
+  healthcare, automotive — where a sub-niche maps to an accreditation, a test method or a regulatory
+  instrument. It is close to hopeless where a sub-niche is a product-feature label, which is most of
+  `saas-and-software` and `technology-and-it-services`.
+- **L4-3 and L4-4** correlate with L4-1 and L4-2 rather than screening independently, so they do not
+  multiply the attrition much. **L4-5** is a writing cost, not a screen.
+
+One weak measurement, offered as a proxy and labelled as one. Over all 8,823 sub-niche names, 82.8%
+carry ≥2 content tokens that appear neither in the parent's name nor in any sibling's name; 1.8% carry
+none. That says the names are not literal enumerations. It says nothing about whether a distinct panel
+exists, and it must not be quoted as a pass rate.
+
+**What would move this number:** the first 200 screens. Run them on one industry with registry-grade
+vocabulary — `environmental-engineering-and-testing` or `aerospace-and-aviation` — and one without —
+`saas-and-software`. The gap between those two pass rates is the real answer and it is two weeks of
+panel time, not a year of building.
+
+##### 1.7.2.4 The honest sentence for the operator
+
+**The decision to build all four levels is compatible with roughly 185 to 440 level-4 pages under a
+screen I would put my name on, not 8,823.** If the requirement is 8,823, the screen has to come down,
+and a screen that lets a page built from a name through is the `/locations/*` pattern — 632 pages, 0.13
+clicks each per quarter, 50,978 impressions — reproduced at four times the volume on the same domain.
+I will build to whichever number the operator sets. I will not report the second one as a search
+programme.
 
 #### 1.7.3 Level 3 — niche. The answer differs by fit, and this is why the operator's field matters
 
@@ -736,12 +924,20 @@ and last in the ordering. §5's depth rule has something to say about this too; 
 | 3 niche, `Both` fit | 1,127 (508 A) | **508 A candidates**, each through §1.7.1 | Observation block plus commercial demand on one URL |
 | 3 niche, `AI SEO` fit | 1,059 (365 A) | **~180 estimated**, each through §1.7.1 | Passes only where the cited-source landscape genuinely differs from the parent's |
 | 3 niche, `PPC` fit | 190 (15 A) | **0** | `/lp/*`, the service block line, and `/ppc`. Not an indexable page |
-| 4 sub-niche | 8,823 | **0** | Coverage grid, entity vocabulary, prompt qualifier bank. Data, never a route |
+| 4 sub-niche | 8,823 (3,669 under an A niche) | **~185–440 estimated**, each through §1.7.2.2, and **0 until §1.7.2.1 is resolved** | A page only where its own panel, its own standards and its own specifier survive the screen. Everything else is an anchored section on the parent |
 
-**Ceiling permitted: 11,561. Recommended priority-A programme: 21 + 313 + roughly 690 = about 1,020,
-over multiple years, each wave gated.** The number is soft on purpose — §1.7.1 decides it entity by
-entity and Wave 1 is designed to move it. What is not soft is the shape: **level 2 always, level 3
-conditionally, level 4 never.**
+**Ceiling permitted: 11,561. Recommended priority-A programme: 21 + 313 + roughly 690 + roughly
+185–440 = about 1,210 to 1,465 pages**, across multiple years, each wave gated. The level-3 figure is
+unchanged from revision 3; only level 4 is new.
+
+The shape is now **level 2 always, level 3 conditionally, level 4 exceptionally** — and "exceptionally"
+is a screen with six gates and a number, not a veto. Two things about that number:
+
+- It is soft on purpose. §1.7.1 and §1.7.2.2 decide it entity by entity, and Wave 1's arm split moves
+  the level-3 half while the first 200 level-4 screens move the other.
+- **Level 4 adds about 18–44% to the page count and roughly doubles the gate cycles**, because §1.6
+  now runs each cohort as two passes with a 90-day gate on each. The cost of level 4 is measured in
+  elapsed quarters and panel runs, not in pages. §1.6 says how to stop that doubling the calendar.
 
 ---
 ## 2. Keyword mapping per tier
@@ -1202,13 +1398,24 @@ When it passes, the niche's Family Q prompt **replaces** the parent's in the pan
 is tracked from the niche page's publication date. When it fails, the niche is a section and adds no
 prompt at all.
 
-#### Level 4 — sub-niche. **No Family Q exists. Zero prompts, 8,823 entities.**
+#### Level 4 — sub-niche. **Still no Family Q. Unchanged by the four-level decision, and this is the honest limit on what a level-4 page can be.**
 
 A sub-niche is a capability of a firm already identified at level 3. There is no separate buyer,
-therefore no separate question about that buyer's visibility, therefore nothing to be cited for. This
-is not a capacity judgement — it is that the prompt cannot be written without inventing a buyer who
-does not exist. It is the cleanest proof available that level 4 is a section, and it is why §1.7.2
-takes no exceptions.
+therefore no separate question about *that buyer's* visibility, therefore no Family Q prompt. The
+prompt cannot be written without inventing a buyer who does not exist, and rule 10 forbids inventing
+one. **This does not change because the operator decided to build the pages.**
+
+**What it means for a level-4 page, stated plainly rather than worked around.** A level-4 page
+inherits its level-3 parent's Family Q prompt and adds none of its own. So §1.7.1 test 2 — a distinct
+Family Q prompt — is **not applicable at level 4**, and §1.7.2.2 does not ask for it. What it asks for
+instead is gate L4-1: that the entity's **Family B** panel returns a materially different set of cited
+domains from its parent's. That is a real, measurable question with a real answer, and it is the whole
+of a level-4 page's claim to exist.
+
+The consequence the operator should hear: **a level-4 page is an observation asset and a coverage
+asset. It is not a new door into the funnel.** The door is the level-2 and level-3 Family Q prompt.
+Anyone reporting level-4 pages as new acquisition surface is reporting the wrong thing, and §9's
+level column exists so that mistake is visible in the panel rather than buried in it.
 
 #### What goes in the tracked file
 
@@ -1385,8 +1592,16 @@ text.**
    pages. Parent + prompt library satisfies it as a floor. **Corollary that is a build-order
    constraint: a level-3 page may not publish before its level-2 parent, and a level-2 page may not
    publish before its industry hub is at least routable.**
-10. **Depth rule, restated for four levels.** Every published page ≤3 clicks from `/`. The only way
-    that holds is: **`/industries` links directly to published level-2 pages, not only to the 21
+10. **Depth rule, restated again for a published level 4.** Every published page at levels 1–3
+    ≤3 clicks from `/`. **A published level-4 page is allowed depth 4 and no more**, reached from its
+    level-3 parent's coverage grid — it cannot be reached in three without linking it from
+    `/industries`, and a hub that lists screened leaves is the directory stub rule 2 forbids. This is
+    a deliberate relaxation for one level and the operator should know what it buys: a depth-4 page is
+    crawled less often, and freshness is a real input to citation (§1.4). It is one more reason
+    §1.7.2.2's screen has to be strict — a page that is both deep and templated is the
+    `/locations/*` pattern with extra steps.
+
+    The rest of the rule is unchanged. The only way levels 1–3 hold at ≤3 is: **`/industries` links directly to published level-2 pages, not only to the 21
     hubs.** Path becomes `/` → `/industries` → `/industries/<industry>/<sub-industry>` → niche = three
     clicks. The industry hub stays in the graph as the entity anchor and the breadcrumb parent; it is
     not the only path down. If ADR-0008 cannot deliver that, the alternative is that level-3 pages
@@ -1401,10 +1616,19 @@ text.**
 13. **No in-content link from an indexable page to a noindex page.** Footer utility links exempt. This
     stops crawl budget draining into the `/growth` noindex briefs, the noindex place profiles, and the
     `/lp/*` paid destinations in §2.5.
-14. **Sub-niche names are never links.** 8,823 sub-niche names appear as on-page vocabulary and in the
-    coverage grid. None may be a link, and none may be a `#fragment` link either — a fragment inflates
-    the internal link count against rule 12 while adding no crawl path. Stating it because somebody
-    will otherwise "help".
+14. **Sub-niche names are links only under one of two conditions — revised in revision 4.** 8,823
+    sub-niche names appear as on-page vocabulary and in the coverage grid. A name may be:
+    (a) a **`#fragment` link to a section on the same page**, where that sub-niche failed the
+    §1.7.2.2 screen and is written as an anchored section on its parent — this is the default and it
+    is what makes a failing leaf addressable and quotable; or
+    (b) a **link to its own URL**, where that sub-niche passed all six gates of §1.7.2.2 and has a
+    committed screen record.
+    Nothing else. A name is never a link to a page that does not exist, and a fragment is never a link
+    to a section that is not on the page the reader is on. **Same-page fragments are exempt from rule
+    12's link ceiling** — they add no crawl path, which is precisely why revision 3 banned them and
+    precisely why they are safe now that they carry content. Cross-page fragment links count against
+    rule 12 like any other link, and are banned by rule 4 unless the shared entity is named on both
+    pages.
 15. **No entity appears in two families.** Carried from §8.2 assertion 17 and extended: no entity id is
     published under both `/industries/*` and `/growth/industries/*`, **and no industry is published
     from two spines** (§0.3 decision 7).
@@ -1439,29 +1663,38 @@ graph of a family that is meant to be the domain's recovery.
 ADR-0008 was committed (`4127305`) while this revision was on the working tree. Kyle's §7 is a better
 mechanism than I would have specified and most of §5.2 is satisfied by it. Four things need saying.
 
-**First, a misattribution, and it matters because it is about to be adjudicated.** ADR-0008 §2.5 reads
-a partial snapshot of this document — "772 insertions, uncommitted at the time of reading" — and
-attributes to me a "§3.5" recommending that a *promoted sub-niche* mounts flat at
-`/industries/<industry>/<sub-industry>/<leaf>` at depth 4, versus his nested depth 5. **I have no §3.5
-and I hold neither position.** §1.7.2 of this document says a sub-niche gets **no page, all three fit
-types, no exceptions**, and §5.1 rule 14 says its name is never a link and never a fragment. The
-question ADR-0008 §2.5 asks Owen to adjudicate — flat leaf or nested — is a question I do not think
-should arise, because there should be no promoted sub-niche to hang anywhere.
+**First, a misattribution — and revision 4 changes my answer to the question underneath it.**
+ADR-0008 §2.5 reads a partial snapshot of this document — "772 insertions, uncommitted at the time of
+reading" — and attributes to me a "§3.5" recommending that a *promoted sub-niche* mounts flat at
+`/industries/<industry>/<sub-industry>/<leaf>` at depth 4, versus his nested depth 5. **I have no
+§3.5.** That part of the correction stands.
+
+**The position has moved, and it moved because the operator's decision moved.** Revision 3 held that
+the question should not arise, because no sub-niche should be promoted. The operator has decided that
+some are. So the question arises, and my answer is **nested**, `/industries/<i>/<s>/<n>/<leaf>`, for
+the reason Kyle's own table supplies below: flat produces exactly one unresolvable slug clash and rule
+6 forbids renaming either side of it. Nested produces none. Depth 5 is the cost, §5.1 rule 10 is where
+that cost is paid, and §1.7.2.2's six-gate screen is what keeps the promoted population at roughly
+185–440 rather than 8,823 — which is the only reason depth 5 is affordable at all.
 
 Kyle's own measurement is the strongest argument for my position and he found it while arguing the
 other case. His table records that under a flat leaf shape **one entity cannot have a URL at all** —
 `technology-and-it-services/cloud-consultancies/migration-and-modernization-partners` is two different
 sub-niches, `09.05.01.01` and `09.05.02.01`, under two different niches, sharing a slug, and rule 6
-forbids renaming either. I verified it: exactly one such clash exists in the whole taxonomy. Read
-carefully, that is not evidence for nesting. **It is evidence that level 4 is not a URL namespace.** A
-namespace in which one member is unaddressable without breaching an operator rule is a namespace being
-asked to do something it was not built for.
+forbids renaming either. I verified it: exactly one such clash exists in the whole taxonomy.
 
-> **My position for the adjudication, stated plainly so Owen has it:** neither. Level 4 is data, never
-> a route (§1.7.2). If the operator overrules that and sub-niches are promoted anyway, nested at depth
-> 5 is the better of the two shapes and Kyle's reasoning for it is sound — it is 1:1 with the ids, it
-> keeps breadcrumb and URL in agreement, and it does not start one entity short. I would rather lose
-> on the nesting question than win it, because winning it concedes the premise.
+Revision 3 read that clash as evidence that level 4 is not a URL namespace at all. I still think that
+reading is correct **about all 8,823**. It is not correct about the 185–440 that clear §1.7.2.2 — a
+screened minority is a different population from the whole level, and the clash is one row, not a
+property of the set.
+
+> **My position for the adjudication, stated plainly so Owen has it, and it has changed since
+> revision 3:** **nested**, `/industries/<i>/<s>/<n>/<leaf>`, depth 5, and only for entities with a
+> committed §1.7.2.2 screen record (§8.2 assertion 25 as amended). Kyle's reasoning for nesting is
+> sound — it is 1:1 with the ids, it keeps breadcrumb and URL in agreement, and it does not start one
+> entity short. The thing I am not conceding is the population: nesting is the right shape for a
+> screened few hundred and the wrong shape for 8,823, and assertion 25 is what holds that line in
+> code rather than in prose.
 
 **Second, C2 is not satisfied and the fix is two words.** ADR-0008 §7.2 selects siblings in "taxonomy
 order" — array position in the JSON. That is the mechanism of §7.2 of this document, which is the
@@ -1726,7 +1959,7 @@ positionally.** Those are the three operations that turn an additive data change
 publication change.
 
 ---
-### 7.5 Does the glossary fix still come first at 11,561? Yes, and the case is stronger
+### 7.5 Does the glossary fix still come first at 11,561, and after the four-level decision? Yes, twice over
 
 I put the §7.4 step 1 fix ahead of every wave in revision 2, at a 135-page ceiling. The operator is
 right to re-ask it at 11,561, because "a small fix blocking a large programme" is exactly the shape of
@@ -1754,6 +1987,36 @@ array. Either positional derivation of a link graph is unsafe or it is not.
 output on landing, a no-op at Google's end, revert restores `slice(0, 320)`. It is the cheapest item
 in either document. What changed is what it is protecting: a wave commit now touches a 2.2MB data file
 under active weekly edit rather than a 120-row TypeScript literal.
+
+#### Does the operator's four-level decision change the ordering? No, and it adds a fourth instance
+
+The operator is right to re-ask, because a small fix blocking a large programme should be re-examined
+every time the programme changes size. It holds, and two things about revision 4 make the case stronger
+rather than weaker.
+
+**The fourth instance of the enumeration error.** The argument in point 1 above rests on one sentence:
+seven consumers of `INDUSTRIES` were enumerated by careful people and there were eight. Revision 3
+found two more instances. The site-wide audit of 2026-09-29 (`docs/seo/site-optimisation-audit.md`
+§2.5) found a fourth: **`data/navigation.ts` is dead code.** Nothing imports `SPOKE_MENUS`,
+`INDUSTRY_MENU` or `TOP_NAV`. The live global header is `components/shared/Navigation.tsx`. Three
+separate documents believe otherwise — ADR-0007 §2.1, `lib/industryPublication.ts` consumer 7, and
+`scripts/check-b2b.cjs` §4, which greps that dead file as one of three blast-radius checks. And
+`app/industries/page.tsx` now imports the ICP spine into the render path and is in no gate's list at
+all. **The gates protecting the taxonomy are aimed at a file nothing reads.**
+
+**And the glossary is now also the best content opportunity on the domain, which is a separate
+argument for the same fix.** Measured on this commit: removing the term name from all 320 definitions
+leaves **one** distinct 39-word string. 320 URLs, one sentence. That family has the domain's best
+measured clicks-per-page (0.25/quarter) and held its best-ranking URL at position 7.9. Thirty of the
+320 are `AI search` terms — the exact category this company sells. §7.4 step 3 filed those behind a
+keyword export; they do not need one, because they are already published and already earning
+impressions. Step 1 is what makes editing them safe.
+
+**What the four-level decision does not change.** Step 1 blocks **publication**, not work. Every other
+Wave 0 item — the ICP ceiling (landed), the entry-link fix, the static-rendering fix, the blast-radius
+correction, the external prompt source for level 4, the Family Q derivation, the §1.7.1 and §1.7.2.2
+screens — proceeds in parallel and none of them touches `SERVICES`, `INDUSTRIES` or `LOCATIONS`. Steps
+2 through 5 of §7.4 are not wave blockers and never were.
 
 **What it does not block.** Step 1 blocks **publication**, not work. Wave 0's other items — the ICP
 ceiling assertion, the spine decision, the Family Q derivation, the first prompt runs, the §1.7.1
@@ -1823,7 +2086,7 @@ Assertions 1–17 are unchanged from revision 1. 18 and 19 are added in this rev
 |---|---|---|
 | 1 | `publication.reviewedBy` is a non-empty name from an allowlist of real people; `reviewedAt` is a valid ISO date ≤180 days before build date | Anonymous or stale review |
 | 2 | `evidence.length >= 1`, and every entry resolves to either an observation-run id in the observation store or a case-study id in `ALL_CASE_STUDIES` | Evidence is a sentence rather than an artefact |
-| 3 | Observation block: ≥8 distinct prompts, ≥3 distinct engines, every prompt has `observedAt` ≤90 days old and either ≥1 cited URL or explicit `noCitations: true` | Stale, thin, or invented |
+| 3 | Observation block: ≥8 distinct prompts, ≥3 distinct engines, every prompt has `observedAt` ≤90 days old and either ≥1 cited URL or explicit `noCitations: true`. **The ≥8 floor is unchanged at every level including 4** — revision 4 considered lowering it for leaves and rejected it, because a two-cell panel compared month on month looks like a measurement and is not | Stale, thin, or invented |
 | 4 | No prompt string is shared with any other page's set | Same prompt set pasted across niches |
 | 5 | ≥3 `facts[]`, each with a `source` URL whose host is not `qognitionagency.com` and whose path is not `/` | Self-referential or homepage-shaped "sources" |
 | 6 | ≥6 standards terms, each with `standardBody`, each appearing in the rendered body text; no term on >25% of published pages in the family | Vocabulary is generic |
@@ -1833,7 +2096,7 @@ Assertions 1–17 are unchanged from revision 1. 18 and 19 are added in this rev
 | 10 | No string from the boilerplate denylist appears in page data. Seed with `Quick summary:`, `This page links upward to`, `Qognition builds these pages as useful vertical growth assets`, `We translate this requirement into`, plus the banned vocabulary in `CLAUDE.md` §10 | The template talking about itself |
 | 11 | Any field whose text contains a percentage or a multiplier (regex `\d+\s*%` or `\d+x`) carries a sibling `source` field | Unsourced number, breaching `CLAUDE.md` §4 |
 | 12 | Either a resolving case-study id, or `clientProof: 'none'` **and** the rendered no-client sentence present | Implied experience |
-| 13 | Inbound in-content links from published pages ≥2; outbound sibling links 3–5, all resolving to published pages; click depth from `/` ≤3; no in-content link to a noindex URL | Orphan, dead end, or crawl waste |
+| 13 | Inbound in-content links from published pages ≥2; outbound sibling links 3–5, all resolving to published pages; click depth from `/` ≤3 at levels 1–3 and **≤4 at level 4** (§5.1 rule 10 as revised); no in-content link to a noindex URL | Orphan, dead end, or crawl waste |
 | 14 | Hub sibling graph is one connected component | Split branch |
 | 15 | Title ≤60 chars, description 110–160 chars, canonical equals self | Metadata defects at scale |
 | 16 | **The page path does not appear in `docs/repositioning/legacy-sitemap-baseline.json`** | Proves mechanically that the operator's "new pages only" constraint is honoured |
@@ -1843,9 +2106,10 @@ Assertions 1–17 are unchanged from revision 1. 18 and 19 are added in this rev
 | **20** | **Every published entity's `industrySlug`, `subIndustrySlug`, `nicheSlug` and rendered `name` are byte-identical to `data/b2b/icp/icp-taxonomy.json`.** No derived, pluralised, title-cased or "friendlier" variant anywhere in page data | Rule 6. A renamed slug is an invented slug, and at this scale it will happen by accident before it happens by intent |
 | **21** | **No string from any sub-industry's `ppc_keywords` appears in a title, an H1, a meta description or a `primaryQuery` field on any page** | §2.1. The supplied keywords are Universe B. This is assertion 18's failure mode one field over and 1,023× the count |
 | **22** | **No string in the §3.2 finding-3 collision set appears as a `primaryQuery` on any `/industries/*` page** (`b2b seo agency`, `b2b marketing agency`, `abm agency`, `franchise marketing agency`, `franchise development marketing`) | Those five are Qognition's own Family Q. A vertical page targeting them competes with `/ai-seo` and `/ppc` and addresses two incompatible readers |
-| **23** | **Every prompt in a page's observation set is either verbatim from that sub-industry's `ai_prompts`, or composes a supplied prompt with a `sub_niches[].name` from an entity beneath the page.** Every prompt carries `family: 'B'` and `shape: 'vendor' \| 'problem'`; every Family Q prompt carries `family: 'Q'` and `level: 1 \| 2 \| 3` | §3.2 finding 4 and §3.3. This is what makes assertion 4 passable at scale without inventing a prompt, and what keeps the panel interpretable |
+| **23** | **Amended in revision 4.** Every prompt in a page's observation set is either verbatim from that sub-industry's `ai_prompts`, or composes a supplied prompt with a `sub_niches[].name` from an entity beneath the page **or, for a level-4 page only, with its own `name`**, **or comes from the committed external prompt-capture source with its engine, date and method recorded** (§1.7.2.1). The widening is not a relaxation: a leaf has nothing beneath it, so the unamended rule yields zero compliant prompts and makes level 4 unpublishable by arithmetic rather than by judgement. Every prompt carries `family: 'B'` and `shape: 'vendor' \| 'problem'`; every Family Q prompt carries `family: 'Q'` and `level: 1 \| 2 \| 3` | §3.2 finding 4 and §3.3. This is what makes assertion 4 passable at scale without inventing a prompt, and what keeps the panel interpretable |
 | **24** | **A level-3 entity may not be `published` unless its §1.7.1 screen record exists**, naming the four test outcomes, the reviewer and the date; and its level-2 parent is already `published` | §1.7 and §5.1 rule 9. Without it, "level 3 earns a page" quietly becomes the default again |
-| **25** | **No sub-niche (level-4) id appears as a route segment, a sitemap entry, an `href`, or a fragment link anywhere** | §1.7.2 and §5.1 rule 14. 8,823 entities, zero routes, asserted rather than assumed |
+| **25** | **Amended in revision 4.** A sub-niche (level-4) id may appear as a **fragment anchor** on its level-3 parent's page and as the target of a coverage-grid link to that fragment. It may **not** appear as a route segment or a sitemap entry unless that entity has a committed §1.7.2.2 screen record with all six gates passing, a named reviewer and a date | §1.7.2.2 and §5.1 rule 14. The route ban stays and is now conditional on a record rather than absolute. The fragment permission is what lets a failing sub-niche still be addressable, quotable and citable without being a URL |
+| **26** | **New.** A level-4 entity may not be `published` unless (a) its level-3 parent is `published`, (b) that parent's cohort has passed gate test 7, and (c) removing this entity's eight prompts from the parent's pool leaves the parent still satisfying assertion 3 | §1.6's two-pass wave and §1.7.2.2 gate L4-6. A leaf may not starve the parent that supplied its vocabulary |
 
 ### 8.3 The wave gate — how `CLAUDE.md` §7's five tests become a build failure
 
@@ -1902,8 +2166,28 @@ The script asserts, for wave *N+1* to contain any published page:
    threshold is my judgement from query-shape reasoning, not a measurement. Revisit it against Wave
    1's arms before it gates Wave 3.]`
 
+8. **New in revision 4 — test 7b, the level-4 counterpart, and it is an extension of the mechanism
+   rather than a change to it.**
+   `levelFourWithParentIndependentImpression / levelFourPublished >= 0.40`, where the numerator counts
+   level-4 pages that earned ≥1 impression for at least one query for which the **level-3 parent earned
+   no impression in the same window**. Same committed file, same stale-pull build failure, same
+   threshold, same judgement caveat as test 7 — the 0.40 is my number from query-shape reasoning and
+   not a measurement.
+
+   **What failing it means, and it is different from test 7.** Test 7 failing drops the next cohort to
+   level 2 and continues. **Test 7b failing stops level 4 programme-wide**, not cohort-wide, and the
+   asymmetry is deliberate: there are 8,823 level-4 entities and 2,376 level-3. A 60% cannibalisation
+   rate at level 3 costs reviewer hours on 2,376 candidates; the same rate at level 4 is the
+   `/locations/*` pattern at four times the volume, on a domain that already carries it once. The
+   programme resumes level 4 only on a new measurement, recorded with its date.
+
+   Test 7b runs on the first cohort with ≥10 published level-4 pages, and not before — the binomial
+   noise band below that makes it a coin flip, which is the same reason §1.6 sets the gate cohort at
+   ≤25 pages rather than at 4.
+
 Wave 1 itself has no predecessor, so it enters on §8.2 alone. Every later wave enters on measurement
-or not at all.
+or not at all. **Pass 2 of any wave enters on test 7 having passed for that same cohort's pass 1**, in
+addition to everything above (§1.6).
 
 `siteMonthlyOrganicSessions` is currently near zero, so test 6 will fail on arithmetic unless either
 the ratio is defined generously or the dead families are pruned. Pruning is outside this document's
@@ -1997,16 +2281,24 @@ Source: first-party prompt runs. Fixed prompt set, same prompts every month, per
 never overwritten, so months are comparable.
 
 - Date, engine, model version, prompt, **family (`B` / `Q`), shape (`vendor` / `problem`) and level
-  (1 / 2 / 3)**, cited or not, which URL, what was said. The three new columns are revision 3's
-  addition: at 11,561 entities a panel that mixes level-1 and level-3 Family Q prompts without
-  labelling which is which cannot be read, and a month-on-month comparison of an unlabelled panel is
-  worse than no comparison because it looks authoritative.
+  (`1` / `2` / `3` / `4`)**, cited or not, which URL, what was said. The three columns are revision 3's
+  addition and the `4` is revision 4's: at 11,561 entities a panel that mixes level-1 and level-3
+  Family Q prompts without labelling which is which cannot be read, and a month-on-month comparison of
+  an unlabelled panel is worse than no comparison because it looks authoritative.
+- **Level 4 rows are always `family: 'B'`.** There is no level-4 Family Q prompt and there never will
+  be (§3.3). A level-4 row in the Q panel is a data error, and the panel should reject it rather than
+  report it. This matters because it is the mistake that would make level 4 look like acquisition
+  surface when it is coverage surface.
 - Family Q prompts for Qognition's own visibility — 42 level-1 prompts and revision 2's six
   cross-vertical prompts permanently, plus three level-2 prompts per sub-industry **from the month
   that sub-industry's page publishes**, plus one level-3 prompt per niche that passed §1.7.1 test 2.
   Every addition gets a dated line with the reason (§3.3).
-- Family B prompts as the per-entity observation the pages publish — supplied verbatim or composed
-  from level-4 sub-niche names, never invented (§3.2 finding 4, §8.2 assertion 23)
+- Family B prompts as the per-entity observation the pages publish — supplied verbatim, composed from
+  level-4 sub-niche names, composed from a level-4 page's own name, or drawn from the committed
+  external prompt-capture source with its engine and date. **Never invented** (§3.2 finding 4, §1.7.2.1,
+  §8.2 assertion 23 as amended). Every row from the external source carries its capture date alongside
+  its observation date, because those are two different dates and conflating them destroys the
+  comparability the panel exists for
 
 Changing the tracked prompt set is recorded with the reason, in the same file. Comparability is the
 entire value. The widened ICP requires adding SEO-only and PPC-only Family Q prompts (§3.1) — that is
@@ -2028,7 +2320,11 @@ presented as a search result.
 
 | # | Item | Blocks |
 |---|---|---|
-| 1 | **No gate over `data/b2b/icp`** — no ceiling, no consumer, no assertion (§8.5) | Every wave. This is now item 1, ahead of everything |
+| 0a | **The `/industries` entry link ships 20 hard 404s and one cross-spine alias** (commit `fbf62aa`; audit §2.4). Live now | Nothing formally, and that is the point — it is degrading the crawl anchor for the whole family while nothing blocks on it. First item |
+| 0b | **The external prompt-capture source for level 4** (§1.7.2.1). Without it, assertions 3, 4 and 23 make a leaf unpublishable by arithmetic | Pass 2 of every wave. Created by the operator's four-level decision |
+| 0c | **34 of 4,422 URLs prerender; every other URL serves `no-store`** (audit §6.1, `app/layout.tsx:104`) | Crawl cost of every page this programme publishes, and therefore the meaning of gate tests 3, 7 and 7b |
+| 0d | **The gates' blast-radius greps point at `data/navigation.ts`, which nothing imports** (audit §2.5) | The credibility of every gate in §8 |
+| 1 | ~~No gate over `data/b2b/icp`~~ — **landed**, commit `d90172c`. `ICP_PUBLISHED_CEILING = 0`, asserted against the real sitemap. §8.5 items 2 and 3 are still outstanding: the `financial-services` collision is **excepted** rather than decided, and the blast-radius grep was not extended | §8.5 items 2 and 3 |
 | 2 | **The glossary content-model fix** (§7.4 step 1, restated for scale in §7.5) | Wave 0, and therefore every wave |
 | 3 | **Which spine is the URL source** (§0.3 decision 7) — three spines claim `/industries/*`, all three claim `financial-services` | Any new URL at all |
 | 4 | **Overlap handling must canonicalise on id, not slug** (§0.3 decision 8). Not an operator decision — a code correction, and ADR-0008 §7.3 already specifies it. Two of the five pairs differ in `priority` and `fit` across the two sides, so rule 8 and §1.7 must read the canonical side | Correctness of build order for five niches |
@@ -2042,7 +2338,7 @@ presented as a search result.
 | 12 | Whether to restore a real page at `/glossary/ai-seo-and-sge-strategy-audit` (§7.4 step 4) | Recovering the domain's best ranking asset |
 | 13 | Competitor-brand bidding: yes or no (§2.5) | Marcus's campaign build; Ruth reviews the ad copy either way |
 | 14 | **Does Qognition sell white-label to B2B marketing and franchise marketing agencies** (§3.2 finding 3) | Wave 4's composition, and five keywords that are both Universe A and Universe B |
-| 15 | **ADR-0008 §2.5's adjudication** — it asks Owen to choose flat-leaf or nested for a promoted sub-niche, attributing the flat-leaf position to me. I hold neither; §1.7.2 says level 4 is never a route. §5.4 states my position for the adjudication | Whether 8,823 entities are a URL namespace |
+| 15 | **ADR-0008 §2.5's adjudication — now live, and my position has changed because the decision changed.** Revision 3 said level 4 is never a route, so the flat-versus-nested question did not arise. Revision 4 says roughly 185–440 of them are routes, so it does. **I hold nested**, at `/industries/<i>/<s>/<n>/<leaf>`, for the reason Kyle's own table gives: under a flat shape, `technology-and-it-services/cloud-consultancies/migration-and-modernization-partners` is two different sub-niches (`09.05.01.01` and `09.05.02.01`) sharing a slug, and rule 6 forbids renaming either. Exactly one such clash exists in the taxonomy, verified. Nested has no clash and no rename. §5.1 rule 10's depth rule is the cost, and §1.7.2.2's screen is what keeps the population small enough to pay it | Whether 185–440 entities are a URL namespace, and at what depth |
 | 16 | **ADR-0008 §7.2 selects siblings in taxonomy (array) order.** Should be slug order — §5.4, and §7.2 of this document is the post-mortem for why | The link graph's resistance to a silent upstream rewrite |
 | 17 | **ADR-0008 §7.4 option A needs an explicit operator yes** (adding one section to `/industries`). Without it nothing in the family is reachable at all. My bounded amendment in §5.4 is optional; the base decision is not | Every published page |
 | 18 | **Does ADR-0008 §7.2's children block render published children only?** (C6) | Whether a level-2 page reads as a page or a directory stub |
@@ -2058,6 +2354,25 @@ Carried from revision 2 and still open:
 - Confirmation that no edge bot management is challenging `OAI-SearchBot`, `PerplexityBot` or
   `Claude-SearchBot`, verified from server logs
 - The agreed indexable-pages-to-organic-sessions ratio referenced in `CLAUDE.md` §7
+
+New in revision 4:
+
+- **The external prompt-capture source for level 4**, with its engine, date, query seed and
+  de-duplication method (§1.7.2.1). Nothing at level 4 publishes without it
+- **The 96 Wave 1 §1.7.2.2 screen records** — six gate outcomes, reviewer and date per entity. Until
+  they exist, §1.7.2.3's 5–12% pass estimate is a judgement and is reported as one
+- **Measured hours per §1.7.2.2 screen, first twenty entities.** This is the number that decides
+  whether the four-level programme runs at the same calendar pace as the three-level one (§1.6)
+- **Test 7b's 0.40 threshold**, which is my judgement from query-shape reasoning. Revisit it against
+  Wave 1 pass 2's own results before it gates anything
+
+Carried in from `docs/seo/site-optimisation-audit.md` and not duplicated there:
+
+- CrUX or PageSpeed Insights field data by page group
+- Server-log evidence of any crawler sending `Accept: text/markdown`
+- Entity consistency sweep across LinkedIn, Crunchbase, Clutch, DesignRush, Tracxn and GBP against
+  Gurugram, Haryana, IN
+- Which spine owns `/industries/financial-services`
 - Primary log-level evidence on `llms.txt` fetch rates
 - Whether any assistant parses `FAQPage` JSON-LD; no primary source either way
 - Monthly paid budget available for Qognition's own site, or confirmation it is zero

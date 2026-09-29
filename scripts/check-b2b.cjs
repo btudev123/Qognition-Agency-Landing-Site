@@ -247,6 +247,60 @@ for (const file of [
   );
 }
 
+/* ── 11. THE ICP IMPORT BOUNDARY. ADR-0008 §5.2 item 3. ─────────────────────
+ *
+ * `data/b2b/icp/icp-taxonomy.json` is 2,230,578 bytes and is imported at module
+ * scope into `data/b2b/icp/index.ts`. Next renders each static param to HTML AND
+ * to an RSC flight payload; whatever is reachable from a prop handed to a Client
+ * Component is serialized into that payload, on every page that renders it. The
+ * reach from one industry node is the entire tree.
+ *
+ * So the rule is a boundary rather than a review note: under `app/` and
+ * `components/`, import the NARROW ACCESSORS from `data/b2b/icp` and never
+ * `ICP_INDUSTRIES` and never the JSON path. `lib/b2b/icpRegistry.ts` hands out
+ * flat view records with no child arrays for the same reason, one layer in.
+ *
+ * `scripts/` is exempt: a gate that cannot read the taxonomy cannot gate it.
+ *
+ * The one violation this found on 2026-09-29 was `app/industries/page.tsx`, the
+ * single page the whole family hangs off and therefore the one most likely to
+ * grow a client-side filter later. It now reads `icpIndustryCards()`, which
+ * carries four strings and two numbers per row and cannot walk anywhere. The
+ * rendered HTML is unchanged, which was verified by diffing the served page
+ * rather than by reading the diff. */
+const ICP_FORBIDDEN = /\bICP_INDUSTRIES\b|icp-taxonomy\.json/;
+const walkTsx = (dir) =>
+  fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return walkTsx(full);
+    return /\.tsx?$/.test(entry.name) ? [full] : [];
+  });
+
+for (const file of [...walkTsx('app'), ...walkTsx('components')]) {
+  const src = fs.readFileSync(file, 'utf8');
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ');
+  assert.ok(
+    !ICP_FORBIDDEN.test(code),
+    `${file} references ICP_INDUSTRIES or icp-taxonomy.json outside a comment.\n` +
+    `Route and component code takes the narrow accessors from data/b2b/icp (getIcpIndustry, ` +
+    `getIcpSubIndustry, getIcpNiche, getIcpSubNiche, icpIndustryCards, ...) or a view record from ` +
+    `lib/b2b/icpRegistry.ts. The 2.2MB taxonomy must never be reachable from a prop: it would be ` +
+    `serialized into the RSC payload of every page that rendered it. ADR-0008 §5.2 item 3.`
+  );
+}
+
+/* Every B2B component is a Server Component, and stays one. The boundary above
+   only bites when something crosses it, and `'use client'` is the crossing. */
+for (const file of walkTsx('components/b2b')) {
+  const src = fs.readFileSync(file, 'utf8');
+  assert.ok(
+    !/^\s*['"]use client['"]/m.test(src),
+    `${file} is a Client Component. Every file in components/b2b is server-only: these pages are the ` +
+    `crawl target and ship no client JS (ADR-0005 §2), and a client boundary here serializes whatever ` +
+    `the record can reach into the payload of every page in the family.`
+  );
+}
+
 /* ── 8. Graph: no orphans, depth ceiling, link cap. ──────────────────────── */
 for (const { verticalId, subNicheId } of routableEntities()) {
   const label = subNicheId ? `${verticalId}/${subNicheId}` : verticalId;
@@ -466,6 +520,12 @@ for (const [key, body] of B2B_BODIES) {
   };
   walk(body, 'body');
 }
+
+console.log(
+  `✓ b2b boundary: ${[...walkTsx('app'), ...walkTsx('components')].length} route and component files ` +
+  `checked for a direct ICP taxonomy import, ${walkTsx('components/b2b').length} b2b components ` +
+  `server-only.`
+);
 
 console.log(
   `✓ b2b: ${META_VERTICALS.length} verticals, ${routableEntities().length} routable, ` +

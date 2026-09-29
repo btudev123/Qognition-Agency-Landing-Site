@@ -76,8 +76,14 @@ const REQUESTED_MODEL = 'sonar-pro';
  */
 export const AI_TIMEOUT_MS = 22_000;
 
-/** Cap the stored answer. It is evidence, not a document; a runaway response is a bug. */
-const MAX_ANSWER_CHARS = 20_000;
+/**
+ * Cap the stored answer. It is evidence, not a document; a runaway response is a bug.
+ *
+ * Exported because lib/b2b/panelRun.ts stores answers in the same format and a
+ * second, different cap would mean two records of the same kind truncated
+ * differently with nothing saying so.
+ */
+export const MAX_ANSWER_CHARS = 20_000;
 
 export type NotCheckedReason =
   /** No API key. The default state of production today. */
@@ -423,7 +429,14 @@ const brandFromHostname = (hostname: string): string | null => {
   return label;
 };
 
-const brandFromUrl = (url: string): string | null => {
+/**
+ * Exported for lib/b2b/panelRun.ts, which needs the SAME candidate rule.
+ *
+ * A second implementation of "what counts as a brand in a cited URL" is how
+ * GENERIC_HOST_LABELS ends up applied in one place and not the other, which is
+ * the over-report this module already had once and fixed.
+ */
+export const brandFromUrl = (url: string): string | null => {
   try {
     return brandFromHostname(new URL(url).hostname);
   } catch {
@@ -471,7 +484,12 @@ const brandFromUrl = (url: string): string | null => {
  * do not also cite. Worth measuring on the first fifty live runs before anyone
  * treats vendorsNamed as a complete list.]`
  */
-const findVendorSpans = (rawAnswer: string, candidates: readonly string[]): VendorSpan[] => {
+/**
+ * Exported for lib/b2b/panelRun.ts. See the comment above: the boundary rule and
+ * the capitalisation rule are the whole integrity story of a recorded vendor
+ * name, and they must be one implementation, not two that agree today.
+ */
+export const findVendorSpans = (rawAnswer: string, candidates: readonly string[]): VendorSpan[] => {
   const spans: VendorSpan[] = [];
   const seen = new Set<number>();
 

@@ -9,6 +9,7 @@ import { GLOBAL_MARKETS, LANGUAGE_SEO_PAGES } from '../data/internationalSeo';
 import { INDUSTRIES } from '../data/industries';
 import { isPublishedIndustry, isPublishedSubIndustry } from './industryPublication';
 import { b2bSitemapPaths } from './b2b/registry';
+import { icpSitemapPaths } from './b2b/icpRegistry';
 import { LOCATIONS } from '../data/locations';
 import { REGIONS } from '../data/regions';
 import { COMPARISONS, FREE_TOOLS, GLOSSARY_TERMS, RESOURCES, SERVICE_SUB_PAGES } from '../data/seoExpansion';
@@ -158,6 +159,18 @@ export const industryRoutes = (): SitemapEntry[] => [
      scripts/check-industry-gate.cjs asserts the sitemap total, so the wiring is
      provably inert until someone deliberately promotes something. */
   ...b2bSitemapPaths().map((path) => ({
+    path,
+    priority: 0.90,
+    changefreq: 'weekly' as const,
+  })),
+  /* Published ICP entities, all four levels. Same wiring and the same reason:
+     the failure this prevents is a `published` page that is index:true, absent
+     from the sitemap and absent from every internal link, with every gate green.
+     It contributes ZERO entries today because lib/b2b/icpPublication.ts is
+     empty, and check-industry-gate.cjs's 4,422 assertion proves the inertness
+     rather than asserting it in prose. A rule-7 duplicate is excluded at source:
+     it carries a canonical to the page that does appear here. */
+  ...icpSitemapPaths().map((path) => ({
     path,
     priority: 0.90,
     changefreq: 'weekly' as const,

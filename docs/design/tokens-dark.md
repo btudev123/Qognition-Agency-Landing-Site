@@ -10,21 +10,54 @@ colour and elevation change.
 
 ---
 
-## 0. The conflict you have to resolve before this ships
+## 0. Decision H — settled
 
-**`CLAUDE.md` §9 says "White background, near-black text, teal accents and CTAs." The operator has
-asked for a dark site.** Same repo, two instructions. I am not picking silently.
+**Dark is the primary surface.** `CLAUDE.md` §9 has been updated and the split I recommended is the
+one that shipped:
 
-| | |
+| Surface | Ground |
 |---|---|
-| **Decision H** | Does the site go dark? |
-| **My recommendation** | Dark for the homepage, `/labs`, all product frames, all layer pages and the final CTA. **Light for long-form reading surfaces only**: `/insights` article bodies, `/case-studies/[slug]` bodies, `/legal/*`. The switch happens at a route boundary, never mid-page. |
-| **Why the split** | 17px body at 1.7 line height over 2,000 words is measurably harder to read in light-on-dark for astigmatic readers, which is a large share of a 45+ B2B buyer set. Everything else on this site is short, structured and diagrammatic, where dark is stronger. |
-| **What you must do** | If you accept, amend `CLAUDE.md` §9 to say so. A bible that contradicts the shipped site is worse than either choice. |
+| Homepage, `/labs`, layer pages, industries, pricing, audit, contact, final CTA, every product frame | **Dark** |
+| Long-form reading: `/insights` article bodies, `/case-studies/[slug]` bodies, `/legal/*` | **Light** |
 
-Both halves of the system are specified. If Decision H goes the other way, `tokens.md` alone ships
-and this file is used only for the product frames, which are dark regardless because the products
-are dark software.
+The switch happens at a route boundary, never mid-page. The reason for keeping light on long-form:
+17px body at 1.7 line height over 2,000 words is measurably harder to read light-on-dark for
+astigmatic readers, who are a large share of a 45+ B2B buyer set. Everything else on this site is
+short, structured and diagrammatic, where dark is stronger.
+
+**Scoping.** Tokens are declared against `[data-theme="dark"]`, not `:root`, so the per-route split
+stays expressible from one attribute on `<html>` or on a route segment's wrapper. `tokens.md`'s
+light values stay on `:root` and remain the fallback. **Layout imports at most two stylesheets**, so
+the dark tokens live inside `app/tokens.css` rather than in a third file — see §10.
+
+### 0.1 Two things carried over from the light system
+
+1. **The focus ring on light is now `--accent-deep #0F766E` at 5.47:1**, replacing `--accent`
+   `#14B8A6` at 2.49:1 which was failing SC 1.4.11 on every focusable element sitewide. That fix has
+   shipped. My earlier recommendation in `tokens.md` §1 of an ink ring is **superseded** — teal-700
+   clears the 3:1 non-text threshold with room, it is now recorded in `CLAUDE.md` §9, and one ring
+   colour that is already in the file beats a second one that is better on paper. Design to it.
+   `tokens.md` §1 decision 2 and the `growth.css` note in §8 should be read as historical.
+2. **`--accent` is never a focus ring and never text. `--accent-fill` is graphics only.** Now a rule
+   in `CLAUDE.md` §9. On dark the equivalents are in §3 below, where the ramp inverts.
+
+The focus ring **on dark surfaces is white**, not teal-700 — teal-700 is 2.87:1 on `--d-surface-3`
+and fails. See §4.
+
+### 0.2 This is an extension of the existing visual language, not a new one
+
+The operator has confirmed the qognitionagency.com design stays as it is and only the targeting
+changes. Nothing in this file introduces a new visual language. It puts verified numbers behind the
+one already in the repo:
+
+| Already in the repo | What this file does to it |
+|---|---|
+| `app/HomePage.tsx` dark sections at `#050505` | Re-points to `--d-bg #0A0A09`, a warm near-black in the same hue family as `--ink-900` |
+| The bordered card lattice in `FourSpokes` | Keeps the pattern exactly; swaps `rgba(255,255,255,0.06)` for `--d-rule-hairline` |
+| Mono uppercase eyebrow labels at 10–11px | Keeps the treatment; raises to the 13px floor per `tokens.md` §3 |
+| `GradientMesh`, three drifting orbs | Keeps the geometry; caps alpha and removes the violet and blue left over from the retired 4-spoke palette (§8) |
+| Teal accent throughout | Keeps it; states which step of the ramp is legal on which surface (§3) |
+| `rf-gradient-text` on display headings | The one removal. A gradient headline has no single foreground colour so it cannot be AA-verified (§8) |
 
 ---
 
@@ -220,13 +253,29 @@ The scale in `tokens.md` §3 is unchanged. Two dark-specific notes:
 
 ---
 
-## 10. `app/tokens-dark.css`
+## 10. Implementation
+
+**Layout imports at most two stylesheets.** So these declarations go at the end of `app/tokens.css`
+rather than in a third file. `app/layout.tsx` imports `globals.css` then `tokens.css`, and nothing
+else.
+
+Scoping is `[data-theme="dark"]` on `<html>` or on a route segment's wrapper element. Setting it per
+segment is what makes the route split in §0 expressible without a client-side theme switch:
+
+```tsx
+// app/(marketing)/layout.tsx
+<div data-theme="dark">{children}</div>
+
+// app/insights/[slug]/layout.tsx — omits the attribute, inherits :root light
+```
+
+Product frames carry `data-theme="dark"` on the frame element itself, so they stay dark even if they
+are ever placed on a light route.
 
 ```css
-/* app/tokens-dark.css — import after tokens.css */
+/* app/tokens.css — appended after the light ramps */
 
-:root,
-.on-dark {
+[data-theme="dark"] {
   /* surfaces */
   --d-bg:              #0A0A09;
   --d-surface-1:       #131312;
@@ -271,12 +320,14 @@ The scale in `tokens.md` §3 is unchanged. Two dark-specific notes:
   --d-elev-overlay:    0 16px 48px rgba(0,0,0,0.6);
 }
 
-.on-dark {
+[data-theme="dark"] {
   background: var(--d-bg);
   color: var(--d-text);
 }
 
-.on-dark :focus-visible {
+/* The light ring is --accent-deep #0F766E (5.47:1, CLAUDE.md §9).
+   On dark it is 2.87:1 and fails, so the ring inverts to white here. */
+[data-theme="dark"] :focus-visible {
   outline: 2px solid var(--d-focus-ring);
   outline-offset: 2px;
 }

@@ -4,6 +4,9 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { isPublishedSubIndustry } from '../../../../lib/industryPublication';
 import { resolveSubIndustry, b2bSubNicheParams } from '../../../../lib/b2b/registry';
+import { resolveIcp, icpSubIndustryParams } from '../../../../lib/b2b/icpRegistry';
+import { icpMetadata, icpSchema, icpEntityName } from '../../../../lib/b2b/icpMetadata';
+import IcpSubIndustryPage from '../../../../components/b2b/IcpSubIndustryPage';
 import { observationStore } from '../../../../lib/b2b/observationStore';
 import SubNichePage from '../../../../components/b2b/SubNichePage';
 import type { Industry, SubIndustry } from '../../../../types';
@@ -32,6 +35,7 @@ export const generateStaticParams = () => [
       }))
   ),
   ...b2bSubNicheParams(),
+  ...icpSubIndustryParams(),
 ];
 
 export const generateMetadata = async ({
@@ -45,9 +49,22 @@ export const generateMetadata = async ({
      data/industries.ts and returns a noindex "not found" object for anything it
      does not know, so the B2B check has to come BEFORE the fallthrough or every
      new page would ship as "Sub-Industry Not Found". Checking legacy membership
-     explicitly keeps the existing call byte-identical for the 66 live pages. */
+     explicitly keeps the existing call byte-identical for the 66 live pages.
+
+     THE TEST IS NOW PER SUB-SLUG, NOT PER PARENT, AND THAT FIXES A LATENT BUG.
+     ADR-0008 §3.5 item 2: this branch keyed on the PARENT while the render
+     branch below keys on the CHILD, so a non-legacy child under a legacy parent
+     rendered a real page and got `{ title: 'Vertical Not Found', noIndex: true }`
+     written over it. Metadata and body disagreeing on one URL. It was latent
+     because no such path reached generateStaticParams, and it goes live the
+     moment one does, which is why it is fixed in the wave that creates the
+     possibility rather than after somebody reads the served HTML.
+
+     All 66 live pages take the same early return with the same argument and
+     therefore emit the same bytes: for them `legacySub` is always found. */
   const legacyIndustry = INDUSTRIES.find((item) => item.id === industry);
-  if (legacyIndustry) return getSubIndustryMetadata(industry, subIndustry);
+  const legacySub = legacyIndustry?.subIndustries.find((item) => item.slug === subIndustry);
+  if (legacySub) return getSubIndustryMetadata(industry, subIndustry);
 
   const record = resolveSubIndustry(industry, subIndustry);
   if (record?.source === 'b2b') {
@@ -61,13 +78,36 @@ export const generateMetadata = async ({
     });
   }
 
+  /* Level 2 of the ICP tree, the workhorse level. */
+  const icp = icpMetadata([industry, subIndustry]);
+  if (icp) return icp;
+
   return getSubIndustryMetadata(industry, subIndustry);
 };
 
 export default async function Page({ params }: { params: Promise<{ industry: string; subIndustry: string }> }) {
   const { industry: industrySlug, subIndustry: subIndustrySlug } = await params;
   const record = resolveSubIndustry(industrySlug, subIndustrySlug);
-  if (!record) notFound();
+
+  if (!record) {
+    const icp = resolveIcp([industrySlug, subIndustrySlug]);
+    if (!icp || icp.level !== 'sub-industry') notFound();
+    const canonical = icp.canonicalPath ? resolveIcp(icp.canonicalPath) : undefined;
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(icpSchema(icp)) }}
+        />
+        <IcpSubIndustryPage
+          record={icp}
+          observation={observationStore.lookup(icp.href)}
+          canonicalHref={canonical?.href}
+          canonicalName={canonical ? icpEntityName(canonical) : undefined}
+        />
+      </>
+    );
+  }
 
   if (record.source === 'b2b') {
     return (

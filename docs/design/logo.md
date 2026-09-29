@@ -100,8 +100,10 @@ for one-colour use.
 </svg>
 ```
 
-Ring `--ink-900 #0D0C0A` (19.55:1 on white). Tail `--accent` teal-700 `#0F766E` (5.47:1 on white,
-clears the 3:1 graphic threshold with room).
+Ring `--ink-900 #0D0C0A` (19.55:1 on white). Tail `--accent-deep` teal-700 `#0F766E` (5.47:1 on
+white, clears the 3:1 graphic threshold with room). **Not `--accent` `#14B8A6`** — per `CLAUDE.md`
+§9 that token is graphics-only at 2.49:1 and the logo tail is a brand element that must hold its
+contrast at 16px.
 
 ### 2.6 SVG source — two-tone, on dark
 
@@ -135,9 +137,9 @@ export function QMark({ tone = 'mono' }: { tone?: 'mono' | 'duo' }) {
 }
 ```
 
-`--logo-accent` is set to `var(--accent)` on light surfaces and `var(--d-accent)` inside `.on-dark`.
-One declaration each, in `tokens.css` and `tokens-dark.css`. Sizing is `1em`, so the mark scales
-with `font-size` and never needs a width prop.
+`--logo-accent` is `var(--accent-deep)` on `:root` and `var(--d-accent)` under `[data-theme="dark"]`.
+Two declarations, both in `app/tokens.css`. Sizing is `1em`, so the mark scales with `font-size` and
+never needs a width prop.
 
 ---
 
@@ -242,7 +244,7 @@ unchanged. The `QMark` stays `aria-hidden`; the label is on the anchor.
 **Sticky / scrolled nav.** `--logo-size` goes `30 → 24` over 200ms `--ease-standard`. Composition
 does not change, so nothing reflows. Transition `font-size` only; do not animate width.
 
-**Footer.** `--logo-size: 36`, `tone="duo"`, inside `.on-dark`. The footer is the one place the
+**Footer.** `--logo-size: 36`, `tone="duo"`, inside `[data-theme="dark"]`. The footer is the one place the
 lockup is allowed to be larger than the nav, because it is a sign-off rather than a control.
 
 **Mobile nav sheet.** Lockup at `--logo-size: 28`, top-left, with the close button top-right. The

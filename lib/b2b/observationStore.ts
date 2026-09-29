@@ -24,6 +24,8 @@
 import { OBSERVATION_RUNS, STORED_ANSWERS } from '../../data/b2b/observations';
 import type { StoredAnswer, VendorSpan } from '../../data/b2b/observations/evidence';
 import { getMetaVertical, getSubNiche } from '../../data/b2b/verticals';
+import { icpTaxonomyHolds } from './icpResolution';
+import type { ResolveIcp } from './icpResolution';
 import { resolveIndustry, resolveSubIndustry } from './registry';
 import type { ObservationRun, ObservationStore, ObservationView, ObservedRow } from './observations';
 
@@ -102,9 +104,29 @@ export function answerFor(
  * Throws with the entity path and the offending value, because a gate that
  * fails without naming the record is a gate nobody can act on.
  */
+export interface ObservationValidationDeps {
+  /**
+   * The ICP resolver. ADR-0008 §3.2, and Mira's `lib/b2b/icpRegistry.ts`
+   * implements it.
+   *
+   * Injected rather than imported, for the reason ADR-0003 §3 gives for every
+   * other seam in this family: the gate must be exercisable in full without the
+   * collaborator's module, and when that module exists it must be the ONE
+   * authority on whether an ICP path renders, so the gate and the route cannot
+   * disagree about who owns a URL.
+   *
+   * Omitting it does not soften anything. An ICP-shaped path fails closed with a
+   * message naming this field, because a gate that waves through the paths it
+   * cannot check is the same defect as the binding that was missing here in the
+   * first place, one level deeper.
+   */
+  readonly resolveIcp?: ResolveIcp;
+}
+
 export function assertObservationRecordsValid(
   runs: readonly ObservationRun[],
   answers: readonly StoredAnswer[],
+  deps: ObservationValidationDeps = {},
 ): void {
   const seenPaths = new Set<string>();
   const answerIds = new Set<string>();
@@ -138,7 +160,7 @@ export function assertObservationRecordsValid(
   for (const run of runs) {
     const at = `[${run.entityPath}]`;
 
-    assertEntityPathIsBound(run.entityPath);
+    assertEntityPathIsBound(run.entityPath, deps);
 
     if (seenPaths.has(run.entityPath)) {
       throw new Error(
@@ -202,7 +224,7 @@ const AUDIT_NAMESPACE = 'audit:';
  * Resolution goes through lib/b2b/registry.ts, the same function the route
  * calls, so the gate and the renderer cannot disagree about who owns a URL.
  */
-const assertEntityPathIsBound = (entityPath: string): void => {
+const assertEntityPathIsBound = (entityPath: string, deps: ObservationValidationDeps): void => {
   if (entityPath.startsWith(AUDIT_NAMESPACE)) {
     const hostname = entityPath.slice(AUDIT_NAMESPACE.length).trim();
     if (!hostname) {
@@ -214,37 +236,100 @@ const assertEntityPathIsBound = (entityPath: string): void => {
     return;
   }
 
-  const [empty, root, industry, subIndustry, ...rest] = entityPath.split('/');
-  if (empty !== '' || root !== 'industries' || !industry || rest.length > 0) {
+  const [empty, root, ...segments] = entityPath.split('/');
+  if (empty !== '' || root !== 'industries' || segments.length < 1 || segments.length > 4 ||
+      segments.some((segment) => !segment)) {
     throw new Error(
-      `entityPath "${entityPath}" is not shaped like a B2B entity URL, so there is no page it can ` +
-      'render on. Expected "/industries/<vertical>" or "/industries/<vertical>/<sub-niche>", or ' +
-      '"audit:<hostname>" for a per-prospect audit run.',
+      `entityPath "${entityPath}" is not shaped like an entity URL, so there is no page it can render ` +
+      'on. Expected one to four segments under /industries: "/industries/<industry>", ' +
+      '"/industries/<industry>/<sub-industry>", "/industries/<industry>/<sub-industry>/<niche>" or ' +
+      '"/industries/<industry>/<sub-industry>/<niche>/<sub-niche>" (ADR-0008 §2.1), or ' +
+      `"audit:<hostname>" for a per-prospect audit run. This one has ${segments.length} segments.`,
     );
   }
 
-  if (resolveIndustry(industry)?.source === 'legacy') {
-    throw new Error(
-      `entityPath "${entityPath}" is owned by a LEGACY industry in data/industries.ts. Legacy wins in ` +
-      'lib/b2b/registry.ts, that template renders no observation block, and an observation recorded ' +
-      'against it is evidence attached to a page that will never show it. Rename the entity or get an ' +
-      'operator decision to re-point the legacy hub.',
-    );
-  }
+  const [industry, subIndustry] = segments;
 
-  const record = subIndustry ? resolveSubIndustry(industry, subIndustry) : resolveIndustry(industry);
-  if (record?.source === 'b2b') return;
+  /* The two-level registry goes FIRST and answers on its own for a one- or
+     two-segment path. That order is the whole legacy guarantee: the resolver the
+     route calls decides who owns a live URL, and adding a second resolver must
+     not change the answer for any path the first one already owns. */
+  if (segments.length <= 2) {
+    /* Legacy claims a row at depth 1 and depth 2 and nowhere below it
+       (ADR-0008 §3.2: "legacy wins at whatever depth it holds a row, and nowhere
+       below it"; data/industries.ts is exactly two levels deep, so it can never
+       claim segment 3 or 4). Scoping this test to those two depths is what lets
+       industry `04`'s ICP tree exist under the legacy `financial-services` hub. */
+    if (resolveIndustry(industry)?.source === 'legacy') {
+      throw new Error(
+        `entityPath "${entityPath}" is owned by a LEGACY industry in data/industries.ts. Legacy wins in ` +
+        'lib/b2b/registry.ts, that template renders no observation block, and an observation recorded ' +
+        'against it is evidence attached to a page that will never show it. Rename the entity or get an ' +
+        'operator decision to re-point the legacy hub.',
+      );
+    }
 
-  const exists = subIndustry ? getSubNiche(industry, subIndustry) : getMetaVertical(industry);
-  throw new Error(
-    exists
-      ? `entityPath "${entityPath}" is a real row in data/b2b/verticals.ts but it is not routable: a ` +
+    const record = subIndustry ? resolveSubIndustry(industry, subIndustry) : resolveIndustry(industry);
+    if (record?.source === 'b2b') return;
+
+    const exists = subIndustry ? getSubNiche(industry, subIndustry) : getMetaVertical(industry);
+    if (exists) {
+      throw new Error(
+        `entityPath "${entityPath}" is a real row in data/b2b/verticals.ts but it is not routable: a ` +
         'spine entity has no page and 404s on request, and a routable one with no authored body does ' +
         'the same. Promote the entity and author its body in the commit that adds this run, or the ' +
-        'observation is a measurement of a page nobody can read.'
-      : `entityPath "${entityPath}" does not resolve to any entity in data/b2b/verticals.ts. An ` +
-        'observation filed under a path that names no page renders nowhere, or renders under an ' +
-        'entity it was not taken for. Both are worse than not publishing it.',
+        'observation is a measurement of a page nobody can read.',
+      );
+    }
+    /* Not a row in verticals.ts at all. It may still be an ICP entity: 22 ICP
+       sub-industry slugs are byte-identical to META_VERTICALS sub-niche ids
+       (ADR-0008 §4.2), and the two families will overlap further as the alias
+       map replaces the spine. Fall through. */
+  }
+
+  assertIcpEntityPathIsBound(entityPath, segments, deps);
+};
+
+/**
+ * The same binding, over the ICP's four levels.
+ *
+ * ADR-0008 turns `/industries/*` into a four-level space of 11,561 entities
+ * behind a second resolver. Everything the two-level version was protecting
+ * against is unchanged and 150 times larger: the only field on a run that is not
+ * checked against the stored answer is WHICH ENTITY the answer belongs to, and
+ * at this scale a run filed one slug sideways lands on a page whose buyer,
+ * standards and comparison axes are someone else's.
+ *
+ * Three outcomes, and the difference between the last two is the difference
+ * between "you invented a slug" and "you measured a page that is not promoted
+ * yet". A reader of a failing build needs to be told which.
+ */
+const assertIcpEntityPathIsBound = (
+  entityPath: string,
+  segments: readonly string[],
+  deps: ObservationValidationDeps,
+): void => {
+  if (!deps.resolveIcp) {
+    throw new Error(
+      `entityPath "${entityPath}" is in the ICP entity space, and no ICP resolver is wired into this ` +
+      'check. Pass `resolveIcp` (ADR-0008 §3.2, implemented by lib/b2b/icpRegistry.ts) in the ' +
+      '`deps` argument of assertObservationRecordsValid. It fails closed rather than passing, because ' +
+      'the path a run claims is the one thing on a run that nothing else can verify.',
+    );
+  }
+
+  if (deps.resolveIcp(segments)) return;
+
+  throw new Error(
+    icpTaxonomyHolds(segments)
+      ? `entityPath "${entityPath}" is a real entity in data/b2b/icp/icp-taxonomy.json, but the ICP ` +
+        'resolver does not return it, so it has no page: it is spine, it is not in a promoted cohort ' +
+        '(ADR-0008 §6.4), or legacy claims the path at that depth. Promote the cohort and author the ' +
+        'body in the commit that adds this run, or the observation measures a page nobody can read.'
+      : `entityPath "${entityPath}" does not resolve to any entity in ` +
+        'data/b2b/icp/icp-taxonomy.json. POSITIONING rule 6: slugs come from that file and are never ' +
+        'invented or renamed. An observation filed under a path that names no page renders nowhere, ' +
+        'or renders under an entity it was not taken for. Both are worse than not publishing it.',
   );
 };
 

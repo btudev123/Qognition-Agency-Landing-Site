@@ -51,7 +51,11 @@ Resend is the primary receipt/notification mechanism. Every submission emails `A
 
 Optional email/CAPI tasks run after durable delivery. Failure does not lose the stored contact, but no automatic website replay is guaranteed. Failure logs contain a submission ID, not contact PII or provider credentials.
 
-The old `/api/audit` remains retired with HTTP 410. The single AI Search Visibility Report page (`/free-ai-audit`) requests a human review through `/api/lead`; no automated scored report or guaranteed AI citation is promised.
+`/api/audit` is live again and no longer returns 410. It has two halves. The crawl half (`lib/auditEngine.ts`, 28 checks against the page plus robots.txt, sitemap.xml and llm.txt) is free, needs no key and always runs. The AI half (`lib/audit/aiVisibility.ts`) asks one buyer prompt on Perplexity Sonar and is optional: with `PERPLEXITY_API_KEY` unset, over quota, timed out, or with no category readable from the page title, the response carries `aiVisibility.status = 'not_checked'` with a reason and a sentence to render. It never returns a guess, and today no provider is configured in production, so `not_checked` is the expected response.
+
+Spend control on that endpoint is a hard cap in the Perplexity dashboard plus `lib/auditRateLimit.ts` (one audit per email per 24h, 12 per IP per hour). That rate limiter is in-memory and per-instance, and Redis is unset in production, so it throttles rather than caps; the provider-side cap is the only real ceiling. Deliberately no ledger, no queue and no Redis: ADR-0003 §6's durable-ledger requirement covers the 45-call `/api/snapshot` product, which is not built and which this endpoint must not grow into without returning to that ADR.
+
+The AI Search Visibility Report page (`/free-ai-audit`) still requests a human review through `/api/lead`; no guaranteed AI citation is promised anywhere.
 
 ## Consent and attribution
 

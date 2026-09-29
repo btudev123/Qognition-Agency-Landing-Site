@@ -159,3 +159,162 @@ export function nichesByPriority(priority: IcpPriority) {
 export function publishedIcpPaths(): readonly string[] {
   return [];
 }
+
+/* ── LEVEL 4, AND THE CROSS-TREE ROWS. Added for the four-level route surface.
+ *
+ * Everything below stays INSIDE this directory on purpose. Kyle's ADR-0008
+ * §5.2 item 3: `ICP_INDUSTRIES` and `icp-taxonomy.json` must never be imported
+ * outside `data/b2b/icp/`, because whatever is reachable from a prop is
+ * serialized into the RSC payload of every page that renders it, and the reach
+ * from one industry node is the whole 2.2MB tree. `scripts/check-b2b.cjs`
+ * greps for both names. So the route and component layers get narrow VIEW
+ * records from `lib/b2b/icpRegistry.ts`, never a JSON node, and the accessors
+ * they are built from live here.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+export interface IcpOverlap {
+  /** The buyer both rows describe. Operator prose. */
+  readonly buyer: string;
+  /** Dotted id. Rule 7: this one builds the page. */
+  readonly canonical: string;
+  /** Dotted id. Renders a pointer and a canonical tag, never a second body. */
+  readonly duplicate: string;
+}
+
+export interface IcpDedupeRow {
+  /** Industry id the niche was removed from. */
+  readonly removed_from: string;
+  /** The niche NAME, not a slug and not an id. See `resolveDedupeTarget`. */
+  readonly niche: string;
+  /** Industry id the niche was kept in. */
+  readonly kept_in: string;
+}
+
+interface IcpTaxonomyExtras {
+  readonly overlaps: readonly IcpOverlap[];
+  readonly dedupe_log: readonly IcpDedupeRow[];
+}
+
+const extras = raw as unknown as IcpTaxonomyExtras;
+
+export const ICP_OVERLAPS: readonly IcpOverlap[] = extras.overlaps;
+export const ICP_DEDUPE_LOG: readonly IcpDedupeRow[] = extras.dedupe_log;
+
+/* Level 4. 8,823 rows, keyed by full path, built once at module scope like the
+   three maps above. A sub-niche record is `{id, slug, name}` and there is no
+   fourth field to find, which is the fact every level-4 design decision rests
+   on (ADR-0008 §1.2). */
+const subNicheByPath = new Map<
+  string,
+  { industry: IcpIndustry; sub: IcpSubIndustry; niche: IcpNiche; subNiche: IcpSubNiche }
+>();
+
+/* Dotted id to path, for the 5 overlaps, which reference `02.06.01` and not a
+   slug. Built for every level so a v2.1 overlap at any depth still resolves. */
+const pathById = new Map<string, readonly string[]>();
+
+for (const industry of ICP_INDUSTRIES) {
+  pathById.set(industry.id, [industry.slug]);
+  for (const sub of industry.sub_industries) {
+    pathById.set(sub.id, [industry.slug, sub.slug]);
+    for (const niche of sub.niches) {
+      /* First writer wins, same rule as `nicheBySlug` above: 5 niche slugs sit
+         under two parents by design and the canonical id must not move. */
+      if (!pathById.has(niche.id)) pathById.set(niche.id, [industry.slug, sub.slug, niche.slug]);
+      for (const subNiche of niche.sub_niches) {
+        const key = `${industry.slug}/${sub.slug}/${niche.slug}/${subNiche.slug}`;
+        if (!subNicheByPath.has(key)) {
+          subNicheByPath.set(key, { industry, sub, niche, subNiche });
+        }
+        if (!pathById.has(subNiche.id)) {
+          pathById.set(subNiche.id, [industry.slug, sub.slug, niche.slug, subNiche.slug]);
+        }
+      }
+    }
+  }
+}
+
+export const getIcpSubNiche = (
+  industrySlug: string,
+  subSlug: string,
+  nicheSlug: string,
+  subNicheSlug: string
+) => subNicheByPath.get(`${industrySlug}/${subSlug}/${nicheSlug}/${subNicheSlug}`);
+
+/** The path for a dotted id, at any of the four levels. Undefined for an unknown id. */
+export const icpPathForId = (id: string): readonly string[] | undefined => pathById.get(id);
+
+/**
+ * The path a `dedupe_log` row points at, or `undefined`.
+ *
+ * THE ROW GIVES A NAME, NOT AN ID, and 7 of the 13 names do not exist in the
+ * industry the row says they were kept in. Measured on the locked v2.0.0 file,
+ * 2026-09-29: 6 resolve by exact name match, 7 do not, and 5 of those 7 have an
+ * obvious near-match that differs by a suffix ("Outplacement and career
+ * transition" against the niche "Outplacement and career transition firms").
+ *
+ * This function does EXACT matching only and returns `undefined` for the other
+ * seven. Fuzzy-matching a row to a niche is the same move as fuzzy-matching a
+ * case study to an entity, which Nadia's §5.1 rule 6 forbids by name, and rule 6
+ * of the positioning file forbids inventing the identifier that would fix it.
+ * The unresolved rows are reported by `scripts/check-icp.cjs` and are a
+ * `[NEEDS DATA]` for the operator: the fix is ids on the dedupe rows, in the
+ * locked file, not a matcher in here.
+ */
+export function resolveDedupeTarget(row: IcpDedupeRow): readonly string[] | undefined {
+  const industry = ICP_INDUSTRIES.find((i) => i.id === row.kept_in);
+  if (!industry) return undefined;
+  for (const sub of industry.sub_industries) {
+    for (const niche of sub.niches) {
+      if (niche.name === row.niche) return [industry.slug, sub.slug, niche.slug];
+    }
+  }
+  return undefined;
+}
+
+/** The slug of an industry by its dotted id. Used to label a dedupe pointer's origin. */
+export const icpIndustrySlugById = (id: string): string | undefined =>
+  ICP_INDUSTRIES.find((i) => i.id === id)?.slug;
+
+/**
+ * The 21 industries, flattened for the `/industries` entry-point section.
+ *
+ * WHY THIS EXISTS RATHER THAN `ICP_INDUSTRIES.map(...)` AT THE CALL SITE.
+ *
+ * ADR-0008 §5.2 item 3: route and component code may import the narrow
+ * accessors from this module and may never import `ICP_INDUSTRIES` or the JSON
+ * directly, because whatever is reachable from a value a route hands onward is
+ * reachable from the RSC payload, and the reach from one industry node is the
+ * whole 2.2MB tree. `scripts/check-b2b.cjs` greps for both names under `app/`
+ * and `components/`.
+ *
+ * `app/industries/page.tsx` was the one violation, and it was a real one rather
+ * than a technicality: it is the single page the entire family hangs off, so it
+ * is the page most likely to grow a client-side filter later. Each row here
+ * carries four strings and two numbers and nothing that can walk anywhere.
+ *
+ * `subNames` is capped at four because that is what the section renders. Capping
+ * it here rather than at the call site is the point: the call site cannot widen
+ * it without editing this file.
+ */
+export interface IcpIndustryCard {
+  readonly id: string;
+  readonly slug: string;
+  readonly name: string;
+  readonly subCount: number;
+  readonly subNames: readonly string[];
+}
+
+const INDUSTRY_CARDS: readonly IcpIndustryCard[] = ICP_INDUSTRIES.map((industry) => ({
+  id: industry.id,
+  slug: industry.slug,
+  name: industry.name,
+  subCount: industry.sub_industries.length,
+  subNames: industry.sub_industries.slice(0, 4).map((sub) => sub.name),
+}));
+
+export const icpIndustryCards = (): readonly IcpIndustryCard[] => INDUSTRY_CARDS;
+
+/** Total sub-industries across all 21. Navigation, never a market statistic. */
+export const icpSubIndustryTotal = (): number =>
+  INDUSTRY_CARDS.reduce((total, card) => total + card.subCount, 0);

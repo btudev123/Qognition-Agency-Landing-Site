@@ -4,6 +4,9 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, CheckCircle, Target } from 'lucide-react';
 import { isPublishedIndustry } from '../../../lib/industryPublication';
 import { resolveIndustry, b2bHubParams } from '../../../lib/b2b/registry';
+import { resolveIcp, icpIndustryParams } from '../../../lib/b2b/icpRegistry';
+import { icpMetadata, icpSchema, icpEntityName } from '../../../lib/b2b/icpMetadata';
+import IcpIndustryPage from '../../../components/b2b/IcpIndustryPage';
 import { observationStore } from '../../../lib/b2b/observationStore';
 import VerticalHubPage from '../../../components/b2b/VerticalHubPage';
 import { metadataFor } from '../../../lib/seo';
@@ -26,11 +29,17 @@ export const dynamicParams = false;
 /* Today's expression, character for character, CONCATENATED with the B2B
    routable set. Legacy params come first and in their original order, so the
    prerender manifest's existing entries do not move. ADR-0007 §2.4. */
+/* Three sources, appended in registration order and never interleaved: legacy
+   first and in its original order so the prerender manifest's existing entries
+   do not move, then the 15-entry spine, then the ICP industries. The third
+   returns [] until an operator promotion, so this expression is byte-identical
+   to what shipped. ADR-0008 §5.2 item 4. */
 export const generateStaticParams = () => [
   ...INDUSTRIES.filter((industry) => isPublishedIndustry(industry.id)).map((industry) => ({
     industry: industry.id,
   })),
   ...b2bHubParams(),
+  ...icpIndustryParams(),
 ];
 
 export const generateMetadata = async ({
@@ -70,6 +79,14 @@ export const generateMetadata = async ({
     });
   }
 
+  /* Level 1 of the ICP tree. Reached only when no legacy row and no spine
+     vertical claimed the slug, which is the longest-legacy-match-first rule in
+     lib/b2b/icpRegistry.ts expressed as branch order. `financial-services` is
+     the one industry-level collision and legacy keeps it, here and in the
+     render below, so the two cannot disagree on the same URL. */
+  const icp = icpMetadata([industry]);
+  if (icp) return icp;
+
   return { title: 'Industry Not Found' };
 };
 
@@ -80,7 +97,26 @@ export default async function Page({
 }) {
   const { industry: industrySlug } = await params;
   const record = resolveIndustry(industrySlug);
-  if (!record) notFound();
+
+  if (!record) {
+    const icp = resolveIcp([industrySlug]);
+    if (!icp || icp.level !== 'industry') notFound();
+    const canonical = icp.canonicalPath ? resolveIcp(icp.canonicalPath) : undefined;
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(icpSchema(icp)) }}
+        />
+        <IcpIndustryPage
+          record={icp}
+          observation={observationStore.lookup(icp.href)}
+          canonicalHref={canonical?.href}
+          canonicalName={canonical ? icpEntityName(canonical) : undefined}
+        />
+      </>
+    );
+  }
 
   if (record.source === 'b2b') {
     return (
