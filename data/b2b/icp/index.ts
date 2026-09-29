@@ -65,6 +65,23 @@ export interface IcpSubIndustry {
   readonly min_firm_size?: string;
   readonly client_value?: string;
   readonly ai_prompts?: readonly string[];
+  /**
+   * FAMILY B. The CLIENT'S buyer's search language, not ours.
+   *
+   * Exactly three per sub-industry across all 341, which is a seed set rather
+   * than a keyword list, and the uniformity is the proof. The terms settle it:
+   * `boom lift rental`, `aog aircraft parts`, `dog daycare franchise`. Nobody
+   * types those looking for an AI search agency.
+   *
+   * `ai_prompts` is labelled Family B in this file's header; this field was not,
+   * and it is the same trap one field over. The failure mode is someone building
+   * QOGNITION'S OWN paid account from a field called `ppc_keywords`, which is the
+   * Family B/Q collapse arriving through the ad platform instead of the router.
+   *
+   * These are what we diagnose and what a client's campaign buys. No string here
+   * may appear as a target query, an H1, a title, a meta description or a page's
+   * own buyer question.
+   */
   readonly ppc_keywords?: readonly string[];
   readonly niches: readonly IcpNiche[];
 }

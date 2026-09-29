@@ -55,8 +55,10 @@ ships. No figure goes here without confirmation.]`
 - **LinkedIn Ads**, for account and job-title targeting where the buying committee is known
 - **Remarketing**, tightly capped, because a considered B2B purchase does not need daily impressions
 - **Landing pages and conversion paths**, because the ad is the cheap half of the problem
-- **Conversion tracking that survives the sales cycle**, including click ID capture and offline
-  conversion import from your CRM
+- **Conversion tracking built for a multi-week sales cycle.** Setting up click ID capture on your
+  lead records and offline conversion import from your CRM is phase-one work in the engagement, and
+  it is not something your current setup is likely to have. Where your CRM or your forms cannot
+  support the import, we tell you that before you spend anything.
 
 ---
 
@@ -66,7 +68,7 @@ ships. No figure goes here without confirmation.]`
 conversion count and your closed revenue are different numbers. Without offline conversion import
 from your CRM, the bidding is optimising for the wrong thing.
 
-**Capture click IDs.** `gclid`, `wbraid`, `gbraid`, `li_fat_id` and `msclkid` have to land on the
+**Capture click IDs.** `gclid`, `wbraid`, `gbraid`, `li_fat_id` and `msclkid` have to land on your
 lead record at the moment of capture, or importing closed deals back to the platform later is
 impossible.
 
