@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
-import { getCaseStudy, nicheLabel } from '../../data/case-studies';
+import { CASE_STUDIES, getCaseStudy, nicheLabel } from '../../data/case-studies';
 import { caseStudyEvidence } from '../../data/case-studies/types';
 import { Eyebrow, Shell } from './primitives';
 
@@ -38,6 +38,23 @@ import { Eyebrow, Shell } from './primitives';
  */
 
 const FEATURED_CASE_STUDY_ID = 'alliance-insurance-group';
+
+/* Counted from data/case-studies, never typed by hand.
+ *
+ * This section used to open "Nobody in this category has a long results record
+ * ... including us", which was written when the page had no client library to
+ * point at. It does: 45 named clients across three sectors. Leading with an
+ * admission while sitting on that is underselling by a wide margin, and the
+ * operator said so.
+ *
+ * What does NOT change is the labelling of the numbers. caseStudyEvidence()
+ * grades all 45 `projected` because every KPI carries a baseline and a target
+ * and an empty `actual`. So this heading counts PROGRAMMES, which is a fact, and
+ * the card below keeps saying its figures are targets. When the reporting export
+ * fills the actual column, the card upgrades itself and this heading does not
+ * have to change. */
+const CASE_STUDY_COUNT = CASE_STUDIES.length;
+const NICHE_COUNT = new Set(CASE_STUDIES.map((s) => s.niche)).size;
 
 const SOURCES = [
   {
@@ -85,12 +102,13 @@ export default function Evidence() {
         <ScrollReveal>
           <Eyebrow accent>Evidence</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[24ch] font-semibold">
-            <MaskReveal>What we can prove today, and what we cannot.</MaskReveal>
+            <MaskReveal>{`${CASE_STUDY_COUNT} client programmes, and the research behind them.`}</MaskReveal>
           </h2>
           <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-            Nobody in this category has a long results record in insurance or professional services,
-            including us. The category is roughly two years old. Rather than fill that gap with
-            numbers, here is the evidence that does exist.
+            We run search and AI search programmes for {CASE_STUDY_COUNT} named clients across{' '}
+            {NICHE_COUNT} sectors. Every engagement is scoped against a measured baseline and a
+            target, and both are on the page. Below that, the published research this work is built
+            on, cited so you can check it rather than take it from us.
           </p>
         </ScrollReveal>
 

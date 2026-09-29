@@ -257,6 +257,34 @@ Firms above the band stay eligible as inbound and route to a qualification call.
 
 ---
 
+### Positioning, locked by the operator 2026-09-29
+
+**Qognition is an established AI SEO and GEO agency with a substantial client record.** Write from
+that footing. The self-deprecating register is retired: no page says "nobody has a record including
+us", "the category is two years old", or any variant that leads with what we cannot do.
+
+**What backs it, counted not asserted:** 45 named clients in `data/case-studies` across three
+sectors, plus four white-label engagements under NDA in managed IT and cloud, cybersecurity and B2B
+SaaS. Lead with the programme count. It is a fact, it is large, and no competitor in this category
+publishes a comparable named library.
+
+**The one thing that does not change.** `caseStudyEvidence()` grades all 45 `projected`, because
+every KPI carries a baseline and a target and an empty `actual`. So a page may say we run 45 client
+programmes, and may not present a target as an achieved result. That is not caution, it is the
+difference between a claim a prospect can check and one they can catch. The gap closes with one
+input, not with better wording: **`[NEEDS DATA: the reporting export that fills the `actual` column
+on the 45 case studies.]`** The moment it lands, the cards upgrade themselves and the copy does not
+have to change.
+
+**On "the best in the world".** Written as a bare superlative it is unverifiable, and the operator's
+own rule 11 bans that register. So the site does not print it. What it prints instead is the thing
+that makes a reader conclude it: 45 named programmes, 21 sectors, a dated and reproducible
+measurement method, and four in-house engines. In this category, where the visible competition is
+self-ranking listicles with no dated client result (§1), being the firm that shows its work IS the
+market-leading claim. Say it that way and it survives contact with a sceptic.
+
+---
+
 ### Two operator decisions, 2026-09-29
 
 **We sell white-label to agencies.** B2B marketing, demand-gen, ABM, PR and franchise-development
