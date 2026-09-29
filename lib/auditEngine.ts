@@ -219,6 +219,20 @@ export const reportEmailHtml = (report: AuditReport) => `
   </div>
 `;
 
+/**
+ * What the crawl saw about the page itself, as distinct from how it scored.
+ *
+ * Returned so the AI half of the audit (lib/audit/aiVisibility.ts) can build a
+ * buyer prompt from the real page title without fetching the page a second time
+ * or parsing it back out of a check's `detail` string. Additive: existing
+ * callers destructure `report` and `offer` and are unaffected.
+ */
+export interface AuditedPage {
+  hostname: string;
+  /** The page's <title>, whitespace-collapsed. Empty string when it had none. */
+  title: string;
+}
+
 /** Resolve an audit type to its offer, falling back to the SEO audit. */
 export const resolveAuditOffer = (auditType?: string): AuditOffer =>
   AUDIT_OFFERS.find((item) => item.type === auditType) || AUDIT_OFFERS[0];
@@ -256,7 +270,7 @@ export async function runAudit({
   auditType?: AuditType;
   // pdfFilename is optional on AuditReport but this function always sets it —
   // encode that so callers can attach the PDF without a redundant fallback.
-}): Promise<{ report: AuditReport & { pdfFilename: string }; offer: AuditOffer }> {
+}): Promise<{ report: AuditReport & { pdfFilename: string }; offer: AuditOffer; page: AuditedPage }> {
   const offer = resolveAuditOffer(auditType);
   const targetUrl = normalizeTargetUrl(url);
   const origin = targetUrl.origin;
@@ -383,5 +397,5 @@ export async function runAudit({
     generatedAt: new Date().toISOString()
   };
 
-  return { report, offer };
+  return { report, offer, page: { hostname: targetUrl.hostname, title } };
 }

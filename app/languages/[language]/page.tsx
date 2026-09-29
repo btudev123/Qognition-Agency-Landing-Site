@@ -56,7 +56,7 @@ export default async function Page({ params }: { params: Promise<{ language: str
           <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <Link
-              href="/free-seo-audit"
+              href="/free-ai-audit"
               className="inline-flex px-6 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
             >
               Get Free Localization Audit

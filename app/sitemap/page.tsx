@@ -59,7 +59,7 @@ export default function Page() {
             { label: 'Blog', path: '/blog' },
             { label: 'About', path: '/about' },
             { label: 'Contact', path: '/contact' },
-            { label: 'Free SEO Audit', path: '/free-seo-audit' },
+            { label: 'AI Search Visibility Report', path: '/free-ai-audit' },
             { label: 'Resources', path: '/resources' },
             { label: 'Industries', path: '/industries' },
             { label: 'Regions', path: '/regions' },

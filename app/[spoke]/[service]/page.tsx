@@ -14,10 +14,10 @@ export function generateStaticParams() {
   for (const spoke of VALID_SPOKES) {
     // Import dynamically to avoid circular deps — we hardcode the known slugs
     const slugsBySpoke: Record<string, string[]> = {
-      marketing: ['seo', 'ai-seo', 'paid-media', 'content', 'email-lifecycle', 'brand-strategy', 'visual-identity', 'cro', 'social', 'audit'],
-      tech: ['websites', 'web-apps', 'mobile-app-development', 'ai-agents', 'ecommerce', 'nextjs-seo', 'integrations', 'performance', 'mvp', 'audit'],
-      finance: ['bookkeeping', 'tax', 'fractional-cfo', 'payroll', 'financial-reporting', 'cash-flow', 'audit'],
-      automation: ['ai-agents', 'workflow-automation', 'integrations', 'data-pipelines', 'crm-automation', 'no-code-stack', 'audit'],
+      marketing: ['seo', 'ai-seo', 'paid-media', 'content', 'email-lifecycle', 'brand-strategy', 'visual-identity', 'cro', 'social'],
+      tech: ['websites', 'web-apps', 'mobile-app-development', 'ai-agents', 'ecommerce', 'nextjs-seo', 'integrations', 'performance', 'mvp'],
+      finance: ['bookkeeping', 'tax', 'fractional-cfo', 'payroll', 'financial-reporting', 'cash-flow'],
+      automation: ['ai-agents', 'workflow-automation', 'integrations', 'data-pipelines', 'crm-automation', 'no-code-stack'],
     };
     const slugs = slugsBySpoke[spoke] || [];
     for (const slug of slugs) {

@@ -9,27 +9,27 @@ import { BOOKING_LINK } from '../../data/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Book a Strategy Call | Qognition',
-  description: 'Book a free 15-minute strategy call with Qognition. Discuss your growth challenges and get an honest assessment of what would move the needle.',
+  description: 'Discuss your buyers, priorities and growth opportunities with Qognition. Agree the right next step for your B2B growth program.',
   alternates: { canonical: '/book' },
 };
 
 const bookingOptions = [
   {
-    title: 'Free Growth Audit',
-    description: 'Get a 12-page audit of your website within 48 hours. Covers SEO, conversion, and competitive gaps.',
-    href: '/free-seo-audit',
+    title: 'AI Visibility Review',
+    description: 'Request a human-reviewed look at search readiness, commercial content and observable AI visibility. We agree the scope and timing after reviewing your request.',
+    href: '/free-ai-audit',
     cta: 'Get Audit',
   },
   {
     title: 'Marketing Strategy Call',
-    description: '15-minute call to discuss SEO, paid media, content, CRO, or AI search visibility. We will tell you what is worth fixing first.',
+    description: 'A conversation to discuss SEO, paid media, content, CRO, or AI search visibility. We will tell you what is worth fixing first.',
     href: BOOKING_LINK,
     cta: 'Book Call',
     external: true,
   },
   {
     title: 'Project Scoping Call',
-    description: '15-minute call to scope a website, brand, video, or automation project. We will outline timeline and a ballpark range.',
+    description: 'A conversation to scope a website, brand, video, or automation project. We will discuss scope, dependencies and a suitable next step.',
     href: BOOKING_LINK,
     cta: 'Book Call',
     external: true,

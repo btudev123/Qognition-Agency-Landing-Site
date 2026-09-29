@@ -1,4 +1,6 @@
 import type { LeadPayload } from './validation';
+import { leadCopy } from './leadCopy';
+import { BOOKING_LINK } from '../data/siteConfig';
 
 /**
  * Where every lead, audit, and lead-magnet submission gets emailed.
@@ -113,32 +115,8 @@ function leadNotificationHtml(lead: LeadPayload): string {
 }
 
 function leadConfirmationHtml(lead: LeadPayload): string {
-  const firstName = escapeHtml(lead.contact.name.split(' ')[0]);
-  const spoke = SPOKE_LABELS[lead.service];
-  const isAudit = lead.intent === 'audit';
-
-  return `
-<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:560px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
-  <div style="padding:40px 32px 24px;text-align:center">
-    <div style="background:#14B8A6;width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:24px;margin-bottom:16px">Q</div>
-    <h1 style="font-size:22px;margin:0 0 8px;color:#111827">${isAudit ? 'Your audit request is in motion' : 'We received your message'}</h1>
-    <p style="color:#6b7280;font-size:15px;line-height:1.6;margin:0 0 24px">
-      ${isAudit
-        ? `Hey ${firstName} — we're reviewing your ${spoke} info now. A real person (not a bot) will analyze your situation and send back a personalized audit within <strong>48 hours</strong>.`
-        : `Hey ${firstName} — a real person on the ${spoke} team will read your message and respond within <strong>one business day</strong>.`}
-    </p>
-    <div style="background:#f9fafb;border-radius:8px;padding:20px;text-align:left;margin-bottom:24px">
-      <p style="color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin:0 0 12px">What happens next</p>
-      <ol style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:2">
-        ${isAudit
-          ? '<li>We review your submission (within 24 hours)</li><li>You receive your personalized audit + Loom walkthrough (within 48 hours)</li><li>Optional: book a 30-minute strategy call to review findings together</li>'
-          : '<li>Your message lands in the right team inbox</li><li>A team member reads and reviews your situation</li><li>You get a personal response within one business day</li>'}
-      </ol>
-    </div>
-    ${isAudit ? `<a href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency" style="display:inline-block;background:#14B8A6;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px">Book a strategy call now</a>` : ''}
-    <p style="color:#9ca3af;font-size:12px;margin-top:24px">Qognition Agency &mdash; The operating partner for founders.</p>
-  </div>
-</div>`;
+  const c = leadCopy(lead.context?.locale || 'en');
+  return `<div lang="${lead.context?.locale || 'en'}" dir="${lead.context?.locale === 'ar' ? 'rtl' : 'ltr'}" style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px"><h1>${escapeHtml(c.received)}</h1><p>${escapeHtml(c.next)}</p><a href="${BOOKING_LINK}">${escapeHtml(c.booking)}</a><p>Qognition Agency</p></div>`;
 }
 
 export async function sendResendEmail({
@@ -167,6 +145,7 @@ export async function sendResendEmail({
     },
     body: JSON.stringify({ from, to, subject, html, attachments }),
     cache: 'no-store',
+    signal: AbortSignal.timeout(10_000),
   });
 
   const data = await response.json().catch(() => ({}));
@@ -187,10 +166,7 @@ export async function sendLeadNotification(lead: LeadPayload) {
 }
 
 export async function sendLeadConfirmation(lead: LeadPayload) {
-  const isAudit = lead.intent === 'audit';
-  const subject = isAudit
-    ? 'Your audit request is in motion — expect results in 48 hours'
-    : 'We received your message — expect a response soon';
+  const subject = leadCopy(lead.context?.locale || 'en').received;
 
   return sendResendEmail({
     to: lead.contact.email,

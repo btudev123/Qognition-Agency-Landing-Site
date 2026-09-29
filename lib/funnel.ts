@@ -2,7 +2,7 @@
 // lead magnets, and analytics adapt to buyer intent. Inference is route-based
 // so existing pages get the right CTA with minimal edits.
 
-import { BOOKING_LINK } from '../data/siteConfig';
+
 
 export type FunnelStage = 'tofu' | 'mofu' | 'bofu';
 
@@ -25,7 +25,10 @@ const STAGE_RULES: { test: (p: string) => boolean; stage: FunnelStage }[] = [
 ];
 
 export function getFunnelStage(pathname: string): FunnelStage {
-  const match = STAGE_RULES.find((r) => r.test(pathname));
+  const normalized = pathname.replace(/^\/(de|fr|nl|sv|da|nb|fi|ar|it|zh-Hans)(?=\/|$)/, '') || '/';
+  if (normalized.startsWith('/growth/')) return 'bofu';
+  if (normalized.startsWith('/insights/')) return /playbook|measurement|selection|methodology/.test(normalized) ? 'mofu' : 'tofu';
+  const match = STAGE_RULES.find((r) => r.test(normalized));
   return match ? match.stage : 'mofu';
 }
 
@@ -37,29 +40,29 @@ export function getFunnelCTA(stage: FunnelStage, opts?: { service?: string }): F
       return {
         stage,
         eyebrow: 'Free resource',
-        headline: 'Want the playbook behind these results?',
-        primary: { label: 'Get the free growth audit', href: '/free-seo-audit' },
-        secondary: { label: 'Explore free tools', href: '/free-tools' },
-        reassurance: 'No credit card · 2-minute request · Delivered by a human strategist',
+        headline: 'Make your next growth decision clearer.',
+        primary: { label: 'Explore the growth library', href: '/insights' },
+        secondary: { label: 'Request a visibility review', href: '/free-ai-audit' },
+        reassurance: 'Practical guidance for B2B teams',
       };
     case 'bofu':
       return {
         stage,
         eyebrow: "Let's talk",
-        headline: 'Book a 15-minute strategy call',
-        primary: { label: 'Book a call', href: BOOKING_LINK },
+        headline: 'Discuss your growth plan',
+        primary: { label: 'Discuss your growth plan', href: '/book' },
         secondary: { label: 'Message us on WhatsApp', href: '/contact' },
-        reassurance: 'Real strategist · No obligation · Engagements start at $500/mo',
+        reassurance: 'Real strategist · No obligation · Scope agreed before work begins',
       };
     case 'mofu':
     default:
       return {
         stage,
         eyebrow: 'Free audit',
-        headline: service ? `Get your free ${service} audit` : 'Get your free growth audit',
-        primary: { label: service ? `Get my free ${service} audit` : 'Get my free audit', href: '/free-seo-audit' },
-        secondary: { label: 'Book a 15-min call', href: BOOKING_LINK },
-        reassurance: 'Delivered in 48 hours · No commitment · We earn the relationship',
+        headline: service ? `Explore your ${service} opportunity` : 'See where your buyers can find you',
+        primary: { label: service ? `Get my free ${service} audit` : 'Get my free audit', href: '/free-ai-audit' },
+        secondary: { label: 'Discuss your growth plan', href: '/book' },
+        reassurance: 'Human-reviewed · Scope and timing agreed after your request',
       };
   }
 }

@@ -7,6 +7,7 @@ import { testimonial } from './testimonial';
 import { objectTypes } from './objects';
 import { pageTypes } from './pages';
 import { taxonomyTypes } from './taxonomy';
+import { growthSchemaTypes } from './growth';
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Nested objects must be registered before the documents that reference them.
@@ -17,4 +18,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   testimonial,
   ...pageTypes,
   ...taxonomyTypes,
+  ...growthSchemaTypes,
 ];

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { organizationSchema, breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
+import AIPlatforms from '../../components/shared/AIPlatforms';
 import LeadForm from '../../components/shared/LeadForm';
 import { WHATSAPP_LINK, WHATSAPP_DISPLAY, BOOKING_LINK } from '../../data/siteConfig';
 
@@ -27,10 +28,10 @@ export default function Page() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
           <div>
             <Heading level="h1" className="!text-5xl md:!text-7xl mb-8">
-              Let&apos;s build something <span className="text-[var(--accent)]">extraordinary</span>.
+              Let’s build your next <span className="text-[var(--accent)]">growth program</span>.
             </Heading>
             <p className="text-body text-[var(--text-muted)] mb-12">
-              We&apos;re excited to learn about your project and explore how we can help you achieve your digital marketing goals.
+              Tell us about your buyers, your current program and the commercial problem you want to solve. We will review the fit and agree a useful next step.
             </p>
 
             <div className="space-y-8 mb-12">
@@ -43,7 +44,7 @@ export default function Page() {
               </div>
               <div>
                 <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">WhatsApp</h3>
-                <p className="text-body text-[var(--text-muted)] mb-2">Chat with us instantly</p>
+                <p className="text-body text-[var(--text-muted)] mb-2">Start a conversation with our team</p>
                 <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors text-lg">
                   {WHATSAPP_DISPLAY}
                 </a>
@@ -58,14 +59,14 @@ export default function Page() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <Link href="/regions" className="p-6 rounded-xl border border-[var(--border)] hover:border-[var(--accent)]/40 transition-all">
-                <h4 className="text-h4 text-[var(--text)] mb-2 font-semibold">Global Presence</h4>
-                <p className="text-body text-[var(--text-muted)]">Offices in London, New York, Dubai, and Mumbai</p>
+              <Link href="/growth/markets" className="p-6 rounded-xl border border-[var(--border)] hover:border-[var(--accent)]/40 transition-all">
+                <h4 className="text-h4 text-[var(--text)] mb-2 font-semibold">Target markets</h4>
+                <p className="text-body text-[var(--text-muted)]">Programs scoped around your target countries, regions and buyer languages</p>
                 <span className="text-[var(--accent)] text-sm mt-2 inline-block">View all locations &rarr;</span>
               </Link>
-              <Link href="/industries" className="p-6 rounded-xl border border-[var(--border)] hover:border-[var(--accent)]/40 transition-all">
+              <Link href="/growth/industries" className="p-6 rounded-xl border border-[var(--border)] hover:border-[var(--accent)]/40 transition-all">
                 <h4 className="text-h4 text-[var(--text)] mb-2 font-semibold">Industries We Serve</h4>
-                <p className="text-body text-[var(--text-muted)]">Technology, Healthcare, Finance, E-commerce & more</p>
+                <p className="text-body text-[var(--text-muted)]">Software, industrial businesses, specialist services and other complex B2B sectors</p>
                 <span className="text-[var(--accent)] text-sm mt-2 inline-block">View industries &rarr;</span>
               </Link>
             </div>
@@ -73,7 +74,7 @@ export default function Page() {
             <div className="p-8 rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)]">
               <Heading level="h3" className="mb-4">Skip the email?</Heading>
               <p className="text-body text-[var(--text-muted)] mb-6">
-                Book a free 30-minute strategy call directly. Pick a time that works for you — no back-and-forth.
+                Book a strategy call directly. Pick a time that works for you — no back-and-forth.
               </p>
               <a
                 href={BOOKING_LINK}
@@ -96,6 +97,7 @@ export default function Page() {
             />
           </div>
         </div>
+        <AIPlatforms compact />
       </main>
     </>
   );

@@ -186,7 +186,7 @@ Creative testing is the engine that makes paid media compound over time. We run 
     ],
     faqs: [
       { question: 'How much ad spend do I need to make paid media worth it?', answer: 'For Google Ads, you can start testing with $2,000-3,000/month and get statistically meaningful data within 4-6 weeks. For LinkedIn, we recommend a minimum of $3,000-5,000/month because CPCs are higher and the sales cycle is longer — smaller budgets do not generate enough conversion volume to optimize against. For Meta, $3,000-5,000/month is the floor for meaningful testing. In all cases, the budget needs to be large enough to generate sufficient conversion data for the platform\'s algorithm to optimize. Below those thresholds, you are essentially gambling, not advertising. Our paid media audit includes a budget recommendation based on your ICP, average deal size, and competitive landscape.' },
-      { question: 'Do you take a percentage of ad spend as your fee?', answer: 'No. Our management fee is a flat monthly retainer, independent of your ad spend. This removes the incentive to increase your budget unnecessarily — a common problem with percentage-of-spend pricing models. If we recommend increasing budget, it is because the marginal ROAS supports it, not because our fee goes up. Your ad spend goes directly to the platforms. Our retainer covers strategy, campaign management, creative testing, landing page optimization, and reporting.' },
+      { question: 'Do you take a percentage of ad spend as your fee?', answer: 'Paid media is scoped separately from SEO. We agree the management structure in your proposal, and you pay media spend directly to the advertising platforms. Recommendations depend on your acquisition economics and delivery capacity.' },
       { question: 'What attribution model do you use?', answer: 'We default to a data-driven attribution model that uses first-touch, last-touch, and multi-touch data to understand the full customer journey — not just the last click before conversion. For B2B companies with longer sales cycles, we integrate CRM data (deal stage, closed-won revenue) into the attribution model so we are optimizing ads against pipeline and revenue, not just form fills. We set up proper UTM parameters, conversion tracking (Google Ads, Meta Pixel, LinkedIn Insight Tag), and offline conversion imports for CRM-attributed revenue. You will know what every dollar of ad spend produces in revenue — not just in clicks.' },
       { question: 'How do you handle creative production for ads?', answer: 'We develop the creative strategy, write copy, design static images, and provide storyboards and scripts for video ads. Actual video production, professional photography, and illustration are scoped separately or handled by your team. For most clients, we can produce high-performing static and text-based creative in-house. Video ads typically start with Loom-style founder videos or simple motion graphics — polished but authentic, not overproduced. The data shows that authentic, slightly rough creative often outperforms slick agency productions because it does not look like an ad.' },
       { question: 'How quickly can you get campaigns live?', answer: 'Within 2-4 weeks from kickoff. Week 1: account audit, conversion tracking setup and validation, audience research. Week 2: campaign architecture, ad creative production, landing page review and optimization. Week 3: campaign launch with conservative budgets, monitoring, and initial optimization. Week 4: first performance review with data-driven optimization recommendations. We do not launch until conversion tracking is verified end-to-end — launching without clean tracking is just advanced money burning.' },
@@ -628,7 +628,7 @@ We ship in weekly sprints with continuous deployment. You see working software f
     ],
     faqs: [
       { question: 'What is the difference between building an MVP and a full production application?', answer: 'An MVP optimizes for speed of learning — the goal is to get something in front of real users as fast as possible to validate (or invalidate) your core hypothesis. We scope ruthlessly, build only the happy path, and defer everything that does not directly contribute to learning: no admin panels, no advanced permission systems, no edge-case handlers unless they block the core workflow. A production application optimizes for reliability, scalability, and maintainability — it handles edge cases gracefully, has comprehensive test coverage, and is designed for a team to extend over years. The MVP architecture is designed so you can graduate to production without a rewrite: the database schema is sound, the API is versioned, and the code is clean. You add robustness, you do not rebuild from scratch.' },
-      { question: 'How do you estimate cost and timeline for a web application?', answer: 'We do not ballpark. Every project starts with a 1-2 week paid discovery phase where we produce a detailed product spec, wireframes for the core workflows, a technical architecture document, and a fixed-price proposal with a timeline broken down by sprint. At the end of discovery, you have everything you need to make an informed build-vs-buy decision — whether you build with us or take the spec to another team. Discovery costs $5,000-15,000 depending on complexity and is credited toward the build if you proceed with us. This approach protects both sides: you get price certainty, and we get scope clarity.' },
+      { question: 'How do you estimate cost and timeline for a web application?', answer: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.' },
       { question: 'What technologies do you use on the backend?', answer: 'Our default backend stack: Node.js with TypeScript (Express or Fastify) or Python (FastAPI) for the API layer, PostgreSQL for the primary database, Redis for caching and queues, and Supabase or AWS for infrastructure. We default to a monolith or well-modularized service — not microservices — because it is the right architecture for 95% of applications at the scale our clients operate. If you have specific technology requirements (existing stack, team expertise, compliance constraints), we work within those. We are not religious about any specific technology — we are religious about choosing the right tool for the job and your context.' },
       { question: 'How do you handle authentication, payments, and other common features?', answer: 'We use proven, well-supported services rather than building from scratch: Auth0 or Clerk for authentication (social login, SSO, MFA, passwordless), Stripe for payments (subscriptions, invoicing, marketplace payouts), SendGrid or Resend for transactional emails, and Cloudflare or AWS for file storage and CDN. Building auth from scratch is a security risk. Building payments from scratch is a compliance nightmare. We integrate the best-in-class service for each function, configure it properly, and abstract it behind a clean interface so you can swap providers later if needed.' },
       { question: 'What does the handoff look like if we build an in-house team later?', answer: 'We build to be handed off — that is a core principle. Every project includes: a comprehensive README with setup instructions, architecture decision records explaining why we made key technical choices, API documentation (OpenAPI spec), inline code comments on non-obvious logic, and a documented CI/CD pipeline. We also offer a transition period where we pair-program with your new hires, walk them through the codebase, and remain available for questions. The goal is that your team can be productive in the codebase within their first week — not spending a month reverse-engineering how things work.' },
@@ -674,7 +674,7 @@ We ship in weekly sprints with continuous deployment. You see working software f
       { question: 'Native or cross-platform — which do you build?', answer: 'We default to React Native with Expo because it lets us ship one codebase to both iOS and Android with near-native performance — roughly half the cost and timeline of two separate native builds. For apps with heavy graphics, complex device integrations, or platform-specific requirements, we write native modules (Swift/Kotlin) where it matters and keep everything else shared. We recommend the approach that fits your app, not the one that bills the most.' },
       { question: 'Will you handle App Store and Play Store submission?', answer: 'Yes. We manage the full submission process: store listings, screenshots, privacy declarations, review guidelines compliance, and the back-and-forth with Apple and Google review teams. We also set up phased rollouts and over-the-air updates (via Expo) so you can ship fixes without waiting days for another review cycle.' },
       { question: 'Can the app share logic with our existing web app?', answer: 'Often, yes. If your web app is built in React/Next.js, we can share business logic, types, and API clients in a monorepo so the mobile and web apps stay in sync. That reduces duplication and means a fix in one place propagates to both.' },
-      { question: 'How much does a mobile app cost?', answer: 'It depends on scope, but we start from a fixed-scope $500 entry point for small companion features and scope larger builds after a discovery phase. MVP apps typically land in the sprint-to-build range. You get a fixed-price proposal after discovery — no open-ended hourly billing.' },
+      { question: 'How much does a mobile app cost?', answer: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.' },
     ],
     deliverables: [
       'iOS + Android app from a single React Native codebase',
@@ -717,7 +717,7 @@ We ship in weekly sprints with continuous deployment. You see working software f
       { question: 'How is this different from the Automation spoke\'s AI agents?', answer: 'The Tech spoke builds agents embedded inside a product you ship to customers — in-app copilots, customer-facing assistants, and features within your codebase. The Automation spoke focuses on internal ops agents and workflow automation (n8n, Make, CRM). Many clients use both; we point you to the right one on the scoping call.' },
       { question: 'How do you stop the agent from hallucinating?', answer: 'Three layers: retrieval (the agent answers from your actual documents and data, with citations, instead of from memory), tool use with validation (actions go through your real API with checks), and an evaluation harness that scores responses against a test set so we catch regressions before they reach users. For high-stakes flows we add human-in-the-loop confirmation.' },
       { question: 'Which models do you use?', answer: 'We default to the latest Claude and GPT models and choose per use case based on quality, latency, and cost — often a smaller model for routing and a larger one for hard reasoning. The architecture is model-agnostic, so you are not locked to one provider and can adopt better models as they ship.' },
-      { question: 'What does an AI agent cost to build?', answer: 'We start from a fixed-scope $500 entry point for a focused proof-of-value and scope larger production agents after a discovery phase. You get a fixed-price proposal and a clear view of ongoing model/usage costs before any build begins.' },
+      { question: 'What does an AI agent cost to build?', answer: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.' },
     ],
     deliverables: [
       'Production AI agent integrated into your app or ops',
@@ -765,7 +765,7 @@ The technical foundation matters as much as the UX. E-commerce site speed direct
       { label: 'Next.js SEO', href: '/tech/nextjs-seo' },
     ],
     faqs: [
-      { question: 'Which is better for my business — a Shopify theme build or a headless commerce build?', answer: 'For most brands under $5M in online revenue, a well-optimized Shopify theme build is the right answer. It is faster to launch (6-8 weeks vs. 12-16 weeks), cheaper ($15K-30K vs. $50K-100K+), and your team can manage products, collections, and content without needing a developer. Headless commerce makes sense when: (1) you need complete control over the UX and Shopify\'s templating system is limiting your conversion optimization, (2) you have complex content + commerce requirements that a traditional theme cannot handle, (3) performance is critical and you need sub-second load times that Liquid-rendered themes struggle to achieve, or (4) you are scaling internationally and need complete localization control. We help you make this decision based on your actual revenue, growth goals, and technical requirements — not on what is trendy.' },
+      { question: 'Which is better for my business — a Shopify theme build or a headless commerce build?', answer: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.' },
       { question: 'How do you handle product data migration from our old platform?', answer: 'Product data migration is one of the highest-risk parts of an e-commerce replatform. We use a structured process: (1) audit your existing product catalog — SKUs, variants, images, descriptions, meta fields, inventory data; (2) map the data model to the new platform (Shopify or headless CMS); (3) write migration scripts with validation at every step — row counts match, image URLs resolve, variant relationships are intact, prices and inventory are accurate; (4) run a test migration to staging and verify; (5) execute the production migration with a rollback plan. We also handle 301 redirects from old product URLs to new ones so you do not lose SEO equity or break incoming links. Typical migration takes 1-2 weeks for the data portion, running in parallel with the store build.' },
       { question: 'What payment gateways and methods do you support?', answer: 'On Shopify: Shop Pay (the highest-converting accelerated checkout), Shopify Payments (powered by Stripe), PayPal, Google Pay, Apple Pay, Amazon Pay, and 100+ alternative payment methods through Shopify Payments. For headless builds: Stripe (our default), with support for Braintree, Adyen, or any gateway with a modern API. We strongly recommend offering Shop Pay or Apple Pay — accelerated checkouts can improve conversion by 10-30% on mobile, where most e-commerce traffic now lives. For B2B and wholesale, we support net terms, purchase orders, and invoice payment through platforms like Balance or TreviPay.' },
       { question: 'How do you handle inventory management and fulfillment integrations?', answer: 'For Shopify builds, we integrate with Shopify\'s native inventory system for simple operations and connect to third-party inventory and warehouse management systems (ShipStation, ShipBob, Skubana, Cin7, TradeGecko) for multi-warehouse or 3PL operations. For headless builds, we build the integration layer between your commerce backend and your OMS/WMS. Real-time inventory sync prevents overselling. We also set up low-stock alerts and back-in-stock notification flows — simple automations that recover significant lost revenue.' },
@@ -957,10 +957,10 @@ We build lean MVPs for early-stage founders — typically 4-8 weeks from kickoff
 
 The build uses a modern but pragmatic stack: Next.js and React for the frontend, Node.js or Python for the backend (if one is needed), Supabase or PostgreSQL for the database, and Vercel for deployment. We use pre-built components and services (Auth0 or Clerk for authentication, Stripe for payments) to accelerate development without sacrificing quality. The architecture is designed for a future that may or may not come: we build clean, well-structured code with a sound data model that can be extended into a full production application — but we do not build the production application on MVP timelines. You might pivot after the MVP. You might discover your core assumption was wrong and the whole product needs to be different. Building for a speculative future that has not been validated is the definition of waste.
 
-Our engagement does not end at launch. We instrument the MVP with analytics and feedback collection from day one, and we iterate on a weekly cadence: ship, measure user behavior, talk to users, decide what to build next. The goal is to compress the build-measure-learn loop from months to weeks. Some MVPs validate the hypothesis in six weeks and graduate to full-scale development. Others invalidate it in four weeks and save the founder a year of building the wrong thing. Both are successful outcomes. The failure case is spending a year and a quarter-million dollars to learn something a 6-week MVP could have taught you for $25,000.`,
+Our engagement does not end at launch. We instrument the MVP with analytics and feedback collection from day one, and we iterate on a weekly cadence: ship, measure user behavior, talk to users, decide what to build next. The goal is to compress the build-measure-learn loop from months to weeks. Some MVPs validate the hypothesis in six weeks and graduate to full-scale development. Others invalidate it in four weeks and save the founder a year of building the wrong thing. Both are successful outcomes. The failure case is spending a year and a quarter-million dollars to learn something a focused MVP could have taught you sooner.`,
     whoItsFor: [
       'Pre-seed and seed-stage founders who have a clear hypothesis about a problem worth solving but have not yet built anything — and need a technical partner who can go from concept to launched product in weeks',
-      'Non-technical founders who have been quoted $50K-$150K and 4-6 months by dev shops for an MVP that should take 6-8 weeks and $25K-50K — and who suspect they are being sold a production app, not an MVP',
+      'Non-technical founders who have been quoted $50K-$150K and 4-6 months by dev shops for an MVP that should take 6-8 weeks with an agreed scope — and who suspect they are being sold a production app, not an MVP',
       'Founders who have spent months talking to potential users and now need a working product to move from "people say they would use it" to "people actually use it and we have the data to prove it"',
       'Technical founders who could build the MVP themselves but know they should be spending their time on customer discovery, sales, and fundraising — not writing CRUD endpoints and debugging authentication flows',
       'Founders who have built an MVP that "works" but is held together with duct tape and cannot be extended — and need a rebuild on a solid architecture before bringing on additional engineers',
@@ -974,10 +974,10 @@ Our engagement does not end at launch. We instrument the MVP with analytics and 
     faqs: [
       { question: 'How is your MVP build different from what a typical dev shop would deliver?', answer: 'A typical dev shop builds what you ask them to build. They accept your feature list, estimate the cost, and deliver against the spec. If the spec includes 15 features, they build 15 features. If the spec is over-scoped for an MVP, they do not push back — because more features means a bigger contract. Our approach is different: we push back hard on scope because we judge success by whether you learn what you need to learn, not by whether we built everything in the spec. We will tell you "that feature does not need to be in the MVP — it will add 3 weeks and 40% to the cost, and it will not help you validate your core hypothesis any faster." Sometimes founders listen. Sometimes they do not. But we will always have the conversation.' },
       { question: 'What if the MVP validates the hypothesis and we want to build the full product?', answer: 'That is the ideal outcome, and the MVP architecture is designed for it. Because we build with a sound data model, clean component architecture, and standard conventions from day one, graduating to full production development means adding features and hardening the existing codebase — not rebuilding from scratch. The transition is typically: MVP launch and validation (weeks 1-8), learning and iteration based on user feedback (weeks 8-16), and then a full production build based on a now-validated feature roadmap. Many of our MVP clients continue with us for the full build. Some transition to an in-house engineering team — we provide documentation, architecture decision records, and onboarding support to make that handoff smooth.' },
-      { question: 'What if the MVP invalidates our hypothesis — we built it and nobody wants it?', answer: 'That is not a failure. It is the MVP doing its job. You spent $25K-$50K and 6-8 weeks to learn that a particular approach will not work — instead of $200K and 12 months. That is the best money you will ever lose. We design the MVP engagement with this possibility in mind: the scope is contained, the timeline is fixed, and the code is not over-engineered for a future that will not happen. If the hypothesis fails, we help you analyze the data, understand what the users did (and did not do), and determine whether the insight points toward a pivot or a different problem worth solving. Many founders pivot after an MVP that "failed" — and their second attempt succeeds because they are building on data, not assumptions.' },
+      { question: 'What if the MVP invalidates our hypothesis — we built it and nobody wants it?', answer: 'We scope the work before starting and agree the deliverables, milestones and commercial terms in your proposal. Any change to scope is agreed before implementation.' },
       { question: 'Do I need a technical co-founder, or can I build an MVP with you as a non-technical founder?', answer: 'You do not need a technical co-founder to build an MVP with us. Many of our MVP clients are non-technical founders who bring domain expertise, customer relationships, and a clear understanding of the problem — and partner with us for the technical execution. That said, we will encourage you to start building relationships with potential technical hires or co-founders during the MVP process, because if the hypothesis validates and you scale, you will eventually need in-house technical leadership. The MVP engagement buys you time to find the right person — and gives you a working product and real traction data that makes you a more attractive partner to strong technical candidates.' },
       { question: 'What technology stack do you use for MVPs, and can I change it later?', answer: 'Our default MVP stack: Next.js (frontend and API routes), Supabase (database, auth, storage), Stripe (payments), and Vercel (hosting). This stack is chosen because it maximizes development speed without sacrificing the ability to scale. You get a PostgreSQL database (via Supabase) that can grow with you, a React codebase that any competent frontend developer can work with, and a deployment pipeline that handles CI/CD from day one. You are not locked into any of these choices: the database can migrate to AWS RDS, the API layer can be extracted to a standalone backend, and the frontend components are portable. The stack is a starting point, not a permanent commitment.' },
-      { question: 'How much does an MVP cost, and how do you prevent budget overruns?', answer: 'Most MVPs built with us fall in the $25K-$50K range with a 4-8 week timeline. We structure the engagement as a fixed-price project based on a clearly defined scope — after the paid product sprint. You pay for the sprint (typically $3K-$5K for 2-5 days), and at the end you have a detailed spec, wireframes, a technical architecture document, and a fixed-price proposal. If you decide not to proceed with the build, you keep the spec. Budget overruns are prevented by the fixed-price structure and by our scope discipline: if you want to add features mid-build, we say "absolutely — let us price that change order and see how it affects the timeline." You are always in control of the budget. No surprises.' },
+      { question: 'How much does an MVP cost, and how do you prevent budget overruns?', answer: 'We scope the work before starting and agree the deliverables, milestones and commercial terms in your proposal. Any change to scope is agreed before implementation.' },
     ],
     deliverables: [
       'Working MVP deployed to production',
@@ -1659,7 +1659,7 @@ The deliverable is a fully functional operational stack that your team can use o
     faqs: [
       { question: 'Will I outgrow a no-code stack, and what happens when I do?', answer: 'Parts of it, yes — and that is a good problem to have. No-code tools have limits: Airtable slows down above ~100K records, Softr portals have customization ceilings, and Bubble apps can feel constrained at high complexity. The key is building with migration paths from day one. We design your data model so it can be migrated to PostgreSQL when the time comes. We document your workflows so they can be rebuilt in code if needed. And we advise on when a component should stay no-code versus when the ROI of custom development tips positive. Graduating from no-code is a sign of growth, not a failure of the tool.' },
       { question: 'Is my data secure in no-code tools?', answer: 'It depends on the tool and how it is configured — which is why architecture matters. Enterprise-grade platforms like Airtable (with SOC 2 compliance), n8n (self-hosted), and Retool (self-hosted or cloud with SOC 2) meet serious security requirements. We configure permissions granularly, enable SSO where available, ensure data encryption at rest and in transit, and for sensitive use cases, prioritize self-hosted tools where data stays in your infrastructure. No-code does not mean no-security — but it does require intentional architecture, which is what we provide.' },
-      { question: 'How much does a no-code stack cost compared to custom software?', answer: 'For typical operational use cases — client portals, internal dashboards, workflow automation, approval systems — a no-code stack costs 10-25% of equivalent custom development and ships in 20-30% of the time. A client portal that would cost $40K-80K and take 3-4 months to build custom can be delivered for $8K-15K in 4-6 weeks on Softr + Airtable. Ongoing costs (platform subscriptions) typically run $50-200/user/month depending on the tools. The tradeoff is flexibility — you accept some constraints in exchange for dramatically lower cost and faster delivery.' },
+      { question: 'How much does a no-code stack cost compared to custom software?', answer: 'We scope the work before starting and agree the deliverables, milestones and commercial terms in your proposal. Any change to scope is agreed before implementation.' },
       { question: 'Can my non-technical team really modify these tools without breaking things?', answer: 'Yes — when the architecture is designed for it. We build with a "guardrails, not gates" philosophy: your team can modify forms, add fields, adjust workflow triggers, and update dashboards without risk of breaking integrations or corrupting data. We document what each component does, which parts are safe to modify, and which parts should be changed carefully (or with our help). Every engagement includes training sessions where your team practices making common modifications. Most clients are self-sufficient for day-to-day changes within 2-3 weeks of launch.' },
     ],
   },
@@ -1764,7 +1764,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       },
       {
         question: 'What does pricing look like?',
-        answer: 'Marketing retainers range from $3,000–$20,000/month depending on scope, channels, and velocity. We offer three tiers — Growth, Scale, and Enterprise — each with transparent scope and deliverables. Project-based engagements (brand strategy, website builds) are scoped and priced individually. See our pricing page for details.',
+        answer: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.',
       },
       {
         question: 'Do you work with early-stage startups?',
@@ -1779,7 +1779,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       tiers: [
         {
           name: 'Launch',
-          price: 'From $500/mo',
+          price: 'Individually scoped',
           description: 'An accessible starting point for founders who want momentum before scaling spend.',
           features: [
             'Starter SEO + on-page fixes',
@@ -1788,11 +1788,11 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
             'Monthly priorities email',
             'Upgrade anytime as you grow',
           ],
-          cta: 'Start From $500',
+          cta: 'Discuss your scope',
         },
         {
           name: 'Growth',
-          price: '$3,000–6,000/mo',
+          price: 'Individually scoped',
           description: 'For early-stage founders who need marketing execution without a full-time hire.',
           features: [
             'SEO foundation (technical audit + keyword strategy + on-page optimization)',
@@ -1806,7 +1806,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'Scale',
-          price: '$8,000–14,000/mo',
+          price: 'Individually scoped',
           description: 'For growth-stage companies ready to build a systematic marketing engine.',
           features: [
             'Full SEO program (technical, content, authority building)',
@@ -1822,7 +1822,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'Enterprise',
-          price: '$16,000–20,000/mo',
+          price: 'Individually scoped',
           description: 'For companies scaling to $10M+ who need marketing leadership and multi-channel execution.',
           features: [
             'Everything in Scale, plus:',
@@ -1930,14 +1930,14 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       },
       {
         question: 'What does pricing look like for a website or web app?',
-        answer: 'Marketing websites: $15K-50K. Web application MVPs: $25K-75K. Full production web apps: $75K-200K+. E-commerce builds: $20K-80K. Every project is scoped individually — we provide a fixed-price proposal after the free tech audit and scoping call.',
+        answer: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.',
       },
     ],
     pricing: {
       tiers: [
         {
           name: 'Launch',
-          price: 'From $500',
+          price: 'Individually scoped',
           description: 'A fixed-scope starting point — a landing page, a quick fix, or a small build.',
           features: [
             'Single landing page or focused fix',
@@ -1945,11 +1945,11 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
             'SEO + analytics basics',
             'Handover + walkthrough',
           ],
-          cta: 'Start From $500',
+          cta: 'Discuss your scope',
         },
         {
           name: 'Sprint',
-          price: '$10,000–25,000',
+          price: 'Individually scoped',
           description: 'For focused, scoped projects with clear requirements.',
           features: [
             'Defined scope with fixed deliverables',
@@ -1961,7 +1961,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'Build',
-          price: '$25,000–100,000',
+          price: 'Individually scoped',
           description: 'For complete builds — websites, MVPs, and custom applications.',
           features: [
             'Full project lifecycle: discovery → design → build → launch',
@@ -1974,7 +1974,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'Retainer',
-          price: '$3,000–10,000/mo',
+          price: 'Individually scoped',
           description: 'For ongoing development, maintenance, and optimization.',
           features: [
             'Monthly sprint capacity (20-80 hours)',
@@ -2079,14 +2079,14 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       },
       {
         question: 'What does pricing look like?',
-        answer: 'Bookkeeping-only starts at $500/month for simple businesses. Full-service (bookkeeping + tax + fractional CFO) ranges from $1,500-7,500/month depending on transaction volume, entity complexity, and CFO engagement level. Every engagement starts with a free Finance Health Check to scope the right level of support.',
+        answer: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.',
       },
     ],
     pricing: {
       tiers: [
         {
           name: 'Bookkeeping',
-          price: '$500–1,500/mo',
+          price: 'Individually scoped',
           description: 'For founders who need clean books and tax-ready financials.',
           features: [
             'Monthly transaction categorization',
@@ -2099,7 +2099,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'CFO',
-          price: '$1,500–4,500/mo',
+          price: 'Individually scoped',
           description: 'For founders who need strategic finance, not just compliance.',
           features: [
             'Everything in Bookkeeping, plus:',
@@ -2115,7 +2115,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'Combined',
-          price: '$3,000–7,500/mo',
+          price: 'Individually scoped',
           description: 'Full-service finance operations for growth-stage companies.',
           features: [
             'Everything in CFO, plus:',
@@ -2229,7 +2229,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
       tiers: [
         {
           name: 'Sprint',
-          price: '$5,000–15,000',
+          price: 'Individually scoped',
           description: 'For focused automation projects with clear scope.',
           features: [
             '2-4 week engagement',
@@ -2241,7 +2241,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'Build',
-          price: '$15,000–50,000',
+          price: 'Individually scoped',
           description: 'For comprehensive automation programs across multiple processes.',
           features: [
             '6-12 week engagement typical',
@@ -2254,7 +2254,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
         },
         {
           name: 'Retainer',
-          price: '$2,000–8,000/mo',
+          price: 'Individually scoped',
           description: 'For ongoing automation management, optimization, and new builds.',
           features: [
             'Monthly sprint capacity (10-40 hours)',
@@ -2266,7 +2266,7 @@ export const SPOKE_PAGES: Record<SpokeId, SpokePageData> = {
           cta: 'Get Free Automation Map',
         },
       ],
-      note: 'Every engagement starts with a free Automation Opportunity Map. We\'ll identify the highest-ROI opportunities and recommend the right approach — sometimes a $5K sprint delivers more value than a $50K build.',
+      note: 'We define the deliverables, implementation responsibilities and commercial terms in an individual proposal after reviewing your needs.',
     },
     guarantee: {
       headline: 'ROI Guarantee',

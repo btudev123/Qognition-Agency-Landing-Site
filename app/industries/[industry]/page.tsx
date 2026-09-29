@@ -2,6 +2,15 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, CheckCircle, Target } from 'lucide-react';
+import { isPublishedIndustry } from '../../../lib/industryPublication';
+import { resolveIndustry, b2bHubParams } from '../../../lib/b2b/registry';
+import { resolveIcp, icpIndustryParams } from '../../../lib/b2b/icpRegistry';
+import { icpMetadata, icpSchema, icpEntityName } from '../../../lib/b2b/icpMetadata';
+import IcpIndustryPage from '../../../components/b2b/IcpIndustryPage';
+import { observationStore } from '../../../lib/b2b/observationStore';
+import VerticalHubPage from '../../../components/b2b/VerticalHubPage';
+import { metadataFor } from '../../../lib/seo';
+import type { Industry } from '../../../types';
 import { INDUSTRIES } from '../../../data/industries';
 import { SERVICES } from '../../../data/services';
 import { studiesForTopic, nicheLabel } from '../../../data/case-studies';
@@ -13,8 +22,25 @@ import FunnelCTA from '../../../components/shared/FunnelCTA';
 
 export const dynamicParams = false;
 
-export const generateStaticParams = () =>
-  INDUSTRIES.map((industry) => ({ industry: industry.id }));
+/* Gated by lib/industryPublication.ts: an industry row that is not on the
+   frozen allowlist generates no params, so its URL 404s rather than rendering a
+   page nobody reviewed. dynamicParams is false on this route, so this is the
+   whole gate. */
+/* Today's expression, character for character, CONCATENATED with the B2B
+   routable set. Legacy params come first and in their original order, so the
+   prerender manifest's existing entries do not move. ADR-0007 §2.4. */
+/* Three sources, appended in registration order and never interleaved: legacy
+   first and in its original order so the prerender manifest's existing entries
+   do not move, then the 15-entry spine, then the ICP industries. The third
+   returns [] until an operator promotion, so this expression is byte-identical
+   to what shipped. ADR-0008 §5.2 item 4. */
+export const generateStaticParams = () => [
+  ...INDUSTRIES.filter((industry) => isPublishedIndustry(industry.id)).map((industry) => ({
+    industry: industry.id,
+  })),
+  ...b2bHubParams(),
+  ...icpIndustryParams(),
+];
 
 export const generateMetadata = async ({
   params,
@@ -23,12 +49,45 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { industry } = await params;
   const page = INDUSTRIES.find((item) => item.id === industry);
-  if (!page) return { title: 'Industry Not Found' };
-  return {
-    title: `${page.name} Digital Marketing | Qognition`,
-    description: page.description,
-    alternates: { canonical: `/industries/${page.id}` },
-  };
+  /* LEGACY FIRST AND UNCHANGED. The operator's hard constraint is that existing
+     meta titles, descriptions and canonicals do not change, so this block is
+     byte-identical to what shipped and the B2B branch sits after it, reachable
+     only when no legacy row matched. */
+  if (page) {
+    return {
+      title: `${page.name} Digital Marketing | Qognition`,
+      description: page.description,
+      alternates: { canonical: `/industries/${page.id}` },
+    };
+  }
+
+  const record = resolveIndustry(industry);
+  if (record?.source === 'b2b') {
+    /* New URLs do NOT carry "${name} Digital Marketing | Qognition". That string
+       is the retired generalist positioning (CLAUDE.md preamble) and ADR-0007
+       §2.4 declines to mint new URLs with it. Existing pages keep it. */
+    return metadataFor({
+      /* No "| Qognition" here. app/layout.tsx applies `template: '%s | Qognition'`
+         and metadataFor only strips a "| Qognition Agency" suffix, so writing the
+         short form produced "... | Qognition | Qognition" on the first render.
+         The 11 legacy hubs have the same doubling and keep it: fixing theirs
+         would change an existing meta title. */
+      title: `AI Search Visibility for ${record.vertical.label}`,
+      description: record.body.metaDescription,
+      path: `/industries/${record.vertical.id}`,
+      noIndex: record.state !== 'published',
+    });
+  }
+
+  /* Level 1 of the ICP tree. Reached only when no legacy row and no spine
+     vertical claimed the slug, which is the longest-legacy-match-first rule in
+     lib/b2b/icpRegistry.ts expressed as branch order. `financial-services` is
+     the one industry-level collision and legacy keeps it, here and in the
+     render below, so the two cannot disagree on the same URL. */
+  const icp = icpMetadata([industry]);
+  if (icp) return icp;
+
+  return { title: 'Industry Not Found' };
 };
 
 export default async function Page({
@@ -37,9 +96,53 @@ export default async function Page({
   params: Promise<{ industry: string }>;
 }) {
   const { industry: industrySlug } = await params;
-  const industry = INDUSTRIES.find((item) => item.id === industrySlug);
-  if (!industry) notFound();
+  const record = resolveIndustry(industrySlug);
 
+  if (!record) {
+    const icp = resolveIcp([industrySlug]);
+    if (!icp || icp.level !== 'industry') notFound();
+    const canonical = icp.canonicalPath ? resolveIcp(icp.canonicalPath) : undefined;
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(icpSchema(icp)) }}
+        />
+        <IcpIndustryPage
+          record={icp}
+          observation={observationStore.lookup(icp.href)}
+          canonicalHref={canonical?.href}
+          canonicalName={canonical ? icpEntityName(canonical) : undefined}
+        />
+      </>
+    );
+  }
+
+  if (record.source === 'b2b') {
+    return (
+      <VerticalHubPage
+        record={record}
+        observation={observationStore.lookup(`/industries/${record.vertical.id}`)}
+      />
+    );
+  }
+
+  return <LegacyIndustryPage industry={record.data} />;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   THE LEGACY RENDER. Lifted into its own function without a single character of
+   its JSX changed, so the 11 existing hubs emit exactly what they emitted
+   before. Same input, same code, same output.
+
+   It contains things that would not be written today: three literal constant
+   "quick summary" cards, and a sidebar linking to /locations, /resources,
+   /directory and /free-tools, all four of which are families under kill review.
+   ADR-0007 §9 records those as accepted costs. They are not fixed here because
+   fixing them changes an existing page, which the hard constraint forbids. The
+   branch above is how new pages avoid inheriting them.
+   ───────────────────────────────────────────────────────────────────────────── */
+function LegacyIndustryPage({ industry }: { industry: Industry }) {
   const path = `/industries/${industry.id}`;
   const relatedServices = SERVICES.filter((service) =>
     industry.relatedServices?.includes(service.id)
@@ -211,8 +314,13 @@ export default async function Page({
 
             <aside className="lg:col-span-4">
               <div className="sticky top-28 p-7 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl space-y-6">
+                {/* The heading was outside the guard, so 10 of 11 hubs rendered
+                    "Case Study Reference" over nothing once the proof block
+                    stopped borrowing a study from another vertical. */}
                 <div>
+                  {relatedCaseStudy && (
                   <Heading level="h3" className="mb-3">Case Study Reference</Heading>
+                  )}
                   {relatedCaseStudy && (
                     <Link
                       href={`/case-studies/${relatedCaseStudy.id}`}

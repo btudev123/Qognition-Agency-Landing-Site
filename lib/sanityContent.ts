@@ -57,7 +57,7 @@ const POST_FIELDS = `
   "author": {
     "name": coalesce(authorName, "Qognition"),
     "title": coalesce(authorTitle, "Growth Team"),
-    "avatar": coalesce(authorAvatar, "/qognition-mark.png")
+    "avatar": coalesce(authorAvatar, "/icon-192.png")
   }
 `;
 

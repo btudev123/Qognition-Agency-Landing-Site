@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { INDUSTRIES } from '../../data/industries';
 import { SERVICES } from '../../data/services';
+import { icpIndustryCards, icpSubIndustryTotal, publishedIcpPaths } from '../../data/b2b/icp';
 import { breadcrumbSchema } from '../../lib/schema';
 import { metadataFor } from '../../lib/seo';
 import Section from '../../components/ui/Section';
@@ -18,6 +19,11 @@ export const metadata: Metadata = metadataFor({
 });
 
 export default function Page() {
+  /* Bound once per render, not once per row. Empty today and it stays empty
+     until an operator promotion, which is why all 21 sectors below render as
+     text. See the note above the list. */
+  const publishedSectors = new Set(publishedIcpPaths());
+
   return (
     <>
       <script
@@ -133,6 +139,90 @@ export default function Page() {
               </article>
             ))}
           </div>
+        </Section>
+
+        {/* THE ENTRY POINT FOR THE ICP TAXONOMY.
+          *
+          * Appended, never woven into the grid above. Every existing card, link,
+          * heading and meta tag on this page is untouched, which is the
+          * operator's standing constraint.
+          *
+          * This one section is what the whole 21/341/2,376/8,823 tree hangs on.
+          * Both ADR-0007 §12 and ADR-0008 §7.4 recorded it as blocked on an
+          * operator decision, because without it every page in the family is an
+          * orphan: check-b2b.cjs deliberately forbids navigation.ts and
+          * CrossLinks.tsx from importing the spine, so nothing else can link them.
+          *
+          * A link here is not a publication. Each target renders only when its
+          * own entity is promoted and its body authored; until then it 404s, and
+          * scripts/check-icp.cjs holds the published count at zero. So this
+          * section can ship before a single page exists, and the links light up
+          * as the waves land.
+          */}
+        <Section spacing="lg">
+          <div className="mb-10">
+            <Heading level="h2" className="mb-3">The B2B sectors we sell to</Heading>
+            <p className="text-body text-[var(--text-muted)] max-w-3xl">
+              Twenty-one sectors, {icpSubIndustryTotal()}{' '}
+              sub-sectors. Listing a sector says we sell AI search, SEO and paid media into it. It is
+              not a claim that we have worked with a firm in it, and a sector that is not listed is
+              not a disqualifier.
+            </p>
+          </div>
+          {/* A NAME IS NOT A LINK UNTIL THERE IS A PAGE.
+            *
+            * Shipped first as 21 unconditional anchors. Nadia fetched all 21 on a
+            * running server: 20 returned a hard 404, because `dynamicParams` is
+            * false on the industry route and no ICP entity is published, and
+            * `/industries/financial-services` returned 200 and rendered the
+            * LEGACY industry page underneath this section's ICP name and
+            * sub-sector list. Twenty dead links and one mislabelled one, in the
+            * global crawl path, on a domain that already has 683 URLs sitting at
+            * "crawled, currently not indexed". That is the opposite of the
+            * reason this section was added.
+            *
+            * So the sector is always NAMED and is linked only when its path is
+            * published. The list is a statement of where we sell, and that is
+            * true before a page exists; the anchor appears the moment the entity
+            * is promoted, with no edit here.
+            *
+            * FINANCIAL SERVICES IS DECIDED RATHER THAN EXCEPTED. ICP industry 04
+            * has slug `financial-services` and so does a live, indexed row in
+            * data/industries.ts. Legacy owns that URL and keeps it, so
+            * `resolveIcp(['financial-services'])` returns undefined permanently
+            * and the slug can never enter `publishedIcpPaths()`. It therefore
+            * renders as text like the other 20, and it must: the legacy page is
+            * about wealth management and mutual funds, and pointing this card at
+            * it would put two different contents under one entity name, which is
+            * the entity-resolution defect that costs a citation. The uniform rule
+            * produces the right outcome here; `scripts/check-icp.cjs` asserts
+            * that outcome rather than excepting the collision, so if the operator
+            * ever re-points the legacy hub the gate says so.
+            *
+            * The set is bound once, not per row: 21 lookups against one Set, not
+            * 21 array scans. */}
+          <ul className="list-none p-0 m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7">
+            {icpIndustryCards().map((industry) => (
+              <li key={industry.id} className="min-w-0">
+                <Heading level="h3" className="mb-2">
+                  {publishedSectors.has(industry.slug) ? (
+                    <Link
+                      href={`/industries/${industry.slug}`}
+                      className="hover:text-[var(--accent)] transition-colors"
+                    >
+                      {industry.name}
+                    </Link>
+                  ) : (
+                    industry.name
+                  )}
+                </Heading>
+                <p className="text-meta text-[var(--text-muted)] m-0">
+                  {industry.subNames.join(' · ')}
+                  {industry.subCount > 4 ? ` and ${industry.subCount - 4} more` : ''}
+                </p>
+              </li>
+            ))}
+          </ul>
         </Section>
 
         <Section spacing="lg">

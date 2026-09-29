@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { INDUSTRIES } from '../../../../../data/industries';
+import { isPublishedIndustry } from '../../../../../lib/industryPublication';
 import { SERVICES } from '../../../../../data/services';
 import { breadcrumbSchema, faqSchema } from '../../../../../lib/schema';
 import { SITE_URL } from '../../../../../lib/seo';
@@ -8,8 +9,17 @@ import ServiceIndustryView from '../ServiceIndustryView';
 
 export const dynamicParams = false;
 
+/* Gated by lib/industryPublication.ts. This is the multiplying route: every
+   unreviewed industry row here becomes one URL PER SERVICE. The filter is the
+   difference between adding an industry and adding eleven indexable pages with
+   interpolated meta titles, which CLAUDE.md §11 forbids by name. */
 export const generateStaticParams = () =>
-  SERVICES.flatMap((service) => INDUSTRIES.map((industry) => ({ service: service.id, industry: industry.id })));
+  SERVICES.flatMap((service) =>
+    INDUSTRIES.filter((industry) => isPublishedIndustry(industry.id)).map((industry) => ({
+      service: service.id,
+      industry: industry.id,
+    }))
+  );
 
 export const generateMetadata = async ({
   params,

@@ -1,871 +1,487 @@
 # Qognition Agency — Project Bible
 
-> Hub + 4 Spokes architecture for qognition.com. Single domain, single capture layer, four integrated divisions. Positioned as the AI-native operating partner for founders and growth-stage companies. Optimized for SEO + LLM citation + high lead conversion.
+> **qognitionagency.com**. A B2B AI search visibility agency. We get established B2B firms found when
+> their buyers ask an AI which vendor to hire. Single Next.js codebase, single deploy, single lead
+> endpoint.
+
+**This file was rewritten 2026-09-27.** The previous version described a "Hub + 4 Spokes" model
+(marketing / tech / finance / automation) that has been retired and 301'd. If you find code or docs
+referring to spokes, they are dead. Do not rebuild them.
 
 ---
 
-## 1. Business model
+## 1. What we sell
 
-Qognition is an **operating partner** for founders — not an advisor, not a vendor. We run four functions so founders can build:
+**Offer:** AI search visibility for B2B firms. GEO, AI SEO, AEO, entity optimisation, citation
+tracking and prompt monitoring, delivered as one retainer.
 
-| Spoke | What we sell | Primary buyer | Sales cycle | Pricing model |
-|---|---|---|---|---|
-| **Marketing** | SEO, AI search, paid media, content, brand, CRO | CMO / Founder | 2–6 weeks | Retainer $3–20K/mo |
-| **Tech** | Websites, web apps, integrations, performance | CTO / Founder | 4–12 weeks | Project $10–200K |
-| **Finance** | Bookkeeping, tax, fractional CFO, payroll | CFO / Founder | 2–4 weeks | Retainer $500–7.5K/mo |
-| **Automation** | AI agents, workflows, CRM automation, data pipelines | COO / Ops lead | 3–8 weeks | Project + retainer |
+**Wedge:** evidence quality, not vertical occupancy.
 
-**Each spoke targets a different buyer.** Cross-sell happens in the relationship, not on the homepage. Each spoke operates as a specialized division, unified visually under Qognition.
+The earlier claim here was "no AI-search agency has published a case study outside B2B SaaS." That
+was **falsified on 2026-09-28** (`docs/research/b2b-vertical-substance.md`). Gorilla 76 publishes a
+dedicated AEO-for-manufacturers page with a measurement method close to ours; Thrive publishes an
+industrial-equipment GEO case; ranked lists of manufacturing, legal and professional-services GEO
+agencies now exist. Do not restore that sentence.
 
-**Why integrated matters:** Founders waste 40% of their time on non-core functions. Qognition consolidates four vendor relationships into one operating partnership. One SLA. One relationship. One standard of execution.
+What survives every source, and it got stronger on second pass: **nobody publishes a named client
+with a dated, reproducible measurement.**
 
----
+Vertical AI-search positioning now exists in all fifteen meta-verticals, so occupancy is gone as an
+argument. But in eleven of them the visible supply is **self-ranking listicles**: the publisher puts
+itself at number one and no entry carries a dated client result, including the publisher's own.
+Four opened directly, four times the same shape — First Page Sage (legal), RevenueZen (professional
+services), Siana (remodeling), Bluelinks (construction). Bluelinks alone publishes these for eleven
+verticals and by pass 3 had added aircraft sales, automotive manufacturing, franchises, cleaning
+services, contractors, building materials, local services and remodeling. First Page Sage now runs
+the same play with self-ranked lists for aerospace and industrial. Seven opened directly across three
+passes, publisher first in all seven. Of the genuine vertical specialists opened (Spiral, Carnegie,
+Fintel Connect, Siana), one names a client and none publishes a dated reproducible measurement.
 
-## 2. Competitive landscape
+One detail not to over-claim: the Bluelinks construction list's seven weighted criteria **sum to
+105%**, but the two lists opened in pass 3 both sum to 100. That was one page, not a house style.
+Cite it as one page or not at all.
 
-### 2.1 Direct competitors (integrated model — highest threat)
+That is the claim to lead with, because a reader can check it on the day they read it, it does not
+require us to have run a panel, and it ages well.
 
-| Competitor | Divisions | Overlap | Qognition advantage |
-|---|---|---|---|
-| **OuterSpace** | Digital, Finance, Tech | Near-identical model | We're AI-native; they're traditional. We lead "operating partner"; they lead "services." |
-| **Nibnox** | Branding, Dev, AI Automation | 3 of 4 spokes (no finance) | Finance spoke is our wedge against them. Integrated model more complete. |
-| **Agility Associates** | Accounting, Design, Automation, CRM | 3 of 4 spokes (weak on marketing) | Marketing spoke is deeper. We're brand-led; they're IT-led. |
-| **Centerline Business Services** | Accounting, Marketing, Strategy | Consulting-heavy, light on execution | We execute, not just advise. Tech + Automation spokes are real delivery arms. |
-| **RecruitHub** | Accounting, Branding, Tech | Niche-locked (recruitment only) | Industry-agnostic. Broader TAM. Not niche-dependent. |
+**Where occupancy still holds, and where it does not.** Commercial insurance remains uncontested
+across all three passes. **TIC (industry 19: environmental consulting, environmental labs,
+calibration, product testing) is the second genuine vacancy** — a targeted search on 2026-09-29 for
+AI-search positioning aimed at it returned no vertical specialist and no listicle, and First Page
+Sage's industrial list names manufacturing, construction, automation, engineering and robotics but
+not labs or environmental. State it in that narrow re-runnable form, never as "nobody serves this
+market". **Aerospace is occupied**, contrary to the assumption: The ABM Agency, First Page Sage and
+Bluelinks all publish for it.
 
-**Key takeaway:** OuterSpace is the competitor to beat. They've validated the model. Our moat: (1) AI-native positioning, (2) "operating partner" brand vs. "vendor" brand, (3) deeper per-spoke expertise, (4) speed — first to own this position in search.
+**Blocklisted numbers.** None of these may appear in copy, a chart, a deck, an ad or a proposal, and
+no rebuttal of one may be phrased so as to imply we measured it.
 
-### 2.2 Indirect competitors (pure-play marketing — fragmented, less threatening)
-
-These firms compete with our Marketing spoke only. They lack Tech, Finance, and Automation — which makes them potential acquisition/partnership targets, not existential threats.
-
-| Competitor | Specialty | Relevance |
+| Figure | Source | Why |
 |---|---|---|
-| **WebFX** | Full-funnel digital for SMBs/mid-market | Closest pure-play analog to our Marketing spoke. Use as credibility shorthand: "Like WebFX, but integrated across marketing, tech, finance, and AI." |
-| **Disruptive Advertising** | Paid search, paid social, SEO, CRO | Performance marketing specialist. Competes on Marketing spoke only. |
-| **OuterBox** | Search, paid media, performance web (mid-market/enterprise) | Upmarket from us. Overlaps on Marketing + partial Tech. |
-| **Digital Neighbor** | Technical SEO, content, paid, CRO | Revenue-attribution positioning is sharp. Competes on Marketing spoke. |
-| **SmartSites** | Broad digital, innovation positioning | Broad but shallow. Competes on Marketing spoke. |
-| **ForeFront Web** | Google Premier Partner, strategy-first web + digital | Competes on Marketing + partial Tech. |
-| **Intero Digital** | Comprehensive digital marketing | Generalist. Competes on Marketing spoke. |
+| "+5,556% increase in AI referral traffic" | Thrive | "2025 internal performance results". No client, method or date. Has crossed into manufacturing and construction carried by third parties who drop the caveat |
+| "287-415% ROI within 90-120 days" | The ABM Agency, aerospace | No client, method or date. The page also ranks itself first |
+| "AI-sourced traffic converting at rates 25x higher than traditional organic" | The ABM Agency | Same unsourced conversion-rate claim pass 1 traced and could not find in the Semrush study. Now crossed into aerospace |
+| "average 9.1x ROI" | The ABM Agency | No client, method or date |
+| "lead volume up 50% within 30 days, up to 160% within 90" | ChoiceLocal, franchisor AEO | No client, method or date |
 
-### 2.3 Competitive positioning map
+**Original blocklist entry, kept for the detail:** Thrive's "+5,556%". Attributed on Thrive's
+own page to "2025 internal performance results" with no client, no method and no date. It has now
+travelled into manufacturing and construction carried by third parties who drop the caveat. It is
+the most-travelled unverifiable figure in this category. Never repeat it, and never write a rebuttal
+of it phrased so as to imply we measured it.
 
-```
-                        EXECUTION-HEAVY
-                              │
-                    Qognition ●
-                              │
-              OuterSpace ●    │
-                              │
-    Agility Associates ●      │
-                              │
-    ─────────────────────────────────────
-    TRADITIONAL ──────────────┼────────── AI-NATIVE
-                              │
-                              │
-         Centerline ●         │    ● Nibnox
-                              │
-                              │  ● WebFX, SmartSites,
-                              │    Digital Neighbor, etc.
-                              │
-                        ADVISORY
-```
+**Commercial insurance remains genuinely uncontested.** No equivalent entrant was found. Lead the
+occupancy argument only there.
 
-Qognition occupies the top-right quadrant: AI-native + execution-heavy. No competitor currently holds this position. OuterSpace is closest (top-left). Nibnox is closest on the AI axis but advisory-light on execution. **Speed matters — this window is closing.**
+**Bundling is not a differentiator.** Six competitors already sell "SEO and AI search as one motion".
+Describe the scope, never lead with it. Lead with the vertical.
 
----
+### The four layers, defined identically everywhere
 
-## 3. Brand architecture: Hub + 4 Spokes
+Never blur AI SEO and GEO. They are different surfaces.
 
-```
-qognition.com (parent hub — "The Operating Partner for Founders")
-├── /marketing/*   → Spoke 1 — AI-native growth marketing
-├── /tech/*        → Spoke 2 — software, sites, integrations
-├── /finance/*     → Spoke 3 — bookkeeping, tax, fractional CFO
-├── /automation/*  → Spoke 4 — AI agents, workflows, data pipelines
-```
-
-**Why subdirectories, not subdomains:**
-- All link equity compounds on one domain
-- Single Next.js codebase, single deploy, single CRM
-- Spoke-specific theming via URL-aware CSS custom properties
-- Each spoke reads as a dedicated division — "Qognition Finance" not "qognition.com/finance" in perception
-
-**Each spoke functions as a specialized mini-agency** with its own homepage, sub-service pages, audit funnel, pricing page, case studies, and booking flow. The parent unifies through global nav, footer, design system, and team page.
-
----
-
-## 4. Full URL / page architecture
-
-### 4.1 Parent hub (shared across all spokes)
-
-```
-/                                  Hub homepage — integrated model pitch + 4 spoke entry cards
-/about                             Company story + operating partner philosophy
-/team                              Full team, organized by spoke division
-/process                           Engagement model — how we operate as partners
-/case-studies                      All wins, filterable by spoke + industry
-/case-studies/[slug]               Individual case study
-/pricing                           Master pricing overview (4 columns)
-/book                              Master booking — "Not sure which spoke?" routing
-/contact                           General contact
-/resources                         Cross-spoke resource hub
-/resources/[slug]                  Guides, templates, calculators, reports
-/blog                              Editorial + thought leadership
-/blog/[category]                   Category pages
-/blog/[slug]                       Posts
-/comparisons                       Agency comparison pages (high-intent SEO)
-/comparisons/[slug]                e.g., /comparisons/qognition-vs-outerspace
-/sitemap                           HTML sitemap
-/legal/privacy
-/legal/terms
-/legal/cookies
-```
-
-### 4.2 Marketing spoke (`/marketing/*`)
-
-```
-/marketing                         Spoke homepage — AI-native growth marketing
-/marketing/seo                     Traditional SEO + technical SEO retainers
-/marketing/ai-seo                  AI search / AEO / LLM visibility / programmatic SEO
-/marketing/paid-media              Google Ads + Meta + LinkedIn (consolidated from "ppc")
-/marketing/content                 Content marketing + production + strategy
-/marketing/email-lifecycle         Email marketing + lifecycle automation
-/marketing/brand-strategy          Brand strategy, positioning, messaging (absorbed from Brand spoke)
-/marketing/visual-identity         Logo, design system, brand guidelines
-/marketing/cro                     Conversion rate optimization + landing page optimization
-/marketing/social                  Social media management + strategy
-/marketing/audit                   Free Marketing + AI Search Audit (lead magnet)
-/marketing/pricing                 Marketing tiers (Growth / Scale / Enterprise)
-/marketing/case-studies            Filtered case studies
-/marketing/process                 90-day marketing engagement model
-/marketing/faq                     Marketing-specific FAQ
-/marketing/resources               ROI calculators, SEO ROI estimator, ad spend calculator
-/marketing/book                    Book a marketing strategy call
-```
-
-**Note:** Brand spoke is absorbed into Marketing. Brand strategy, visual identity, naming, and messaging are sub-services under Marketing — where the brand buyer (CMO/Founder) already lives. This reduces spoke count, simplifies navigation, and keeps the brand buyer's journey in one funnel.
-
-### 4.3 Tech spoke (`/tech/*`)
-
-```
-/tech                              Spoke homepage — software + sites + integrations
-/tech/websites                     Marketing websites + landing pages
-/tech/web-apps                     Custom SaaS + web applications
-/tech/ecommerce                    Shopify, headless commerce
-/tech/nextjs-seo                   Next.js sites optimized for SEO + performance
-/tech/integrations                 API + third-party integrations
-/tech/performance                  Core Web Vitals + speed optimization + audits
-/tech/mvp                          MVP development for early-stage founders
-/tech/audit                        Free Tech + Performance Audit
-/tech/pricing                      Tech packages (Sprint / Project / Retainer)
-/tech/case-studies                 Filtered case studies
-/tech/process                      Discovery → Architecture → Build → Ship → Iterate
-/tech/faq
-/tech/resources                    Tech checklists, stack comparison guides,估算工具
-/tech/book                         Book a tech scoping call
-```
-
-**Renamed from "Build" to "Tech."** "Build" is ambiguous — is it construction? "Tech" is broader, more searchable, and encompasses strategy + architecture + development + performance. The MVP sub-service opens a funnel for early-stage founders who will grow into multi-spoke clients.
-
-### 4.4 Finance spoke (`/finance/*`)
-
-```
-/finance                            Spoke homepage — financial operations for founders
-/finance/bookkeeping                Monthly bookkeeping + reconciliation
-/finance/tax                        Tax preparation + planning + strategy
-/finance/fractional-cfo             Strategic finance leadership
-/finance/payroll                    Payroll management + compliance
-/finance/financial-reporting        Monthly close + board-ready reporting
-/finance/cash-flow                  Cash flow modeling + forecasting
-/finance/audit                      Free Finance Health Check
-/finance/pricing                    Finance tiers (Bookkeeping / CFO / Combined)
-/finance/case-studies               Filtered case studies
-/finance/process                    Onboarding → Cleanup → Monthly close → Strategic cadence
-/finance/faq
-/finance/resources                  Tax calendars, expense policy templates, cash flow calculators
-/finance/book                        Book a finance discovery call
-```
-
-**Renamed from "Books" to "Finance."** Broader, more aspirational, higher perceived value. "Books" implies bookkeeping only. "Finance" signals strategic value — fractional CFO, cash flow strategy, financial modeling. This also aligns with how OuterSpace brands its finance division.
-
-### 4.5 Automation spoke (`/automation/*`)
-
-```
-/automation                         Spoke homepage — AI agents + intelligent automation
-/automation/ai-agents               Custom LLM-powered agents for business operations
-/automation/workflow-automation     n8n, Make, Zapier — end-to-end process automation
-/automation/integrations            CRM + tool stack integrations
-/automation/data-pipelines          ETL, data sync, dashboards, reporting automation
-/automation/crm-automation          HubSpot, Attio, Pipedrive — pipeline + workflow automation
-/automation/no-code-stack           No-code + low-code architecture for founders
-/automation/audit                   Free Automation Opportunity Map
-/automation/pricing                 Automation packages (Sprint / Build / Retainer)
-/automation/case-studies            Filtered case studies
-/automation/process                 Audit → Map → Build → Monitor → Optimize
-/automation/faq
-/automation/resources               Automation ROI calculator, stack templates, AI agent library
-/automation/book                    Book an automation strategy call
-```
-
-**Renamed from "Flow" to "Automation."** Higher search volume, clearer value proposition. "Flow" is clever. "Automation" is searched. AI agents as a first-class sub-service signals our AI-native positioning.
-
-### 4.6 API routes
-
-```
-/api/lead                          POST — single capture endpoint, all forms
-/api/audit-request                 POST — audit-specific intake with spoke routing
-/api/newsletter                    POST — newsletter signup
-/api/contact                       POST — general contact
-/api/og/[spoke]                    GET — dynamic OG images per spoke
-```
-
-### 4.7 Pages to DELETE / noindex / consolidate
-
-These pages are dragging down site quality (HCU-vulnerable, thin content):
-
-```
-/directory                         DELETE — irrelevant pSEO noise
-/comparisons                       KEEP BUT REWRITE — competitor comparisons are high-intent, high-converting pages when done with real depth
-/glossary                          CONSOLIDATE — merge top 20 definitions into /resources as a glossary section
-/free-tools                        AUDIT — keep only tools that actually work and generate leads; delete the rest
-/languages                         DELETE — premature i18n
-/global                            DELETE
-/regions/*                         DELETE unless actively servicing with case studies
-/sitemaps/*                        CONSOLIDATE — keep one XML sitemap
-/llm                               DELETE if thin; merge useful content into /resources/llm-visibility
-/services                          DELETE — 301 redirect to / (hub)
-/industries                        CONSOLIDATE into case studies filter + /resources/industry-guides
-/locations                         DELETE unless a physical office exists
-```
-
-**Rule:** If a page doesn't generate leads, build authority, or rank for a buyer-intent query — delete it. Less is more. Every page must earn its place.
-
----
-
-## 5. Positioning & messaging strategy
-
-### 5.1 Master positioning
-
-**"The Operating Partner for Founders"**
-
-Not an agency. Not a consultancy. Not an outsourced vendor. An operating partner — we run the functions so founders can build the business.
-
-**One-liner (homepage H1 candidate):**
-"We run marketing, tech, finance, and automation so founders can build."
-
-### 5.2 Competitive positioning by audience
-
-| Audience | Their alternative | Our wedge |
-|---|---|---|
-| Founder comparing us to OuterSpace | "They do the same thing" | "We're AI-native. They bolt AI onto traditional services. We build with AI from the ground up — which means faster delivery, lower cost, better results." |
-| Founder comparing us to WebFX | "WebFX is bigger" | "WebFX does marketing. We do marketing, tech, finance, and AI. One partner instead of four vendors. And we're founder-led, not PE-owned." |
-| Founder with no agency yet | "Why do I need an agency?" | "You don't need an agency. You need someone to run the functions you don't have time to run. That's what an operating partner does." |
-| Founder with separate vendors | "I already have a bookkeeper, an agency, a dev shop" | "How much time do you spend coordinating them? We consolidate four relationships into one. One SLA. One standard. One invoice." |
-
-### 5.3 Spoke-specific positioning
-
-| Spoke | H1 format | Differentiator |
-|---|---|---|
-| Marketing | "AI-native growth marketing for founders who need revenue, not reports" | AI-first. Results within 90 days or we work free. |
-| Tech | "We build software that drives revenue — not just code that compiles" | Revenue-focused engineering. No vanity metrics. Ship speed + quality. |
-| Finance | "Financial operations that give founders back their Saturdays" | Tech-enabled finance. Real-time dashboards. Strategic, not just compliant. |
-| Automation | "AI agents and automation that run your ops while you sleep" | AI-native automation. Custom agents, not just Zapier zaps. |
-
-### 5.4 Authority content strategy
-
-To win LLM citations and search authority, publish original data:
-
-- **"State of AI Marketing" annual report** (Q4 each year) — original survey data, cited by industry media
-- **"Founder Finance Benchmarks"** — anonymized financial benchmarks by industry/stage
-- **"Automation ROI Report"** — real ROI data from client engagements (anonymized)
-- **Quarterly SaaS performance benchmarks** — CWV, conversion rates, SEO trends
-
-These become the moat. Competitors can copy design. They can't copy original data.
-
----
-
-## 6. Per-spoke conversion playbook
-
-### 6.1 Spoke homepage section sequence (REQUIRED for every spoke)
-
-```
-1. Hero
-   - H1: outcome-led, ICP-specific, ONE sentence
-   - Subhead: one sentence on why Qognition specifically
-   - Primary CTA: "Get your free [Spoke] Audit"
-   - Secondary CTA: "Book a 20-min strategy call"
-   - Above-fold proof: 5-7 logos OR "Trusted by X founders"
-   - Hero asset: real product screenshot OR founder Loom OR demo, NOT stock art
-
-2. Pain block (3 specific pains)
-   - "You're probably struggling with X, Y, or Z"
-   - Each pain uses the ICP's actual language (from sales calls, not copywriting)
-   - Format: pain statement → why it happens → what it costs them
-
-3. Solution snapshot
-   - 3-step process visual (60-second skim)
-   - "Here's how we fix it" — concrete, not abstract
-
-4. Outcomes (proof)
-   - 3 case studies with HARD NUMBERS
-   - Format: "[Company] — We took [Metric] from X to Y in Z weeks"
-   - Each links to full case study
-   - Include one "failure" or "what we learned" for credibility
-
-5. What's included (service grid)
-   - 4-8 sub-services as cards
-   - Each card: icon + service name + one-line outcome + link to sub-service page
-
-6. How we work (process timeline)
-   - Week-by-week or phase-based
-   - Specific deliverables per phase
-   - "Week 1: discovery. Week 2: audit + recommendations. Week 3-12: execution."
-
-7. Pricing transparency
-   - Show ranges or tiers (don't hide)
-   - "Starts at $X/mo" or "$X–Y projects"
-   - Include what drives price variation (complexity, scope, speed)
-
-8. Team (real faces)
-   - 3-5 team members with credentials
-   - "Worked at [Notable Co]" or "10 years in [domain]"
-   - Link to full /team page
-
-9. Risk reversal / guarantee
-   - Spoke-specific guarantee
-   - "If we don't [specific outcome], we [specific remedy]"
-   - OR "Free audit first, no commitment — we earn the relationship"
-
-10. FAQ (top 6 objections)
-    - Use FAQPage schema
-    - Each answer 60-120 words
-    - Address real objections from sales calls, not generic FAQ
-
-11. Final CTA block
-    - Repeat primary CTA
-    - Inline Calendly OR 4-field audit form
-    - Never bury booking behind another click
-```
-
-### 6.2 Conversion rules — non-negotiable
-
-| Rule | Why |
+| Layer | Surface |
 |---|---|
-| ONE H1 per page | SEO + cognitive clarity |
-| ONE primary CTA above fold | Decision fatigue kills conversion |
-| Inline Calendly on final CTA | Each extra click drops ~30% of prospects |
-| Real team photos — zero stock photography | #1 trust killer in 2026 |
-| Specific numbers, never "many" or "hundreds" | "47 SaaS founders" converts better than "many clients" |
-| Sticky CTA on scroll (mobile + desktop) | Always present on long-form pages |
-| Founder Loom on every spoke homepage | 2-3 min personal video. Typically doubles time-on-page and trust signals. |
-| Exit-intent popup with spoke-specific lead magnet | Recovers ~5-10% of abandoning visitors |
-| Cookie-based personalization | Returning visitor sees their last-viewed spoke highlighted |
-| Mobile-first audit forms (4 fields max) | Mobile = 60%+ of traffic |
-| Schema markup per page type | Organization, Service, FAQPage, BreadcrumbList, Article, Review |
-| Loading speed: LCP < 2.5s on 4G | Direct ranking + conversion impact |
-| No carousels or auto-rotating sliders | They kill conversion. Static grids or manual accordions only. |
+| **SEO** | Google search results |
+| **Local SEO** | Google Maps, local pack, Bing Places, Business Profile, reviews, listings |
+| **AI SEO** | Google AI Overviews and AI Mode |
+| **GEO** | ChatGPT, Perplexity, Gemini, Claude, Copilot |
 
-### 6.3 Sub-service page template
+**Assistants are no longer an organic-only surface, and every layer definition above assumed they
+were.** Scorpion announced on 23 July 2026 (PR Newswire 302832718, observed) that it is an OpenAI
+technology partner supporting advertising in ChatGPT and managing ChatGPT ad campaigns for clients.
+Scorpion sells into franchise and multi-location, which is industry 21. `[NEEDS DATA: OpenAI's own
+programme documentation. We have the partner's release, not the source.]` Until that is confirmed,
+no page may describe paid placement in an assistant as a service we offer. Marcus owns the
+commercial question; this note exists so nobody writes "assistants have no ads" on a page.
 
-Every `/spoke/sub-service` page follows:
+All four are in every retainer and are never sold separately. Technical SEO, on-page, off-page and
+authority work are in the box too. Tiers differ by **scope only**: locations covered, prompts
+tracked, assets produced.
 
-```
-1. Hero — specific outcome H1 + primary CTA
-2. The problem with how it's usually done (differentiator setup)
-3. Our approach (3-4 paragraphs + visual diagram)
-4. Deliverables — exact list of what they receive
-5. Timeline — weeks/phases with specific milestones
-6. 2-3 mini case studies with hard numbers
-7. FAQ (4-5 questions, FAQPage schema)
-8. Final CTA — inline form or Calendly
-```
+**B2B PPC is a real service we run for these clients, not a footnote.** Operator, 2026-09-28: "they
+are our customers, we run ppc ads and do seo, ai seo, geo for them." It sits alongside the four
+layers rather than inside them, because it is priced as a percentage of ad spend with a monthly
+minimum and the four layers are priced by scope. A vertical page may sell paid media in the same
+breath as organic; it may not imply PPC is bundled into the retainer price.
 
-### 6.4 Audit page template (highest-converting pages)
+### Positioning copy
 
-These are the lead magnets. They must be treated with extreme care. Each generates qualified leads by delivering real value before any money changes hands.
-
-```
-1. Hero
-   - H1: "Free [Spoke] Audit — [Specific outcome] in [timeframe]"
-   - Sub: "We'll review your [X], [Y], [Z] and send a [deliverable] within 48 hours"
-   - Primary CTA: form inline or directly below fold
-   - NO navigation links in hero (focus on conversion)
-
-2. What you'll get (the deliverables)
-   - 8-12 item checklist with checkmark icons
-   - 1-2 screenshot examples (blurred real client data with permission)
-   - Specific format: "12-page deck" or "15-min Loom video walkthrough" — no vague promises
-
-3. Sample audit (proof of quality)
-   - Screenshot or embedded Loom of a real audit deliverable
-   - "Here's what you'll receive →"
-   - Shows the depth — this is the moat
-
-4. Who this is for (qualification)
-   - 3-4 bullets: "You're a founder/operator doing [$X–Y revenue] who [specific pain]"
-   - Filters out tire-kickers without being exclusionary
-   - "This is NOT for you if [polite disqualifier]"
-
-5. Process (transparency = trust)
-   - "1. Fill the form (2 min). 2. We review within 24 hours. 3. You receive the audit within 48 hours. 4. Optional: 30-min walkthrough call to discuss findings."
-
-6. FAQ
-   - "Is this really free?" — Yes. No credit card. No commitment. We earn the relationship.
-   - "What's the catch?" — There isn't one. We're betting that the quality of this audit proves our value better than any sales pitch.
-   - "How long does it take to get my audit?" — 48 hours or less.
-   - "Will you sell my data or spam me?" — Never. One follow-up email to schedule the walkthrough. That's it.
-
-7. Form (NEVER more than 4 fields)
-   - Name | Email | Company URL | One qualifying question (e.g., "What's your biggest [spoke] challenge?")
-   - Honeypot field for spam prevention
-   - GDPR consent checkbox if EU traffic expected
-   - Submit button: outcome-focused microcopy ("Get My Free Audit" not "Submit")
-```
-
-### 6.5 Lead magnets per spoke
-
-| Spoke | Lead magnet | Deliverable format | Time to deliver |
-|---|---|---|---|
-| Marketing | Free Marketing + AI Search Audit | 12-page deck + 15-min Loom | 48 hours |
-| Tech | Free Tech + Performance Audit | Lighthouse report + site audit deck + 10-min Loom | 48 hours |
-| Finance | Free Finance Health Check | 1-page benchmark report + 15-min Loom walkthrough | 48 hours |
-| Automation | Free Automation Opportunity Map | Process diagram + ROI estimate + 10-min Loom | 72 hours |
-
-**These are not gated PDFs.** They are real, manually-produced work samples delivered within 48-72 hours. Each audit is a mini-engagement that proves our value before any contract. This is the competitive moat — no competitor does this at scale.
+- **H1:** "Your buyers are asking ChatGPT who to hire. Most firms have never checked the answer."
+  (An earlier draft read "We make sure it says you." That promised placement in a third-party
+  system, which §4 forbids. The current line keeps the tension, is verifiable, and makes the free
+  snapshot the obvious next step.)
+- **Sales line:** "You rank in Maps, but ChatGPT names your competitor."
+- Emphasis order sitewide: AI SEO and GEO first; SEO and Local SEO as the supporting layers that make
+  them work.
 
 ---
 
-## 7. Lead capture architecture
+### The tools we build
 
-### 7.1 Single endpoint, four funnels
+Qognition Labs (qognitionlabs.com) is the engineering arm. Four products, and they are the AI-native
+proof: we run the work on software we wrote.
 
-Every form on the site POSTs to `/api/lead` with a `service` field:
+| Product | Does |
+|---|---|
+| **Scriblr** | **AI citation and GEO tracking.** Visibility per prompt and model, brand mention detection by name, alias and domain, citation analysis by source category, competitor share of voice, query fan-out. Raw answers, cited URLs and model versions are persisted, so every metric re-derives from a stored answer with a date. |
+| **LinkersPro** | Authority and link acquisition. |
+| **M.A.R.S.** | Lead routing, outreach and booking attribution. |
 
-```ts
-POST /api/lead
-{
-  service: "marketing" | "tech" | "finance" | "automation" | "unsure",
-  intent: "audit" | "consultation" | "pricing" | "contact",
-  source_page: string,         // e.g. "/marketing/audit"
-  utm: { source, medium, campaign, term, content },
-  contact: {
-    name: string,
-    email: string,
-    company?: string,
-    company_url?: string,
-    phone?: string,
-    message?: string
-  },
-  metadata: {
-    spoke_visited_first?: string,    // cookie-based
-    pages_viewed?: number,
-    time_on_site?: number,
-    referrer?: string
-  }
-}
-```
+**The ICP lock names three engines, not four, and Scriblr owns citation tracking.**
+`docs/icp-positioning.md` (operator-locked v2.0.0, 2026-09-29) lists exactly LinkersPro, Scriblr and
+M.A.R.S. as the in-house engines nameable as proof. G.O.L.E.M does not appear. This file previously
+gave citation tracking to G.O.L.E.M and content production to Scriblr; the locked file is newer and
+is the operator's own, so it wins and G.O.L.E.M is not referenced on the site. Do not reintroduce it
+without an operator decision, and do not quietly split the citation-tracking job across two names.
 
-### 7.2 What `/api/lead` does
+**Not "Linkdex."** That was a real third-party SEO platform brand and carries a trademark question.
+LinkersPro is also already the name in 38 strings across `data/case-studies/*.ts`, so it stays.
 
-1. Validate + sanitize input (Zod schema)
-2. Honeypot check + rate-limit check (Upstash or Vercel KV)
-3. Create contact in CRM (HubSpot / Attio)
-4. Tag with `service` → routes to correct pipeline
-5. Slack alert to spoke owner with full context + source page
-6. Trigger spoke-specific email nurture sequence
-7. If `intent: audit` → send confirmation email + Calendly link for walkthrough
-8. Log to analytics (GA4 event + Vercel Analytics)
-9. Return 200 with redirect target or thank-you page URL
+G.O.L.E.M's auditability is the line worth putting on the site: every number traces to a stored
+answer with a date. That is the claims discipline in §4, expressed as a product.
 
-### 7.3 CRM pipeline structure
+**Product screens on the site are illustrative interface, never client data.** The contract in
+`docs/adr/0006-product-screen-contract.md` enforces this structurally: sample brand names are a
+closed union with `.example` domains, so a real company name is a compile error, and
+`provenance: 'illustrative'` is a required single-member union rather than an optional flag.
 
-```
-CRM
-├── Pipeline: Marketing Leads     → owner: marketing closer
-├── Pipeline: Tech Leads          → owner: tech closer
-├── Pipeline: Finance Leads       → owner: finance partner
-├── Pipeline: Automation Leads    → owner: automation lead
-└── Pipeline: Unsure / Multi      → owner: chief of staff
+## 2. Who we sell to
 
-Stages (consistent across all pipelines):
-1. New lead
-2. Audit delivered / discovery scheduled
-3. Discovery call complete
-4. Proposal sent
-5. Negotiation
-6. Closed-won / Closed-lost
-```
+### The ICP, final. Locked by the operator 2026-09-28.
 
-### 7.4 Cross-sell mechanism (relationship-layer, not homepage)
+> **Any B2B company doing $3M to $1B+ in revenue, with 20 to 10,000+ staff, that needs AI SEO, SEO
+> or PPC.**
 
-Cross-sell does NOT belong on the homepage or spoke homepages. It happens in the relationship:
+That sentence is the gate, and it is the whole gate. Read it literally before narrowing it.
 
-1. **Discovery call script**: every closer asks "How are you handling [other 3 functions] today?" — flag interest in CRM
-2. **Onboarding intake form**: standard question — "Which other functions need attention?"
-3. **Quarterly business review** (existing clients): structured review across all four functions. "Here's marketing progress. Want us to assess your finance/tech/automation?"
-4. **Internal Slack `#cross-sell-signals`**: auto-flagged when client mentions another spoke's pain point
-5. **Annual operating partner review**: once per year, full audit across all four functions for existing clients
+| | |
+|---|---|
+| Revenue | $3M to $1B+ |
+| Staff | 20 to 10,000+ |
+| Business model | B2B. Not B2C, not B2B2C where the buyer is a consumer |
+| Need | AI SEO, SEO or PPC. **Any one of the three qualifies.** Not all three |
+| Retainer | **$3,000 to $20,000 per month.** Never show, mention or build a plan below $3,000 |
+| Markets | USA > Canada > Australia > UK > Netherlands > Germany > Sweden > Denmark > Norway > Finland > Switzerland > UAE, plus Singapore and Ireland. USD only |
+| Go-to-market taxonomy | **`data/b2b/icp/icp-taxonomy.json`**, operator-locked v2.0.0. 21 industries, 341 sub-industries, 2,376 niches, 8,823 sub-niches |
 
----
+**The taxonomy is a route to market, not a qualifier.** This is the distinction that matters and it
+is easy to get backwards. A B2B firm inside the revenue and staff band qualifies whether or not its
+industry appears in the taxonomy. The verticals exist because a page has to be written to
+somebody in particular and a generic page converts nobody — not because a prospect outside them is
+disqualified. A well-fitting inbound lead from an industry we never listed is a lead, and it routes
+to a qualification call like any other.
 
-## 8. Tech stack
+**Any one of the three services qualifies.** A firm that wants only PPC is in the ICP. A firm that
+wants only classic SEO is in the ICP. Do not write copy that requires a prospect to want AI search
+before we will talk to them; AI search is what we lead with, not a condition of entry.
 
-This repo: **Next.js 16 + React 19 + TypeScript + Tailwind CSS** (App Router).
+The upper bound moved today. It previously read "20 to 1,000+ staff, building for 20–200 first."
+The staged-build hedges are gone: the operator states the band plainly and the site should too.
 
-### 8.1 Key dependencies
+### The ICP taxonomy is locked
 
-- `next` ^16.2.5
-- `react` ^19.2.6
-- `framer-motion` — animations (sparingly; conversion > flair)
-- `lucide-react` — icons
-- `tailwindcss` ^3.4.18
-- Future: `@vercel/analytics`, `@vercel/speed-insights`, `zod` (validation), schema generators
+**Superseded on 2026-09-29.** The authoritative taxonomy is now
+`data/b2b/icp/icp-taxonomy.json` (operator-locked v2.0.0, 21/341/2,376/8,823). `data/b2b/verticals.ts`
+is the earlier 15/120 draft and is **not a second source of truth**: under `docs/icp-positioning.md`
+rule 6, slugs and ids come from the JSON, and `verticals.ts` ids were invented before that file
+existed. It survives only as an alias map for the two `draft` entities already built against it, and
+ADR-0008 §3 specifies the re-key. Do not add rows to it and do not cite it as the ICP.
 
-### 8.2 Deployment
+The section below describes that earlier draft and is kept because the two draft pages still resolve
+through it.
 
-- Hosted on **Vercel** (already configured — see `/.vercel`)
-- Preview deployments for every spoke PR
-- Production: `qognition.com` (parent), no subdomains
+**These are our customers.** Every row is a kind of firm we sell to and for whom we run paid media,
+SEO, AI SEO and GEO. A row is **not** evidence we have worked in that vertical. §11 forbids implying
+experience because a page or a row exists.
 
-### 8.3 Cache + ISR strategy
+The 15 meta-verticals, by demand tier:
 
-- Static pages: ISR with `revalidate: 3600` (case studies, blog, resources)
-- Spoke homepages: ISR with `revalidate: 600`
-- Audit + book pages: dynamic (always fresh — forms must not cache)
-- Use Next.js 16 Cache Components where appropriate (`use cache` directive)
+| Tier | Meta-verticals |
+|---|---|
+| **S** | SaaS and Software · Professional and Business Services · Manufacturing and Industrial · Technology and IT Services |
+| **A** | Healthcare and Life Sciences · Financial Services · Logistics, Supply Chain and Transportation · Emerging and Micro-Niches |
+| **B** | Construction, Real Estate and Built Environment · Energy and Utilities · Education and Training · Hospitality, Travel and Events · Agriculture and Food · Media, Marketing and Creative · Government, Nonprofit and Institutional |
 
-### 8.4 Code organization
+Commercial insurance is a sub-niche of Financial Services, and is the flagship because it is the one
+vertical with no equivalent competitor. It is no longer the only vertical the site addresses.
 
-```
-app/
-├── (hub)/              # parent routes — homepage, about, team, process
-├── marketing/          # marketing spoke (absorbed brand)
-├── tech/               # tech spoke (was build)
-├── finance/            # finance spoke (was books)
-├── automation/         # automation spoke (was flow)
-├── api/
-│   ├── lead/route.ts
-│   ├── audit-request/route.ts
-│   └── newsletter/route.ts
-├── layout.tsx          # root layout with shared shell
-└── globals.css
+**Nothing in that file generates a route.** Every entity defaults to `state: 'spine'`: no page, no
+sitemap entry, 404 on request. Promotion to `published` requires a named reviewer, a review date,
+and the published ceiling raised in the same commit. `data/industries.ts` has no publication field
+at all, which is exactly how 2,161 location pages reached the sitemap. Do not repeat it.
 
-components/
-├── shared/             # nav, footer, CTAs, LeadForm (spoke-aware via props)
-├── hub/                # parent-specific components
-├── spokes/
-│   ├── marketing/
-│   ├── tech/
-│   ├── finance/
-│   └── automation/
-└── ui/                 # primitive UI kit (Button, Input, Card, Badge)
+**The buyer split governs every page built from this taxonomy.** Family B is the prompt our client's
+buyer asks ("find ISO 9001 and AS9100 certified CNC machining suppliers") — we run it, record it,
+publish the observation, and can never be the cited answer to it. Family Q is the prompt our buyer
+asks ("why doesn't ChatGPT recommend my machine shop") — that is what a page targets. Confusing the
+two rebuilds the location pages a second time.
 
-lib/
-├── crm.ts              # CRM client (HubSpot/Attio)
-├── analytics.ts        # GA4 + Vercel Analytics events
-├── schema.ts           # JSON-LD generators per page type
-├── spokes.ts           # spoke config (colors, names, copy, owners)
-└── validation.ts       # Zod schemas for forms
+**Our buyer:** owner, CEO, marketing or growth leader. **Our client's buyer:** procurement, engineers,
+IT leaders, finance leaders. Keep these distinct on every page.
 
-data/
-├── case-studies.ts     # case study data (tagged by spoke + industry)
-├── team.ts             # team members (tagged by spoke division)
-├── pricing.ts          # pricing tiers per spoke
-├── faqs/               # per-spoke FAQ data
-└── competitors.ts      # competitor data for comparison pages
-```
+### Where we have actually delivered, as distinct from where we sell
 
-### 8.5 Spoke-aware theming
+Two records, and conflating them produces a false claim in either direction.
 
-Each spoke gets an accent color injected via CSS custom properties, derived from the URL segment:
+**The B2B record is white-label and unnameable.** Managed IT and cloud, cybersecurity, and B2B SaaS
+(partial). Four engagements, and the source document states that the work "was delivered through
+white-label arrangements under signed NDAs", so **every one of them** is unnameable. That is why no
+client is named, and saying so in the sentence is worth doing: it explains the anonymity instead of
+leaving the reader to assume the client does not exist.
 
-```ts
-// lib/spokes.ts
-const SPOKE_CONFIG = {
-  marketing:  { accent: "#7C3AED", accentLight: "#A78BFA", label: "Marketing" },
-  tech:       { accent: "#2563EB", accentLight: "#60A5FA", label: "Tech" },
-  finance:    { accent: "#059669", accentLight: "#34D399", label: "Finance" },
-  automation: { accent: "#F59E0B", accentLight: "#FBBF24", label: "Automation" },
-};
-```
+The same document holds the scope and duration at arm's length too ("service scopes and durations
+reflect Qognition's supplied account of its work"), so the honest label on the whole engagement
+record is **reported**, not observed. Every figure in it is an illustrative model output and is
+blocklisted in `docs/research/b2b-vertical-substance.md` §2.2. None may appear in copy, a chart, a
+deck, an ad or a proposal.
 
-CSS consumes these as `var(--accent)` and `var(--accent-light)`. Base components stay shared; only accent-driven elements change per spoke. Spoke layouts apply the vars via a `<SpokeLayout spoke="marketing">` wrapper.
+**There is also a named record, and it is not under NDA.** 45 case studies: 19 HVAC, 20 dental, 6
+commercial insurance. So **never write that all our delivery is white-label** — it is not, and the
+case-study library contradicts it on the same domain. The quantifier is scoped to the three B2B
+verticals or it is wrong. Insurance is diagnostic only and every KPI in it is a target, not a result.
+
+HVAC and dental are local consumer services and fall outside the ICP in §2, so they are not proof
+for a B2B buyer and must never be rendered as related proof on a B2B page. Eight of eleven industry
+hubs did exactly that until 2026-09-28; `scripts/check-industry-gate.cjs` now freezes the mapping.
+
+Everything outside these two records is capability and method, and the pages must say so rather than
+implying a history.
+
+**Not a fit**, and these are the only disqualifiers: pre-revenue, B2C, low-ticket transactional,
+needs leads this week, wants a one-off project, cannot edit their own website, or has no sales
+process that follows up. Every one of these is about whether the work can succeed, not about which
+industry the prospect is in.
+
+Firms above the band stay eligible as inbound and route to a qualification call.
 
 ---
 
-## 9. SEO + LLM citation strategy
+### Two operator decisions, 2026-09-29
 
-### 9.1 Per-spoke SEO architecture
+**We sell white-label to agencies.** B2B marketing, demand-gen, ABM, PR and franchise-development
+agencies are a CLIENT SEGMENT, not a competitor set. Five strings are simultaneously their buyer's
+language and our own head terms: `b2b marketing agency`, `b2b seo agency`, `abm agency`,
+`franchise marketing agency`, `franchise development marketing`. We do not compete for them, and
+the locked taxonomy's own `geo_angle` on that sub-industry already said so: "Agencies buy GEO for
+themselves."
 
-Each spoke is treated as its own topical authority hub:
+Consequences. Copy addressed to agencies is written to an agency principal buying capacity, never to
+their client. No page targets those five strings. Ruth reviews any copy in
+`professional-services/b2b-marketing-and-demand-gen-agencies` and the franchise equivalent before it
+ships, because the two audiences must not be able to read each other's page.
 
-- **Spoke hub** (`/marketing`) targets head term: "AI growth marketing agency" or similar
-- **Sub-service pages** target mid-tail: "programmatic SEO services for SaaS," "fractional CFO for startups"
-- **Audit pages** target transactional: "free SEO audit," "free tech performance audit"
-- **Blog/resources** target long-tail informational + top-of-funnel
-- **Comparison pages** target competitor-name + "alternative" / "vs" queries (high intent)
-- Internal linking: every sub-service links back to its spoke hub + 2-3 sibling sub-services
+**The free audit is form-first and human-delivered. There is no automated AI half.** Operator:
+"just do the form for now, we get the details, review and then revert back to them, they are our
+leads."
 
-### 9.2 Schema markup (every page)
+So the funnel is: form captures → a human reviews the prospect → we come back to them with the
+snapshot. `lib/audit/aiVisibility.ts` stays wired and stays unconfigured, so it renders `not_checked`
+rather than a guess, and no provider key is set. That is a deliberate product decision, not a gap.
 
-```ts
-// Required JSON-LD per page type:
-- Hub homepage:       Organization + WebSite + BreadcrumbList
-- Spoke hub:          Service + BreadcrumbList + FAQPage
-- Sub-service:        Service + BreadcrumbList + FAQPage
-- Case study:         Article + BreadcrumbList + Review
-- Audit / book:       WebPage + BreadcrumbList + Service
-- Team:               Organization + Person[]
-- Blog post:          Article + BreadcrumbList + Person (author)
-- Comparison:         Article + BreadcrumbList + Organization
-```
-
-### 9.3 LLM citation optimization
-
-For ChatGPT, Perplexity, Claude, and Google AI Overviews visibility:
-
-- **Be the answer**: definitive FAQ-style content per service question — structure answers as featured snippets
-- **Original data + research**: publish quarterly data reports ("State of AI SEO 2026," "Founder Finance Benchmarks")
-- **Get cited externally**: Reddit, Hacker News, niche founder communities (heavily weighted in LLM retrieval)
-- **Clean HTML semantics**: `<article>`, `<section>`, `<h2>` hierarchy, no JS-only rendered text
-- **`/llms.txt` and `/llms-full.txt`** at root: machine-readable content index for LLM crawlers
-- **`robots.txt`**: explicitly allow GPTBot, Claude-Web, PerplexityBot, GoogleOther, AppleBot
-
-### 9.4 E-E-A-T signals
-
-- Real author bios on every blog post (photo + credentials + social links + "About the author" box)
-- Date last updated visible on all content pages
-- Outbound links to authoritative, primary sources
-- Internal expert quotes attributed to specific team members ("Sarah, our Head of Finance, says...")
-- Case studies with verifiable client names (with permission) or anonymized with industry + size
-
-### 9.5 Comparison page SEO (high-intent competitor capture)
-
-Comparison pages (`/comparisons/qognition-vs-outerspace`, etc.) capture prospects actively researching alternatives. Rules:
-
-- Be fair. Acknowledge competitor strengths. Then show where Qognition is different.
-- Use a consistent comparison format: overview → services → pricing → ideal client → key differences → summary table
-- Include Schema.org `Article` + `Organization` markup
-- Link to the relevant spoke hub(s) as next step
-- Never disparage. Facts only. "OuterSpace is strong in X. Qognition is built differently for Y."
+What it makes load-bearing: **the form is now the entire lead channel.** A lead lost at the endpoint
+is a lead lost outright, not a lead that arrives by another route. Every failure mode in
+`/api/lead` is therefore a revenue defect rather than a monitoring one.
 
 ---
 
-## 10. Brand system
-
-### 10.1 Master brand
-
-- **Name**: Qognition
-- **Tagline**: "The Operating Partner for Founders"
-- **Secondary tagline**: "Marketing · Tech · Finance · Automation"
-- **Logo lockups**: `Qognition` / `Qognition Marketing` / `Qognition Tech` / `Qognition Finance` / `Qognition Automation`
-
-### 10.2 Per-spoke identity
-
-| Spoke | Accent | Light variant | Icon vocabulary | Energy |
-|---|---|---|---|---|
-| Marketing | `#7C3AED` Electric Purple | `#A78BFA` | Charts, growth arrows, bullseyes | Ambitious, data-driven |
-| Tech | `#2563EB` Cobalt Blue | `#60A5FA` | Code brackets, blueprints, gears | Precise, reliable |
-| Finance | `#059669` Emerald Green | `#34D399` | Calculator, ledger, shield | Stable, trustworthy |
-| Automation | `#F59E0B` Amber Orange | `#FBBF24` | Nodes, lightning, connections | Dynamic, intelligent |
-
-### 10.3 Shared design system
-
-- **Typography**: Geist (Sans) for UI + body. One display weight + one body weight.
-- **Spacing scale**: Tailwind defaults (4px base)
-- **Border radius**: 8px default, 12px for cards, 9999px for pills/badges
-- **Shadows**: Soft, modern (avoid heavy drop shadows). Use `shadow-sm` and `shadow-md` sparingly.
-- **Animation**: framer-motion, max 200ms transitions, respect `prefers-reduced-motion`
-- **Dark mode**: Not required for v1. Light theme only. Add dark mode in v2 if demand exists.
-
----
-
-## 11. Build phasing (120-day launch plan)
-
-Do not launch all 4 spokes at once. Each spoke needs a dedicated closer, at least 2 case studies, and the full conversion stack before going live.
-
-### Phase 1 — Foundation + Cleanup (Weeks 1-3)
-- [ ] Delete/noindex thin pages (directory, locations, regions, languages, global, glossary, llm)
-- [ ] 301 redirect old URLs to new structure
-- [ ] Set up new URL structure shells for 4 spokes
-- [ ] Build `/api/lead` endpoint with CRM + Slack integration
-- [ ] New hub homepage with 4 spoke entry cards
-- [ ] Marketing spoke gets full content (first to launch); other 3 spokes show "Coming Q4 2026" placeholders
-- [ ] Migrate top 10 case studies into new structure
-- [ ] Set up CRM with 4 pipelines
-- [ ] Build shared component library (LeadForm, SpokeHero, ServiceGrid, PricingTable, AuditForm)
-
-### Phase 2 — Marketing spoke launch (Weeks 4-7)
-- [ ] Marketing spoke: all sub-service pages + audit page + pricing + case studies + FAQ
-- [ ] Marketing audit funnel live: form → CRM → Slack → email nurture → Calendly
-- [ ] Founder Loom video on marketing homepage
-- [ ] 3 comparison pages: Qognition vs. WebFX, vs. OuterSpace, vs. Digital Neighbor
-- [ ] Run outbound (50 ICP/week) using "Free Marketing Audit" as wedge
-- [ ] Goal: 5 booked discovery calls/week by end of phase
-
-### Phase 3 — Tech spoke (Weeks 8-11)
-- [ ] Tech spoke: all sub-service pages + audit + pricing + case studies
-- [ ] Update hub homepage: Marketing + Tech live, Finance + Automation "Coming soon"
-- [ ] 2 comparison pages: Qognition vs. traditional dev shops, vs. OuterSpace Tech
-- [ ] Cross-sell to existing Marketing clients
-- [ ] Goal: 3 tech discovery calls/week by end of phase
-
-### Phase 4 — Automation spoke (Weeks 12-15)
-- [ ] Automation spoke: all sub-service pages + audit + pricing + case studies
-- [ ] Update hub homepage: 3 spokes live, Finance "Coming soon"
-- [ ] AI agents sub-service page as flagship offering
-- [ ] Cross-sell automation to existing Marketing + Tech clients
-- [ ] Goal: 2 automation discovery calls/week by end of phase
-
-### Phase 5 — Finance spoke (Weeks 16-20)
-- [ ] Finance spoke: all sub-service pages + audit + pricing + case studies
-- [ ] Update hub homepage: all 4 spokes live
-- [ ] This spoke needs a dedicated finance person — hire before launching
-- [ ] Cross-sell finance to existing clients across all 3 spokes
-- [ ] Goal: 2 finance discovery calls/week by end of phase
-
-**Rule:** never launch a spoke without (a) a dedicated closer/owner, (b) at least 2 real case studies with numbers, (c) the full 11-section conversion stack from §6.1, (d) a working audit funnel.
-
----
-
-## 12. Standards & conventions
-
-### 12.1 Component naming
-
-- Spoke-specific: `<MarketingHero />`, `<TechPricing />` — when component logic is genuinely spoke-specific
-- Shared parameterized: `<SpokeHero spoke="marketing" />` — preferred pattern (uses spoke config)
-- Audit components: `<AuditForm spoke="marketing" />` — always parameterized
-- Always TypeScript. Never `any`. Export types alongside components.
-
-### 12.2 File naming
-
-- `kebab-case` for routes and file paths: `/marketing/ai-seo/page.tsx`
-- `PascalCase` for components: `SpokeHero.tsx`
-- `camelCase` for utilities and data: `getSpokeConfig.ts`, `caseStudies.ts`
-
-### 12.3 Form handling
-
-- All forms use the same `<LeadForm>` component, parameterized by `spoke` + `intent`
-- Zod validation on both client (form state) and server (API route)
-- Honeypot field always included (hidden field that bots fill in)
-- Rate limit at `/api/lead` (Vercel KV or Upstash Redis)
-- Success state: inline thank-you message + Calendly embed (no page redirect)
-- Error state: inline error, never an alert()
-
-### 12.4 Analytics events (GA4 + Vercel Analytics)
+## 3. The funnel
 
 ```
-- spoke_view                  { spoke }
-- lead_form_start             { spoke, intent }
-- lead_submit_attempt         { spoke, intent, source_page }
-- lead_submit_success         { spoke, intent }
-- audit_request               { spoke }
-- calendly_open               { spoke }
-- calendly_book               { spoke }
-- cross_sell_click            { from_spoke, to_spoke }
-- comparison_page_view        { competitor }
-- resource_download           { spoke, resource_name }
-- calculator_interaction      { spoke, calculator_type }
+Free snapshot  →  walkthrough call  →  scoped proposal  →  retainer
 ```
 
-### 12.5 Accessibility
+**North Star: booked qualified walkthroughs per month.** Retainers signed is the lagging measure.
+Traffic, rankings and AI mentions are supporting indicators, never the target.
 
-- All forms: keyboard-navigable, labeled inputs, focus-visible indicators
-- Color contrast: WCAG AA minimum on all text. AAA on body text.
-- Spoke accent colors validated for contrast on white (#fff) and light gray (#f9fafb) backgrounds
-- `prefers-reduced-motion` respected everywhere (disable framer-motion animations)
-- Skip-to-content link as first focusable element on every page
-- All images: meaningful `alt` text. Decorative images: `alt=""`
+The snapshot's job is the appointment, not revenue. The paid audit is offered **on the call**, as the
+entry point for prospects who will not commit to three months. It is not a headline product.
 
-### 12.6 Performance budgets
-
-- LCP < 2.5s on 4G mobile
-- CLS < 0.05
-- INP < 200ms
-- Page weight < 500KB on first load (homepage + spoke hubs)
-- Images: Next.js `<Image>`, AVIF format, lazy loading below fold
-- Fonts: `next/font` with subsetting, max 2 weights per font family
-- JavaScript: minimize client-side JS. Prefer Server Components. Client Components only when interactivity required.
+**Acquisition is not inbound.** At current volumes the site cannot produce clients this quarter.
+Channel order: existing named accounts (referral has been ~100% of acquisition) → partnerships with
+agency networks and M&A advisors → snapshot-led outbound → podcasts → associations → paid, last.
 
 ---
 
-## 13. Anti-patterns (what NOT to do)
+## 4. Claims discipline
 
-- ❌ Adding more than 4 spokes. Four is the ceiling. Any new capability becomes a sub-service under an existing spoke.
-- ❌ Generic stock photos of "people in offices." Real team photos or none.
-- ❌ Multi-step forms before email capture. Email first, qualify later.
-- ❌ Hidden pricing. Show ranges or tiers. Hiding pricing kills conversion for high-intent buyers.
-- ❌ "Contact us" as the only CTA. Every CTA must use a specific outcome: "Get your free audit," "Book a strategy call."
-- ❌ Building all 4 spokes before any spoke produces leads. Sequential launch only.
-- ❌ Subdomains (`marketing.qognition.com`). Kills SEO authority. One domain, subdirectories.
-- ❌ Auto-translating before English converts. Premature i18n is a distraction.
-- ❌ Carousels, sliders, auto-rotating hero sections. They destroy conversion rates.
-- ❌ Pop-ups on first scroll or immediate entry. Exit-intent only. Respect the visitor.
-- ❌ "Trusted by 1000+ companies" without logos or specifics. Show logos or remove the claim.
-- ❌ Jargon without translation. "We optimize your martech stack for ROAS" → "We make your marketing dollars work harder."
-- ❌ Linking to old `/services/*`, `/directory/*`, `/glossary/*` URLs. 301 redirect or delete.
-- ❌ Launching a spoke without a dedicated closer. A spoke without an owner is a leaky bucket.
+This is the rule that outranks every growth idea in this file.
 
----
-
-## 14. Quick reference
-
-### 14.1 Critical files
-
-- `app/page.tsx` — Hub homepage (the integrated model pitch)
-- `app/marketing/page.tsx` — Marketing spoke homepage
-- `app/tech/page.tsx` — Tech spoke homepage
-- `app/finance/page.tsx` — Finance spoke homepage
-- `app/automation/page.tsx` — Automation spoke homepage
-- `app/api/lead/route.ts` — Single lead capture endpoint
-- `lib/spokes.ts` — Spoke configuration (colors, copy, owners, pricing)
-- `lib/crm.ts` — CRM integration
-- `components/shared/LeadForm.tsx` — Universal form component
-- `components/shared/SpokeLayout.tsx` — Spoke-aware layout wrapper (sets CSS vars)
-
-### 14.2 External services to provision
-
-- **CRM**: HubSpot (Free CRM tier to start) or Attio — 4 pipelines, 5 stages each
-- **Booking**: Cal.com — 4 owners, 1 routing form for "unsure" leads
-- **Email nurture**: Loops.so or Customer.io — 4 sequences (one per spoke) + 1 cross-spoke nurture
-- **Slack**: webhooks to `#leads-marketing`, `#leads-tech`, `#leads-finance`, `#leads-automation`, `#cross-sell-signals`
-- **Analytics**: GA4 + Vercel Analytics + Vercel Speed Insights
-- **Rate limiting**: Vercel KV or Upstash Redis
-- **Form spam prevention**: Honeypot fields (no CAPTCHA — conversion killer)
-
-### 14.3 Pre-launch checklist (per spoke)
-
-- [ ] Spoke homepage with all 11 sections from §6.1
-- [ ] All sub-service pages (5-8 per spoke) following template from §6.3
-- [ ] Audit page following template from §6.4
-- [ ] Pricing page with transparent tiers + ranges
-- [ ] At least 2 case studies with hard numbers
-- [ ] FAQ with 6+ questions + FAQPage schema
-- [ ] 4-field audit form working end-to-end (form → API → CRM → Slack → email)
-- [ ] CRM pipeline created + closer assigned
-- [ ] Slack channel created + webhook tested
-- [ ] Email nurture sequence drafted (4-7 emails, value-first, no hard sell in email 1)
-- [ ] Cal.com link for spoke owner
-- [ ] Founder/owner Loom welcome video (2-3 min)
-- [ ] Schema.org JSON-LD validated (Google Rich Results Test)
-- [ ] Mobile + desktop QA (Chrome, Safari, Firefox)
-- [ ] LCP < 2.5s verified (PageSpeed Insights + Vercel Speed Insights)
-- [ ] Comparison pages for top 2-3 competitors in that spoke
+- **No number appears anywhere that was not measured.** Not in copy, not in a chart, not in an ad.
+- **No guarantee.** No promise of rankings, citations, placement in any AI system, or revenue. We do
+  not control third-party systems and we do not pretend to.
+- **Case-study KPIs are labelled targets until `actual` is populated** from client reporting.
+  `caseStudyEvidence()` enforces this in one place. Do not weaken it. Do not put a benchmark-derived
+  figure in `actual`.
+- **Countries served are never presented as physical offices.**
+- **A sampled AI result is an observation on a date, not a state.** Always state the platform, the
+  date, the prompt set and the limits. "We tested 15 prompts on 12 Oct" is honest. "You are invisible
+  in AI search" is not.
+- Where evidence does not exist, omit the section. Never fill it with a placeholder.
 
 ---
 
-## 15. North star
+## 5. Architecture
 
-Every decision on this site optimizes for one metric: **booked discovery calls per spoke per week.**
+**Stack:** Next.js 16.2.5 (App Router, Turbopack) · React 19.2.6 · TypeScript 5.9.3 ·
+Tailwind 3.4.18 · Sanity 6 · Zod 4 · **pnpm**. Hosted on Vercel.
 
-Not traffic. Not impressions. Not "engagement." Not newsletter signups. Calls booked with qualified ICPs who have budget, authority, and need.
+### Routes
 
-Secondary metrics (supporting, not primary):
-- Audit request-to-discovery-call conversion rate (target: >40%)
-- Discovery call-to-proposal rate (target: >60%)
-- Cross-spoke revenue per client (target: 2+ spokes within 12 months)
-- Time-to-first-value per spoke (target: audit delivered within 48 hours)
+```
+/                              Homepage
+/seo  /local-seo  /ai-seo  /geo  /ppc     One page per layer, plus PPC
+/pricing                       Tiers by scope, no published prices, "Request pricing"
+/audit                         The AI visibility snapshot
+/industries/insurance          Flagship, deepest page
+/industries/professional-services
+/industries/it-services
+/case-studies  /insights  /about  /contact
+/api/lead                      Single lead endpoint, every form
+```
 
-If a page, feature, design choice, or marketing campaign doesn't move qualified discovery calls — kill it or redesign it until it does.
+Legacy `/services/*`, `/industries/*`, `/locations/*`, `/directory/*`, `/glossary/*` are being
+consolidated. See §7 before touching any of them.
+
+### Key files
+
+| Path | Role |
+|---|---|
+| `lib/seo.ts` | `SITE_URL`, `metadataFor()`, `SEO_OVERRIDES`, canonical + robots |
+| `lib/legacy-publication.ts` | **The demotion lever.** Gates both `<meta robots>` and sitemap inclusion from one map |
+| `lib/sitemap.ts` | Multi-family sitemap index |
+| `lib/growth/publication.ts` | Route gate: `status` / `indexable` / `inNavigation`, three orthogonal flags |
+| `data/growth/taxonomy.ts` | Sector → niche → subniche entity spine |
+| `components/growth/GrowthPage.tsx` | Discriminated switch on `page.kind`. New page types are a new kind plus a branch, never a new route |
+| `lib/auditEngine.ts` | Crawl + scoring for the snapshot. `normalizeTargetUrl` is the SSRF guard, keep it |
+| `lib/leadDelivery.ts` | Resend delivery. Email is the durable record |
+| `lib/leadCrm.ts` | GoHighLevel, optional side-channel |
+| `lib/leadQualification.ts` | MQL scoring. Constrains how short the form can be |
+| `lib/analytics.ts` | `track()` → dataLayer + gtag + Meta with shared dedup `eventID`; UTM attribution |
+| `lib/consent.ts` | Opt-out model, defaults to allow |
+
+---
+
+## 6. Environment gotchas (read before debugging a build)
+
+**The repo currently lives in iCloud Drive on a near-full disk.** This causes real, repeatable
+failures that look like code bugs and are not:
+
+- `git status`, `git diff` and recursive `grep` hang for minutes.
+- Files get evicted to placeholders. `ls` shows a size, the content is gone.
+- iCloud creates conflict duplicates named `<name> 2.tsx`. `tsconfig.json` globs `**/*.ts`, so these
+  reach the build. **Stage by explicit path. Never `git add .`**
+- `node_modules/next` has been clobbered this way and hand-patched to a `/tmp` symlink, which breaks
+  Turbopack's workspace-root inference with a misleading error. If the build says it cannot find
+  `next/package.json` from the `app` directory, check `ls -la node_modules/next` first.
+
+**Build verification happens on Vercel, not locally**, until the repo is moved off iCloud.
+
+**Build command:** gates run before `next build`. Keep them there. `scripts/audit-headings.mjs`
+enforces typography; `scripts/test-growth.cjs` and `scripts/check-publication.cjs` enforce the
+publication invariants.
+
+---
+
+## 7. Programmatic SEO — when to expand, when to stop
+
+September 2026 standard. Google's spam policy judges **unoriginal content that adds no value,
+regardless of how it was created**. The method is not the offence.
+
+**Expand a branch only when all are true:**
+1. ≥90 days since its last publication wave.
+2. ≥60% of its indexable pages have ≥1 impression in the last 28 days.
+3. ≥1 page ranks top-20 for its primary query, or has produced a conversion.
+4. Median position flat or improving.
+5. Site-wide indexable pages ÷ monthly organic sessions within the agreed ratio.
+
+**If any fail, improve or prune that branch. Do not add pages to it.**
+
+**Before `indexable: true`, a page must:** answer one buyer question no other indexable page answers ·
+carry ≥3 entity-specific facts not derivable by substituting a name into a template · be ≥40% unique
+against its closest sibling · have a named reviewer and review date · cite real evidence. Geo pages
+additionally need a named client, a case study, or documented local demand.
+
+**Kill rule:** zero impressions after 180 days → consolidate and 301.
+
+**Before removing, redirecting or noindexing anything:** pull Search Console data for that URL group
+first. Backlinked URLs are never 410'd regardless of clicks. A large URL count alone does not prove
+the pages are low quality — one of the highest-ranking pages on this domain was a glossary URL.
+
+**Never:** publish a combination because the URL exists · substitute a city or industry name into a
+template and call it a page · generate industry × service × city pages.
+
+---
+
+## 8. Measurement
+
+Events, `snake_case`, defined once in `lib/analytics.ts`:
+
+`snapshot_started` · `snapshot_completed` · **`walkthrough_booked`** (North Star) ·
+`audit_purchased` · `contact_submitted`
+
+- **A booking-link click is never a booking.** `CalBooking.tsx` fires `booking_widget_view` and says
+  so in a comment. That comment is load-bearing. Do not "improve" it into a booking event.
+- `walkthrough_booked` is **server-side only**, from the GoHighLevel webhook. The booking lives in an
+  iframe; the parent page cannot see a completed booking.
+- `/api/lead` returns `duplicate`; retries must not double-count.
+- **No sensitive data in analytics events.** Never send `email`, `phone`, `name` or the free-text
+  `message` field into GA4 or GTM.
+- Capture click IDs (`gclid`, `wbraid`, `gbraid`, `li_fat_id`, `msclkid`) on the lead record, or
+  offline conversion import is impossible.
+- Attribution must outlive the session. A multi-week consideration purchase loses first touch if it
+  is stored in `sessionStorage`.
+
+---
+
+## 9. Design
+
+**The site alternates light and dark, and that rhythm is the design.** Light hero on warm off-white,
+dark near-black CTA and feature bands, light content, dark again. Large display type, teal accents,
+bordered card grids with mono uppercase labels. Do not flatten this to one surface. The operator
+confirmed the existing qognitionagency.com treatment on 2026-09-28: keep it exactly.
+
+Dark sections are scoped, never applied at `:root`, so the alternation stays expressible without an
+`!important` war. `app/layout.tsx` imports at most two stylesheets.
+
+**This is a rebrand, not a redesign.** Every template on qognitionagency.com is kept: the homepage,
+`/case-studies`, `/services/[service]`, `/industries/[industry]`. **Meta titles, descriptions, URLs
+and internal linking do not change.** The work is repositioning the copy from generalist digital
+marketing to AI SEO and GEO for B2B firms, and widening the industry coverage.
+
+Strong typography, generous spacing, restrained motion, accessible contrast and visible focus states,
+excellent mobile.
+
+**The focus ring is `--accent-deep` (#0F766E, 5.47:1), never `--accent` (#14B8A6, 2.49:1).** The
+brighter teal fails WCAG 2.1 SC 1.4.11 and was the site-wide focus indicator until 2026-09-28. Use
+`--accent-fill` for graphics that are not text or indicators.
+
+- Real screenshots, diagrams and evidence. **No decorative dashboards with invented metrics.**
+- No stock photography of people in offices.
+- No carousels or auto-rotating sliders.
+- Respect `prefers-reduced-motion`.
+- WCAG AA minimum on all text.
+
+## 10. Copy rules
+
+Plain, specific, short sentences. **No em dashes.**
+
+Never use: "unlock", "supercharge", "leverage", "seamless", "game-changer", "in today's digital
+landscape". No superlatives without a cited, dated source. No claim we cannot prove. Only numbers
+that have a source.
+
+---
+
+## 11. Anti-patterns
+
+- Rebuilding the retired 4-spoke model.
+- Leading with "one retainer, four layers" as the differentiator. It is table stakes.
+- Generating industry × service × city pages.
+- Publishing a page because a URL combination exists.
+- Presenting targets as achieved results.
+- Claiming offices that do not exist.
+- Promising rankings, citations or AI placement.
+- Selling GEO as a secret markup technique.
+- Implying experience in an industry because a page exists for it.
+- Counting a booking-link click as a booking.
+- `git add .` in this repo.

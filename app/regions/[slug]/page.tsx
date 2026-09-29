@@ -1,3 +1,4 @@
+import AIPlatforms from '../../../components/shared/AIPlatforms';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -66,7 +67,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
+          <AIPlatforms compact />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14 mt-10">
             {[
               `Qognition helps companies grow in ${region.name} with SEO, paid media, AI search visibility, and conversion tracking built around local buyer behavior.`,
               region.marketDynamics || `${region.name} market strategy is built around local search demand, buyer language, and competitive dynamics.`,

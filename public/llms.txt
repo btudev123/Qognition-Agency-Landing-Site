@@ -23,13 +23,10 @@ Custom LLM-powered agents, workflow automation (n8n, Make, Zapier), CRM automati
 
 - [Home](https://www.qognitionagency.com/): The integrated operating partner model
 - [Marketing](https://www.qognitionagency.com/marketing): AI-native growth marketing spoke
-- [Marketing Audit](https://www.qognitionagency.com/marketing/audit): Free Marketing + AI Search Audit
+- [AI Search Visibility Report](https://www.qognitionagency.com/free-ai-audit): Free human-reviewed AI search visibility report
 - [Tech](https://www.qognitionagency.com/tech): Revenue-focused engineering spoke
-- [Tech Audit](https://www.qognitionagency.com/tech/audit): Free Tech + Performance Audit
 - [Finance](https://www.qognitionagency.com/finance): Financial operations spoke
-- [Finance Audit](https://www.qognitionagency.com/finance/audit): Free Finance Health Check
 - [Automation](https://www.qognitionagency.com/automation): AI agents and automation spoke
-- [Automation Audit](https://www.qognitionagency.com/automation/audit): Free Automation Opportunity Map
 - [Case Studies](https://www.qognitionagency.com/case-studies): Verified client outcomes with hard numbers
 - [Blog](https://www.qognitionagency.com/blog): AI marketing, SEO, and digital strategy
 - [Comparisons](https://www.qognitionagency.com/comparisons): Qognition vs alternatives

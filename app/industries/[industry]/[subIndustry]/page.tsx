@@ -2,22 +2,41 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { isPublishedSubIndustry } from '../../../../lib/industryPublication';
+import { resolveSubIndustry, b2bSubNicheParams } from '../../../../lib/b2b/registry';
+import { resolveIcp, icpSubIndustryParams } from '../../../../lib/b2b/icpRegistry';
+import { icpMetadata, icpSchema, icpEntityName } from '../../../../lib/b2b/icpMetadata';
+import IcpSubIndustryPage from '../../../../components/b2b/IcpSubIndustryPage';
+import { observationStore } from '../../../../lib/b2b/observationStore';
+import SubNichePage from '../../../../components/b2b/SubNichePage';
+import type { Industry, SubIndustry } from '../../../../types';
 import { INDUSTRIES } from '../../../../data/industries';
 import { SERVICES } from '../../../../data/services';
 import { studiesForTopic, nicheLabel } from '../../../../data/case-studies';
-import { getSubIndustryMetadata } from '../../../../lib/seo';
+import { getSubIndustryMetadata, metadataFor } from '../../../../lib/seo';
 import { breadcrumbSchema, faqSchema } from '../../../../lib/schema';
 import Heading from '../../../../components/ui/Heading';
 
 export const dynamicParams = false;
 
-export const generateStaticParams = () =>
-  INDUSTRIES.flatMap((industry) =>
-    industry.subIndustries.map((subIndustry) => ({
-      industry: industry.id,
-      subIndustry: subIndustry.slug,
-    }))
-  );
+/* Gated by lib/industryPublication.ts: an industry row that is not on the
+   frozen allowlist generates no params, so its URL 404s rather than rendering a
+   page nobody reviewed. dynamicParams is false on this route, so this is the
+   whole gate. */
+/* Today's expression unchanged, concatenated with the B2B routable set. Legacy
+   params first, original order preserved. ADR-0007 §2.4. */
+export const generateStaticParams = () => [
+  ...INDUSTRIES.flatMap((industry) =>
+    industry.subIndustries
+      .filter((subIndustry) => isPublishedSubIndustry(industry.id, subIndustry.slug))
+      .map((subIndustry) => ({
+        industry: industry.id,
+        subIndustry: subIndustry.slug,
+      }))
+  ),
+  ...b2bSubNicheParams(),
+  ...icpSubIndustryParams(),
+];
 
 export const generateMetadata = async ({
   params,
@@ -25,15 +44,103 @@ export const generateMetadata = async ({
   params: Promise<{ industry: string; subIndustry: string }>;
 }): Promise<Metadata> => {
   const { industry, subIndustry } = await params;
+
+  /* LEGACY FIRST AND UNCHANGED. getSubIndustryMetadata resolves against
+     data/industries.ts and returns a noindex "not found" object for anything it
+     does not know, so the B2B check has to come BEFORE the fallthrough or every
+     new page would ship as "Sub-Industry Not Found". Checking legacy membership
+     explicitly keeps the existing call byte-identical for the 66 live pages.
+
+     THE TEST IS NOW PER SUB-SLUG, NOT PER PARENT, AND THAT FIXES A LATENT BUG.
+     ADR-0008 §3.5 item 2: this branch keyed on the PARENT while the render
+     branch below keys on the CHILD, so a non-legacy child under a legacy parent
+     rendered a real page and got `{ title: 'Vertical Not Found', noIndex: true }`
+     written over it. Metadata and body disagreeing on one URL. It was latent
+     because no such path reached generateStaticParams, and it goes live the
+     moment one does, which is why it is fixed in the wave that creates the
+     possibility rather than after somebody reads the served HTML.
+
+     All 66 live pages take the same early return with the same argument and
+     therefore emit the same bytes: for them `legacySub` is always found. */
+  const legacyIndustry = INDUSTRIES.find((item) => item.id === industry);
+  const legacySub = legacyIndustry?.subIndustries.find((item) => item.slug === subIndustry);
+  if (legacySub) return getSubIndustryMetadata(industry, subIndustry);
+
+  const record = resolveSubIndustry(industry, subIndustry);
+  if (record?.source === 'b2b') {
+    return metadataFor({
+      /* See the note on the parent route: the layout template appends
+         "| Qognition", so this string must not. */
+      title: `AI Search Visibility for ${record.subNiche.label}`,
+      description: record.body.metaDescription,
+      path: `/industries/${record.vertical.id}/${record.subNiche.id}`,
+      noIndex: record.state !== 'published',
+    });
+  }
+
+  /* Level 2 of the ICP tree, the workhorse level. */
+  const icp = icpMetadata([industry, subIndustry]);
+  if (icp) return icp;
+
   return getSubIndustryMetadata(industry, subIndustry);
 };
 
 export default async function Page({ params }: { params: Promise<{ industry: string; subIndustry: string }> }) {
   const { industry: industrySlug, subIndustry: subIndustrySlug } = await params;
-  const industry = INDUSTRIES.find((item) => item.id === industrySlug);
-  const subIndustry = industry?.subIndustries.find((item) => item.slug === subIndustrySlug);
-  if (!industry || !subIndustry) notFound();
+  const record = resolveSubIndustry(industrySlug, subIndustrySlug);
 
+  if (!record) {
+    const icp = resolveIcp([industrySlug, subIndustrySlug]);
+    if (!icp || icp.level !== 'sub-industry') notFound();
+    const canonical = icp.canonicalPath ? resolveIcp(icp.canonicalPath) : undefined;
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(icpSchema(icp)) }}
+        />
+        <IcpSubIndustryPage
+          record={icp}
+          observation={observationStore.lookup(icp.href)}
+          canonicalHref={canonical?.href}
+          canonicalName={canonical ? icpEntityName(canonical) : undefined}
+        />
+      </>
+    );
+  }
+
+  if (record.source === 'b2b') {
+    return (
+      <SubNichePage
+        record={record}
+        observation={observationStore.lookup(
+          `/industries/${record.vertical.id}/${record.subNiche.id}`
+        )}
+      />
+    );
+  }
+
+  return <LegacySubIndustryPage industry={record.industry} subIndustry={record.data} />;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   THE LEGACY RENDER, lifted without a character of its JSX changed.
+
+   It contains the two sentences Nadia's architecture doc names as live examples
+   of a template speaking about itself — "Quick summary: {name} marketing needs
+   industry proof…" and "This page links upward to {industry}, sideways to
+   services and proof" — plus a constant paragraph repeated under every feature,
+   and a sidebar linking to /locations, /resources and /directory. Those stay on
+   the 66 existing pages because changing them changes existing pages. New rows
+   never reach this function.
+   ───────────────────────────────────────────────────────────────────────────── */
+function LegacySubIndustryPage({
+  industry,
+  subIndustry,
+}: {
+  industry: Industry;
+  subIndustry: SubIndustry;
+}) {
   const path = `/industries/${industry.id}/${subIndustry.slug}`;
   const displayFaqs = subIndustry.faqs ? [...subIndustry.faqs, ...industry.faqs.slice(0, 3)] : industry.faqs;
 
@@ -165,7 +272,12 @@ export default async function Page({ params }: { params: Promise<{ industry: str
 
           <aside className="lg:col-span-4">
             <div className="sticky top-28 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
-              <Heading level="h2" className="mb-5">Related Proof</Heading>
+              {/* Guarded. The heading sat outside the map, so the 59 of 66
+                  sub-pages with no matching study rendered a bare "Related
+                  Proof" over nothing. §4 says omit the section. */}
+              {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3).length > 0 && (
+                <Heading level="h2" className="mb-5">Related Proof</Heading>
+              )}
               {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3).map((study) => (
                 <Link
                   key={study.id}

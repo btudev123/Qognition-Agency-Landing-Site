@@ -165,10 +165,15 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
             </div>
           </section>
 
+          {/* Guarded on emptiness. The heading used to sit outside the map, so a
+              day when studiesForTopic returned nothing rendered a bare <h2> over
+              an empty grid on all 340 location pages. CLAUDE.md §4: omit the
+              section, do not empty it. */}
+          {studiesForTopic(location.name, 4, { fallback: 'spread' }).length > 0 && (
           <section>
             <Heading level="h2" className="mb-5">Relevant Case Studies</Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {studiesForTopic(location.name, 4).map((study) => (
+              {studiesForTopic(location.name, 4, { fallback: 'spread' }).map((study) => (
                 <Link
                   key={study.id}
                   href={`/case-studies/${study.id}`}
@@ -185,6 +190,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
               ))}
             </div>
           </section>
+          )}
 
           <section>
             <Heading level="h2" className="mb-5">Resources for {location.name} Teams</Heading>
@@ -354,7 +360,7 @@ export const LocationServiceView = ({
           <section className="mb-14">
             <Heading level="h2" className="mb-5">Proof and Planning Assets</Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {studiesForTopic(`${service.title} ${location.name}`, 2).map((study) => (
+              {studiesForTopic(`${service.title} ${location.name}`, 2, { fallback: 'spread' }).map((study) => (
                 <Link
                   key={study.id}
                   href={`/case-studies/${study.id}`}

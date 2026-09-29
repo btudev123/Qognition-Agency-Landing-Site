@@ -8,6 +8,8 @@
  * loaded, so callers never need to guard.
  */
 
+import { hasConsent } from './consent';
+
 /** Meta standard events use fbq('track'); anything else uses fbq('trackCustom'). */
 const META_STANDARD_EVENTS = new Set([
   'AddPaymentInfo',
@@ -61,6 +63,7 @@ export function newEventId(): string {
 
 /** Push a GTM dataLayer event. */
 export function pushDataLayer(event: string, params: Record<string, unknown> = {}) {
+  if (!hasConsent('analytics')) return;
   const w = getWindow();
   if (!w) return;
   w.dataLayer = w.dataLayer || [];
@@ -69,12 +72,14 @@ export function pushDataLayer(event: string, params: Record<string, unknown> = {
 
 /** Send an event straight to GA4 via gtag, bypassing GTM tag configuration. */
 export function trackGtag(event: string, params: Record<string, unknown> = {}) {
+  if (!hasConsent('analytics')) return;
   const w = getWindow();
   w?.gtag?.('event', event, params);
 }
 
 /** Fire a Meta pixel event, optionally carrying a dedup id. */
 export function trackMeta(event: string, params: Record<string, unknown> = {}, eventId?: string) {
+  if (!hasConsent('advertising')) return;
   const w = getWindow();
   if (!w?.fbq) return;
   const method = META_STANDARD_EVENTS.has(event) ? 'track' : 'trackCustom';
@@ -106,7 +111,24 @@ export type UtmParams = {
   content?: string;
 };
 
-const UTM_STORAGE_KEY = 'qognition_utm_first_touch';
+const ATTRIBUTION_STORAGE_KEY = 'qognition_attribution_v2';
+
+export type AcquisitionAttribution = {
+  first_touch?: UtmParams;
+  last_touch?: UtmParams;
+  landing_page?: string;
+  referrer_host?: string;
+};
+
+/** A new campaign updates last touch; the first campaign never changes. */
+export function mergeAttribution(previous: AcquisitionAttribution, current?: UtmParams, page?: string, referrer?: string): AcquisitionAttribution {
+  return {
+    first_touch: previous.first_touch || current,
+    last_touch: current || previous.last_touch,
+    landing_page: previous.landing_page || page,
+    referrer_host: previous.referrer_host || referrer,
+  };
+}
 
 /**
  * Read UTM parameters for the current session.
@@ -115,9 +137,9 @@ const UTM_STORAGE_KEY = 'qognition_utm_first_touch';
  * sessionStorage and reused on later pages, so a lead submitted three clicks
  * deep still carries the campaign that earned it rather than nothing.
  */
-export function getUtmParams(): UtmParams | undefined {
+export function getAttribution(): AcquisitionAttribution | undefined {
   const w = getWindow();
-  if (!w) return undefined;
+  if (!w || !hasConsent('analytics')) return undefined;
 
   const search = new URLSearchParams(w.location.search);
   const current: UtmParams = {
@@ -128,19 +150,19 @@ export function getUtmParams(): UtmParams | undefined {
     content: search.get('utm_content') || undefined
   };
 
+  for (const key of Object.keys(current) as (keyof UtmParams)[]) current[key] = current[key]?.slice(0, 200);
   const hasCurrent = Object.values(current).some(Boolean);
-
+  let previous: AcquisitionAttribution = {};
+  let referrer: string | undefined;
+  try { referrer = document.referrer ? new URL(document.referrer).hostname : undefined; } catch { /* Invalid referrer. */ }
   try {
-    if (hasCurrent) {
-      w.sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(current));
-      return current;
-    }
-    const stored = w.sessionStorage.getItem(UTM_STORAGE_KEY);
-    if (stored) return JSON.parse(stored) as UtmParams;
-  } catch {
-    // sessionStorage can throw in private mode or with cookies blocked.
-    return hasCurrent ? current : undefined;
-  }
-
-  return hasCurrent ? current : undefined;
+    const stored = w.sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    if (stored) previous = JSON.parse(stored) || {};
+  } catch { /* Private mode or corrupt session storage. */ }
+  const next = mergeAttribution(previous, hasCurrent ? current : undefined, w.location.pathname.slice(0, 500), referrer);
+  try { w.sessionStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(next)); } catch { /* Current request still has its context. */ }
+  return next;
 }
+
+/** Legacy callers continue receiving the first campaign. */
+export const getUtmParams = () => getAttribution()?.first_touch;

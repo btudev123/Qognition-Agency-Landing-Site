@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { isLegacyIndexable } from './legacy-publication';
 import { BLOG_POSTS } from '../data/blog';
 import { DIRECTORY_PRODUCTS } from '../data/directoryProducts';
 import { INDUSTRIES } from '../data/industries';
@@ -22,39 +23,38 @@ export const absoluteUrl = (path = '/') => `${SITE_URL}${path === '/' ? '' : pat
  */
 export const SEO_OVERRIDES: Record<string, { title: string; description: string }> = {
   '/': {
-    title: 'AI Marketing Agency | SEO, GEO and AI Search | Qognition',
-    description:
-      'Qognition is an AI marketing agency helping brands rank on Google and get cited by ChatGPT, Gemini & Perplexity. SEO, GEO, PPC & content. Book a free call.'
+    title: 'AI-native B2B Growth Agency | AI Search, Demand & ABM | Qognition',
+    description: 'Get found. Get shortlisted. Build pipeline. Qognition connects AI search, demand generation, ABM and revenue systems for B2B businesses.'
   },
   '/services': {
     title: 'Digital Marketing Services: SEO, PPC, GEO & Content | Qognition',
     description:
-      "Explore Qognition's 11 growth services, including SEO, GEO/AEO, PPC, branding and web development, run as one system to grow revenue. Get a free audit."
+      "Connect AI search, demand generation, account-based marketing and revenue operations around your B2B buyers. Discuss a tailored growth plan."
   },
   '/services/seo': {
     title: 'SEO Services for Enterprise Growth | Qognition Agency',
     description:
-      'Technical, content and off-page SEO built for enterprise scale. Qognition has driven up to +200% organic traffic. Get your free SEO audit today.'
+      'Technical SEO, commercial content and authority development for complex B2B buying journeys. Discuss a search program with Qognition.'
   },
   '/services/ai-seo': {
     title: 'GEO & AEO Services: Get Cited by ChatGPT & AI Overviews | Qognition',
     description:
-      "Qognition's Generative Engine Optimization (GEO) gets your brand cited in ChatGPT, Gemini, Perplexity and Google AI Overviews. See how it works."
+      "Improve discoverability across Google and AI search through useful content, technical foundations and measured commercial-prompt tracking."
   },
   '/services/ppc': {
     title: 'PPC & Paid Media Management Services | Qognition Agency',
     description:
-      "Performance advertising across Google, Shopping, Microsoft and CTV. Qognition's paid media programs cut CPA by up to 25%. Book a free strategy call."
+      "Build relevant paid campaigns, landing pages and conversion measurement around your priority buyers. Explore paid demand generation with Qognition."
   },
   '/services/web-development': {
     title: 'Web Design & Development Agency | Qognition',
     description:
-      "High-performance websites built to convert, using Next.js, Webflow, WordPress and Shopify, with 100 PageSpeed scores. See Qognition's web development work."
+      "Build accessible B2B websites with clear commercial journeys, search foundations and conversion measurement. Discuss your website with Qognition."
   },
   '/services/content': {
     title: 'Content Marketing Services That Drive Organic Growth | Qognition',
     description:
-      "Strategy, writing and content assets that build authority and rankings. Qognition's content marketing has delivered up to +180% organic reach."
+      "Turn specialist knowledge into commercial pages, useful guides and buyer evidence. Explore B2B content strategy and production with Qognition."
   },
   '/services/branding-creative': {
     title: 'Branding & Creative Agency | Identity & Design | Qognition',
@@ -64,7 +64,7 @@ export const SEO_OVERRIDES: Record<string, { title: string; description: string 
   '/services/cro-analytics': {
     title: 'CRO & Analytics Agency | Conversion Rate Optimization | Qognition',
     description:
-      "A/B testing, landing page optimization and attribution that turn traffic into revenue. Qognition's CRO programs lift conversions by up to 35%."
+      "Find conversion friction and connect website measurement with sales outcomes. Explore landing page optimization, analytics and CRO with Qognition."
   },
   '/industries': {
     title: 'Industries We Serve: Law, Finance, SaaS & More | Qognition',
@@ -74,17 +74,17 @@ export const SEO_OVERRIDES: Record<string, { title: string; description: string 
   '/case-studies': {
     title: 'Case Studies: Real Growth Results | Qognition Agency',
     description:
-      '45 engagements across HVAC, dental and insurance in 10 states. Each opens with a dated audit of the live site and cites the third-party benchmarks it was measured against.'
+      'Explore published work and documented research. Results, scope and evidence are shown only where they can be substantiated.'
   },
-  '/free-seo-audit': {
-    title: 'Free SEO Audit | Get Your Custom Report | Qognition',
+  '/free-ai-audit': {
+    title: 'AI Search Visibility Report | Qognition',
     description:
-      'Get a free, no-obligation SEO audit from Qognition. Uncover technical issues, content gaps and quick wins, delivered within 48 hours. Claim yours now.'
+      'A human-reviewed report on how visible and citable your brand is across AI search, delivered within 48 hours.'
   },
   '/locations/new-york': {
     title: 'Digital Marketing Agency New York | SEO, PPC, GEO | Qognition',
     description:
-      'Qognition is a New York digital marketing agency offering SEO, GEO/AEO, PPC and web design for ambitious NYC brands. Book a free strategy call.'
+      'Qognition helps B2B businesses target New York buyers through SEO, AI search, content, paid demand and connected revenue systems.'
   },
   '/locations/london': {
     title: 'Digital Marketing Agency London | SEO & AI Search | Qognition',
@@ -99,12 +99,12 @@ export const SEO_OVERRIDES: Record<string, { title: string; description: string 
   '/locations/perth': {
     title: 'Digital Marketing Agency in Perth | SEO, PPC & GEO | Qognition',
     description:
-      'Grow your Perth business with SEO, paid media, content & AI search optimisation. Qognition is a results-driven digital marketing agency in Perth.'
+      'Explore a B2B growth program for buyers in Perth, connecting search visibility, specialist content, paid demand and revenue systems.'
   },
   '/locations/perth/seo': {
     title: 'Perth SEO agency | Expert Enterprise & Local SEO Services in Perth',
     description:
-      "Partner with Perth's best SEO agency. Qognition delivers specialised and ROI-focused SEO strategies built to grow your rankings, traffic, and revenue."
+      "Help buyers in Perth find and evaluate your business through technical SEO, useful commercial content and measurable conversion paths."
   },
   '/locations/perth/ai-seo': {
     title: 'Qognition: Perth AI SEO & GEO Agency',
@@ -154,8 +154,8 @@ export const metadataFor = ({
       images: [image]
     },
     robots: {
-      index: !noIndex,
-      follow: !noIndex
+      index: !noIndex && isLegacyIndexable(path),
+      follow: true
     }
   };
 };

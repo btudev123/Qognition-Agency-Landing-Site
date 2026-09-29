@@ -12,6 +12,11 @@ const PUBLIC_FILE = /\.(.*)$/;
 
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  const localeCandidate = pathname.split('/')[1];
+  const locale = ['de', 'fr', 'nl', 'sv', 'da', 'nb', 'fi', 'ar', 'it', 'zh-Hans'].includes(localeCandidate) ? localeCandidate : 'en';
+  const requestHeaders = new Headers(request.headers);
+  // Overwrite any user-supplied value so the document language follows the URL.
+  requestHeaders.set('x-qognition-locale', locale);
   const isStatic = pathname.startsWith('/_next') || pathname.startsWith('/assets') || PUBLIC_FILE.test(pathname);
   const isApi = pathname.startsWith('/api/');
   const isMarkdownRoute = pathname.startsWith('/agent-markdown');
@@ -20,10 +25,10 @@ export function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = '/agent-markdown';
     url.search = `?path=${encodeURIComponent(pathname + search)}`;
-    return NextResponse.rewrite(url);
+    return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
   }
 
-  const response = NextResponse.next();
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
   if (!isStatic && !isApi && !isMarkdownRoute) {
     response.headers.set('Link', AGENT_LINK_HEADER);
   }

@@ -1,167 +1,151 @@
+/* POST /api/audit — the free snapshot. Two halves, and the second one is optional.
+ *
+ * ────────────────────────────────────────────────────────────────────────────
+ * THE CRAWL HALF ALWAYS DELIVERS.
+ *
+ * lib/auditEngine.ts fetches the page plus robots.txt, sitemap.xml and llm.txt
+ * and runs 28 real checks against them. It is free, it is fast, it needs no API
+ * key and it works today. That alone is the lead magnet, and the endpoint is
+ * built so that nothing in the AI half can take it away from a visitor.
+ *
+ * THE AI HALF IS BEST-EFFORT AND SAYS SO WHEN IT IS ABSENT.
+ *
+ * lib/audit/aiVisibility.ts asks one buyer prompt on one platform. If no
+ * provider is configured, if the provider is over quota, if it times out, or if
+ * no category can be read from the page, the response carries
+ * `aiVisibility.status === 'not_checked'` with a reason and a sentence to show
+ * the visitor. It NEVER carries a guess. Today, in production, no provider is
+ * configured, so `not_checked` is the expected response and the correct one.
+ *
+ * ────────────────────────────────────────────────────────────────────────────
+ * WHAT STOPS THIS SPENDING MONEY. STATED IN FULL, INCLUDING THE GAP.
+ *
+ *   1. A hard cap in the provider's own dashboard. OUTSIDE THIS CODE, and the
+ *      only real ceiling. The operator sets it before the key is added.
+ *   2. lib/auditRateLimit.ts, policy 'audit': one per email per 24h, and 12 per
+ *      IP per hour. It is IN-MEMORY AND PER-INSTANCE by its own documentation,
+ *      so N concurrent serverless instances enforce N separate ceilings.
+ *      Project memory records Redis env vars UNSET in production, so that is
+ *      the live state and not something to assume is handled. It throttles. It
+ *      does not cap.
+ *   3. No key means no call. Removing PERPLEXITY_API_KEY is the kill switch.
+ *
+ * There is deliberately no ledger, no queue and no Redis here: the operator
+ * scoped this to one call per audit, and ADR-0003 §6's durable-ledger
+ * requirement is written for the 45-call /api/snapshot product, which this is
+ * not and must not grow into without going back to that ADR.
+ *
+ * ────────────────────────────────────────────────────────────────────────────
+ * PUBLIC CONTRACT, UNCHANGED.
+ *
+ * The request body stays `{ url, email, auditType?, source? }`, as published in
+ * app/.well-known/openapi.json and called by components/WebMCPProvider.tsx.
+ * The response gains an `aiVisibility` section; `report` and `offer` keep their
+ * shape. Additive only.
+ *
+ * TENANCY: not applicable, derived not assumed. No auth dependency in
+ * package.json; no getServerSession / userId / tenantId anywhere in lib, app or
+ * components. Public, unauthenticated, single-tenant marketing endpoint. The
+ * only untrusted input that reaches a fetch is the target URL, and it goes
+ * through `normalizeTargetUrl` inside runAudit, which is the SSRF guard
+ * (ADR-0003 §2). Anton owns the note there that it blocks by hostname string
+ * and so does not stop DNS rebinding or IPv6 private ranges; this endpoint does
+ * not widen that surface, it restores it.
+ * ────────────────────────────────────────────────────────────────────────────
+ */
 import { NextRequest, NextResponse } from 'next/server';
-import { randomUUID } from 'crypto';
-import { sendResendEmail, withNotifyCopy, notifyEmailAddress } from '../../../lib/leadDelivery';
-import { buildAuditReportPdf } from '../../../lib/auditPdf';
-import { AuditError, runAudit, reportEmailHtml } from '../../../lib/auditEngine';
-import {
-  checkAuditRateLimit,
-  getAuditClientIp,
-  getAuditDeviceCookie,
-  releaseAuditRateLimit,
-  type RateLimitDecision,
-} from '../../../lib/auditRateLimit';
-import { sendMetaCapiEvent, metaCookiesFromRequest } from '../../../lib/metaCapi';
-import { AuditType } from '../../../types';
+import { z } from 'zod';
+import { AuditError, runAudit } from '../../../lib/auditEngine';
+import { observeAiVisibility } from '../../../lib/audit/aiVisibility';
+import { checkAuditRateLimit, releaseAuditRateLimit } from '../../../lib/auditRateLimit';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
 
-const esc = (v: string) =>
-  v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const auditRequestSchema = z.object({
+  url: z.string().min(1).max(2048),
+  email: z.string().email().max(254),
+  auditType: z.enum(['seo', 'ai', 'branding', 'social', 'llm']).optional(),
+  /** Free-text caller label, e.g. "WebMCP". Accepted and not persisted. */
+  source: z.string().max(120).optional(),
+});
 
-/** Internal "new lead" alert, so an agent-driven audit lands in the inbox like a form submission. */
-const auditLeadAlertHtml = (
-  email: string,
-  report: { score: number; normalizedUrl: string; summary: string; recommendations: string[] },
-  offerTitle: string,
-  source?: unknown,
-) => `
-<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
-  <div style="background:#14B8A6;padding:24px 32px">
-    <span style="color:#fff;font-size:20px;font-weight:700">Qognition</span>
-    <span style="color:rgba(255,255,255,0.7);font-size:14px;margin-left:8px">New Audit Lead</span>
-  </div>
-  <div style="padding:32px">
-    <p style="margin:0 0 16px;font-size:15px"><strong>${esc(offerTitle)}</strong> &mdash; scored <strong>${report.score}/100</strong></p>
-    <table style="width:100%;border-collapse:collapse;margin-bottom:24px">
-      <tr><td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase">Email</td><td style="padding:8px 12px;font-size:15px"><a href="mailto:${esc(email)}" style="color:#14B8A6">${esc(email)}</a></td></tr>
-      <tr><td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase">Website</td><td style="padding:8px 12px;font-size:15px">${esc(report.normalizedUrl)}</td></tr>
-      <tr><td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase">Source</td><td style="padding:8px 12px;font-size:15px">${esc(String(source || 'Instant Audit'))}</td></tr>
-    </table>
-    <div style="background:#f9fafb;padding:16px;border-radius:8px;margin-bottom:24px">
-      <p style="color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;margin:0 0 8px">Summary</p>
-      <p style="margin:0;font-size:14px;line-height:1.6">${esc(report.summary)}</p>
-    </div>
-    <p style="color:#6b7280;font-size:12px;font-weight:600;text-transform:uppercase;margin:0 0 8px">Top recommendations</p>
-    <ul style="margin:0 0 24px;padding-left:20px;font-size:14px;line-height:1.8">${report.recommendations.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
-    <a href="mailto:${esc(email)}" style="display:inline-block;background:#14B8A6;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px">Reply to this lead</a>
-  </div>
-</div>`;
-
-/**
- * Public instant-audit endpoint.
- *
- * Documented in /.well-known/openapi.json and exposed to AI agents via the
- * WebMCP `run_qognition_audit` tool. Human form submissions reach the same
- * scoring through /api/lead — both call lib/auditEngine so the report is
- * identical whichever door it comes in.
- */
 export async function POST(request: NextRequest) {
-  // Declared out here so a failure below can hand the slot back.
-  let rateLimit: RateLimitDecision | undefined;
+  const raw = await request.text();
+  if (raw.length > 10_000) {
+    return NextResponse.json({ error: 'Request is too large.' }, { status: 413 });
+  }
+
+  let body: unknown;
   try {
-    const payload = await request.json().catch(() => ({}));
-    const auditType = (payload?.auditType || 'seo') as AuditType;
-    const email = String(payload?.email || '').trim().toLowerCase();
-    const urlValue = String(payload?.url || '').trim();
+    body = JSON.parse(raw);
+  } catch {
+    return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
+  }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json({ error: 'A valid work email is required.' }, { status: 400 });
-    }
+  const parsed = auditRequestSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: 'Please check the URL and email address.', fields: parsed.error.flatten().fieldErrors },
+      { status: 400 },
+    );
+  }
+  const input = parsed.data;
 
-    rateLimit = checkAuditRateLimit(request, email, 'audit');
-    if (!rateLimit.allowed) {
-      const limited = NextResponse.json(
-        {
-          error:
-            rateLimit.reason === 'burst'
-              ? 'Too many audit requests from your network right now. Please try again in a few minutes, or book a strategy call.'
-              : 'You already requested an audit for this email today. Check your inbox, or book a strategy call to go deeper.',
-          retryAfterSeconds: rateLimit.retryAfterSeconds,
-        },
-        {
-          status: 429,
-          headers: { 'Retry-After': String(rateLimit.retryAfterSeconds) },
-        },
-      );
-      limited.cookies.set(getAuditDeviceCookie(), rateLimit.deviceId, {
-        maxAge: 60 * 60 * 24 * 365,
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
-      });
-      return limited;
-    }
-
-    const { report, offer } = await runAudit({ url: urlValue, email, auditType });
-
-    const metaCookies = metaCookiesFromRequest(request);
-    const pdf = buildAuditReportPdf(report, offer);
-
-    // Two emails, same as every other capture path: the report to the
-    // requester (copied to us), and a plain internal "new lead" alert so this
-    // shows up in the inbox the same way a form submission does.
-    const [resend, notify] = await Promise.all([
-      sendResendEmail({
-        to: withNotifyCopy(email),
-        subject: `Your Qognition ${offer.shortTitle} report: ${report.score}/100`,
-        html: reportEmailHtml(report),
-        attachments: [{ filename: report.pdfFilename, content: pdf }],
-      }),
-      sendResendEmail({
-        to: notifyEmailAddress(),
-        subject: `[audit] ${email} — ${offer.shortTitle} ${report.score}/100 for ${report.normalizedUrl}`,
-        html: auditLeadAlertHtml(email, report, offer.shortTitle, payload?.source),
-      }),
-    ]);
-
-    if (!resend.ok && !resend.skipped) {
-      console.error('[Audit] delivery_failure', JSON.stringify({ channel: 'resend_report', error: resend.error, email }));
-    }
-    if (!notify.ok && !notify.skipped) {
-      console.error('[Audit] delivery_failure', JSON.stringify({ channel: 'resend_notify', error: notify.error, email }));
-    }
-
-    // No browser pixel on this path (it is called by agents and integrations),
-    // so there is no twin event to dedup against — a fresh id is correct.
-    await sendMetaCapiEvent({
-      eventName: 'Lead',
-      eventId: randomUUID(),
-      eventSourceUrl: `https://www.qognitionagency.com/${offer.slug}`,
-      userData: {
-        email,
-        clientIp: getAuditClientIp(request),
-        userAgent: request.headers.get('user-agent') || undefined,
-        fbp: metaCookies.fbp,
-        fbc: metaCookies.fbc,
+  // Claimed before any fetch, because check-and-claim are one step in that
+  // module on purpose: separated, two clicks a few hundred milliseconds apart
+  // both pass before either has recorded anything.
+  const rate = checkAuditRateLimit(request, input.email, 'audit');
+  if (!rate.allowed) {
+    return NextResponse.json(
+      {
+        error:
+          rate.reason === 'duplicate'
+            ? 'We have already run an audit for this address today. Reply to that email and we will look again.'
+            : 'Too many audits from this connection right now. Please try again shortly.',
+        retryAfterSeconds: rate.retryAfterSeconds,
       },
-      customData: { content_name: offer.slug, content_category: 'audit', audit_score: report.score },
-    });
+      { status: 429, headers: { 'Retry-After': String(rate.retryAfterSeconds) } },
+    );
+  }
 
-
-    const response = NextResponse.json({
-      ok: true,
-      report,
-      delivery: { resend, notify },
-      rateLimit: { allowed: true, nextAuditAfterSeconds: 86400 },
-    });
-    response.cookies.set(getAuditDeviceCookie(), rateLimit.deviceId, {
-      maxAge: 60 * 60 * 24 * 365,
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-    });
-    return response;
+  let audit: Awaited<ReturnType<typeof runAudit>>;
+  try {
+    audit = await runAudit({ url: input.url, email: input.email, auditType: input.auditType });
   } catch (error) {
-    // The report never got made, so this attempt must not cost them their
-    // one audit for the next 24 hours.
-    if (rateLimit?.allowed) releaseAuditRateLimit(rateLimit);
+    // The crawl is the deliverable. If it failed the visitor got nothing, so
+    // they must not lose their one attempt for the next 24 hours.
+    releaseAuditRateLimit(rate);
 
     if (error instanceof AuditError) {
       return NextResponse.json({ error: error.message }, { status: error.status });
     }
-    console.error('[Audit] Unhandled error:', error);
-    return NextResponse.json({ error: 'Failed to run audit.' }, { status: 500 });
+    // Never log the error object: a failed fetch can carry the target URL and
+    // the visitor's email address through its cause chain.
+    console.error('[Audit] crawl_failed');
+    return NextResponse.json(
+      { error: 'We could not complete that audit. Please try again shortly.' },
+      { status: 503, headers: { 'Retry-After': '30' } },
+    );
   }
+
+  // Runs after the crawl so a slow or missing provider cannot cost the visitor
+  // their 28 checks. It never throws; every failure is a `not_checked` variant.
+  const aiVisibility = await observeAiVisibility({
+    target: { hostname: audit.page.hostname, title: audit.page.title },
+    env: process.env as Record<string, string | undefined>,
+    now: new Date(),
+  });
+
+  return NextResponse.json({
+    success: true,
+    report: audit.report,
+    offer: audit.offer,
+    /**
+     * Either an observation with the stored answer it derives from, or
+     * `not_checked` with a reason and a sentence to render. There is no third
+     * state, and no state in which a number appears that was not measured.
+     */
+    aiVisibility,
+  });
 }

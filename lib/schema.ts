@@ -1,4 +1,5 @@
 import { SITE_URL } from './seo';
+import { HQ_CITY, HQ_REGION, HQ_COUNTRY } from '../data/siteConfig';
 import type { SpokeConfig } from './spokes';
 
 const absoluteUrl = (path: string) => `${SITE_URL}${path}`;
@@ -9,15 +10,26 @@ export function organizationSchema() {
     '@type': 'Organization',
     name: 'Qognition',
     url: SITE_URL,
-    logo: `${SITE_URL}/favicon.png`,
+    logo: `${SITE_URL}/icon-512.png`,
     description:
-      'The operating partner for founders. We run marketing, tech, finance, and automation so founders can build.',
-    serviceType: [
-      'AI-Native Growth Marketing',
-      'Revenue-Focused Engineering',
-      'Financial Operations',
-      'AI Agents & Intelligent Automation',
+      'B2B AI search visibility agency. We get established B2B firms found when their buyers ask an AI which vendor to hire.',
+    knowsAbout: [
+      'AI Search Visibility',
+      'Generative Engine Optimization',
+      'AI SEO',
+      'Answer Engine Optimization',
+      'Local SEO',
+      'Search Engine Optimization',
+      'Entity Optimization',
     ],
+    // One address, matching the third-party directory listings. Entity
+    // resolution depends on this string being identical everywhere.
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: HQ_CITY,
+      addressRegion: HQ_REGION,
+      addressCountry: HQ_COUNTRY,
+    },
     sameAs: [
       'https://www.linkedin.com/company/qognition-tech',
       'https://twitter.com/qognition_tech',
@@ -39,11 +51,7 @@ export function websiteSchema() {
     '@type': 'WebSite',
     name: 'Qognition',
     url: SITE_URL,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${SITE_URL}/resources?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
+
   };
 }
 
@@ -61,13 +69,6 @@ export function serviceSchema(spoke: SpokeConfig, path: string) {
     url: `${SITE_URL}${path}`,
     areaServed: 'Worldwide',
     serviceType: spoke.label,
-    offers: {
-      '@type': 'Offer',
-      priceSpecification: {
-        '@type': 'PriceSpecification',
-        price: spoke.pricingModel,
-      },
-    },
   };
 }
 
@@ -110,7 +111,6 @@ export function localBusinessSchema(location: {
     url: `${SITE_URL}/locations/${location.slug}`,
     areaServed: { '@type': location.schemaType, name: location.name },
     provider: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
-    priceRange: '$$',
     email: 'hello@qognitionagency.com',
   };
 }

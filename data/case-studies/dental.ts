@@ -40,7 +40,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo', 'ppc'],
     tier: 'Enterprise',
-    retainerBand: '$15,000+/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Seven offices, one brand, and a search footprint fighting itself',
     snapshot:
       'Pediatric and orthodontic-led group across seven Southern California offices — Carmel Valley, Chula Vista, Eastlake, Escondido, Kearny Mesa, Oceanside and Moreno Valley. Custom-built branded site with NexHealth booking.',
@@ -79,7 +79,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc', 'ai-seo'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Emergency dentistry is a speed business being run on a callback form',
     snapshot:
       '24/7 emergency and same-day dental practice in Fresno, also serving Clovis. Two dentists. Condition-level pages for toothache, abscess, cracked tooth, extraction and root canal — the strongest emergency-intent content architecture in the California book.',
@@ -118,7 +118,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'The most modern stack in the book, ranking on none of its strengths',
     snapshot:
       'Four-dentist midtown Sacramento practice, twenty years in the market, running general, cosmetic, implants, Invisalign, sedation, TMJ and sleep apnea. Built on Astro — a modern static framework, and the only non-WordPress general practice in the California book.',
@@ -153,7 +153,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo', 'social'],
     tier: 'Growth',
-    retainerBand: '$3,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'The footer said 2013–2020. So did the rankings.',
     snapshot:
       'Three-dentist midtown Sacramento practice on G Street, specialising in implants and cosmetic work with CEREC one-visit crowns, Invisalign, sedation and pediatric care.',
@@ -192,7 +192,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc', 'social'],
     tier: 'Essential',
-    retainerBand: '$1,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Four service pages, no booking, and a landing page left over from the last agency',
     snapshot:
       "Two-dentist family, cosmetic and children's practice in Bakersfield. Dr. Jason Nguyen and Dr. Kelly Bach Tran, each with over a decade in practice.",
@@ -232,7 +232,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc', 'ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'The only genuinely bilingual practice in Miami-Dade, bidding in English',
     snapshot:
       'Two-location family and cosmetic practice — Coral Way in Miami and West 68th Street in Hialeah — accepting 16+ insurance plans including Ameritas, Cigna, Delta Dental, MetLife and United Healthcare. Built on Astro.',
@@ -271,7 +271,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Selling implants and cosmetics with no way to pay for them',
     snapshot:
       'Two-location Orlando practice — Avalon Park and Hansel Avenue — run by a single dentist, Dr. Marc Chapkis, covering family dentistry, cosmetics, same-day crowns, Invisalign, implant restorations and urgent care.',
@@ -306,7 +306,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo', 'social'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Digital smile design, teeth in a day, and no Spanish in South Miami',
     snapshot:
       "Single-dentist cosmetic-led practice in South Miami under Dr. Brian Nitzberg. Digital smile design, veneers, 3D imaging, laser dentistry, 3D-printed models and full-arch 'teeth in a day'.",
@@ -345,7 +345,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc', 'ai-seo'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: "When you don't control the website, you win everywhere else",
     snapshot:
       'Two-dentist practice on North Miami Avenue, in-network with Aetna, Ameritas, Anthem, Cigna, Delta Dental, Guardian, MetLife, United Healthcare and UCCI, plus the Smile Generation Dental Plan.',
@@ -384,7 +384,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo', 'social'],
     tier: 'Essential',
-    retainerBand: '$1,500/mo',
+    retainerBand: 'Individually scoped',
     headline: "Half the domain didn't resolve, and nobody had noticed",
     snapshot:
       'Single-dentist general and family practice in Pensacola under Dr. Jennifer Boudreaux Georgiades. Composite fillings, crowns and bridges, implant restorations, dentures, extractions, root canals, digital radiography and nitrous for anxious patients.',
@@ -425,7 +425,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc', 'ai-seo'],
     tier: 'Dominance',
-    retainerBand: '$8,500/mo',
+    retainerBand: 'Individually scoped',
     headline: "An AACD Fellow, a board-certified endodontist, and a domain that doesn't match the brand",
     snapshot:
       'Two-location cosmetic-led practice across Jersey City and Hoboken with six decades of history. Dr. Andrew Paek is an AACD Fellow and Kois graduate; Dr. Christopher Higgins is a board-certified endodontist. All-on-4, veneers, smile makeover, laser gum contouring, sedation and virtual cosmetic consults.',
@@ -464,7 +464,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc'],
     tier: 'Essential',
-    retainerBand: '$1,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'A single page, no navigation, and 2,000 words about Branch Brook Park',
     snapshot:
       "Emergency-led general practice on Elm Street in Newark's Ironbound. Family, pediatric, cosmetic, implants, veneers, whitening and restorative work.",
@@ -499,7 +499,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo'],
     tier: 'Growth',
-    retainerBand: '$3,000/mo',
+    retainerBand: 'Individually scoped',
     headline: "North Jersey's largest multi-specialty clinic, with no Spanish page in Paterson",
     snapshot:
       'Two-location multi-specialty clinic in Paterson operating for more than 35 years, uniquely accepting both PPO plans and eight Medicaid programs — Amerigroup, NJ Medicaid, Horizon NJ Health, DentaQuest, United Healthcare Community Plan, Liberty, Fidelio and Wellcare. Dr. Atalla is an Invisalign elite provider.',
@@ -534,7 +534,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc', 'social'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'The brand and the domain were two different practices as far as Google was concerned',
     snapshot:
       'Full-service family practice on North Broad Street in Elizabeth under Dr. Ben Pomeranc, operating over 30 years. General, cosmetic, orthodontics, Invisalign, implants, oral surgery, pediatric and emergency, with a membership plan and a dedicated Spanish subdomain.',
@@ -572,7 +572,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo', 'ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'All-on-4 at the top of the nav, and nothing to be found for underneath it',
     snapshot:
       'Implant-led three-dentist practice in Lincoln Park — Dr. Samir Rana, Dr. Maggie Rana and Dr. Afsoun Adibi. All-on-4 and implants sit at the top of the navigation, alongside sedation, dentures, veneers and emergency care. Built on Framer, with ZocDoc booking and English/Spanish service.',
@@ -613,7 +613,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo', 'ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: '3,113 reviews and no named source for a single one of them',
     snapshot:
       "Four-dentist practice on Warm Springs Road in Columbus, operating since 1968. Preventive, children's care, periodontics, implants, dentures, sleep apnea, clear aligners and cosmetics. PPO-oriented across Aetna, BCBS, Cigna, Delta, Guardian, MetLife and United Concordia, with CareCredit financing.",
@@ -652,7 +652,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Backed by eight practices and bidding like a single office',
     snapshot:
       'Four-dentist Marietta practice including an oral surgeon, part of Blueprint Smiles Dental Group — an eight-practice Atlanta-metro group spanning Buford, Acworth, Duluth, Atlanta, Roswell and Dunwoody. Same-day dentistry, implants, clear aligners, oral surgery and emergency care, with a group membership plan.',
@@ -687,7 +687,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo', 'social'],
     tier: 'Growth',
-    retainerBand: '$3,000/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Airway therapy, tongue-tie release, facial aesthetics — and no blog to explain any of it',
     snapshot:
       'Two-dentist practice on East 68th Street in Savannah with an unusually broad and genuinely differentiated menu: digital smile design, Invisalign, full-mouth restoration, laser dentistry, airway therapy, Myobrace, rapid palatal expanders, tongue-tie release, plus facial aesthetics — injectables, NightLase, LipLase and SmoothLase. Premium .dental domain, fee-for-service leaning with four financing partners and an in-office discount plan.',
@@ -726,7 +726,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ppc', 'ai-seo'],
     tier: 'Essential',
-    retainerBand: '$1,500/mo',
+    retainerBand: 'Individually scoped',
     headline: 'Named for a neighbourhood in a different city, four miles from another client',
     snapshot:
       'Two-dentist preventive and family practice on 14th Street in Columbus, Georgia, operating as Georgia Dental Professionals PC. Cleanings, checkups, comprehensive exams, imaging and pediatric care.',
@@ -765,7 +765,7 @@ export const DENTAL_CASE_STUDIES: CaseStudy[] = [
     niche: 'dental',
     services: ['ai-seo'],
     tier: 'Authority',
-    retainerBand: '$5,000/mo',
+    retainerBand: 'Individually scoped',
     headline: "Five dentists, an oral surgery arm, and no 'Book Now' in the navigation",
     snapshot:
       'Five-dentist practice on Lawrenceville Highway in Gwinnett County, Atlanta metro — the largest named clinician roster in the fifty. General dentistry, a distinct oral surgery pillar covering implants, wisdom teeth and extractions, plus cosmetics. Independent, not part of any group.',

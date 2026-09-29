@@ -12,11 +12,23 @@ export const BOOKING_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
 /** @deprecated alias → BOOKING_LINK. Kept so existing imports keep working. */
 export const CALENDLY_LINK = BOOKING_LINK;
 
+// Location. ONE answer, everywhere. The live production build claimed offices in
+// London, New York, Dubai and Mumbai on /contact, and London, New York, Dubai,
+// Bangalore and Sydney on /about and /team, while DesignRush and Tracxn listed
+// Gurugram. Three different India answers on pages one click apart. Gurugram is
+// the real one, confirmed by the operator 2026-09-28. Countries served are never
+// presented as offices.
+export const HQ_CITY = "Gurugram";
+export const HQ_REGION = "Haryana";
+export const HQ_COUNTRY = "IN";
+export const HQ_COUNTRY_NAME = "India";
+export const HQ_DISPLAY = `${HQ_CITY}, ${HQ_COUNTRY_NAME}`;
+
 // Contact — ONE number across the whole site (WhatsApp + click-to-call).
 export const CONTACT_EMAIL = "hello@qognitionagency.com";
 export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
-export const WHATSAPP_NUMBER = "14372919570";
-export const WHATSAPP_DISPLAY = "+1 (437) 291-9570";
+export const WHATSAPP_NUMBER = "12363498449";
+export const WHATSAPP_DISPLAY = "+1 (236) 349-8449";
 export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 // Same number, click-to-call.

@@ -21,7 +21,7 @@ Qognition Agency is an AI-native operating partner for founders and growth-stage
 ## Marketing Spoke — AI-Native Growth Marketing
 
 Hub: https://www.qognitionagency.com/marketing
-Audit (free): https://www.qognitionagency.com/marketing/audit
+AI Search Visibility Report (free): https://www.qognitionagency.com/free-ai-audit
 Pricing: https://www.qognitionagency.com/marketing/pricing
 Book: https://www.qognitionagency.com/marketing/book
 Pricing model: Retainers $3K–$20K/mo
@@ -41,7 +41,7 @@ Sub-services:
 ## Tech Spoke — Revenue-Focused Engineering
 
 Hub: https://www.qognitionagency.com/tech
-Audit (free): https://www.qognitionagency.com/tech/audit
+AI Search Visibility Report (free): https://www.qognitionagency.com/free-ai-audit
 Pricing: https://www.qognitionagency.com/tech/pricing
 Book: https://www.qognitionagency.com/tech/book
 Pricing model: Projects $10K–$200K
@@ -59,7 +59,7 @@ Sub-services:
 ## Finance Spoke — Financial Operations
 
 Hub: https://www.qognitionagency.com/finance
-Audit (free): https://www.qognitionagency.com/finance/audit
+AI Search Visibility Report (free): https://www.qognitionagency.com/free-ai-audit
 Pricing: https://www.qognitionagency.com/finance/pricing
 Book: https://www.qognitionagency.com/finance/book
 Pricing model: Retainers from $500/mo
@@ -76,7 +76,7 @@ Sub-services:
 ## Automation Spoke — AI Agents & Workflows
 
 Hub: https://www.qognitionagency.com/automation
-Audit (free): https://www.qognitionagency.com/automation/audit
+AI Search Visibility Report (free): https://www.qognitionagency.com/free-ai-audit
 Pricing: https://www.qognitionagency.com/automation/pricing
 Book: https://www.qognitionagency.com/automation/book
 Pricing model: Project + retainer
@@ -111,17 +111,9 @@ Sub-services:
 - Pricing: https://www.qognitionagency.com/pricing
 - Contact: https://www.qognitionagency.com/contact
 
-## Free Audits
+## Free Audit
 
-- Free Marketing + AI Search Audit: https://www.qognitionagency.com/marketing/audit
-- Free SEO Audit: https://www.qognitionagency.com/free-seo-audit
-- Free AI Visibility Audit: https://www.qognitionagency.com/free-ai-audit
-- Free LLM Audit: https://www.qognitionagency.com/free-llm-audit
-- Free Tech + Performance Audit: https://www.qognitionagency.com/tech/audit
-- Free Finance Health Check: https://www.qognitionagency.com/finance/audit
-- Free Automation Opportunity Map: https://www.qognitionagency.com/automation/audit
-- Free Branding Audit: https://www.qognitionagency.com/branding-audit
-- Free Social Media Audit: https://www.qognitionagency.com/social-media-audit
+- AI Search Visibility Report: https://www.qognitionagency.com/free-ai-audit
 
 ## Free Tools & Calculators
 

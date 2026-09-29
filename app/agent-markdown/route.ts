@@ -113,8 +113,7 @@ const linesForPath = (path: string) => {
     `Canonical: ${SITE_URL}${cleanPath === '/' ? '' : cleanPath}`,
     '',
     '## Important Links',
-    `- [Free SEO Audit](${SITE_URL}/free-seo-audit)`,
-    `- [Free AI Audit](${SITE_URL}/free-ai-audit)`,
+    `- [AI Search Visibility Report](${SITE_URL}/free-ai-audit)`,
     `- [Case Studies](${SITE_URL}/case-studies)`,
     `- [Services](${SITE_URL}/services)`,
     `- [Resources](${SITE_URL}/resources)`

@@ -6,11 +6,13 @@ import { getSpokePageData } from '../../data/spoke-services';
 import { breadcrumbSchema } from '../../lib/schema';
 import SpokeHomepage from '../../components/spokes/SpokeHomepage';
 import SpokeLayout from '../../components/shared/SpokeLayout';
+import GrowthLocalizedPage from '../../components/GrowthLocalizedPage';
+import { NON_ENGLISH_GROWTH_LOCALES, canPublishLocale, isGrowthLocale, localizedGrowthMetadata } from '../../lib/growth-locales';
 
 const VALID_SPOKES: SpokeId[] = ['marketing', 'tech', 'finance', 'automation'];
 
 export function generateStaticParams() {
-  return VALID_SPOKES.map((spoke) => ({ spoke }));
+  return [...VALID_SPOKES, ...NON_ENGLISH_GROWTH_LOCALES.filter((locale) => canPublishLocale(locale))].map((spoke) => ({ spoke }));
 }
 
 export async function generateMetadata({
@@ -19,6 +21,7 @@ export async function generateMetadata({
   params: Promise<{ spoke: string }>;
 }): Promise<Metadata> {
   const { spoke } = await params;
+  if (isGrowthLocale(spoke) && spoke !== 'en' && canPublishLocale(spoke)) return localizedGrowthMetadata(spoke);
   const config = SPOKES[spoke as SpokeId];
   if (!config) return {};
 
@@ -35,6 +38,8 @@ export default async function SpokePage({
   params: Promise<{ spoke: string }>;
 }) {
   const { spoke } = await params;
+
+  if (isGrowthLocale(spoke) && spoke !== 'en' && canPublishLocale(spoke)) return <GrowthLocalizedPage locale={spoke} />;
 
   if (!VALID_SPOKES.includes(spoke as SpokeId)) {
     notFound();
