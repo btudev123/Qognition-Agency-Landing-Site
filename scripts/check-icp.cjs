@@ -435,11 +435,27 @@ assert.ok(
     `it links unconditionally is a hard 404 under dynamicParams = false until that entity is ` +
     `promoted, and 20 of the 21 were exactly that when this section first shipped.`
   );
-  assert.ok(
-    !/href={`\/industries\/\$\{industry\.slug\}`}[\s\S]{0,80}>\s*\{industry\.name\}/.test(
-      hub.replace(/\{publishedSectors\.has\(industry\.slug\) \? \(/g, 'GATED(')
-    ) || /publishedSectors\.has\(industry\.slug\) \?/.test(hub),
-    'the sector anchor is no longer inside the published check.'
+  /* Counts anchors instead of pattern-matching around a guard.
+   *
+   * This was a disjunction whose right-hand side was `hub` containing the gating
+   * expression, which the assertion twelve lines above ALREADY REQUIRES. So the
+   * left side, the half that actually looks for an ungated anchor, could never
+   * decide the result. Owen proved it: he reinstated an unconditional
+   * `<Link href={`/industries/${industry.slug}`}>` on all 21 rows, which is the
+   * original defect, and all twelve gates exited 0.
+   *
+   * Third `||` inside an assertion on this project. A disjunction in a gate is
+   * almost always one half doing nothing. Count the thing instead. */
+  const sectorHrefs = (hub.match(/href={`\/industries\/\$\{industry\.slug\}`}/g) || []).length;
+  const gatedHrefs = (
+    hub.match(/publishedSectors\.has\(industry\.slug\)\s*\?[\s\S]{0,400}?href={`\/industries\/\$\{industry\.slug\}`}/g) || []
+  ).length;
+  assert.equal(
+    sectorHrefs, gatedHrefs,
+    `app/industries/page.tsx has ${sectorHrefs} sector anchor(s) but only ${gatedHrefs} inside the ` +
+    `publishedSectors check. An ungated one is a hard 404 under dynamicParams = false until that ` +
+    `entity is promoted; 20 of 21 were exactly that when this section first shipped, on a domain ` +
+    `with 683 URLs already not indexed.`
   );
 }
 

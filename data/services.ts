@@ -257,7 +257,7 @@ export const SERVICES: Service[] = [
         { name: 'Ad Creative Production', slug: 'ad-creative-production', description: 'High-velocity static and video ad creative built for testing.' },
         { name: 'Feed Management', slug: 'feed-management', description: 'Product feed cleanup, enrichment, and optimization across channels.' },
         { name: 'Landing Page CRO', slug: 'landing-page-cro', description: 'Message match, proof, forms, speed, offers, and conversion experimentation.' },
-        { name: 'Paid Media Analytics', slug: 'paid-media-analytics', description: 'GA4, Looker, offline conversions, CRM imports, UTMs, and executive ROAS reporting.' }
+        { name: 'Paid Media Analytics', slug: 'paid-media-analytics', description: 'GA4, Looker, UTM governance and executive reporting. Click ID capture and offline conversion import from your CRM are set up during the engagement, and we tell you before you spend anything if your CRM or forms cannot support them.' }
     ],
     process: [
         { title: "Audit & Opportunity", description: "Analyzing account history to find wasted spend." },

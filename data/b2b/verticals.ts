@@ -34,6 +34,8 @@
  * ────────────────────────────────────────────────────────────────────────────
  */
 
+import type { IcpSignOff } from '../../lib/b2b/icpPublication';
+
 /** Demand tier for AI search work, as assessed by the operator. Not a measurement. */
 export type Tier = 'S' | 'A' | 'B';
 
@@ -48,7 +50,19 @@ export type Tier = 'S' | 'A' | 'B';
 export type PublicationState =
   | { readonly state: 'spine' }
   | { readonly state: 'draft' }
-  | { readonly state: 'published'; readonly reviewedBy: string; readonly reviewedAt: `${number}-${number}-${number}` };
+  | {
+      readonly state: 'published';
+      /* Closed, not `string`. This was `reviewedBy: string`, which is the
+         65-page incident one file over: Owen published two entities under
+         'Nadia (search)' and then under 'TBD', raised the ceiling to 2, and both
+         tsc and check-b2b.cjs passed. The comment at check-b2b.cjs:188 claimed
+         "the union already stops reviewer: 'TBD'" and it did not, because
+         ReviewerName was never referenced here. Only the 4,422 sitemap assertion
+         caught it, and that is exactly the number someone raises "to match" when
+         landing a wave. */
+      readonly reviewedBy: IcpSignOff;
+      readonly reviewedAt: `${number}-${number}-${number}`;
+    };
 
 export interface SubNiche {
   /** kebab-case. Becomes the last URL segment if and when this is promoted. */

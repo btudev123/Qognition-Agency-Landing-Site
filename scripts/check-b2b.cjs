@@ -185,24 +185,50 @@ for (const file of b2bComponents) {
   );
 }
 
-/* Published entities carry a named reviewer. The union already stops
-   `reviewer: 'TBD'`; this stops a published entity whose publication variant was
-   written without one at all through a cast. */
+/* Published entities carry the ONE name with sign-off authority.
+ *
+ * The comment here used to read "the union already stops `reviewer: 'TBD'`".
+ * That was false. ReviewerName was never referenced by verticals.ts, so
+ * reviewedBy was a raw string and this assertion tested only truthiness. Owen
+ * published two entities under 'Nadia (search)', then under 'TBD', raised the
+ * ceiling to 2, and both tsc and this gate passed. The only thing that caught it
+ * was the 4,422 sitemap assertion in check-industry-gate.cjs, which is precisely
+ * the number a reviewer raises "to match" when landing a wave.
+ *
+ * The type is now closed (verticals.ts), and this re-asserts it at runtime
+ * because `as` defeats a type. Equality, not truthiness. */
+const SIGN_OFF = 'Prabal (CEO, Qognition Agency)';
 for (const { vertical, subNiche } of published) {
+  const id = subNiche ? `${vertical.id}/${subNiche.id}` : vertical.id;
   const pub = (subNiche ?? vertical).publication;
+  assert.ok(pub && pub.state === 'published', `published entity ${id} has no published publication variant`);
+  assert.equal(
+    pub.reviewedBy, SIGN_OFF,
+    `published entity ${id} names "${pub.reviewedBy}" as reviewer. Only ${SIGN_OFF} has sign-off ` +
+    `authority. An agent that drafted a page cannot be the reviewer of record for it, and a name ` +
+    `written into a literal by someone other than that person satisfies the gate by attribution ` +
+    `rather than by review.`
+  );
   assert.ok(
-    pub && pub.state === 'published' && pub.reviewedBy && pub.reviewedAt,
-    `published entity ${subNiche ? `${vertical.id}/${subNiche.id}` : vertical.id} has no reviewer or review date`
+    /^\d{4}-\d{2}-\d{2}$/.test(pub.reviewedAt || ''),
+    `published entity ${id} has review date "${pub.reviewedAt}", expected YYYY-MM-DD`
   );
 }
 
-/* ── 4. No blast radius. Three greps. Crude and exactly sufficient. ─────────
- * data/navigation.ts drives the global header, CrossLinks renders on every
+/* ── 4. No blast radius. Crude and exactly sufficient. ─────────────────────
+ * CORRECTED 2026-09-29. This grepped data/navigation.ts as "the global header".
+ * That file is DEAD CODE: SPOKE_MENUS, INDUSTRY_MENU and TOP_NAV have zero
+ * importers across app, components, lib and scripts. The live header is
+ * components/shared/Navigation.tsx (app/layout.tsx:9,188), which was in no gate,
+ * so the protection was aimed at a file nothing reads. ADR-0007 §2.1 and
+ * lib/industryPublication.ts both still name it as consumer 7; both are wrong.
+ * Fourth instance of the enumeration error this project keeps producing.
+ * CrossLinks renders on every
  * service, industry and region page, and programmaticRoutes multiplies against
  * SERVICES. If any of them ever imports data/b2b, one taxonomy edit changes
  * every page on the site. */
 for (const file of [
-  'data/navigation.ts',
+  'components/shared/Navigation.tsx',
   'components/shared/CrossLinks.tsx',
   'lib/sitemap.ts',
 ]) {

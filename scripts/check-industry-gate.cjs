@@ -235,6 +235,17 @@ for (const industry of INDUSTRIES) {
 const SUB_INDUSTRY_PAGES_WITH_PROOF = 7;
 const LOCATION_PAGES_WITH_PROOF = LOCATIONS.length;
 
+/* The mirror image: a sub-industry page must NOT opt into the spread, because it
+   names a vertical and a borrowed study is a claim of experience (§11). */
+const subIndustryView = fs.readFileSync('app/industries/[industry]/[subIndustry]/page.tsx', 'utf8');
+for (const call of subIndustryView.match(/studiesForTopic\([^)]*\)/g) || []) {
+  assert.ok(
+    !/fallback:\s*'spread'/.test(call),
+    `a sub-industry proof block opts into { fallback: 'spread' }:\n  ${call}\n` +
+    `That page names a vertical, so a study from another one implies experience we do not have.`
+  );
+}
+
 let subWithProof = 0;
 for (const industry of INDUSTRIES) {
   for (const sub of industry.subIndustries) {
@@ -248,6 +259,34 @@ assert.equal(
   `down means internal links to /case-studies/* were deleted from live indexed pages. Both need a\n` +
   `deliberate decision, not a pattern tweak.`
 );
+
+/* THE CALL SITE, not the function.
+ *
+ * This loop used to pass `{ fallback: 'spread' }` ITSELF, which meant it tested
+ * data/case-studies/index.ts and told us nothing about
+ * app/locations/ProgrammaticLocationView.tsx. Owen removed the option from both
+ * call sites there, which is the exact 2026-09-28 regression, and this gate
+ * exited 0 while printing "340 of 340 location pages render a case study". The
+ * measured truth with the option removed is 0 of 340, and ~1,360 internal links
+ * to /case-studies/* dropped off 340 live indexed pages.
+ *
+ * So read the argument the component actually passes. A gate that supplies the
+ * input it is meant to verify is checking its own assumption. */
+const locationView = fs.readFileSync('app/locations/ProgrammaticLocationView.tsx', 'utf8');
+const locationCalls = locationView.match(/studiesForTopic\([^)]*\)/g) || [];
+assert.ok(
+  locationCalls.length >= 2,
+  `expected at least 2 studiesForTopic call sites in ProgrammaticLocationView.tsx, found ${locationCalls.length}`
+);
+for (const call of locationCalls) {
+  assert.ok(
+    /fallback:\s*'spread'/.test(call),
+    `a location-page proof block calls studiesForTopic WITHOUT { fallback: 'spread' }:\n  ${call}\n` +
+    `Location pages assert no vertical, so they opt into the spread and should never be empty. ` +
+    `Dropping the option empties the block on all 340 pages and deletes ~1,360 internal links to ` +
+    `/case-studies/* from live indexed URLs, which is what happened on 2026-09-28.`
+  );
+}
 
 let locWithProof = 0;
 for (const location of LOCATIONS) {
