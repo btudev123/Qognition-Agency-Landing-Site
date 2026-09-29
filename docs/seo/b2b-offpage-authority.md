@@ -368,6 +368,210 @@ It is also the vertical where a competitor is most likely to be the one reading.
 method is not the moat, the time series is — but do not fund it ahead of tier S.
 
 ---
+
+### 3.16 – 3.21 The six industries added by the locked taxonomy
+
+**Read §0.2 before using any of this, and read it twice for these six.** Every row was compiled in a
+single pass from domain knowledge of the verticals. Nothing below has been fetched, verified or
+contacted. `[NEEDS DATA: live verification of every row in §3.16–§3.21, with a fetch date — does the
+domain resolve, is it still publishing, does it accept contributed content, does it nofollow, and has
+it ever appeared as a cited source in the panel]`
+
+**The pre-qualification rule (§4.2) governs all of it.** Not one of these is a target until it has
+appeared as a cited source for a prompt in the client's panel. The maps are a research target list.
+They are the input to the panel comparison, not a work plan.
+
+Columns as §3: *Class* from §1 · *Effort* Self-serve / Credentialed / Editorial / Closed ·
+*Buys* **RANK** · **CITE** · **ENTITY**.
+
+---
+
+### 3.16 `aerospace-and-aviation` — Aerospace & Aviation
+
+14 sub-industries, 107 niches, 37 priority-A. **Structurally the closest analogue to
+`manufacturing-industrial`, and it may be better**: the regulator itself publishes the authoritative
+supplier registry, which is rarer than it sounds and is exactly what the Family B prompts qualify on
+("business jet service center with hangar slots for a 12-year inspection").
+
+| Source | Class | Effort | Buys | Notes |
+|---|---|---|---|---|
+| **FAA Part 145 repair-station listings and the FAA registry; EASA Part 145 / Part 21 approved-organisation lists; UK CAA and Transport Canada equivalents** | 1 | Credentialed | ENTITY, CITE | **The best recommendation in this section.** Government-published, machine-readable, and the unforgeable record of what a shop is *approved* to do — which is the qualifier every supplied prompt in this industry contains. Most operators hold the approval and have never checked how their entry reads. |
+| **Nadcap / PRI Qualified Manufacturers List; AS9100, AS9110, AS9120 certificates in the IAQG OASIS database** | 1 | Credentialed | ENTITY, CITE | OASIS is the aerospace supply chain's own accredited-certificate registry. Same argument as IAF CertSearch in §3.3, in a supply chain that checks it more. Feeds §5.1's ISO 9001:2026 angle via the AS91xx revision cycle. |
+| **ASA-100 (Aviation Suppliers Association) accreditation and the ASA member directory; AC 00-56 accredited distributors** | 1 | Credentialed | ENTITY | The parts-distribution half of the industry (`16.04`) is qualified almost entirely on this. Free-to-low-cost and widely half-completed. |
+| **Cyber AB CMMC Marketplace** | 1 | Credentialed | ENTITY, CITE | Defence-adjacent aerospace suppliers. **Directly tied to §5.3's dated trigger**, which is already in this document and needs no new research. |
+| ILS (Inventory Locator Service), PartsBase, Aviation Suppliers Marketplace, Locatory | 2 | Self-serve / paid | CITE | The incumbent discovery layer, and the thing the client complains about. Being listed is table stakes. The strategy is §3.3's: be the named supplier *inside* the answer these are cited in, not to beat them. |
+| NBAA, NATA, AEA, ARSA, GAMA, AIA, MRO Association member and service-provider directories | 1 | Credentialed | ENTITY, CITE | Membership fee. NBAA and NATA directories are genuinely used by charter and FBO buyers. |
+| Aviation Week Network (Aviation Week & Space Technology, Inside MRO, ShowNews), Aviation International News, FlightGlobal, Flight Safety Foundation, AIN Product Support Survey | 3 | Editorial | RANK, CITE | Real desks, receptive to dated original data. **The AIN Product Support Survey is a published, methodology-stated ranked list** and is therefore usable under `guardrails.md` if the client places. |
+| MRO Network / Aviation Week MRO events, Aircraft Commerce, Avionics International, Rotor & Wing International, Vertical Magazine | 3 | Editorial | RANK, CITE | Second tier, still real. |
+| Review platforms | — | — | — | **None exist for aerospace suppliers.** The approval registry is the review platform. Say so; it is a useful credibility moment with a client who has been sold a directory package. |
+
+**What to lead with:** approval-registry hygiene (FAA/EASA entry, OASIS certificate scope, ASA-100
+listing), then the observation block. Not editorial. Editorial in this industry takes months and the
+registries are free and unworked.
+
+---
+
+### 3.17 `automotive-heavy-equipment-and-mobility` — Automotive, Heavy Equipment & Mobility
+
+16 sub-industries, 125 niches, 51 priority-A. **Two off-page markets that barely overlap**, and
+treating them as one is the mistake to avoid: the OEM supply chain (`17.01`–`17.05`) is certification-
+and program-gated, while dealer, aftermarket and equipment (`17.06`–`17.15`) is dealer-network,
+trade-show and buyer's-guide territory.
+
+| Source | Class | Effort | Buys | Notes |
+|---|---|---|---|---|
+| **IATF 16949 certificates in the IATF database; IAF CertSearch; ISO 14001 and ISO 45001 entries** | 1 | Credentialed | ENTITY, CITE | The supply-chain half's equivalent of §3.3's registry argument. A Tier 2 that cannot be verified as IATF-certified does not get into a shortlist answer. |
+| **AIAG membership and the AIAG published-standards ecosystem (PPAP, APQP, FMEA)** | 1 | Credentialed | ENTITY | Credential and vocabulary source. Also the entity most likely to be cited when an answer explains *how* a supplier is qualified. |
+| **Nadcap** (special processes shared with §3.16), **UL / ETL / FMVSS and E-mark certification records** | 1 | Credentialed | ENTITY | Specialty-vehicle and component makers. |
+| **NTEA Member Directory and the NTEA Truck Equipment Guide; AED (Associated Equipment Distributors) member directory; AEM member directory; ARA (American Rental Association)** | 1 + 2 | Credentialed | ENTITY, CITE | **The strongest and most neglected set here.** `17.10`–`17.14` — upfitters, truck bodies, equipment dealers, rental — are discovered through these, and the profiles are usually half-completed. Free or membership-priced. |
+| **SEMA and AAPEX exhibitor directories; Auto Care Association; MEMA / MEMA Aftermarket Suppliers** | 2 | Credentialed | ENTITY, CITE | Aftermarket entity records with real retrieval value. Exhibitor directories persist and get indexed. |
+| Automotive News (including the Top Suppliers list), Automotive Dive, WardsAuto, SAE Media, Just Auto, Autobody News | 3 | Editorial | RANK, CITE | **Automotive News's supplier ranking is revenue-threshold and methodology-published**, so it is usable under `guardrails.md` for the firms that qualify. |
+| Equipment World, Construction Equipment, Diesel Progress, Rental Equipment Register, Trucking Info / Heavy Duty Trucking, Fleet Owner, Transport Topics | 3 | Editorial | RANK, CITE | The heavy-equipment and fleet half. Smaller desks, receptive to dated data, far less contested than the automotive trades. |
+| Auto Dealer Today, CBT News, Automotive News Fixed Ops Journal, Dealer Marketing Magazine | 3 | Editorial | RANK | Dealer-tech half (`17.07`–`17.09`). |
+| G2, Capterra | 2 | Self-serve | ENTITY | Live and meaningful **only** for `17.07` dealer software and `17.02` vehicle software. Worthless for the rest of the industry — do not let one map imply otherwise. |
+
+---
+
+### 3.18 `commercial-and-facility-services` — Commercial & Facility Services
+
+16 sub-industries, 112 niches, 40 priority-A. **The one industry in this set where review platforms
+and local signals genuinely matter to a B2B buyer**, because facility managers shortlist regionally.
+That creates a rule-5 hazard and it needs saying plainly.
+
+> **Rule 5 note, because this industry invites the mistake.** City and local pages are legacy. **Do not
+> build a new city page, a new local landing page, or a new location-modified programmatic page for any
+> entity in this industry, however strong the local signal looks.** The correct expression of regional
+> relevance here is off-page — a GBP-equivalent profile on the association directory, a certified-firm
+> registry entry with real coverage data — and never a new URL on this domain. Nothing in this section
+> proposes deleting, redirecting or noindexing an existing city page either.
+
+| Source | Class | Effort | Buys | Notes |
+|---|---|---|---|---|
+| **IICRC certified-firm locator; RIA (Restoration Industry Association) member directory; NADCA (air duct) certified-member directory; NAFA / IKECA for kitchen exhaust** | 1 | Credentialed | ENTITY, CITE | **The best class-1 set here.** `18.02` restoration and specialty cleaning is shortlisted on exactly these certifications, and the locators are searchable, indexed and usually half-filled. |
+| **BSCAI and ISSA member directories; ISSA CIMS-GB certified-organisation list; GBAC STAR facility accreditation** | 1 | Credentialed | ENTITY, CITE | `18.01` janitorial. CIMS certification is the closest thing this industry has to ISO 9001 and it is checkable. |
+| **IFMA and BOMA member and service-provider directories; BOMA BEST / BOMA 360 designations** | 1 | Credentialed | ENTITY | The buyer's own associations. A vendor listed where the facility manager already is, is a retrieval path most competitors have not taken. |
+| **NFPA-adjacent: state fire-protection contractor licences, NICET certified-technician records, AFSA and NFSA member directories** | 1 | Credentialed | ENTITY, CITE | `18.05` fire and life safety. Licence records are government-published and unforgeable. |
+| **NPMA (pest), AWT (water treatment), NALP and SIMA (landscaping and snow), TRSA (uniform and linen), NAID AAA certification (secure destruction), IAPMO/UA for plumbing** | 1 | Credentialed | ENTITY | One per sub-industry. **NAID AAA is the strongest of these** — `18.14` secure destruction is bought on it and the certified-member list is the shortlist. |
+| ASIS International and the PSA / ESA directories; UL-listed central-station records | 1 | Credentialed | ENTITY | `18.04` security. |
+| Facility Executive, FacilitiesNet / Building Operating Management, Cleaning & Maintenance Management, ISSA Today, Restoration & Remediation, Cleanfax, Security Systems News, SDM Magazine, Waste Dive, Landscape Management, Snow Business | 3 | Editorial | RANK, CITE | Small desks, practical audiences, receptive to dated original data. Among the least contested editorial targets in the whole document. |
+| Google Business Profile, Yelp, Angi-type properties | 2 | Self-serve | ENTITY | **Real here and only here in this set** — but the client's, never Qognition's, and never as a reason to build a page on this domain. See the rule-5 note above. |
+
+---
+
+### 3.19 `environmental-engineering-and-testing` — Environmental, Engineering & Testing (TIC)
+
+16 sub-industries, 114 niches, 46 priority-A. **The single best-fitting industry for this whole
+off-page model, and the architecture doc promotes it to wave 6 for that reason.** Every Family B prompt
+the operator supplied is qualified by an accreditation, a method number or a state certification —
+"best labs for EPA 1633 PFAS analysis with fast turnaround", "best Nadcap accredited materials testing
+lab for fatigue and tensile testing", "who can do air dispersion modeling for a PSD permit
+application". Accreditation registries are the authoritative machine-readable answer to exactly those.
+
+| Source | Class | Effort | Buys | Notes |
+|---|---|---|---|---|
+| **TNI / NELAP accredited-laboratory database; A2LA, ANAB, PJLA and IAS directories of ISO/IEC 17025 accredited labs; state primacy-agency certified-lab lists (per state, per method)** | 1 | Credentialed | ENTITY, CITE | **The single highest-value row in revision 2.** Public, searchable, method-and-analyte-scoped, and it is the literal answer to the supplied prompts. A lab holds the accreditation and its scope document is usually the only place the method list appears — which means the registry is more retrievable than the lab's own site. Fix that asymmetry first. |
+| **NIST NVLAP accredited-laboratory directory; ILAC MRA signatory lookup** | 1 | Credentialed | ENTITY, CITE | `19.10` calibration and metrology is bought on NVLAP scope. |
+| **AIHA Laboratory Accreditation Programs (IHLAP, EMLAP, ELLAP); NVLAP asbestos (NVLAP/AIHA) lists** | 1 | Credentialed | ENTITY | `19.06` and `19.08.04`. |
+| **Nadcap materials-testing accreditation; ASTM and ISO method registries** | 1 | Credentialed | ENTITY, CITE | `19.12`. Shared credential with §3.16, which makes it a legitimate cross-industry link under architecture doc §5.1 rule 4. |
+| **ASNT and API certification records (API 510 / 570 / 653, AWS CWI); NACE/AMPP certified-inspector registries** | 1 | Credentialed | ENTITY | `19.09` asset integrity. Person-level credentials that the firm can aggregate and publish; the registries are the third-party check. |
+| **ACEC member directory and the ACEC Engineering Excellence Awards; NCEES and state PE board records; NGWA certified-contractor directory** | 1 + 2 | Credentialed | ENTITY, CITE | `19.14` and `19.01`. **ACEC's awards have published criteria**, so a win is usable under `guardrails.md`. |
+| **EPA-published lists**: SW-846 and CWA method references, the National Contingency Plan contractor lists, state brownfield and LSP/LSRP registries | 1 | Credentialed | ENTITY, CITE | Government-published and frequently cited by assistants answering regulatory questions, which is the §4.2 test passing before you run it. |
+| Environmental Business Journal (EBJ) rankings and awards; ENR Top 200 Environmental Firms | 2 | Credentialed | CITE | Revenue-threshold, methodology-published, application-based. Genuine and usable. |
+| Environment + Energy Leader, Waste Dive, Water Environment Federation / WEF publications, Pollution Engineering, Lab Manager, American Laboratory, Quality Magazine, Materials Evaluation (ASNT) | 3 | Editorial | RANK, CITE | Real desks. Lab Manager and Materials Evaluation are unusually receptive to method-led original data. |
+| Review platforms | — | — | — | **None.** The accreditation scope document is the review. |
+
+**Why this industry goes early.** It has the registry density of manufacturing, higher contract values
+than facility services, no compliance-reviewer blocker of the kind that holds financial services and
+healthcare, and the tightest fit between what the operator supplied and what a registry can answer.
+The architecture doc's wave 6 placement is on this reasoning and it is the one order change revision 3
+makes against revision 2's tiering.
+
+---
+
+### 3.20 `retail-cpg-and-brand-enablement` — Retail, CPG & Brand Enablement
+
+13 sub-industries, 88 niches, 25 priority-A. **The weakest off-page industry of the six**, and it
+should be said up front rather than discovered. Discovery here runs through buyer relationships,
+category reviews and trade shows, not through published registries, and several sub-industries are
+agencies — which triggers the collision handled in the architecture doc §3.2 finding 3.
+
+| Source | Class | Effort | Buys | Notes |
+|---|---|---|---|---|
+| **GS1 US member and GTIN records; SQF, BRCGS and FSSC 22000 certificate registries (for `20.02` private label and `20.12` sourcing); Sedex / SMETA and amfori BSCI audit records** | 1 | Credentialed | ENTITY | The only genuine class-1 set here. Supply-chain and food-safety credentials are checkable; nothing else in this industry is. |
+| **ECRM / RangeMe supplier profiles; Faire, Mable and Abound seller profiles; NACDS, PLMA and Expo West / Fancy Food exhibitor directories** | 2 | Self-serve / Credentialed | ENTITY, CITE | The actual discovery layer for `20.01` brokerage and `20.13` wholesale. Exhibitor directories persist and index. |
+| **Amazon Service Provider Network; Walmart Marketplace solution-provider listings; Shopify Partner directory; TikTok Shop partner listings** | 1 + 2 | Credentialed | ENTITY, CITE | **The strongest row in this section, and the direct analogue of §3.4's vendor partner directories.** For `20.09` marketplace agencies these are structured, platform-owned and answer the Family B shape exactly. Usually half-completed. |
+| **EXHIBITOR Magazine's All-Star Awards and the EDPA member directory; IFAI / ARA for fixtures and displays; POPAI/Shop! member directory and OMA awards** | 2 | Credentialed | CITE | `20.03` and `20.04`. Published criteria, so usable under `guardrails.md`. |
+| Grocery Dive, Retail Dive, Supermarket News, Store Brands, Progressive Grocer, Packaging Dive, Packaging World, Modern Retail, Digital Commerce 360, Path to Purchase IQ, Chain Store Age | 3 | Editorial | RANK, CITE | Real desks, receptive to category data. |
+| Clutch, Agency Spotter, DesignRush | 2 | Self-serve | ENTITY | For the agency sub-industries only, and **read the architecture doc §3.2 finding 3 first**: these are the same directories Qognition uses for itself, so a placement here is simultaneously an entity record for a target and a competitive surface. That is not a reason to skip it. It is a reason to have decided the white-label question before pitching. |
+| Review platforms | — | — | — | Nothing authoritative. Anyone selling a "CPG supplier review platform" is selling a directory. |
+
+**Honest assessment:** this industry gets the smallest off-page budget of the six and should. Its
+priority-A cohort is 25 — the second smallest in the taxonomy — and its discovery is relationship-led
+in a way registries cannot substitute for.
+
+---
+
+### 3.21 `franchising-and-multi-location` — Franchising & Multi-Location (B2B side)
+
+17 sub-industries, 113 niches, 45 priority-A. **The most unusual off-page profile in the document**,
+because the authoritative record is a *regulatory disclosure filing* and because the ranked lists in
+this industry have a well-known pay-for-placement problem that `guardrails.md` bites directly on.
+
+| Source | Class | Effort | Buys | Notes |
+|---|---|---|---|---|
+| **State franchise registration filings (CA DFPI, NY, IL, MD, MN, VA, WA and the other registration states) and the FDD itself** | 1 | Credentialed | ENTITY, CITE | **The best class-1 row here and the least worked.** The FDD is a public, dated, government-filed document containing unit counts, Item 19 financial performance representations, litigation history and fee structure. It is the most verifiable record any entity in this taxonomy has, and it is retrieved when an assistant is asked about a brand's real economics. Most franchisors treat it as a compliance artefact and never as a discoverable one. |
+| **FRANdata / FRANchise Registry; SBA franchise directory listing** | 1 | Credentialed | ENTITY | Lending-gated, checkable, and the thing a franchise-broker answer leans on. |
+| **IFA (International Franchise Association) membership and supplier-forum directory; IFA Franchise Action Network; CFE (Certified Franchise Executive) records** | 1 | Credentialed | ENTITY, CITE | The industry's own association. The supplier directory is the entity record for `21.11`–`21.17` — the vendors that serve franchisors, which is where most of the priority-A weight sits. |
+| Franchise Times Top 400 / Zor Awards; Entrepreneur Franchise 500; Franchise Business Review awards; FRANCHISE 50 and similar | 2 | Credentialed | CITE | **Handle with care.** `guardrails.md` allows a superlative only with a cited, dated, published methodology and no paid placement. Several lists in this industry accept payment for placement or for the badge. **§7.7 applies here more than anywhere else in the document: verify the methodology is published and that placement was not bought, in writing, before any badge or claim is used.** Franchise Business Review's is survey-based and is the most defensible of the set. |
+| Franchise Times, Franchising World (IFA), 1851 Franchise, Global Franchise, Multi-Unit Franchisee / MUFC, Restaurant Franchising & Innovation Summit coverage, QSR Magazine, Nation's Restaurant News | 3 | Editorial | RANK, CITE | Genuinely receptive desks and a small industry where a data-led pitch lands. **Multi-Unit Franchisee reaches the area-developer buyer in `21.16`, which almost nobody targets.** |
+| Franchise portals — Franchise Gator, Franchise Direct, FranchiseOpportunities, BeTheBoss, Franchise Help | 2 | Self-serve / paid | CITE | **The incumbent discovery layer and the thing the client complains about**, exactly as Thomasnet is in §3.3. Being listed is table stakes. The strategy is the same: be the named brand *inside* the answer the portal is cited in. Note `21.14` is itself these portals as an ICP, which makes this row both a target list and a client list. |
+| G2, Capterra | 2 | Self-serve | ENTITY | Live and meaningful for `21.17` franchise software only. |
+| Clutch, Agency Spotter | 2 | Self-serve | ENTITY | `21.13` franchise marketing agencies. **Same collision as §3.20 — read the architecture doc §3.2 finding 3 before pitching.** Two of the five colliding strings are this sub-industry's. |
+
+**Two cautions specific to this industry.**
+
+1. **Rule 2, and it is easy to breach here.** The buyer is the **franchisor** or the **vendor serving
+   franchisors**, never a franchisee candidate and never a consumer. An off-page placement pitched at
+   candidate-facing franchise media is a placement in front of the wrong audience, however good the
+   domain looks. `21.14`'s candidate-facing portals are a *client category*, not a placement target.
+2. **Rule 5, again.** `21.13` includes agencies that run local SEO across hundreds of locations, and
+   the vocabulary will pull toward multi-location and city pages. **Nothing in this industry justifies
+   a new city or local page on this domain**, and nothing here proposes deleting, redirecting or
+   noindexing an existing one.
+
+---
+
+### 3.22 What the six change about the programme as a whole
+
+**They strengthen the model rather than dilute it, and there is one reason.** The single best asset
+class in this document is class 1 — accredited registries, licence records and government-published
+lists — because they are authoritative, machine-readable, free or cheap, usually half-completed, and
+they answer the Family B prompt shape directly. Five of the six new industries have a **stronger**
+class-1 set than the median of the original fifteen:
+
+| Industry | Class-1 strength | Anchor |
+|---|---|---|
+| `environmental-engineering-and-testing` | **Highest in the document** | TNI/NELAP, A2LA/ANAB ISO/IEC 17025, state certified-lab lists, NVLAP |
+| `aerospace-and-aviation` | Very high | FAA/EASA Part 145, IAQG OASIS, Nadcap, ASA-100 |
+| `franchising-and-multi-location` | High and almost entirely unworked | State FDD filings, FRANdata, SBA franchise directory |
+| `commercial-and-facility-services` | High | IICRC, NADCA, NAID AAA, CIMS-GB, state licence boards |
+| `automotive-heavy-equipment-and-mobility` | Moderate, split across two markets | IATF database, NTEA, AED, AEM |
+| `retail-cpg-and-brand-enablement` | **Low** | GS1, SQF/BRCGS, marketplace partner directories |
+
+**The sequencing consequence.** §8's sequencing is unchanged in mechanism and gains one line: off-page
+work follows the architecture doc's wave order, and that order now puts
+`environmental-engineering-and-testing` at wave 6 and `aerospace-and-aviation` at wave 7, ahead of
+several original tier-A verticals. The justification is on this page: registry density and Family B
+prompt fit, not novelty.
+
+**And the constraint that does not move.** None of the above is a target until §4.2's rule is
+satisfied. A registry with a perfect structural argument that never appears as a cited source in the
+client's panel is a **ranking** target, reported under the ranking heading, budgeted as such, and never
+reported as AI-search work. That sentence is the whole document and the six new industries do not get
+an exemption from it.
+
+---
+---
 ## 4. How an acquisition is measured
 
 The operator's framing is the right one and it should be the first line of any off-page report:
@@ -827,6 +1031,8 @@ Ordered by dependency, not by attractiveness. Nothing here is a date; each step 
 | **6** | Establish the quarterly observation report cadence (§5.5) | Step 4 |
 | **7** | §5.2 and §5.4 | A named compliance reviewer (`OPERATOR-DECISIONS` #7) |
 | **8** | Application-based list windows (§7.7) — calendar them now, they are annual | None; do this immediately |
+| **9** | **New in revision 2.** Class-1 registry checklists for the six industries in §3.16–§3.21, built in the architecture doc's wave order — `environmental-engineering-and-testing` first, then `aerospace-and-aviation` | Step 2, and the wave reaching them |
+| **10** | **New in revision 2.** Before any `21.13` or `20.09` work: the white-label decision in the architecture doc §3.2 finding 3, and Ruth on any list badge in §3.21 | Operator, then Ruth |
 
 **The cheapest high-value work in this document is steps 1, 3 and 8.** None of them requires budget,
 a writer or a pitch. Step 3 in particular — checking whether a client's certifications appear in the
@@ -850,6 +1056,23 @@ most of these firms have never had anyone do, and it fits inside the free snapsh
 - Confirmation that no equivalent study to §5.4's reflexive Article 50 angle already exists
 - Primary log-level evidence on `llms.txt` fetch rates
 - Whether the seven `/team` leaders consent to public LinkedIn links (§2)
+
+New in revision 2:
+
+- **Live verification of every row in §3.16–§3.21, with a fetch date.** These six were compiled in a
+  single pass and none has been fetched or contacted. §0.2's caveat applies harder here than anywhere
+  else in the document
+- **Franchise ranked lists: which of them accept payment for placement or for a badge**, in writing,
+  before any claim is made from one (§3.21, §7.7). `guardrails.md` bites hardest here
+- **Whether Qognition sells white-label to the agency sub-industries** (`20.09`, `21.13`, and
+  `professional-and-business-services/b2b-marketing-and-demand-gen-agencies`). Five supplied keywords
+  are simultaneously the target's and Qognition's own — architecture doc §3.2 finding 3
+- **Whether any of the six new industries' registries block AI crawlers at the edge.** A registry that
+  is authoritative and unreachable fails at L1 and should be declined before it is pursued (§4.1).
+  Checkable from `robots.txt` plus a fetch, and nobody has checked
+- **Off-page budget split across 21 industries rather than 15.** The existing `[NEEDS DATA: off-page
+  budget]` is now a harder question: at 21 industries and the architecture doc's multi-year wave
+  schedule, an unallocated budget will be spread thin enough to measure nothing
 
 ---
 

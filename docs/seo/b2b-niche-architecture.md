@@ -35,9 +35,10 @@ unit that actually binds.
 | 4 | **New §1.7: which level earns a page, answered per fit type.** This is the load-bearing section of revision 3 and it replaces revision 2's §1.3 as the place the volume decision is actually made. | New §1.7 |
 | 5 | **The ICP taxonomy is an ungated island.** `grep -rn "b2b/icp" app components lib data scripts` returns nothing. No route, no sitemap entry, no gate, no ceiling assertion. `publishedIcpPaths()` returns `[]` by hand-written code and **nothing asserts that it stays empty**. `scripts/check-b2b.cjs` guards `data/b2b/verticals.ts` and knows nothing about this file. | §0.2, §8.1, §8.5 |
 | 6 | **There are now three spines claiming `/industries/*`,** and all three claim `financial-services`. Legacy `data/industries.ts` (11), `data/b2b/verticals.ts` (15/120), `data/b2b/icp` (21/341/2,376/8,823). The middle one describes the same 15 industries as the new one under **different slugs** (`saas-software` vs `saas-and-software`). Two of them cannot both be a URL source. | §0.2, §0.3 decision 7 |
-| 7 | **Rule 7 is currently unexecutable.** It says build under the canonical id "listed at the bottom of INDEX.md". There is no `INDEX.md` in this repo and no `docs/icp/` directory; rules 1, 7 and 9 all cite paths that do not exist. I also cannot reproduce the "5 deliberate overlaps": measured, there is **one** duplicated niche slug and name (`facilities-management-firms`, `02.16.04` and `07.14.06`), zero duplicate ids and zero duplicate full paths. | §0.3 decision 8, NEEDS DATA |
+| 7 | **Rule 7 is executable after all, and my first read of it was wrong.** The canonical ids are not in an `INDEX.md` — that file does not exist, and rules 1, 7 and 9 all cite `docs/icp/` paths that do not resolve. They are in the JSON, in a top-level `overlaps` array of five `{buyer, canonical, duplicate}` rows, alongside a `dedupe_log` of thirteen. I initially searched for duplicate slugs and found one, and reported that the five could not be reproduced. **That was looking in the wrong field.** Corrected in §0.3 decision 8. | §0.3 decision 8 |
 | 8 | **Rule 8 defers almost the whole PPC layer.** Of 888 priority-A niches, **15 are `PPC` fit** — 1.7%. The PPC-fit population is 115 B and 60 C. Building A first is correct and it means the paid door is served by §2.5's demand probe and the `/ppc` layer page, not by this family, for a long time. | §1.6, §1.7, §2.5 |
 | 9 | Off-page source maps extended to the six new industries. | `docs/seo/b2b-offpage-authority.md` §3.16–§3.21 |
+| 9a | **ADR-0008 landed mid-revision** (commit `4127305`). We converge on nearly everything. One misattribution to correct, one live disagreement, one amendment I accept, two open questions. | New §5.4, and the reconciliation note in §1.6 |
 | 10 | The glossary content-model fix (§7.4 step 1) **still comes before every wave, and the case for it is stronger, not weaker.** Reasoning in §7.5. | §7.5, §1.6 |
 
 ### Carried forward from revision 2, unchanged
@@ -218,17 +219,38 @@ vertical, and is the only place the occupancy argument may be led with.
    or already live and untouched. The decision is about which file a *future* URL comes from.
    `[NEEDS DATA: operator decision — ICP spine is the sole route source for new URLs; verticals.ts
    demoted to a data-only artefact; legacy retains financial-services]`
-8. **How rule 7 is executed without `INDEX.md`.** The rule needs a canonical-id list and there is no
-   file to read it from. Measured, the collision set is one pair, not five:
-   `facilities-management-firms` at `02.16.04`
-   (`professional-and-business-services/specialist-business-services`) and `07.14.06`
-   (`construction-real-estate-and-built-environment/commercial-real-estate-services`). Zero duplicate
-   ids, zero duplicate full paths, and `nicheBySlug` in `data/b2b/icp/index.ts` is keyed on the full
-   three-segment path, so its "first writer wins" guard **can never fire** — the comment describes a
-   protection the key makes impossible. `allIcpNiches()` therefore returns **2,376**, not the 2,371
-   the header comment and `counts.unique_niches` both claim.
-   `[NEEDS DATA: the canonical id for each declared overlap, and reconciliation of unique_niches 2,371
-   against the 2,376 the data produces]`
+8. **Rule 7 — resolved, and a correction to my own first reading.** The rule points at `INDEX.md`,
+   which does not exist. The canonical ids do exist, in the JSON's top-level `overlaps` array:
+
+   | Buyer | Canonical | Duplicate | Same slug? |
+   |---|---|---|---|
+   | Outsourced / fractional CFO firms | `02.06.01` `professional-and-business-services/outsourced-finance-and-transaction-advisory/outsourced-cfo-firms` (A/Both) | `04.16.01` `financial-services/outsourced-finance-and-risk-advisory/fractional-cfo-firms` (B/Both) | no |
+   | Translation & localization agencies | `02.16.01` (A/Both) | `13.09.01` `media-marketing-and-creative/translation-and-transcreation/translation-and-transcreation-agencies` (A/Both) | no |
+   | Facilities management firms | `02.16.04` (A/AI SEO) | `07.14.06` (A/Both) | **yes** |
+   | AI implementation consultancies | `09.11.01` (A/Both) | `15.01.01` `emerging-and-micro-niches/ai-implementation-consultancies/ai-implementation-consultancies` (A/Both) | no |
+   | Longevity clinic vendors | `15.03.02` (A/Both) | `03.17.01` `healthcare-and-life-sciences/longevity-and-aesthetic-clinic-vendors/vendors-serving-longevity-clinics` (C/AI SEO) | no |
+
+   **`2,376 − 5 = 2,371` reconciles exactly with `counts.unique_niches`.** My earlier statement that
+   the five could not be reproduced was wrong: I looked for duplicate *slugs* and found one, because
+   four of the five overlaps use different slugs under different parents. The lesson is the obvious
+   one and I am leaving it on the record rather than quietly fixing it — I measured the wrong field
+   and reported the result as a taxonomy defect.
+
+   **What is still true and still matters.** `nicheBySlug` in `data/b2b/icp/index.ts` is keyed on the
+   full three-segment path, and all 2,376 paths are distinct, so its "first writer wins" guard
+   **never fires** — it cannot, because the collisions it describes are id-level, not path-level. The
+   comment claims a protection the key makes impossible, and `allIcpNiches()` correctly returns 2,376
+   rows while the header comment says 2,371. Overlap handling has to read `overlaps` and canonicalise
+   on **id**, which is exactly what ADR-0008 §7.3 specifies. No operator decision is needed; this is
+   a code correction.
+
+   Three notes for whoever implements it. **One:** two overlap pairs have *different* priority and fit
+   on the two sides — `02.06.01` is A/Both while `04.16.01` is B/Both, and `15.03.02` is A/Both while
+   `03.17.01` is C/AI SEO. Rule 8's build order and §1.7's fit decision must both read the
+   **canonical** side, or the same page gets built twice at two different priorities. **Two:** the
+   `dedupe_log`'s thirteen rows are a different thing — a niche removed from one industry and kept in
+   another — and they generate a pointer, not a canonical. **Three:** only one of the five pairs is
+   slug-identical, so a slug-based overlap check would catch one in five. Assert on id.
 
 ### 0.4 The one thing that makes this work
 
@@ -445,6 +467,36 @@ cohort is one level-2 page plus a median of three A niches: four pages. The §8.
 informative**, and that is the only reason.
 
 Rule 8 says priority-A first. It does not say priority-A simultaneously.
+
+#### Reconciled against ADR-0008 §6, which landed while this was being written
+
+ADR-0008 sets the **promotion unit** at the sub-industry cohort — one level-2 page plus its
+priority-A niches, typically 4 pages, worst case 11 — and caps a wave at **2 cohorts**, retaining
+ADR-0007 §7's ceiling of **≤25 published pages per wave**. Its §6.3 explicitly rejects "per industry"
+as too big to review.
+
+**That is not the same unit as mine and Kyle is right about his.** His is the unit a human signs and
+one `git revert` undoes. Mine is the unit the §8.3 entry test measures. Both constraints are real and
+they resolve without either moving:
+
+> **A promotion cohort is the sub-industry cohort (ADR-0008 §6.2). A wave is the accumulation of
+> promotion cohorts up to ADR-0007 §7's existing 25-page ceiling. The gate runs on the wave, not on
+> the cohort.**
+
+The two numbers turn out to be the same number, which is why this resolves. The §8.3 test asserts
+`pagesWithAtLeastOneImpression28d / indexablePages >= 0.60`. On a 4-page cohort, 0.60 is 2.4 pages and
+the binomial noise band around a true 0.60 at n=4 is roughly ±49 percentage points — the gate would be
+reading noise and blocking or releasing a 2,376-page programme on it. At n=25 the band is roughly
+±19pp: still wide, still worth stating in every report, but usable. **ADR-0007's 25-page wave ceiling
+and the smallest cohort on which the gate means anything are the same figure.**
+
+So the per-industry table above is the **ordering**, not the wave size. An industry's priority-A
+cohort of 18–96 pages is worked through as 4–24 promotion cohorts across 1–4 waves, each wave gated.
+`media-marketing-and-creative` at 18 pages is one wave. `saas-and-software` at 96 is four.
+
+`[NEEDS DATA: Owen or the operator to confirm the reconciliation — promotion unit = sub-industry
+cohort per ADR-0008 §6.2, gate cohort = ≤25 pages per ADR-0007 §7. Neither document changes; only the
+statement that they are different units.]`
 
 #### Wave 0 — plumbing. Still zero new pages, and it grew
 
@@ -1382,6 +1434,72 @@ sibling selection is sufficient, it is auditable, and it is the only version tha
 Anything smarter is a system whose output nobody can predict before a build, attached to the crawl
 graph of a family that is meant to be the domain's recovery.
 
+### 5.4 ADR-0008 as actually written — where C1–C8 land, and one misattribution to correct
+
+ADR-0008 was committed (`4127305`) while this revision was on the working tree. Kyle's §7 is a better
+mechanism than I would have specified and most of §5.2 is satisfied by it. Four things need saying.
+
+**First, a misattribution, and it matters because it is about to be adjudicated.** ADR-0008 §2.5 reads
+a partial snapshot of this document — "772 insertions, uncommitted at the time of reading" — and
+attributes to me a "§3.5" recommending that a *promoted sub-niche* mounts flat at
+`/industries/<industry>/<sub-industry>/<leaf>` at depth 4, versus his nested depth 5. **I have no §3.5
+and I hold neither position.** §1.7.2 of this document says a sub-niche gets **no page, all three fit
+types, no exceptions**, and §5.1 rule 14 says its name is never a link and never a fragment. The
+question ADR-0008 §2.5 asks Owen to adjudicate — flat leaf or nested — is a question I do not think
+should arise, because there should be no promoted sub-niche to hang anywhere.
+
+Kyle's own measurement is the strongest argument for my position and he found it while arguing the
+other case. His table records that under a flat leaf shape **one entity cannot have a URL at all** —
+`technology-and-it-services/cloud-consultancies/migration-and-modernization-partners` is two different
+sub-niches, `09.05.01.01` and `09.05.02.01`, under two different niches, sharing a slug, and rule 6
+forbids renaming either. I verified it: exactly one such clash exists in the whole taxonomy. Read
+carefully, that is not evidence for nesting. **It is evidence that level 4 is not a URL namespace.** A
+namespace in which one member is unaddressable without breaching an operator rule is a namespace being
+asked to do something it was not built for.
+
+> **My position for the adjudication, stated plainly so Owen has it:** neither. Level 4 is data, never
+> a route (§1.7.2). If the operator overrules that and sub-niches are promoted anyway, nested at depth
+> 5 is the better of the two shapes and Kyle's reasoning for it is sound — it is 1:1 with the ids, it
+> keeps breadcrumb and URL in agreement, and it does not start one entity short. I would rather lose
+> on the nesting question than win it, because winning it concedes the premise.
+
+**Second, C2 is not satisfied and the fix is two words.** ADR-0008 §7.2 selects siblings in "taxonomy
+order" — array position in the JSON. That is the mechanism of §7.2 of this document, which is the
+post-mortem for what positional ordering over a mutable array did to 320 glossary pages' internal
+links. The file is operator-locked and versioned, so a reorder is unlikely; `slice(0, 320)` was also
+unlikely. **Order siblings by slug.** It costs one comparator, it is deterministic for the same
+reason but without the dependency, and it removes an entire class of silent link-graph rewrite from a
+system that will carry the whole family.
+
+**Third, C3 is not satisfied, and I accept the amendment with the cost stated.** ADR-0008 §7.4 option
+A adds one section to `/industries` listing the **21 industries**, which puts a niche page at depth 4
+and a sub-industry at depth 3. §7.5 then replaces the depth *assertion* with a real reachability walk
+and reports depth rather than asserting it. **The reachability walk is strictly better than my rule 10
+and I withdraw rule 10's ceiling in favour of it.** The cost is real and should be in the ADR rather
+than only here: depth-4 pages are crawled and re-crawled less often, and cited URLs run roughly 25.7%
+fresher than organic results ([Ahrefs, 17M citations](https://ahrefs.com/blog/do-ai-assistants-prefer-to-cite-fresh-content/)),
+so re-crawl frequency is an input to the thing the niche page exists to win.
+
+There is a bounded amendment that recovers depth 3 for the citation surface without breaking Kyle's
+21-link bound: **`/industries` lists the 21 industries plus the published sub-industry pages of the
+currently shipping wave only.** At ≤25 pages per wave that is at most a handful of extra links, it
+shrinks back as waves complete, and it puts the newest cohort — the one whose impressions the gate is
+about to measure — at depth 3 rather than 4 during exactly the window it is being measured in. I
+recommend it; it is Kyle's call and it is not worth blocking on.
+
+**Fourth, two questions ADR-0008 does not answer and C6 and C8 need answered.**
+
+- **C6.** §7.2's children block is "the entity's own array" and uncapped. Does it render **published
+  children only**? It must. A sub-industry page listing 10 niches of which 3 are published and 7 are
+  spine is a directory stub, and it is the shape §1.7 depends on not existing — a folded-in niche has
+  to appear as an `<h2>` with real content, never as a dead list item.
+- **C8.** §6.4's `PUBLISHED_COHORTS` is an explicit hand-written list, which satisfies C8 exactly, and
+  assertion 2's use of **equality rather than `<=`** is better than what I specified: it catches a page
+  falling *out* of publication, which is the `/glossary` failure mode in §7.1. Take that win. The open
+  question is whether anything asserts `publishedIcpPaths()` in `data/b2b/icp/index.ts` — the grep in
+  §8.5 still returns nothing for `data/b2b/icp` in any gate file, so as of `ef93034` the 11,561-entity
+  file remains ungated.
+
 ### 5.3 What this replaces
 
 The existing sub-industry template's sidebar links to `/locations`, `/resources` and `/directory` on
@@ -1913,7 +2031,7 @@ presented as a search result.
 | 1 | **No gate over `data/b2b/icp`** — no ceiling, no consumer, no assertion (§8.5) | Every wave. This is now item 1, ahead of everything |
 | 2 | **The glossary content-model fix** (§7.4 step 1, restated for scale in §7.5) | Wave 0, and therefore every wave |
 | 3 | **Which spine is the URL source** (§0.3 decision 7) — three spines claim `/industries/*`, all three claim `financial-services` | Any new URL at all |
-| 4 | **Rule 7 has no `INDEX.md` to read canonical ids from** (§0.3 decision 8), and `unique_niches: 2,371` does not reconcile with the 2,376 the data produces | Overlap handling; the count in every report |
+| 4 | **Overlap handling must canonicalise on id, not slug** (§0.3 decision 8). Not an operator decision — a code correction, and ADR-0008 §7.3 already specifies it. Two of the five pairs differ in `priority` and `fit` across the two sides, so rule 8 and §1.7 must read the canonical side | Correctness of build order for five niches |
 | 5 | Reviewer throughput per month | The wave schedule, and the §1.7.1 screen rate |
 | 6 | Is the observation engine real — G.O.L.E.M yes, `runAudit()` no | Every page in the family |
 | 7 | The office-claim contradiction (`OPERATOR-DECISIONS` #1), extending to third-party directories | Entity consistency for ~1,020 new pages, and all off-page work |
@@ -1924,7 +2042,11 @@ presented as a search result.
 | 12 | Whether to restore a real page at `/glossary/ai-seo-and-sge-strategy-audit` (§7.4 step 4) | Recovering the domain's best ranking asset |
 | 13 | Competitor-brand bidding: yes or no (§2.5) | Marcus's campaign build; Ruth reviews the ad copy either way |
 | 14 | **Does Qognition sell white-label to B2B marketing and franchise marketing agencies** (§3.2 finding 3) | Wave 4's composition, and five keywords that are both Universe A and Universe B |
-| 15 | **ADR-0008's mechanism against the C1–C8 constraints** (§5.2) | The link graph for the whole family |
+| 15 | **ADR-0008 §2.5's adjudication** — it asks Owen to choose flat-leaf or nested for a promoted sub-niche, attributing the flat-leaf position to me. I hold neither; §1.7.2 says level 4 is never a route. §5.4 states my position for the adjudication | Whether 8,823 entities are a URL namespace |
+| 16 | **ADR-0008 §7.2 selects siblings in taxonomy (array) order.** Should be slug order — §5.4, and §7.2 of this document is the post-mortem for why | The link graph's resistance to a silent upstream rewrite |
+| 17 | **ADR-0008 §7.4 option A needs an explicit operator yes** (adding one section to `/industries`). Without it nothing in the family is reachable at all. My bounded amendment in §5.4 is optional; the base decision is not | Every published page |
+| 18 | **Does ADR-0008 §7.2's children block render published children only?** (C6) | Whether a level-2 page reads as a page or a directory stub |
+| 19 | **Confirmation of the wave/promotion unit reconciliation** — promotion cohort per ADR-0008 §6.2, gate cohort ≤25 pages per ADR-0007 §7 (§1.6) | The meaning of every §8.3 gate result |
 
 ### NEEDS DATA
 
@@ -1945,9 +2067,10 @@ New in revision 3:
 
 - **Operator decision: the ICP spine is the sole route source for new URLs**, `data/b2b/verticals.ts`
   demoted to a data-only artefact, legacy retains `/industries/financial-services` (§0.3 decision 7)
-- **The canonical id for each declared overlap**, and reconciliation of `counts.unique_niches: 2,371`
-  against the 2,376 rows `allIcpNiches()` returns. Measured, there is one duplicated niche slug
-  (`facilities-management-firms`, `02.16.04` and `07.14.06`), not five (§0.3 decision 8)
+- ~~The canonical id for each declared overlap.~~ **Closed, not needed.** The JSON's top-level
+  `overlaps` array carries all five, `2,376 − 5 = 2,371` reconciles with `counts.unique_niches`, and
+  my earlier claim that the five were unreproducible was me measuring the wrong field. §0.3 decision 8.
+  What remains is a code correction, not a data request
 - **How the "162 location terms" figure is derived.** I measure 135, by two independent methods, across
   45 distinct cities (§7.5). Rule 5's protection applies either way and nothing here prunes any of them
 - **Operator decision: does Qognition sell white-label to B2B marketing and franchise marketing
