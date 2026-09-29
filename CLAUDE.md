@@ -31,14 +31,40 @@ argument. But in eleven of them the visible supply is **self-ranking listicles**
 itself at number one and no entry carries a dated client result, including the publisher's own.
 Four opened directly, four times the same shape — First Page Sage (legal), RevenueZen (professional
 services), Siana (remodeling), Bluelinks (construction). Bluelinks alone publishes these for eleven
-verticals; its construction list claims 83 agencies studied on seven weighted criteria that **sum to
-105%**. Of the genuine vertical specialists opened directly (Spiral, Carnegie, Fintel Connect,
-Siana), one names a client and none publishes a dated reproducible measurement.
+verticals and by pass 3 had added aircraft sales, automotive manufacturing, franchises, cleaning
+services, contractors, building materials, local services and remodeling. First Page Sage now runs
+the same play with self-ranked lists for aerospace and industrial. Seven opened directly across three
+passes, publisher first in all seven. Of the genuine vertical specialists opened (Spiral, Carnegie,
+Fintel Connect, Siana), one names a client and none publishes a dated reproducible measurement.
+
+One detail not to over-claim: the Bluelinks construction list's seven weighted criteria **sum to
+105%**, but the two lists opened in pass 3 both sum to 100. That was one page, not a house style.
+Cite it as one page or not at all.
 
 That is the claim to lead with, because a reader can check it on the day they read it, it does not
 require us to have run a panel, and it ages well.
 
-**Blocklisted number: Thrive's "+5,556% increase in AI referral traffic".** Attributed on Thrive's
+**Where occupancy still holds, and where it does not.** Commercial insurance remains uncontested
+across all three passes. **TIC (industry 19: environmental consulting, environmental labs,
+calibration, product testing) is the second genuine vacancy** — a targeted search on 2026-09-29 for
+AI-search positioning aimed at it returned no vertical specialist and no listicle, and First Page
+Sage's industrial list names manufacturing, construction, automation, engineering and robotics but
+not labs or environmental. State it in that narrow re-runnable form, never as "nobody serves this
+market". **Aerospace is occupied**, contrary to the assumption: The ABM Agency, First Page Sage and
+Bluelinks all publish for it.
+
+**Blocklisted numbers.** None of these may appear in copy, a chart, a deck, an ad or a proposal, and
+no rebuttal of one may be phrased so as to imply we measured it.
+
+| Figure | Source | Why |
+|---|---|---|
+| "+5,556% increase in AI referral traffic" | Thrive | "2025 internal performance results". No client, method or date. Has crossed into manufacturing and construction carried by third parties who drop the caveat |
+| "287-415% ROI within 90-120 days" | The ABM Agency, aerospace | No client, method or date. The page also ranks itself first |
+| "AI-sourced traffic converting at rates 25x higher than traditional organic" | The ABM Agency | Same unsourced conversion-rate claim pass 1 traced and could not find in the Semrush study. Now crossed into aerospace |
+| "average 9.1x ROI" | The ABM Agency | No client, method or date |
+| "lead volume up 50% within 30 days, up to 160% within 90" | ChoiceLocal, franchisor AEO | No client, method or date |
+
+**Original blocklist entry, kept for the detail:** Thrive's "+5,556%". Attributed on Thrive's
 own page to "2025 internal performance results" with no client, no method and no date. It has now
 travelled into manufacturing and construction carried by third parties who drop the caveat. It is
 the most-travelled unverifiable figure in this category. Never repeat it, and never write a rebuttal
@@ -60,6 +86,14 @@ Never blur AI SEO and GEO. They are different surfaces.
 | **Local SEO** | Google Maps, local pack, Bing Places, Business Profile, reviews, listings |
 | **AI SEO** | Google AI Overviews and AI Mode |
 | **GEO** | ChatGPT, Perplexity, Gemini, Claude, Copilot |
+
+**Assistants are no longer an organic-only surface, and every layer definition above assumed they
+were.** Scorpion announced on 23 July 2026 (PR Newswire 302832718, observed) that it is an OpenAI
+technology partner supporting advertising in ChatGPT and managing ChatGPT ad campaigns for clients.
+Scorpion sells into franchise and multi-location, which is industry 21. `[NEEDS DATA: OpenAI's own
+programme documentation. We have the partner's release, not the source.]` Until that is confirmed,
+no page may describe paid placement in an assistant as a service we offer. Marcus owns the
+commercial question; this note exists so nobody writes "assistants have no ads" on a page.
 
 All four are in every retainer and are never sold separately. Technical SEO, on-page, off-page and
 authority work are in the box too. Tiers differ by **scope only**: locations covered, prompts
