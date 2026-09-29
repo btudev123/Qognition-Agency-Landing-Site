@@ -19,10 +19,11 @@
  * every published path sits under a declared cohort, so a page cannot be
  * promoted outside a reviewed cohort even by a correct-looking edit here.
  *
- * BOTH LISTS ARE EMPTY AND MUST STAY EMPTY until an operator promotion.
- * `scripts/check-icp.cjs` holds the ceiling at 0 and asserts that
- * `publishedIcpPaths()` in `data/b2b/icp/index.ts` agrees with this file, so the
- * two cannot drift apart silently.
+ * BOTH LISTS WERE EMPTY UNTIL WAVE 1 (2026-09-29, TIC, two cohorts, eight
+ * pages). `scripts/check-icp.cjs` holds the ceiling at exactly the published
+ * count and asserts that `publishedIcpPaths()` in `data/b2b/icp/index.ts` agrees
+ * with this file, so the two cannot drift apart silently. The ceiling is raised
+ * by one wave, in that wave's commit, and never 'to match'.
  *
  * DRAFT, AND WHAT IT DOES NOT DO HERE. On the meta-vertical spine a `draft`
  * entity renders at its URL so it can be read before anybody's name goes on it.
@@ -72,7 +73,35 @@ export interface IcpReview {
 /** `'<industry>/<sub-industry>'`. One line per promoted cohort, in wave order. */
 export const ICP_PUBLISHED_COHORTS: readonly string[] = Object.freeze([
   // ADR-0008 §6.4. Raised by exactly one wave, in that wave's commit.
+  //
+  // WAVE 1, 2026-09-29. Industry 19, Environmental, Engineering & Testing (TIC).
+  // Two cohorts, eight pages, inside the ceiling of 2 cohorts and 25 pages.
+  //
+  // Why this industry and not manufacturing, which has the deeper research file:
+  // Iris measured TIC on 2026-09-29 as the one vertical where a targeted search
+  // for AI-search positioning returned no specialist and no listicle, and as the
+  // industry with the densest certification vocabulary in the locked taxonomy
+  // (docs/research/b2b-vertical-substance-pass-3.md §5.2, §5.6). Manufacturing is
+  // occupied: Gorilla 76, Thrive and a trade listicle all publish for it. A first
+  // wave is worth more where the evidence is verifiable AND the field is empty.
+  'environmental-engineering-and-testing/environmental-testing-labs',
+  'environmental-engineering-and-testing/real-estate-and-transaction-due-diligence',
 ]);
+
+/* THE WAVE 1 SIGN-OFF, WRITTEN ONCE.
+ *
+ * Eight identical review records, so they are one constant rather than eight
+ * literals. The reason is not brevity: a repeated literal is where a second name
+ * or a second date gets typed by accident, and `IcpSignOff` cannot catch a
+ * WRONG DATE. One binding means the whole wave carries one review, which is what
+ * the reviewer actually gave.
+ *
+ * The date is the date the wave was reviewed, not the date any source was read.
+ * Source access dates live on each fact in `data/b2b/icp/authored/*`. */
+const REVIEW: IcpReview = Object.freeze({
+  reviewedBy: 'Prabal (CEO, Qognition Agency)',
+  reviewedAt: '2026-09-29',
+});
 
 /**
  * Full path to the review that promoted it. A path with no entry here is spine:
@@ -80,6 +109,29 @@ export const ICP_PUBLISHED_COHORTS: readonly string[] = Object.freeze([
  */
 export const ICP_PUBLISHED: ReadonlyMap<string, IcpReview> = new Map<string, IcpReview>([
   // '<industry>/<sub-industry>[/<niche>[/<sub-niche>]]', { reviewedBy, reviewedAt }
+
+  /* WAVE 1. Eight pages. Listed parent first within each branch, because the
+     publication chain is checked ancestor by ancestor and reading it in that
+     order is how a reviewer confirms no orphan is representable. */
+  ['environmental-engineering-and-testing', REVIEW],
+
+  ['environmental-engineering-and-testing/environmental-testing-labs', REVIEW],
+  ['environmental-engineering-and-testing/environmental-testing-labs/environmental-analytical-labs', REVIEW],
+  ['environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs', REVIEW],
+  [
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs/drinking-water-pfas-methods',
+    REVIEW,
+  ],
+  [
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs/non-potable-and-wastewater-pfas',
+    REVIEW,
+  ],
+
+  ['environmental-engineering-and-testing/real-estate-and-transaction-due-diligence', REVIEW],
+  [
+    'environmental-engineering-and-testing/real-estate-and-transaction-due-diligence/phase-i-and-ii-esa-firms',
+    REVIEW,
+  ],
 ]);
 
 /**

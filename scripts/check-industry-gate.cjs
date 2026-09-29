@@ -12,7 +12,8 @@
  *
  * It also asserts the thing the operator actually cares about: that the gate
  * changed no live URL. Every allowlisted entity must still resolve to a real row
- * in data/industries.ts, and the sitemap must still hold 4422 entries.
+ * in data/industries.ts, and the sitemap must hold 4430 entries (4422 legacy plus
+ * the eight pages of ICP wave 1).
  */
 require('./lib/load-typescript.cjs');
 const assert = require('node:assert/strict');
@@ -73,9 +74,13 @@ assert.equal(
 
 /* The operator's hard constraint, asserted rather than asserted-about. */
 const entries = sitemapIndexes.flatMap((g) => routesForSitemap(g));
+/* 4422 -> 4430 on 2026-09-29. ICP wave 1 published eight TIC pages, and eight is
+   the whole of the change: 4422 legacy rows untouched, plus one industry, two
+   sub-industries, three niches and two sub-niches. If this number moves by
+   anything other than the size of a declared wave, something published itself. */
 assert.equal(
-  entries.length, 4422,
-  `Sitemap is ${entries.length} entries, expected 4422. The industry gate must not change ` +
+  entries.length, 4430,
+  `Sitemap is ${entries.length} entries, expected 4430. The industry gate must not change ` +
   `the published URL set; if a wave deliberately added pages, update this number with it.`
 );
 
@@ -98,7 +103,7 @@ console.log(
  * INDUSTRIES is enumerated BEFORE LOCATIONS, so adding an industry pushes
  * location terms past the cap and off the end. The sitemap total stays the same,
  * which is exactly why nobody noticed: four in, three out, net -1 hidden inside
- * a 4,422-entry file.
+ * a 4,430-entry file.
  *
  * This matters more than the count suggests. /glossary is the best
  * clicks-per-page programmatic family on the domain (0.25) and held the

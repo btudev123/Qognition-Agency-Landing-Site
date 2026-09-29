@@ -33,14 +33,22 @@
  * `undefined` on a mismatch, which is a 404 rather than a half-rendered page,
  * paired with a loud failure in `scripts/check-icp.cjs`.
  *
- * IT IS EMPTY, AND THAT IS THE CORRECT RESTING STATE. The capability is built
- * for 11,561. The publication ceiling is 0 and waves raise it. A body here with
- * no entry in `lib/b2b/icpPublication.ts` is authored work nobody can reach, and
- * the gate says so in both directions.
+ * IT WAS EMPTY UNTIL WAVE 1. The capability is built for 11,561. The ceiling is
+ * raised by exactly one wave in that wave's commit, and it now stands at 8. A
+ * body here with no entry in `lib/b2b/icpPublication.ts` is authored work nobody
+ * can reach, and the gate says so in both directions.
  * ────────────────────────────────────────────────────────────────────────────
  */
 
 import type { HubBody, SubNicheBody } from '../types';
+import { TIC_HUB } from './authored/tic-hub';
+import { TIC_ENVIRONMENTAL_TESTING_LABS } from './authored/tic-environmental-testing-labs';
+import { TIC_ENVIRONMENTAL_ANALYTICAL_LABS } from './authored/tic-environmental-analytical-labs';
+import { TIC_PFAS_LABS } from './authored/tic-pfas-labs';
+import { TIC_PFAS_DRINKING_WATER } from './authored/tic-pfas-drinking-water';
+import { TIC_PFAS_WASTEWATER } from './authored/tic-pfas-wastewater';
+import { TIC_TRANSACTION_DUE_DILIGENCE } from './authored/tic-transaction-due-diligence';
+import { TIC_PHASE_I_AND_II_ESA } from './authored/tic-phase-i-and-ii-esa';
 
 /**
  * One folded-in child, rendered as a section on its parent's page.
@@ -73,8 +81,50 @@ export type IcpBody = (HubBody | SubNicheBody) & {
   readonly scope?: readonly IcpScopeRow[];
 };
 
-/** Keyed by full ICP path. Hand-written, never derived from the filesystem. */
-export const ICP_BODIES: ReadonlyMap<string, IcpBody> = new Map<string, IcpBody>([]);
+/* WAVE 1. TIC (industry 19), two cohorts, eight pages, 2026-09-29.
+ *
+ * ONE FILE PER AUTHORED ENTITY under `./authored/`, which is ADR-0007 §4.1's
+ * shape. The directory is `authored/` rather than `bodies/` on purpose:
+ * `scripts/check-b2b.cjs` item 10 requires every file under a `bodies/` path in
+ * `data/b2b` to be imported by `data/b2b/index.ts`, and that barrel is the
+ * SPINE's, keyed `<meta-vertical>[/<sub-niche>]`. Wiring the ICP family into it
+ * would merge the two namespaces the header above explains must stay apart.
+ *
+ * Eight keys, in wave order rather than sorted, so the cohort structure is
+ * readable in the diff: the industry, then the laboratories cohort top down,
+ * then the diligence cohort. `scripts/check-icp.cjs` compares sorted sequences,
+ * so the order here is for the reader.
+ */
+export const ICP_BODIES: ReadonlyMap<string, IcpBody> = new Map<string, IcpBody>([
+  ['environmental-engineering-and-testing', TIC_HUB],
+
+  ['environmental-engineering-and-testing/environmental-testing-labs', TIC_ENVIRONMENTAL_TESTING_LABS],
+  [
+    'environmental-engineering-and-testing/environmental-testing-labs/environmental-analytical-labs',
+    TIC_ENVIRONMENTAL_ANALYTICAL_LABS,
+  ],
+  [
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs',
+    TIC_PFAS_LABS,
+  ],
+  [
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs/drinking-water-pfas-methods',
+    TIC_PFAS_DRINKING_WATER,
+  ],
+  [
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs/non-potable-and-wastewater-pfas',
+    TIC_PFAS_WASTEWATER,
+  ],
+
+  [
+    'environmental-engineering-and-testing/real-estate-and-transaction-due-diligence',
+    TIC_TRANSACTION_DUE_DILIGENCE,
+  ],
+  [
+    'environmental-engineering-and-testing/real-estate-and-transaction-due-diligence/phase-i-and-ii-esa-firms',
+    TIC_PHASE_I_AND_II_ESA,
+  ],
+]);
 
 export function getIcpBody(path: readonly string[]): IcpBody | undefined {
   return ICP_BODIES.get(path.join('/'));

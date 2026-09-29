@@ -151,13 +151,32 @@ export function nichesByPriority(priority: IcpPriority) {
 }
 
 /**
- * Published ICP entities. Empty, and it must stay empty until an operator
- * promotion. At 11,561 entities this is the single most important function in
- * the file: it is what stands between the taxonomy and the scaled-content
- * pattern that produced 2,161 location pages at 0.13 clicks each.
+ * Published ICP entities. At 11,561 entities this is the single most important
+ * function in the file: it is what stands between the taxonomy and the
+ * scaled-content pattern that produced 2,161 location pages at 0.13 clicks each.
+ *
+ * WAVE 1, 2026-09-29. Eight paths, two cohorts, industry 19 (TIC). Reviewed and
+ * signed off by Prabal (CEO, Qognition Agency) in the commit that authored them.
+ *
+ * THIS LITERAL AND `ICP_PUBLISHED` IN lib/b2b/icpPublication.ts ARE TWO SOURCES
+ * OF TRUTH ON PURPOSE. This one is what an operator reads; that one is what the
+ * routes read. `scripts/check-icp.cjs` R1 asserts the two sorted sequences are
+ * identical, which is the only thing that makes the duplication safe. Both move
+ * in the same commit or the build fails, by design.
+ *
+ * Sorted, because the gate compares a sequence rather than a set.
  */
 export function publishedIcpPaths(): readonly string[] {
-  return [];
+  return [
+    'environmental-engineering-and-testing',
+    'environmental-engineering-and-testing/environmental-testing-labs',
+    'environmental-engineering-and-testing/environmental-testing-labs/environmental-analytical-labs',
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs',
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs/drinking-water-pfas-methods',
+    'environmental-engineering-and-testing/environmental-testing-labs/pfas-and-emerging-contaminant-labs/non-potable-and-wastewater-pfas',
+    'environmental-engineering-and-testing/real-estate-and-transaction-due-diligence',
+    'environmental-engineering-and-testing/real-estate-and-transaction-due-diligence/phase-i-and-ii-esa-firms',
+  ];
 }
 
 /* ── LEVEL 4, AND THE CROSS-TREE ROWS. Added for the four-level route surface.

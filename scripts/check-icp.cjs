@@ -27,8 +27,18 @@ const {
 } = require('../data/b2b/icp/index.ts');
 const { routesForSitemap, sitemapIndexes } = require('../lib/sitemap.ts');
 
-/* Raise ONLY in a commit that also authors the pages and names their reviewer. */
-const ICP_PUBLISHED_CEILING = 0;
+/* Raise ONLY in a commit that also authors the pages and names their reviewer.
+ *
+ * 0 -> 8 on 2026-09-29. WAVE 1: industry 19, Environmental, Engineering & Testing
+ * (TIC). Two cohorts (`environmental-testing-labs`,
+ * `real-estate-and-transaction-due-diligence`), eight pages across all four
+ * levels, all eight authored in the same commit and signed off by
+ * Prabal (CEO, Qognition Agency) on 2026-09-29.
+ *
+ * Inside ADR-0008 §6.4 assertion 5: a wave is at most 2 cohorts and at most 25
+ * newly published pages. The next wave raises this number by its own size, in
+ * its own commit, and never "to match" something else that moved. */
+const ICP_PUBLISHED_CEILING = 8;
 
 /* The operator's locked counts. A mismatch means the JSON was edited, swapped or
    truncated, and every downstream count in every doc is then wrong. */
@@ -588,6 +598,214 @@ for (const [key, body] of ICP_BODIES) {
         `attributes it to the client's buyer, and nowhere else.`
       );
     }
+  }
+}
+
+/* ── R10b. THE COPY RULES, WHICH THIS FAMILY WAS NOT UNDER UNTIL WAVE 1.
+ *
+ * `scripts/check-b2b.cjs` holds six copy assertions: no em dash, a 160-character
+ * meta description, a 60-word opener, Ruth's four-element provenance unit, a
+ * 5-gram uniqueness bar and a boilerplate ceiling. Every one of them walks
+ * `B2B_BODIES`, which is the 15-entry SPINE map. `ICP_BODIES` is a different map
+ * with a different key shape, so until this block existed NONE of those rules
+ * applied to the four-level family, and the family is the one with 11,561
+ * entities in it.
+ *
+ * That gap was invisible while `ICP_BODIES` was empty and became load-bearing
+ * the moment wave 1 put eight bodies in it. It is the same shape as every other
+ * defect this project has recorded: a rule that exists, aimed at the smaller of
+ * two surfaces. Written here rather than in check-b2b.cjs because this file owns
+ * the ICP family and check-b2b.cjs owns the spine.
+ *
+ * Deliberately NOT extracted into a shared module. The two maps differ in key
+ * shape and in which level carries `vocabulary`, and a shared helper would have
+ * to branch on that, which is how one of the two branches quietly stops being
+ * exercised. Two explicit copies, both short, both read by whoever edits the
+ * family they gate. */
+{
+  const icpStrings = (value, out = []) => {
+    if (typeof value === 'string') out.push(value);
+    else if (Array.isArray(value)) for (const item of value) icpStrings(item, out);
+    else if (value && typeof value === 'object') for (const item of Object.values(value)) icpStrings(item, out);
+    return out;
+  };
+
+  const EM_DASH = /—|&mdash;|&#8212;/;
+  for (const [key, body] of ICP_BODIES) {
+    for (const text of icpStrings(body)) {
+      assert.ok(
+        !EM_DASH.test(text),
+        `/industries/${key} has an em dash in rendered copy: "${text.slice(0, 100)}". CLAUDE.md §10 ` +
+        `bans them by name. Use a colon, a full stop or brackets.`
+      );
+    }
+
+    assert.ok(
+      body.metaDescription.length <= 160,
+      `/industries/${key} metaDescription is ${body.metaDescription.length} characters. Search ` +
+      `engines truncate around 160, so everything past that is written for nobody.`
+    );
+    const words = body.opener.trim().split(/\s+/).length;
+    assert.ok(
+      words <= 60,
+      `/industries/${key} opener is ${words} words against a 60-word ceiling ` +
+      `(docs/seo/b2b-niche-architecture.md §4.1 block 1). It has to be extractable whole.`
+    );
+  }
+
+  /* Ruth's provenance unit, same two shapes as on the spine. A figure in
+     `facts[].claim` gets publisher, url and accessedAt structurally from
+     FactsBlock and therefore needs only the sample statement in the string. A
+     figure anywhere else renders as bare prose and needs all four. */
+  const FIGURE = /\b\d+(?:\.\d+)?\s?%|\b\d+(?:\.\d+)?\s+out of\s+\d+/;
+  const SAMPLE_CLAUSE =
+    /does not state (?:its |the )?sample size|surveyed \d|sample of \d|\bn\s*=\s*\d|polled \d|respondents|panel|clickstream|\b(?:million|billion)\b.{0,30}\b(?:lines|users?|panel|records?|sessions?)/i;
+
+  for (const [key, body] of ICP_BODIES) {
+    for (const fact of body.facts) {
+      if (!FIGURE.test(fact.claim)) continue;
+      assert.ok(
+        SAMPLE_CLAUSE.test(fact.claim),
+        `/industries/${key}: a fact carries a figure with no sample statement.\n  ${fact.claim.slice(0, 110)}\n` +
+        `FactsBlock renders publisher, url and accessedAt and never a sample size, so the claim has to ` +
+        `state the sample or say the publisher does not give one. All four elements ship or none does.`
+      );
+    }
+    const walkProse = (node, where) => {
+      if (typeof node === 'string') {
+        if (!FIGURE.test(node)) return;
+        const hasPublisher =
+          /report|study|research|survey|published by|,\s*20\d\d/i.test(node) ||
+          /\b[A-Z][A-Za-z]{2,}\s+(?:analysed|analyzed|surveyed|found|reports?|records?|published)\b/.test(node);
+        const hasDate = /accessed on|\b20\d\d\b/.test(node);
+        assert.ok(
+          hasPublisher && hasDate && SAMPLE_CLAUSE.test(node),
+          `/industries/${key} ${where}: a figure in bare prose is missing part of its provenance.\n` +
+          `  ${node.slice(0, 110)}\n  publisher: ${hasPublisher} | date: ${hasDate} | sample: ${SAMPLE_CLAUSE.test(node)}\n` +
+          `Prose carries no structured source beside it. If the figure cannot carry all four elements, ` +
+          `move it into facts[] or cut it.`
+        );
+        return;
+      }
+      if (Array.isArray(node)) return node.forEach((v, i) => walkProse(v, `${where}[${i}]`));
+      if (node && typeof node === 'object') {
+        for (const [k, v] of Object.entries(node)) {
+          if (k === 'facts') continue;
+          walkProse(v, `${where}.${k}`);
+        }
+      }
+    };
+    walkProse(body, 'body');
+  }
+
+  /* Uniqueness and boilerplate, on the same normalisation the spine uses: the
+     entity's own name substituted out, so "PFAS" versus "Phase I" cannot be the
+     thing making two pages look different. */
+  const icpNameFor = (key) => {
+    const record = resolveIcp(key.split('/'));
+    if (!record) return key.split('/').pop();
+    if (record.level === 'industry') return record.industry.name;
+    if (record.level === 'sub-industry') return record.sub.name;
+    if (record.level === 'niche') return record.niche.name;
+    return record.subNiche.name;
+  };
+
+  const normalise = (body, name) => {
+    const text = [
+      body.buyerQuestion, body.opener, body.whyTheAnswerIsLost, body.snapshotQuestion,
+      ...body.buyers.flatMap((b) => [b.title, b.researches]),
+      ...body.facts.map((f) => f.claim),
+      ...body.faqs.flatMap((f) => [f.question, f.answer]),
+      ...(body.vocabulary ?? []).flatMap((v) => [v.term, v.issuedBy, v.gates]),
+      ...(body.comparisonAxes ?? []).flatMap((a) => [a.axis, a.whatBuyersAsk]),
+      ...(body.scope ?? []).map((r) => r.distinguishes),
+    ].join(' ');
+    const sentinel = ' \u0001 ';
+    return text
+      .toLowerCase()
+      .replace(new RegExp(name.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), sentinel)
+      .replace(/[^a-z0-9\u0001\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+  const shingles = (text) => {
+    const words = text.split(' ');
+    const out = new Set();
+    for (let i = 0; i + 5 <= words.length; i += 1) out.add(words.slice(i, i + 5).join(' '));
+    return out;
+  };
+  const jaccard = (a, b) => {
+    let shared = 0;
+    for (const s of a) if (b.has(s)) shared += 1;
+    const union = a.size + b.size - shared;
+    return union === 0 ? 0 : shared / union;
+  };
+
+  const icpDocs = [...ICP_BODIES].map(([key, body]) => ({ key, text: normalise(body, icpNameFor(key)) }));
+  for (const a of icpDocs) {
+    for (const b of icpDocs) {
+      if (a.key >= b.key) continue;
+      const overlap = jaccard(shingles(a.text), shingles(b.text));
+      assert.ok(
+        overlap < 0.6,
+        `/industries/${a.key} and /industries/${b.key} share ${(overlap * 100).toFixed(1)}% of their ` +
+        `5-word shingles once the entity name is substituted out. CLAUDE.md §7 wants >=40% unique ` +
+        `against the closest sibling. Reaching for the threshold is not the fix.`
+      );
+    }
+  }
+
+  const runCount = new Map();
+  for (const doc of icpDocs) {
+    const seen = new Set();
+    const words = doc.text.split(' ');
+    for (let i = 0; i + 12 <= words.length; i += 1) {
+      const run = words.slice(i, i + 12).join(' ');
+      if (seen.has(run)) continue;
+      seen.add(run);
+      runCount.set(run, (runCount.get(run) ?? 0) + 1);
+    }
+  }
+  const boilerplate = [...runCount.entries()].filter(([, n]) => n > 3);
+  assert.equal(
+    boilerplate.length, 0,
+    `${boilerplate.length} twelve-word run(s) appear verbatim in more than three ICP bodies:\n  ` +
+    boilerplate.slice(0, 5).map(([r, n]) => `(${n}x) "${r}"`).join('\n  ')
+  );
+
+  /* Nadia §4.1: no vocabulary term on more than 25% of the pages in the family.
+   *
+   * WITH A FLOOR OF 2, AND THE FLOOR IS THE ARGUABLE PART SO IT IS WRITTEN DOWN.
+   * Her percentage is calibrated for a family of hundreds, where 25% means
+   * eighty-odd pages and a term reaching that many is furniture. Applied
+   * literally to the eight pages that exist today it means at most one, which
+   * would forbid ISO/IEC 17025 appearing on both a laboratories page and a page
+   * about the laboratories underneath it. Both genuinely sit on that standard,
+   * so forbidding it is a false positive rather than a finding, and a gate that
+   * starts red is a gate people learn to route around.
+   *
+   * Two is the floor because two is not a pattern. The percentage takes over at
+   * 8 bodies and above, which is where the rule was aimed. If a later wave wants
+   * the literal reading, raising the floor is a one-line change with a reviewer
+   * on it, which is the point of writing the number here rather than inlining it. */
+  const termPages = new Map();
+  for (const [key, body] of ICP_BODIES) {
+    for (const v of body.vocabulary ?? []) {
+      const t = v.term.toLowerCase();
+      termPages.set(t, (termPages.get(t) ?? new Set()).add(key));
+    }
+  }
+  const vocabBodies = [...ICP_BODIES.values()].filter((b) => b.vocabulary).length;
+  const VOCAB_FLOOR = 2;
+  const vocabCap = Math.max(VOCAB_FLOOR, Math.floor(vocabBodies * 0.25));
+  for (const [term, pages] of termPages) {
+    assert.ok(
+      pages.size <= vocabCap,
+      `vocabulary term "${term}" appears on ${pages.size} of ${vocabBodies} ICP bodies carrying a ` +
+      `vocabulary block, over the cap of ${vocabCap}. A term on a quarter of the family is ` +
+      `furniture rather than vocabulary, and furniture belongs in the template.\n  ` +
+      [...pages].sort().map((k) => `/industries/${k}`).join('\n  ')
+    );
   }
 }
 
