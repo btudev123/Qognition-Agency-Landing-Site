@@ -133,7 +133,7 @@ That sentence is the gate, and it is the whole gate. Read it literally before na
 
 **The taxonomy is a route to market, not a qualifier.** This is the distinction that matters and it
 is easy to get backwards. A B2B firm inside the revenue and staff band qualifies whether or not its
-industry appears in `verticals.ts`. The 15 verticals exist because a page has to be written to
+industry appears in the taxonomy. The verticals exist because a page has to be written to
 somebody in particular and a generic page converts nobody — not because a prospect outside them is
 disqualified. A well-fitting inbound lead from an industry we never listed is a lead, and it routes
 to a qualification call like any other.
@@ -147,8 +147,15 @@ The staged-build hedges are gone: the operator states the band plainly and the s
 
 ### The ICP taxonomy is locked
 
-Locked by the operator on **2026-09-28**. The authoritative list lives in `data/b2b/verticals.ts`,
-not in prose here, so that it has one representation a script can read.
+**Superseded on 2026-09-29.** The authoritative taxonomy is now
+`data/b2b/icp/icp-taxonomy.json` (operator-locked v2.0.0, 21/341/2,376/8,823). `data/b2b/verticals.ts`
+is the earlier 15/120 draft and is **not a second source of truth**: under `docs/icp-positioning.md`
+rule 6, slugs and ids come from the JSON, and `verticals.ts` ids were invented before that file
+existed. It survives only as an alias map for the two `draft` entities already built against it, and
+ADR-0008 §3 specifies the re-key. Do not add rows to it and do not cite it as the ICP.
+
+The section below describes that earlier draft and is kept because the two draft pages still resolve
+through it.
 
 **These are our customers.** Every row is a kind of firm we sell to and for whom we run paid media,
 SEO, AI SEO and GEO. A row is **not** evidence we have worked in that vertical. §11 forbids implying

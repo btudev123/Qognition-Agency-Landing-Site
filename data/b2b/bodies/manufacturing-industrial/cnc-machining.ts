@@ -226,8 +226,10 @@ export const CNC_MACHINING: SubNicheBody = {
       answer:
         'Because the referral still checks. The introduction gets your name into an engineer’s ' +
         'hands, and what happens next is a search, increasingly one that starts with an assistant. ' +
-        'The 2026 State of Marketing to Engineers research records technical buyers completing 62% ' +
-        'of the journey before contacting a vendor. The risk is not that referrals stop working. It ' +
+        'The 2026 State of Marketing to Engineers report, published by GlobalSpec, TREW Marketing ' +
+        'and Elektor International Media and accessed on 28 September 2026, records technical ' +
+        'buyers completing 62% of the journey before contacting a vendor. The publisher does not state the sample size. ' +
+        'The risk is not that referrals stop working. It ' +
         'is that a referred buyer forms an impression from a summary you never saw.',
     },
     {

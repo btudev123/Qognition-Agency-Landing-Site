@@ -395,6 +395,78 @@ for (const file of bodyFiles) {
   );
 }
 
+/* ── Ruth's provenance rule, made mechanical ─────────────────────────────────
+ *
+ * The binding unit for a sourced figure is FOUR elements:
+ *   {the figure} + {publisher named} + {access date} + {sample size, or the
+ *    explicit statement that the publisher does not give one}
+ *
+ * All four ship or none does. Ruth returned FIX six times on exactly this, and
+ * the recurring defect was a figure losing its provenance between the draft and
+ * the rendered string. Theo then found it in shipped code on this branch: a FAQ
+ * answer in cnc-machining.ts rendered "62%" with a partial publisher, no access
+ * date and no sample clause.
+ *
+ * Two shapes, because the surfaces differ:
+ *
+ *   facts[]   FactsBlock renders publisher, url and accessedAt STRUCTURALLY, so
+ *             those three are satisfied by the type. It renders no sample size,
+ *             so element 4 has to live inside the claim string.
+ *   anywhere  Every other body field is bare prose with no structured source
+ *             beside it, so a figure there needs all four IN the sentence.
+ *
+ * At 120 entities this was a review item. At 11,561 a human will not catch it,
+ * which is the whole reason it is a script. */
+const FIGURE = /\b\d+(?:\.\d+)?\s?%|\b\d+(?:\.\d+)?\s+out of\s+\d+/;
+const SAMPLE_CLAUSE =
+  /does not state (?:its |the )?sample size|surveyed \d|sample of \d|\bn\s*=\s*\d|polled \d|respondents|panel|clickstream|\b(?:million|billion)\b.{0,30}\b(?:lines|users?|panel|records?|sessions?)/i;
+
+for (const [key, body] of B2B_BODIES) {
+  for (const fact of body.facts || []) {
+    if (!FIGURE.test(fact.claim)) continue;
+    assert.ok(
+      SAMPLE_CLAUSE.test(fact.claim),
+      `${key}: a fact carries a figure but no sample statement.\n` +
+      `  ${fact.claim.slice(0, 110)}\n` +
+      `FactsBlock renders publisher, url and accessedAt but never a sample size, so the claim string ` +
+      `must either state the sample or say the publisher does not give one. Ruth's rule: all four ` +
+      `elements ship together or none does.`
+    );
+  }
+
+  /* Bare prose. Walk every string in the body except the facts claims already
+     checked, and require the full quartet wherever a figure appears. */
+  const walk = (node, path) => {
+    if (typeof node === 'string') {
+      if (!FIGURE.test(node)) return;
+      /* A publisher is named either by a document noun (report, study) or by the
+         organisation doing the analysing. "Semrush analysed" names one as surely
+         as "the Semrush study" does. */
+      const hasPublisher =
+        /report|study|research|survey|published by|,\s*20\d\d/i.test(node) ||
+        /\b[A-Z][A-Za-z]{2,}\s+(?:analysed|analyzed|surveyed|found|reports?|records?|published)\b/.test(node);
+      const hasDate = /accessed on|\b20\d\d\b/.test(node);
+      assert.ok(
+        hasPublisher && hasDate && SAMPLE_CLAUSE.test(node),
+        `${key} ${path}: a figure in bare prose is missing part of its provenance.\n` +
+        `  ${node.slice(0, 110)}\n` +
+        `  publisher named: ${hasPublisher} | access date: ${hasDate} | sample statement: ${SAMPLE_CLAUSE.test(node)}\n` +
+        `Prose carries no structured source beside it, so all four elements belong in the sentence. ` +
+        `If the figure cannot carry them, cut the figure rather than the provenance.`
+      );
+      return;
+    }
+    if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${path}[${i}]`));
+    if (node && typeof node === 'object') {
+      for (const [k, v] of Object.entries(node)) {
+        if (k === 'facts') continue;
+        walk(v, `${path}.${k}`);
+      }
+    }
+  };
+  walk(body, 'body');
+}
+
 console.log(
   `✓ b2b: ${META_VERTICALS.length} verticals, ${routableEntities().length} routable, ` +
   `${published.length} published (ceiling ${B2B_PUBLISHED_CEILING}), ${B2B_BODIES.size} bodies, ` +

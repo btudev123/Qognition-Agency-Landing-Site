@@ -1,9 +1,10 @@
 # B2B niche page architecture
 
 Author: Nadia (search).
-**Revision 2, 2026-09-28.** Supersedes revision 1 of the same date, which assumed 11 meta-verticals
-and a wedge premise that has since been falsified.
-Branch `b2b-ai-search`.
+**Revision 3, 2026-09-29.** Supersedes revision 2 of 2026-09-28, which was written against a
+120-sub-niche spine. The operator has since locked a **11,561-entity** taxonomy
+(`data/b2b/icp/icp-taxonomy.json`, v2.0.0) and supplied 682 AI prompts and 1,023 PPC keywords with it.
+Branch `b2b-ai-search`, HEAD `9299e1d`.
 
 Status: **recommendation, not approved.** Not reviewed by Ruth (brand-guard). No page publishes off
 this document until the open decisions in §0.3 are settled and the wave gate in §8 is green.
@@ -12,7 +13,34 @@ Scope: how to publish the B2B niche universe as pages that earn traffic and cita
 repeating `/locations/*` — 632 pages in the Search Console top 1,000 earning **0.13 clicks each per
 quarter** (`docs/seo/gsc-url-group-baseline.md`).
 
-## What changed since revision 1
+**What revision 3 does not change.** The wave gate mechanism in §8.3 is untouched — same committed
+file, same six assertions, same stale-pull build failure. The per-page assertions in §8.2 are extended,
+not rewritten. The ranking-versus-citation separation in §9 is untouched. §0.4 — the observation block
+as the only non-templatable thing on the page — is untouched and matters more at 11,561 than it did at
+120, because it is now the only thing standing between this taxonomy and the largest scaled-content
+programme this domain has ever attempted.
+
+**What revision 3 does change: the arithmetic, and the unit.** Revision 2 counted pages and measured
+waves in pages. At four levels and 11,561 entities, a page count is the wrong unit — it makes an
+8,823-row leaf level look like an 8,823-page decision, which it is not. §1.6 restates the wave in the
+unit that actually binds.
+
+## What changed since revision 2
+
+| # | Change | Where it lands |
+|---|---|---|
+| 1 | **The taxonomy is now four levels and 11,561 entities**, operator-locked v2.0.0: 21 industries · 341 sub-industries · 2,376 niches · 8,823 sub-niches. Revision 2's two-level, 135-entity ceiling is obsolete. | §0.2, §1.2, §1.6 |
+| 2 | **The operator assigned `fit` and `priority` per niche.** Fit: AI SEO 1,059 / PPC 190 / Both 1,127. Priority: A 888 / B 1,173 / C 315. Both are on the **niche** (level 3) and on nothing else. That single fact decides §1.7. | §1.7, §1.6 |
+| 3 | **682 `ai_prompts` and 1,023 `ppc_keywords` were supplied, at sub-industry level — two prompts and three keywords per sub-industry, 341 × 2 and 341 × 3, verified.** I sampled both. **Both sets are Family B.** Not one of the 1,023 keywords is a term Qognition would bid on for its own acquisition. The operator supplied 1,705 Family B strings and **zero** Family Q strings. | §2.1, §3.1, §3.2 |
+| 4 | **New §1.7: which level earns a page, answered per fit type.** This is the load-bearing section of revision 3 and it replaces revision 2's §1.3 as the place the volume decision is actually made. | New §1.7 |
+| 5 | **The ICP taxonomy is an ungated island.** `grep -rn "b2b/icp" app components lib data scripts` returns nothing. No route, no sitemap entry, no gate, no ceiling assertion. `publishedIcpPaths()` returns `[]` by hand-written code and **nothing asserts that it stays empty**. `scripts/check-b2b.cjs` guards `data/b2b/verticals.ts` and knows nothing about this file. | §0.2, §8.1, §8.5 |
+| 6 | **There are now three spines claiming `/industries/*`,** and all three claim `financial-services`. Legacy `data/industries.ts` (11), `data/b2b/verticals.ts` (15/120), `data/b2b/icp` (21/341/2,376/8,823). The middle one describes the same 15 industries as the new one under **different slugs** (`saas-software` vs `saas-and-software`). Two of them cannot both be a URL source. | §0.2, §0.3 decision 7 |
+| 7 | **Rule 7 is currently unexecutable.** It says build under the canonical id "listed at the bottom of INDEX.md". There is no `INDEX.md` in this repo and no `docs/icp/` directory; rules 1, 7 and 9 all cite paths that do not exist. I also cannot reproduce the "5 deliberate overlaps": measured, there is **one** duplicated niche slug and name (`facilities-management-firms`, `02.16.04` and `07.14.06`), zero duplicate ids and zero duplicate full paths. | §0.3 decision 8, NEEDS DATA |
+| 8 | **Rule 8 defers almost the whole PPC layer.** Of 888 priority-A niches, **15 are `PPC` fit** — 1.7%. The PPC-fit population is 115 B and 60 C. Building A first is correct and it means the paid door is served by §2.5's demand probe and the `/ppc` layer page, not by this family, for a long time. | §1.6, §1.7, §2.5 |
+| 9 | Off-page source maps extended to the six new industries. | `docs/seo/b2b-offpage-authority.md` §3.16–§3.21 |
+| 10 | The glossary content-model fix (§7.4 step 1) **still comes before every wave, and the case for it is stronger, not weaker.** Reasoning in §7.5. | §7.5, §1.6 |
+
+### Carried forward from revision 2, unchanged
 
 | # | Change | Where it lands |
 |---|---|---|
@@ -57,11 +85,76 @@ partially in B2B SaaS — all white-label under NDA, all self-reported, no verif
 has six diagnostic records. **Everywhere else there is nothing.** A manufacturing or logistics page
 cannot lean on a case study. It needs a different, honest source of substance. That source is §0.4.
 
-**The taxonomy is locked and it does not generate routes.** `data/b2b/verticals.ts` holds 15
-meta-verticals and 120 sub-niches. Every entity defaults to `state: 'spine'`: no page, no sitemap
-entry, 404 on request. `publishedEntities()` returns an empty array today and that is the intended
-state at rest. Promotion requires a named reviewer, a review date, and the ceiling raised in
-`scripts/check-b2b.cjs` in the same commit.
+**The taxonomy is locked, it is four levels deep, and it does not generate routes.** Measured
+directly from `data/b2b/icp/icp-taxonomy.json` on 2026-09-29:
+
+| Level | Name | Count | Carries `fit` | Carries `priority` | Carries prompts / keywords |
+|---|---|---:|---|---|---|
+| 1 | industry | 21 | no | no | no |
+| 2 | sub-industry | 341 | no | no | **yes — 2 prompts, 3 keywords, `geo_angle`, `buyer_titles`, `client_value`, `min_firm_size`** |
+| 3 | niche | 2,376 | **yes** | **yes** | no |
+| 4 | sub-niche | 8,823 | no | no | no |
+
+Three things follow immediately and they run through the rest of this document.
+
+- **Level 2 is the only level with editorial raw material.** Every one of the 341 sub-industries has
+  all six operator fields populated — I checked all 341, not a sample. Levels 1, 3 and 4 have
+  `id`, `slug`, `name` and nothing else, except that level 3 also has `fit` and `priority`.
+- **Level 3 is the only level with a build instruction.** `fit` and `priority` exist on the niche and
+  nowhere else. Rule 8's build order is expressed in a field that only 2,376 of the 11,561 entities
+  have.
+- **Level 4 has no operator input of any kind.** 8,823 rows of `{id, slug, name}`. A page there would
+  be built entirely from a name. That is the whole argument of §1.7 and it is arithmetic, not taste.
+
+Sub-niche depth: min 0, median 4, mean 3.71, p90 5, max 10. Eight niches have zero sub-niches. 8,759
+of the 8,823 sub-niche slugs are unique; 62 slugs are reused across 126 entities
+(`commercial-due-diligence` three times, `data-center-decommissioning` three times).
+
+`data/b2b/verticals.ts` still holds the previous 15 meta-verticals and 120 sub-niches. Every entity in
+it defaults to `state: 'spine'`: no page, no sitemap entry, 404 on request. `publishedEntities()`
+returns an empty array today and that is the intended state at rest. Promotion requires a named
+reviewer, a review date, and the ceiling raised in `scripts/check-b2b.cjs` in the same commit.
+
+**The new taxonomy has none of that protection.** `grep -rn "b2b/icp" app components lib data scripts`
+returns **nothing**. No route reads it, no sitemap generator reads it, and — the part that matters —
+**no gate reads it**. `publishedIcpPaths()` returns `[]` because a human wrote `return []`, and there
+is no assertion anywhere that it keeps returning `[]`, no `ICP_PUBLISHED_CEILING` equivalent to
+`B2B_PUBLISHED_CEILING`, and no entry in `scripts/check-b2b.cjs`. The file's own header says this is
+"the single most important function in the file". It is currently the only thing holding, and it is
+holding on a comment. §8.5 specifies the fix and it is Wave 0 work.
+
+**There are three spines and they collide.** Measured:
+
+| Spine | File | Level-1 count | Level-1 slugs |
+|---|---|---:|---|
+| Legacy | `data/industries.ts` | 11 | `law-legal`, `accounting-cpa`, `financial-services`, `consulting`, `real-estate`, `manufacturing`, `coaching`, `industrial-trade`, `care-homes`, `elder-care`, `waste-management` |
+| Revision-2 | `data/b2b/verticals.ts` | 15 | `saas-software`, `professional-services`, … `emerging-micro-niches` |
+| ICP v2.0.0 | `data/b2b/icp` | 21 | `saas-and-software`, `professional-and-business-services`, … `franchising-and-multi-location` |
+
+`financial-services` is claimed by **all three**. `scripts/check-b2b.cjs` §2 catches the
+legacy ↔ revision-2 case and fails the build loudly. It does not know the ICP spine exists, so the
+same collision from the ICP side is currently silent. Beyond that one slug, the revision-2 and ICP
+spines describe **the same fifteen industries under different slugs**. They cannot both be a URL
+source without Qognition publishing two near-duplicate hubs for fifteen industries, which is
+self-competition by construction and is what §8.2 assertion 17 exists to prevent. This is decision 7
+in §0.3 and it is not mine to settle alone, because rule 6 makes the slugs the operator's.
+
+**One consequence already visible in the repo.** The single authored body,
+`data/b2b/bodies/manufacturing-industrial/cnc-machining.ts`, is written against the revision-2 slug
+path. In the ICP spine the equivalent entity is
+`manufacturing-and-industrial/precision-manufacturing-and-machining/cnc-machining-shops` (`05.01.01`)
+and it is **priority B** — deferred by rule 8. The priority-A machining entity in the new taxonomy is
+`aerospace-and-aviation/aerospace-component-manufacturing/aerospace-precision-machining-shops`
+(`16.05.01`), in an industry that did not exist in revision 2. The authored work is not lost, but it
+is not on the A-first path and its path does not resolve against the locked spine.
+
+**The path references in `docs/icp-positioning.md` do not resolve.** Rule 1 cites `INDEX.md`, rules 1
+and 7 cite `docs/icp/icp-taxonomy.json`, rule 9 cites `docs/icp/industries/<NN-slug>.md`. None of
+those exist. The real paths are `docs/icp-industries/<NN-slug>.md` and
+`data/b2b/icp/icp-taxonomy.json`, and **there is no `INDEX.md` anywhere in the repo**. I am not
+proposing an edit — the file is operator-locked and rule 12 says stop and ask. I am recording it
+because **rule 7 cannot be executed as written**: the canonical id for an overlap is defined as
+something that lives in a file that does not exist.
 
 **The `/industries/*` hole is closed.** `lib/industryPublication.ts` freezes the 11 industry hubs and
 66 sub-industry pages that were live on 2026-09-28 as an explicit, hand-written allowlist. Revision 1
@@ -114,6 +207,28 @@ vertical, and is the only place the occupancy argument may be led with.
    `[NEEDS DATA: monthly paid budget available for Qognition's own site, or confirmation it is zero]`
 6. **Whether new rows may use a sidebar variant** that omits `/locations`, `/resources` and
    `/directory` (§5.2).
+7. **Which spine is the URL source, and what happens to the other two.** Rule 6 says slugs come from
+   the JSON, which makes the ICP spine the only legitimate source for any new URL. That implies
+   `data/b2b/verticals.ts` is retired **as a route source** — not deleted, because
+   `scripts/check-b2b.cjs` and the authored body depend on it, and not redirected, because none of it
+   has ever been published so there is nothing to redirect. It also implies the legacy
+   `data/industries.ts` hubs keep `/industries/financial-services` and the ICP `financial-services`
+   industry does **not** get that URL until the operator says so.
+   **No rollback is needed for any of this because no URL changes**: all three spines are unpublished
+   or already live and untouched. The decision is about which file a *future* URL comes from.
+   `[NEEDS DATA: operator decision — ICP spine is the sole route source for new URLs; verticals.ts
+   demoted to a data-only artefact; legacy retains financial-services]`
+8. **How rule 7 is executed without `INDEX.md`.** The rule needs a canonical-id list and there is no
+   file to read it from. Measured, the collision set is one pair, not five:
+   `facilities-management-firms` at `02.16.04`
+   (`professional-and-business-services/specialist-business-services`) and `07.14.06`
+   (`construction-real-estate-and-built-environment/commercial-real-estate-services`). Zero duplicate
+   ids, zero duplicate full paths, and `nicheBySlug` in `data/b2b/icp/index.ts` is keyed on the full
+   three-segment path, so its "first writer wins" guard **can never fire** — the comment describes a
+   protection the key makes impossible. `allIcpNiches()` therefore returns **2,376**, not the 2,371
+   the header comment and `counts.unique_niches` both claim.
+   `[NEEDS DATA: the canonical id for each declared overlap, and reconciliation of unique_niches 2,371
+   against the 2,376 the data produces]`
 
 ### 0.4 The one thing that makes this work
 
@@ -172,7 +287,7 @@ as an H1, a title tag or a primary query mapping. That is worth an assertion (§
 **What the widened ICP changes.** The page is written to a vertical; the offer is not restricted to
 it. Two rules follow:
 
-1. No page may imply that a firm outside the 15 verticals is not a fit. The disqualifiers are the
+1. No page may imply that a firm outside the 21 industries is not a fit. The disqualifiers are the
    only disqualifiers: pre-revenue, B2C, low-ticket transactional, needs leads this week, wants a
    one-off project, cannot edit their own website, no sales follow-up.
 2. No page may imply that AI search is required to work with Qognition. A firm that wants classic SEO
@@ -180,19 +295,37 @@ it. Two rules follow:
 
 ### 1.2 Page types that earn
 
-| Type | URL pattern | Ceiling | Recommended committed build | What it earns |
-|---|---|---:|---:|---|
-| **A. Meta-vertical hub** | `/industries/<meta-vertical>` | 15 | **8** (tier S and A only) | Head and mid-tail commercial queries; the crawl hub; the entity anchor for the vertical |
-| **B. Sub-niche page** | `/industries/<meta-vertical>/<sub-niche>` | 120 | **75** (tier S and A only) | Mid-tail commercial and problem-aware queries; the citation surface; the bulk of the value |
-| **C. Prompt-set library** | `/insights/<vertical>-buyer-prompts` | 15 | **8** | Citation magnet and lead magnet. The literal prompt set, published |
-| **D. Comparison** | `/comparisons/<slug>` | — | **~10** | Highest purchase intent on the site. Hand-written only. More important since the wedge was falsified: named competitors now exist |
-| **E. Annual observation report** | `/insights/<slug>` | — | **4/year** | External citation and link acquisition. See `docs/seo/b2b-offpage-authority.md` §4 |
+| Type | URL pattern | Taxonomy level | Ceiling | Recommended committed build | What it earns |
+|---|---|---|---:|---:|---|
+| **A. Industry hub** | `/industries/<industry>` | 1 | 21 | **21, last** | Head and mid-tail commercial queries; the crawl hub; the entity anchor |
+| **A2. Sub-industry page** | `/industries/<industry>/<sub-industry>` | 2 | 341 | **313** (those with ≥1 priority-A child) | The **editorial unit**. The only level the operator gave prompts, keywords, buyer titles and client value to |
+| **B. Niche page** | `/industries/<industry>/<sub-industry>/<niche>` | 3 | 2,376 | **conditional — see §1.7** | Mid-tail commercial and problem-aware queries; the citation surface |
+| **—. Sub-niche** | *no URL* | 4 | 8,823 | **0** | On-page section, schema value and internal-anchor vocabulary. §1.7. |
+| **C. Prompt-set library** | `/insights/<industry>-buyer-prompts` | — | 21 | **21, one per industry, last** | Citation magnet and lead magnet. The literal prompt set, published |
+| **D. Comparison** | `/comparisons/<slug>` | — | — | **~10** | Highest purchase intent on the site. Hand-written only |
+| **E. Annual observation report** | `/insights/<slug>` | — | — | **4/year** | External citation and link acquisition. See `docs/seo/b2b-offpage-authority.md` §4 |
 
-**Ceiling 135 pages from the taxonomy. Recommended committed build 101 including C and D.** The
-44-page difference is tier B, held at `spine`. I am not arguing the taxonomy down: every row stays in
-the file, and §1.6 states the exact condition that releases tier B. I am declining to commit reviewer
-capacity to 45 sub-niches in verticals where there is no evidence, no vocabulary depth in Iris's
-research, and no demand signal.
+**The ceiling the taxonomy permits is 11,561 URLs. The number I would publish in the first twelve
+months is a low three-figure number, and the operator's own rule 8 is what makes that consistent
+with "the operator wants all of them".**
+
+Those two sentences are not in tension and it is worth being explicit about why, because this is the
+thing most likely to be misread. Rule 8 does not say build all of them. It says **priority-A first**,
+and it assigns a priority to every one of the 2,376 niches. 888 of them are A. A staged build with a
+measured gate between stages is the only way "all of them" is ever reachable, because the alternative
+— publishing several thousand pages against a domain currently earning 187 clicks a quarter — trips
+`CLAUDE.md` §7 test 5 so hard that the whole family becomes a liability rather than an asset. The
+operator gets all of them by going in the order they specified, at the rate the evidence allows.
+
+**The arithmetic of "priority A first", measured.** 888 A niches sit under **313** distinct
+sub-industries across **all 21** industries. So A-first does not narrow the industry footprint at all;
+it narrows the leaf count. Publishing the A cohort at level 3 implies publishing 313 level-2 parents
+and 21 level-1 parents, because §5 rule 9 forbids orphans and §5 rule 10 caps depth. That is
+**1,222 pages** before a single B or C niche. At the 15–25 pages/month rate revision 2 assumed, the A
+cohort alone is a four-to-seven-year programme.
+
+That number is the reason §1.7 exists. 1,222 is not the answer. It is the number you get if you assume
+level 3 automatically earns a URL, and that assumption is exactly what needs testing.
 
 Types A and B reuse the existing route files unchanged. C, D and E use existing families.
 **No new routes are required for any of this.** That is deliberate:
@@ -230,6 +363,14 @@ all five, once each, in one fixed block (§5).
 
 ### 1.5 The remap from revision 1's eleven
 
+> **Revision 3 note.** This table maps revision 1's eleven onto `data/b2b/verticals.ts`'s fifteen. Both
+> of those are now superseded by the 21-industry ICP spine, and none of the slugs below are the slugs a
+> new URL may use — rule 6 makes `data/b2b/icp/icp-taxonomy.json` the only legitimate source. The table
+> is kept because the two mappings that **change the buyer** (cybersecurity, and testing/inspection)
+> are still true and still trap anyone carrying old work forward. Read it as history, not as a route
+> map, and see §0.3 decision 7.
+
+
 Revision 1 named eleven meta-verticals. Four of them are not verticals in the locked taxonomy. Anyone
 carrying revision-1 work forward needs this table, because two of the mappings change the buyer.
 
@@ -250,55 +391,305 @@ carrying revision-1 work forward needs this table, because two of the mappings c
 | **Wholesale and distribution** | **Dissolved into a cross-vertical pattern.** → `manufacturing-industrial/industrial-distributors`, `construction-real-estate/building-materials` and `/hvac-electrical-roofing-distribution`, `hospitality-travel-events/foodservice-distribution`, `media-marketing-creative/print-promotional-distributors` | Distribution is now a pattern across four verticals rather than a vertical. This is the strongest legitimate use of the cross-vertical link cap in §5 rule 4: these five sub-niches share a buyer problem (the distributor is named instead of the principal) and a comparison axis (stock depth, PunchOut, lead time). |
 | — | **New, no revision-1 coverage:** `hospitality-travel-events` (B, 6), `agriculture-food` (B, 6), `media-marketing-creative` (B, 6), `government-nonprofit` (B, 6), `emerging-micro-niches` (A, 12) | `emerging-micro-niches` is tier A and is the only tier-A vertical with no Iris research behind it at all. §2.4 and §3.2 treat it accordingly. |
 
-### 1.6 Waves, and the number I would actually publish
+### 1.6 What a wave is at 11,561, and what its entry test measures
 
-**Ceiling 135. Recommended committed build 101.** Not several hundred at once, and not because I am
-arguing volume down — because the rate is a resource fact. Each page needs a prompt run (automatable
-via G.O.L.E.M), a standards and buyer-title pass by someone who knows the niche, and a named reviewer
-who will put their name on a review date. The first is cheap. The third is the ceiling.
+**This section is the schedule. Its input — which levels are in a cohort at all — is §1.7. Read §1.7
+first if you are deciding scope rather than dates.**
+
+#### The unit changed, and that is the substantive change in revision 3
+
+Revision 2 measured a wave in pages, because at 120 entities a page and an editorial decision were the
+same thing. At 11,561 they are not. The unit that binds is the **sub-industry**: it is the only level
+the operator populated with buyer titles, client value, a `geo_angle`, two Family B prompts and three
+PPC keywords, and it is therefore the smallest unit that can be researched, written and reviewed as
+one piece of work. Everything above it is an aggregation of it; everything below it is a section of it
+until proven otherwise.
+
+> **A wave is one industry's priority-A cohort:** its sub-industry pages that have at least one
+> priority-A child, plus the level-3 priority-A niches inside them that pass the §1.7 screen, plus the
+> industry hub — published together and gated together.
+
+Twenty-one waves, one per industry. Measured cohort sizes, before the §1.7 screen removes level-3
+pages:
+
+| Industry | A niches | Sub-industries with ≥1 A | Cohort pages (L2+L3) | A: AI SEO | A: PPC | A: Both |
+|---|---:|---:|---:|---:|---:|---:|
+| `saas-and-software` | 80 | 16 | 96 | 26 | 0 | 54 |
+| `healthcare-and-life-sciences` | 55 | 18 | 73 | 27 | 2 | 26 |
+| `manufacturing-and-industrial` | 55 | 18 | 73 | 23 | 0 | 32 |
+| `technology-and-it-services` | 55 | 16 | 71 | 11 | 0 | 44 |
+| `emerging-and-micro-niches` | 53 | 17 | 70 | 28 | 0 | 25 |
+| `professional-and-business-services` | 53 | 16 | 69 | 29 | 2 | 22 |
+| `automotive-heavy-equipment-and-mobility` | 51 | 16 | 67 | 14 | 3 | 34 |
+| `financial-services` | 50 | 15 | 65 | 26 | 1 | 23 |
+| `environmental-engineering-and-testing` | 46 | 16 | 62 | 15 | 2 | 29 |
+| `franchising-and-multi-location` | 45 | 17 | 62 | 11 | 0 | 34 |
+| `logistics-supply-chain-and-transportation` | 42 | 16 | 58 | 20 | 0 | 22 |
+| `commercial-and-facility-services` | 40 | 16 | 56 | 14 | 0 | 26 |
+| `government-nonprofit-and-institutional` | 37 | 16 | 53 | 27 | 0 | 10 |
+| `aerospace-and-aviation` | 37 | 14 | 51 | 18 | 0 | 19 |
+| `energy-and-utilities` | 36 | 13 | 49 | 19 | 2 | 15 |
+| `agriculture-and-food` | 35 | 14 | 49 | 11 | 2 | 22 |
+| `hospitality-travel-and-events` | 31 | 14 | 45 | 9 | 1 | 21 |
+| `education-and-training` | 30 | 13 | 43 | 15 | 0 | 15 |
+| `retail-cpg-and-brand-enablement` | 25 | 13 | 38 | 7 | 0 | 18 |
+| `construction-real-estate-and-built-environment` | 22 | 11 | 33 | 8 | 0 | 14 |
+| `media-marketing-and-creative` | 10 | 8 | 18 | 7 | 0 | 3 |
+| **Total** | **888** | **313** | **1,201** (+21 hubs = **1,222**) | **365** | **15** | **508** |
+
+**Why the industry and not the sub-industry is the wave unit, and it is not tidiness.** A sub-industry
+cohort is one level-2 page plus a median of three A niches: four pages. The §8.3 entry test asserts
+`pagesWithAtLeastOneImpression28d / indexablePages >= 0.60`. On four pages that threshold is 2.4 pages
+— it is a coin flip dressed as a measurement, and it would gate a 2,376-page programme on noise. An
+18-to-96-page cohort makes 0.60 mean something. **The cohort size is chosen so the gate is
+informative**, and that is the only reason.
+
+Rule 8 says priority-A first. It does not say priority-A simultaneously.
+
+#### Wave 0 — plumbing. Still zero new pages, and it grew
+
+| Item | Status |
+|---|---|
+| `/industries` publication gate, `lib/industryPublication.ts` + `scripts/check-industry-gate.cjs` | **DONE**, commit `e483547` |
+| **The glossary content-model fix, §7.4 step 1** | Outstanding. Still ahead of every wave — reasoning restated for this scale in §7.5 |
+| **An `ICP_PUBLISHED_CEILING` assertion over `data/b2b/icp`** | **New and urgent.** Nothing currently gates 11,561 entities. §8.5 |
+| **Decision 7: which spine is the URL source** | New. §0.3 |
+| **Decision 8: rule 7's canonical-id list, and the 2,371 / 2,376 reconciliation** | New. §0.3 |
+| The observation store and the first prompt runs (`OPERATOR-DECISIONS` blocker on `runAudit()`) | Outstanding |
+| The Family Q derivation run once, per §3.3, and committed before any page cites it | New |
+
+#### Wave 1 — and it is designed to answer §1.7 with data, not just judgement
+
+Wave 1 is still the evidence cohort: the only sub-industries where reported work exists
+(`docs/research/b2b-vertical-substance.md` §2.3), remapped onto the locked slugs.
+
+| Level-2 page | A niches |
+|---|---:|
+| `technology-and-it-services/managed-it-services` | 2 |
+| `technology-and-it-services/managed-security-services` | 3 |
+| `technology-and-it-services/cloud-consultancies` | 5 |
+| `saas-and-software/cybersecurity-saas` | 9 |
+| `saas-and-software/vertical-saas` | 3 |
+| **5 level-2 pages** | **22 A niches** |
+
+**All five level-2 pages publish. The 22 A niches split into two pre-registered arms.**
+
+- **Arm 1 — own URL.** Within each parent, niches at an even index when sorted by slug get a level-3
+  page.
+- **Arm 2 — section.** The rest are written as `<h2>` sections on the parent level-2 page, to the same
+  standard, by the same reviewer, with the same observation method.
+
+Same publish date. Roughly 11 and 11. The split rule is deterministic, keyed on slug, and committed
+before publication so it cannot be chosen after the fact.
+
+**What this measures, 90 days later.** Per arm: (a) impressions at 28 days, (b) — the one that
+matters — **whether the level-3 URL earned an impression for a query its level-2 parent did not also
+earn an impression for in the same window**, and (c) whether arm-2 parents out-earned arm-1 parents,
+which is the cannibalisation read.
+
+**What it does not establish.** n ≈ 11 per arm, no randomisation across inherent-demand confounders,
+one industry pair, one quarter. This is a **directional read, not a causal one**, and I will report it
+as one. It is still strictly better than the alternative, which is deciding 2,376 URLs on taste. It
+also costs nothing extra: arm 2's copy has to be written either way, as sections.
+
+#### Waves 2 onward
+
+Order: **evidence first, then operator priority density, then vocabulary depth and off-page fit.** Not
+A-count alone.
+
+| Wave | Industry | Cohort (pre-screen) | Why here | Gate to enter |
+|---|---|---:|---|---|
+| 1 | the 5 sub-industries above | 5 L2 + 22 L3 split into arms | The only cohort with reported work. Prove the format and settle §1.7 where it is cheapest | §8 gate green on Wave 0 |
+| 2 | `manufacturing-and-industrial` | 73 | Richest standards vocabulary; three of the four dated trigger events land here (off-page §5.1–5.3); best registry fit (IAF CertSearch, Nadcap, Cyber AB) | Wave 1 passes §8.3 tests 1–7 |
+| 3 | `technology-and-it-services` (remainder) | 71 − wave 1 | Finishes the cohort Wave 1 opened; vendor partner directories are the strongest off-page asset in the document | Wave 2 passes |
+| 4 | `professional-and-business-services` | 69 | Referral market being disintermediated by assistants. **Hold `b2b-marketing-and-demand-gen-agencies` until §3.2's collision decision is made** | Wave 3 passes |
+| 5 | `saas-and-software` (remainder) | 96 − wave 1 | Largest A cohort, best-instrumented off-page vertical. Two-part wave if reviewer rate requires | Wave 4 passes |
+| 6 | `environmental-engineering-and-testing` | 62 | **Promoted above the revision-2 tier order.** Accreditation registries (NELAP/TNI, A2LA, ISO/IEC 17025) are machine-readable answers to the exact Family B prompts the operator supplied. Closest structural analogue to manufacturing, and uncontested | Wave 5 passes |
+| 7 | `aerospace-and-aviation` | 51 | FAA/EASA Part 145, AS9100/AS9110, Nadcap. Same registry argument, higher contract values | Wave 6 passes |
+| 8 | `logistics-supply-chain-and-transportation` | 58 | Carried from revision 2 | Wave 7 passes |
+| 9 | `financial-services` | 65 | Flagship (commercial insurance). **Blocked on `OPERATOR-DECISIONS` #7, named compliance reviewer, and #8, client-name use.** If neither clears, the wave does not run — it does not run partially | Wave 8 passes **and** #7 cleared |
+| 10 | `healthcare-and-life-sciences` | 73 | Same compliance-reviewer requirement. Do not ship before #7 has a precedent from wave 9 | Wave 9 passes |
+| 11–21 | the remaining 11 industries | 18–67 each | Ordered on the measured rate, not now. Re-derive the order from waves 1–10's own results rather than from this table | Each on its predecessor |
+
+`emerging-and-micro-niches` (70) goes last within any grouping it appears in, for revision 2's reason:
+it has 53 A niches and no research behind any of them, so every page is carried entirely by the
+observation block.
+
+#### The rate, restated
 
 ```
-pages per month = reviewer hours per month ÷ hours per page review
+waves per year = reviewer hours per year ÷ (cohort pages × hours per page review)
 ```
 
 `[NEEDS DATA: reviewer hours available per month]` and `[NEEDS DATA: measured hours per page review,
-first ten pages]`. At a plausible 15–25 pages/month the committed build lands in **5–8 months**.
-Publish the schedule against the measured rate after Wave 1, not against an estimate.
+first ten pages]`. At revision 2's plausible 15–25 pages/month and the §1.7 screen removing roughly
+half of level 3, a median 56-page cohort is a 1.5–3 month build plus a 90-day gate, so **two to three
+industries per year**. The full priority-A programme is therefore a multi-year commitment, and I would
+rather say that now than have it discovered at wave 4.
 
-Waves are ordered by **evidence first, then tier, then vocabulary depth.** Not by tier alone. Wave 1
-is the only cohort where Qognition has anything reported to stand on, and that is the cohort the
-format has to be proved on.
+I am not arguing the taxonomy down. Every row stays in the file. Priorities B and C stay at spine and
+their release condition is unchanged from revision 2 (§1.6 in that revision, restated): one inbound
+qualified lead that reached a walkthrough, **or** a paid demand probe that bought clicks at an accepted
+cost per qualified lead over a minimum two-week window with a stated budget. Both are measurements.
+Neither is a volume estimate.
 
-| Wave | Contents | New indexable | Why this order | Gate to enter |
-|---|---|---:|---|---|
-| **0** — plumbing | **DONE** for `/industries` (commit `e483547`). Outstanding: the `data/b2b/` spine wired to the templates, `scripts/check-b2b.cjs`, the observation store, the first prompt runs, **and the glossary content-model fix (§7.4)**. Zero new pages. | 0 | So Wave 1 cannot repeat `/locations`, and cannot silently unpublish `/glossary`. | Decisions 2, 3 and 4 in §0.3 settled |
-| **1** — hubs + evidence cohort | 4 tier-S hubs (`saas-software`, `professional-services`, `manufacturing-industrial`, `it-services`) + the 4 sub-niches where reported work exists: `it-services/msp-mssp`, `it-services/cloud-consultancies`, `saas-software/cybersecurity-saas`, `saas-software/vertical-saas` | **8** | These four sub-niches are the only ones that can carry an anonymised scope statement under `CLAUDE.md` §4 rather than an empty proof block. Prove the format where the format is easiest. | §8 gate green |
-| **2** — manufacturing in depth | `manufacturing-industrial`, all 13 | **13** | Richest standards vocabulary in Iris's research, and three of the four dated trigger events land here (ISO 9001:2026, FDA QMSR, CMMC). Best off-page fit by a distance. | Wave 1 passes `CLAUDE.md` §7 tests 1–5 |
-| **3** — professional services | `professional-services`, all 9 | **9** | Referral market being disintermediated by assistants; queries are non-branded and event-shaped. Iris rates AI search as mattering more here than in manufacturing. | Wave 2 passes |
-| **4** — tier S complete | `it-services` remaining 6 + `saas-software` remaining 8 | **14** | Finishes tier S: 4 hubs + 40 sub-niches. | Wave 3 passes |
-| **5** — financial services, flagship | 4 tier-A hubs + `financial-services` all 7, including `commercial-insurance` | **11** | Commercial insurance is the one uncontested vertical and the only one where the occupancy argument may be led with. **Blocked on `OPERATOR-DECISIONS` #7 (named compliance reviewer) and #8 (client-name use).** If those do not clear, publish the other 6 and hold insurance. | Wave 4 passes **and** #7 cleared |
-| **6** — logistics + healthcare | `logistics-supply-chain` 9 + `healthcare-life-sciences` 7 | **16** | Healthcare needs the same compliance-reviewer treatment as insurance. Do not ship it before #7 has a precedent. | Wave 5 passes |
-| **7** — emerging | `emerging-micro-niches` all 12 | **12** | Tier A, but no research behind it and no vocabulary depth. It goes last within tier A because every page will be carried entirely by the observation block. | Wave 6 passes |
-| **Tier B** — 7 hubs + 45 sub-niches | **Held at `spine`.** Release condition below. | 0 | | See below |
-| **Continuous** | 8 prompt libraries, ~10 comparisons, 4 annual reports, monthly re-runs on every published page | — | External citation, link acquisition, freshness | — |
+### 1.7 Which level earns a page
 
-Running total through Wave 7: **8 hubs + 75 sub-niches = 83**, plus 8 libraries and ~10 comparisons.
+**This is the section that decides the size of the programme, and it is the one to argue with.**
 
-**The tier B release condition, stated so it is not a matter of taste.** A tier B vertical leaves
-`spine` when **either**:
+Revision 2 §1.3 argued one strong page per sub-niche beats industry × service. That argument survives
+and is unchanged. What it did not have to answer is the harder question this taxonomy asks: given four
+levels, **at which level does an entity have demand of its own, rather than being a section of its
+parent?**
 
-- an inbound qualified lead from that vertical has reached a walkthrough (one is enough — a real
-  buyer beats a demand estimate), **or**
-- a paid demand probe (§2.5) bought clicks at a cost per qualified lead the operator accepts, over a
-  minimum two-week window with a stated budget.
+#### 1.7.1 The test, stated before the answers
 
-Both are measurements. Neither is a volume estimate. Until one of them exists, a tier B vertical gets
-**zero pages**, not a hub. A childless hub is a thin page with a link block, which is the thing this
-whole architecture exists to avoid.
+An entity earns its own URL when all four hold. Any one failing puts it on its parent's page as a
+section.
 
-A wave does not begin because the previous one shipped. It begins because the previous one's cohort
-passed the five tests in `CLAUDE.md` §7, recorded in a committed file with a pull date (§8.3). If the
-file is stale, the build fails and nothing new publishes. That is the whole point.
+| # | Test | Why it is the test |
+|---|---|---|
+| 1 | **A distinct buyer.** Its `buyer_titles` set is not the set of its parent. | §8.2 assertion 7 already enforces this on published pages. Applying it *before* publication is the cheap version. |
+| 2 | **A distinct Family Q prompt.** A question about *this* entity's visibility that is not a paraphrase of its parent's (§3.3's derivation). | A page's job in this family is to be the cited answer to a Family Q prompt. No distinct prompt, no distinct job. |
+| 3 | **A distinct comparison axis.** The 3–5 axes buyers compare on differ from the parent's. | §4.1 block 6. If the axes are the same, blocks 4, 6 and 7 are the same, and §8.2 assertion 8's 40% shingle bar is unpassable. |
+| 4 | **A distinct observation.** Running its prompts returns a materially different set of cited domains from its parent's. | This is a measurement, so it can only be applied after the first panel run. It is the tiebreak, and Wave 1's arm split is how it gets taken. |
+
+#### 1.7.2 Level 4 — sub-niche. **No page. All three fit types. No exceptions.**
+
+8,823 entities, and this is not a close call.
+
+- **There is no operator input at level 4.** `{id, slug, name}`. A page built from a name is a template
+  by definition. §8.2 assertion 8 requires ≥40% unique 5-gram shingles against every other published
+  page in the family; with a median of four siblings sharing one parent's entire vocabulary, buyer,
+  standards set and comparison axis, that bar is arithmetically unreachable.
+- **The sub-niches under a niche are capabilities of the same firm, not different firms.** `16.01.01`
+  Heavy maintenance (C/D-check) providers has sub-niches `Narrowbody heavy checks`,
+  `Widebody heavy checks`, `Regional jet & turboprop checks`, `Structural repair & corrosion
+  programs`. One MRO does all four. Qognition's buyer there is one VP of Business Development with
+  one budget. Four URLs, one buyer, one offer — that is the industry × service grid rotated ninety
+  degrees, and §1.3 already killed it.
+- **The demand that exists at level 4 is Family B demand.** "narrowbody heavy maintenance checks in
+  Europe" is typed by an airline's fleet planner. Nobody types "narrowbody heavy checks marketing
+  agency". §1.1 forbids building a ranking target on the client's buyer's query, and level 4 is that
+  failure at 8,823× scale.
+- **Test 2 cannot be passed at level 4 in principle.** A sub-niche is a capability of a firm that has
+  already been identified at level 3. There is no separate buyer, so there is no separate question
+  about that buyer's visibility, so there is no Family Q prompt to be cited for. §3.3.
+
+**What level 4 is for instead, and it is genuinely valuable.** Three jobs, all on the parent's page:
+
+1. **The coverage grid.** A table on the level-3 (or level-2) page listing the sub-niches as the
+   capabilities the buyer's own customers ask for. Tabular, server-rendered, extractable — §3.4.
+2. **The entity vocabulary.** 8,823 rows of capability language, spelled the way the industry spells
+   it. This is exactly what §3.4's entity-consistency requirement needs and it is the operator's
+   words, not ours.
+3. **The prompt qualifier bank, which solves a real scaling problem.** §8.2 assertion 3 requires ≥8
+   distinct prompts per page and assertion 4 forbids sharing a prompt with any other page. The
+   operator supplied two per sub-industry. The other six must come from somewhere, and inventing them
+   breaches rule 10's spirit. Level 4 is the source. Worked example, `18.02` Specialty, Industrial
+   Cleaning & Restoration — supplied: *"cleanroom cleaning contractors experienced with GMP
+   pharmaceutical facilities"*. Level-4 rows under `18.02.01` are `Semiconductor fab cleanroom
+   services`, `Compounding pharmacy cleanroom cleaning`, `Biotech lab & vivarium cleaning`. Three more
+   distinct prompts, in the operator's vocabulary, derived not invented. **This is how assertion 4
+   stays passable at scale.**
+
+If Kyle needs one sentence for ADR-0008: **level 4 is data, never a route.**
+
+#### 1.7.3 Level 3 — niche. The answer differs by fit, and this is why the operator's field matters
+
+2,376 entities, 888 of them priority A. The operator put `fit` here and nowhere else, which is a
+strong hint that this is the level where the buy-versus-earn question is actually decided.
+
+**`PPC` fit — 190 niches, 15 of them A. No organic page at level 3. Barely one at level 2.**
+
+The reasoning runs through the supplied keywords and it is the cleanest of the three. The operator's
+1,023 `ppc_keywords` are **Family B** — `commercial roof repair`, `pfas testing lab`,
+`environmental testing lab`, `crm software for small business` (§2.1, §3.2). Those are the terms
+Qognition's *client* bids on. Qognition does not bid on them, ever. Qognition's own paid term for that
+niche is `ppc agency for <something>` or `google ads for <something>`, and at level 3 that string does
+not exist as a query — nobody searches `google ads agency for kitchen exhaust hood cleaning
+companies`. The modifier a paid-search buyer actually types is level-2-shaped at best and usually
+level-1-shaped.
+
+So for `PPC` fit the page is the wrong artefact at every level below the industry, and the correct
+artefacts are the three revision 2 already specified: a `noindex, follow` `/lp/<campaign>` destination
+(§2.5), one line in the level-2 page's fixed service block, and the `/ppc` layer page carrying the
+head term. **Rule 8 defers 175 of the 190 anyway** — 115 B and 60 C — so this costs almost nothing in
+the A-first build, and that alignment is worth noticing rather than treating as a coincidence.
+
+> One thing the operator should see: **of 888 priority-A niches, 15 are `PPC` fit. 1.7%.** Building A
+> first is correct and it means the paid door is served by `/ppc` and `/lp/*` for years, not by this
+> family. If PPC is expected to carry pipeline sooner than that, the lever is §2.5's demand probe and
+> Marcus's campaign structure, not a niche page.
+
+**`AI SEO` fit — 1,059 niches, 365 of them A. Page only on passing §1.7.1. Default is a section.**
+
+`AI SEO` fit means research-led buying with no clean commercial search demand. The win is a
+**citation**, and the only thing that earns one here is the observation block (§0.4). The observation
+block is produced by running a prompt panel — and the panel is supplied at level 2. A level-3 page
+therefore has to justify a panel of its own, which means passing test 4: its prompts return a
+materially different set of cited domains from its parent's.
+
+That is frequently true and frequently false, and which it is depends on the niche, not on the level.
+`technology-and-it-services/cybersecurity-consulting-and-testing` has A children
+`penetration-testing-firms`, `incident-response-and-dfir-firms`,
+`virtual-and-fractional-ciso-services`, `ot-ics-security-consultancies`. Those are four different
+purchases with four different buyers and four genuinely different cited-source landscapes — DFIR
+answers cite incident-response vendors and CISA advisories, pen-test answers cite CREST and OSCP
+registries. They pass. By contrast `saas-and-software/cybersecurity-saas` has A children
+`cloud-security`, `application-security`, `data-security`, `network-security` — four category labels
+whose answers will cite the same analyst properties, the same review platforms and largely the same
+vendors. They fail test 4 and belong as sections.
+
+**My estimate is that roughly half the `AI SEO` A niches pass, and I am labelling it as an estimate.**
+It is a judgement from query shape and buyer structure, not a measurement, and there is no keyword
+export in this repo to check it against. `[NEEDS DATA: the §1.7.1 screen run over all 365 priority-A
+`AI SEO` niches, with the four test outcomes recorded per niche]` Wave 1's arm split is the first real
+evidence and it should move this number.
+
+**`Both` fit — 1,127 niches, 508 of them A. This is the default level-3 page population.**
+
+`Both` means the niche has a research-led prompt surface **and** commercial demand. That is the only
+combination where one URL can carry the observation block, the mid-tail organic target and a
+conversion block a paid visitor would also accept — which is precisely the page §2.5 says is hard to
+build and §1.3 says is worth building once rather than three times. It is also where test 3 passes
+most often, because a niche with commercial demand has a comparison axis buyers state out loud.
+
+They still go through §1.7.1. A `Both` niche that shares its parent's buyer and axis is a section like
+any other.
+
+#### 1.7.4 Level 2 — sub-industry. **Always a page, for the 313 with a priority-A child.**
+
+This is the editorial unit and the recommendation is unconditional. It is the only level with buyer
+titles, client value, a `geo_angle`, supplied prompts and supplied keywords; it is the level a Family Q
+prompt is naturally phrased at (§3.3); and it is the level that can absorb its children as sections
+when they fail §1.7.1, which is what makes the whole design elastic instead of all-or-nothing.
+
+The 28 sub-industries with no priority-A child stay at spine under rule 8.
+
+#### 1.7.5 Level 1 — industry. **A page, 21 of them, published last within its wave.**
+
+A hub earns its place as a crawl and entity anchor and as the carrier of the head term (§2.3). It does
+not earn its place as a page that ranks — nothing on a domain at 187 clicks a quarter is going to hold
+`aerospace marketing agency` — and a hub published before its children is a link block with a
+paragraph on top, which is the exact shape §1.4 rejects. Publish it in the same wave as its children
+and last in the ordering. §5's depth rule has something to say about this too; see §5.1 rule 10.
+
+#### 1.7.6 The recommendation in one table
+
+| Level | Entities | Recommended pages | Basis |
+|---|---:|---|---|
+| 1 industry | 21 | **21**, last in each wave | Crawl and entity anchor |
+| 2 sub-industry | 341 | **313** with a priority-A child | The editorial unit. Unconditional |
+| 3 niche, `Both` fit | 1,127 (508 A) | **508 A candidates**, each through §1.7.1 | Observation block plus commercial demand on one URL |
+| 3 niche, `AI SEO` fit | 1,059 (365 A) | **~180 estimated**, each through §1.7.1 | Passes only where the cited-source landscape genuinely differs from the parent's |
+| 3 niche, `PPC` fit | 190 (15 A) | **0** | `/lp/*`, the service block line, and `/ppc`. Not an indexable page |
+| 4 sub-niche | 8,823 | **0** | Coverage grid, entity vocabulary, prompt qualifier bank. Data, never a route |
+
+**Ceiling permitted: 11,561. Recommended priority-A programme: 21 + 313 + roughly 690 = about 1,020,
+over multiple years, each wave gated.** The number is soft on purpose — §1.7.1 decides it entity by
+entity and Wave 1 is designed to move it. What is not soft is the shape: **level 2 always, level 3
+conditionally, level 4 never.**
 
 ---
 ## 2. Keyword mapping per tier
@@ -315,6 +706,40 @@ query shape and buyer intent, and are labelled as such.
 client's buyer asks an assistant) is §3, and is documentation, never a ranking target. Mixing the two
 is the single most likely way this build fails, and `data/b2b/verticals.ts` now has a `geoAngle`
 field on 20 sub-niches that reads exactly like a keyword and is not one.
+
+#### The 1,023 supplied `ppc_keywords` are Universe B. All of them.
+
+**New in revision 3, and it is the most consequential correction in this section.** The operator
+supplied three PPC keywords per sub-industry, 341 × 3 = 1,023, verified by count. I sampled them across
+all 21 industries and scanned the whole set for agency, marketing, SEO and ads language. The result is
+unambiguous:
+
+> **Not one of the 1,023 is a term Qognition would bid on for its own acquisition.**
+
+`crm software for small business` · `pfas testing lab` · `commercial roof repair` ·
+`packaging machinery manufacturer` · `refinery turnaround contractors` ·
+`industrial outdoor storage` · `aircraft leasing companies`. Every one is a term **Qognition's client**
+bids on. They are the paid-search half of the Family B diagnosis — the demand the client is failing to
+capture — and they are the raw material of the paid section of the observation, in exactly the way the
+682 prompts are the raw material of the organic section.
+
+Three consequences, and they are not cosmetic:
+
+1. **No `ppc_keywords` string may appear as a `primaryQuery`, a title, an H1 or a bid target in any
+   Qognition campaign.** This is the same failure mode as `geo_angle` leaking into a ranking target,
+   one field over, at 1,023× the count. §8.2 gets a new assertion for it (21).
+2. **The paid layer for this family is therefore not built from the supplied keywords at all.** It is
+   built from Universe A PPC-service strings — `b2b ppc agency for manufacturers`,
+   `google ads agency for msps` — which the operator did not supply and which §2.4 lists.
+   `[NEEDS DATA: whether a Universe A PPC keyword set exists anywhere outside this document]`
+3. **The supplied keywords have a real and different job**: they are the second half of every page's
+   diagnosis block. "Here are the three paid terms your buyers use, here is who is buying them, here is
+   who the assistants named for the same question." That is a sales asset built entirely from operator
+   data, and it costs nothing to produce.
+
+There is a small collision set where a supplied string is simultaneously Universe B and Universe A.
+It is five keywords and four prompts, it is a positioning problem as much as a search one, and it is
+handled in §3.2.
 
 **Targeting a superlative query is not making a superlative claim.** `best industrial seo agencies`
 is a legitimate mid-tail target. The page that serves it may not call Qognition the best of anything
@@ -348,7 +773,13 @@ page, and the way they are both true is that the page ranks the *criteria*, not 
 One page per sub-niche carries mid-tail, problem-aware, PPC-modifier and the conversion. That is the
 whole reason a single deep page beats a grid.
 
-### 2.4 Tiers across all 15 meta-verticals
+### 2.4 Tiers across all 15 meta-verticals — **superseded, kept as shape reference**
+
+> **Revision 3 note.** The strings below were written against `data/b2b/verticals.ts`'s fifteen and are
+> **not** a keyword plan for the locked spine. They are kept for one reason: they are the only worked
+> examples in either document of **Universe A** query shape — what Qognition's own buyer types — and
+> §2.1 has just established that the operator's 1,023 supplied keywords are all Universe B. Read them
+> as a template for deriving Universe A strings per sub-industry, and never as slugs (rule 6).
 
 Strings are lowercase as typed. Tier key: **H** head · **M** mid-tail · **C** comparison ·
 **P** problem-aware · **$** purchase · **A** ads / PPC-service.
@@ -538,137 +969,201 @@ prompt set for Qognition's own citation reporting.
 Every sub-niche page needs both: Family B as observed data, Family Q as the question the page itself
 answers.
 
-**One more line, added in this revision because the ICP widened.** Family Q now has a third shape:
+**Revision 3 adds the level dimension.** Family B is supplied at level 2 and derivable at level 4
+(§3.2 finding 4). Family Q is derivable at levels 1, 2 and 3, and **does not exist at level 4**
+(§3.3). That asymmetry is not incidental — it is the mechanism by which the taxonomy tells you where a
+page belongs, and §1.7 is built on it.
+
+**One more line, carried from revision 2 because the ICP widened.** Family Q has a third shape:
 prompts where the asker wants classic SEO or PPC help and has not thought about AI search at all
 ("how do manufacturers generate leads besides thomasnet"). Those are in the ICP by `CLAUDE.md` §2 and
 they are currently absent from the tracked set. Add them. Record the addition and the reason, per
 §9.2 — comparability is the whole value of the panel and a silent set change destroys it.
 
-### 3.2 Family B prompts, all 15 meta-verticals
+### 3.2 The supplied 682, verified
 
-Written in the shape the operator supplied. Each should be run across ChatGPT, Perplexity, Gemini and
-Google AI Overviews, with the raw answer, the cited URLs, the model version and the date persisted.
+The operator supplied 682 `ai_prompts`: two per sub-industry, 341 × 2, at level 2 and at no other
+level. The brief states they are Family B. **I verified that rather than assuming it**, because the
+whole architecture rests on the split and an error here is an error on every page.
 
-Coverage is deliberately uneven: tier S and A verticals get a publishable panel (the §8.2 minimum is
-8 distinct prompts per page, so these are seeds, not the full set); tier B verticals get two, enough
-to run a probe and not enough to imply a page is coming.
+#### Method
 
----
+Three passes, all reproducible from `data/b2b/icp/icp-taxonomy.json`:
 
-**`saas-software`**
-1. "What is the best SOC 2 compliance automation platform for a 60-person company that also needs ISO 27001 and HIPAA, cheaper than Vanta, with a real auditor network?"
-2. "Which contract lifecycle management tools integrate natively with Salesforce and support Word redlining for a 200-seat legal team with EU data residency?"
-3. "Recommend a warehouse management system for a 3PL running multi-client billing with Shopify and NetSuite integrations and EDI 940/945 support."
-4. "Which MLOps platforms support on-prem GPU clusters and model governance documentation for an EU AI Act high-risk classification?"
-5. "Find a core banking platform for a US credit union under $2B in assets with FedNow support and a documented Fiserv migration path."
-6. "Which dental practice management systems support multi-location DSO reporting and integrate with Weave and Dentrix?"
-7. "Best authentication API for a B2B app that needs SCIM provisioning, SAML SSO and a self-hosted option."
+1. **Systematic sample.** Every 17th prompt in document order, 41 prompts, which hits all 21
+   industries and 41 distinct sub-industries.
+2. **Adversarial scan.** The full 682 against a regex for the vocabulary a Family Q prompt would have
+   to contain — `marketing|seo|leads?|agency|agencies|advertis|chatgpt|ai search|generate|get found|
+   rank|website|demand gen|grow my|market my|promote`. 29 hits, every one read in full.
+3. **Structural read** of the four sub-industries whose vendor category *is* a marketing agency, since
+   those are the only places the two families can collide by construction.
 
-**`professional-services`**
-1. "Which mid-size US accounting firms specialise in transfer pricing documentation for a manufacturer with entities in Mexico, Germany and Singapore?"
-2. "Find a corporate law boutique handling cross-border SaaS M&A under $50M with experience defending earn-out disputes in Delaware."
-3. "Who performs R&D tax credit studies for software companies and will defend the claim through an IRS examination?"
-4. "Recommend a fractional CFO firm for a $15M ARR SaaS business preparing for a Series B, with ASC 606 revenue recognition experience."
-5. "Which employment law firms advise on multi-state remote workforce compliance for a 400-person company, including California and New York?"
-6. "Find an EOR that can hire in Brazil, Poland and Vietnam with a documented permanent-establishment position and no minimum headcount."
-7. "Which RPO providers run high-volume industrial hiring in the US Southeast with a documented time-to-fill under 25 days?"
+#### Finding 1 — all 682 are Family B. The classification is correct.
 
-**`manufacturing-industrial`**
-1. "Find ISO 9001 and AS9100D certified CNC machining suppliers for titanium aerospace parts with 5-axis capability and ITAR registration, US Midwest, lead time under 8 weeks."
-2. "Which contract electronics manufacturers handle low-volume high-mix PCBA to IPC-A-610 Class 3 with AS9100, minimum order under 500 units?"
-3. "I need an EMS partner in Mexico or the US Southwest for automotive electronics, IATF 16949 certified, with in-house conformal coating and ESD-controlled areas."
-4. "Who supplies API 610 centrifugal pumps for sour service meeting NACE MR0175, with API 682 seal plans and a 12-week delivery?"
-5. "Compare packaging machinery OEMs for aseptic filling under 200 bottles per minute with FDA and EHEDG compliant designs and US service coverage."
-6. "Which precision engineering firms can hold ±5 micron tolerance on Inconel with CMM inspection reports and PPAP documentation?"
-7. "Which of my suppliers are CMMC Level 2 ready for a DoD contract with the 48 CFR clause in it?"
-8. "Find an ISO 9001 certified injection moulder transitioning to the 2026 revision with medical-grade cleanroom capability."
+Every prompt has the same asker: **a buyer looking for a supplier.** "best independent MRO for
+narrowbody heavy maintenance checks in Europe." "best Nadcap accredited materials testing lab for
+fatigue and tensile testing." "which Tier 2 suppliers can build low-volume wire harnesses for a new
+commercial vehicle program." None asks about the asker's own visibility, marketing, rankings or AI
+presence. **Qognition can never be the cited answer to any of them, and none may be a ranking target.**
 
-**`it-services`**
-1. "Find a Microsoft Solutions Partner for Modern Work with Copilot deployment experience for a 300-seat professional services firm in Texas."
-2. "Which NetSuite implementation partners specialise in multi-entity manufacturing with WIP costing and landed cost tracking?"
-3. "Recommend a co-managed IT provider for a 500-person manufacturer needing OT network segmentation and CMMC Level 2 readiness."
-4. "Which Salesforce consultancies have done Revenue Cloud implementations with CPQ migration for a usage-based pricing model?"
-5. "Compare MDR providers for a 400-employee manufacturer with OT and ICS environments, 24/7 SOC coverage, and a documented MTTD under 15 minutes."
-6. "Which MSSPs support CMMC Level 2 readiness for a defense supplier with 300 endpoints and a GCC High tenant?"
-7. "Find a CREST-accredited penetration testing firm for a PCI DSS 4.0 assessment of a payments platform, available in Q1, with retest included."
-8. "Which colocation providers in the US Midwest offer 20kW-per-rack density with a documented PUE and direct cloud on-ramps?"
+#### Finding 2 — Family B has two sub-shapes and they are worth separating, because they sell differently
 
-**`financial-services`**
-1. "Which commercial insurance wholesalers write excess casualty for staffing firms in California with admitted and non-admitted options?"
-2. "Find an equipment finance provider for $2M of CNC machinery on a 60-month term for a company with three years trading history."
-3. "Recommend a B2B payments provider supporting ACH, virtual cards and NetSuite reconciliation for a distributor with 4,000 invoices a month."
-4. "Which RegTech vendors handle transaction monitoring for a state-chartered bank under $10B with FinCEN reporting built in?"
-5. "Find an invoice factoring company for a freight brokerage with non-recourse terms and same-day funding."
-6. "Which fund administrators service sub-$100M private credit funds with investor portal and ILPA-compliant reporting?"
+| Shape | Roughly | Example | What it means for the page |
+|---|---|---|---|
+| **B-vendor** | the large majority | "best equipment financing companies for construction businesses" | A shortlist request. The observation shows the client which competitors were named. This is the diagnosis. |
+| **B-problem** | a visible minority | "how do I get a GSA schedule for my IT services company" · "how to achieve zero liquid discharge at a food processing plant" · "should we rent or buy a trade show booth for eight shows a year" | A how/should question. **The client can realistically become the cited answer to these with one content asset.** This is the prescription, and it is the more saleable half. |
 
-**`healthcare-life-sciences`**
-1. "Find a CDMO for sterile fill-finish of a lyophilised biologic at 50L scale, FDA-inspected with no Form 483 observations in the last three years."
-2. "Which CROs run decentralised Phase II rare disease trials under the EU CTR with 21 CFR Part 11 compliant eClinical systems?"
-3. "Who provides 510(k) regulatory consulting for a Class II device with software-as-a-medical-device components and EU MDR follow-on?"
-4. "Which revenue cycle management vendors handle denials management for a 12-site orthopaedic group on Epic?"
-5. "Which contract manufacturers are aligned to the FDA QMSR that took effect in February 2026 and hold ISO 13485?"
-6. "Which notified bodies can certify a Class IIb medical device under EU MDR with a lead time under nine months?"
+Revision 2 did not make this distinction because the prompt set was hand-written and uniformly
+B-vendor. The operator's set is richer than that, and a page that shows the client both shapes — "here
+is the question you cannot win, and here is the one you can" — is a materially better diagnosis than
+one that shows only the first. **Tag each supplied prompt B-vendor or B-problem when the panel is
+built**, and render them as separate rows in the observation table.
 
-**`logistics-supply-chain`**
-1. "Find a 3PL in the US Southeast with FDA-registered food-grade warehousing, a WMS supporting EDI 940/945, and dedicated Shopify fulfilment."
-2. "Which pharmaceutical cold chain forwarders hold IATA CEIV Pharma and GDP certification for lanes from Frankfurt to São Paulo?"
-3. "Who handles customs brokerage for Section 301 tariff engineering and foreign trade zone management on China-origin electronics?"
-4. "Recommend a 4PL that can run control-tower visibility across three existing carriers without replacing our TMS."
-5. "Which flatbed carriers are authorised for over-dimensional wind components across the US Midwest with permit management included?"
-6. "Which returns and reverse-logistics providers handle electronics refurbishment with R2v3 certification?"
+#### Finding 3 — the collision set. Four prompts, five keywords, and it is a positioning problem
 
-**`emerging-micro-niches`**
-1. "Which AI implementation consultancies have delivered production LLM systems in regulated industries with documented evaluation methodology?"
-2. "Find a nearshore BPO in Colombia or Mexico for bilingual technical support with SOC 2 and a documented attrition rate."
-3. "Which Robotics-as-a-Service providers offer warehouse picking on a per-pick pricing model with no capex?"
-4. "Which cannabis testing labs are ISO/IEC 17025 accredited and licensed in both California and Michigan?"
-5. "Find a satellite imagery provider with sub-50cm resolution and an API, licensed for commercial redistribution."
-6. "Which water treatment technology firms handle PFAS remediation for industrial dischargers under the 2024 EPA limits?"
+There are four sub-industries where the vendor category being shortlisted **is a marketing agency**.
+In those, a Family B prompt is simultaneously a prompt Qognition could itself be cited for.
 
----
+| Sub-industry | Supplied prompt or keyword | Why it collides |
+|---|---|---|
+| `professional-and-business-services/b2b-marketing-and-demand-gen-agencies` | "best B2B demand generation agency for SaaS companies" · "top ABM agencies for enterprise tech companies" · `b2b marketing agency` · `abm agency` · **`b2b seo agency`** | Its `geo_angle` reads *"Agencies buy GEO for themselves, then need to win 'best B2B agency for X' answers"* — so the operator's intent is white-label: Qognition sells **to** these agencies. But `b2b seo agency` is also Qognition's own head term. |
+| `franchising-and-multi-location/franchise-marketing-and-lead-generation-agencies` | "best franchise development marketing agency to generate qualified franchise leads" · **"agency that manages local SEO and paid media for 300 franchise locations"** · `franchise marketing agency` · `franchise development marketing` | The second prompt is one Qognition could answer directly. Same white-label-versus-direct ambiguity. |
+| `retail-cpg-and-brand-enablement/marketplace-and-retail-media-agencies` | `amazon marketing agency` · `walmart marketplace agency` · `shopper marketing agency` | Weaker collision: these agencies serve consumer brands, and rule 4 bars DTC brands as Qognition clients. Qognition sells to the agency, not the brand. Flagged for completeness. |
+| `media-marketing-and-creative/*` | `b2b pr agency` · `presentation design agency` · `influencer marketing platform` | Same weaker pattern. |
 
-**Tier B — two each, probe only.**
+**What follows, and none of it is optional.**
 
-- **`construction-real-estate`** · "Find a commercial general contractor in Denver for a 60,000 sq ft tilt-up warehouse targeting LEED Gold under a GMP contract." · "Which BIM consultants do MEP clash detection in Revit for healthcare projects with OSHPD experience?"
-- **`energy-utilities`** · "Find an EPC contractor for a 20MW behind-the-meter solar plus storage project with NERC compliance experience." · "Which EV charging providers handle NEVI-funded corridor sites with Buy America compliant hardware?"
-- **`education-training`** · "Which corporate training providers deliver OSHA 30 and lockout/tagout across 12 US manufacturing sites with SCORM LMS delivery?" · "Find an LMS that supports IACET CEU tracking and integrates with Workday Learning."
-- **`hospitality-travel-events`** · "Which hotel property management systems support multi-property revenue management with Opera migration and a documented API?" · "Find a corporate travel management company for a 600-person firm with NDC content and duty-of-care tracking."
-- **`agriculture-food`** · "Which co-packers run high-acid aseptic beverage lines with SQF certification and minimum runs under 5,000 units?" · "Find a precision agriculture platform with variable-rate prescription export to John Deere Operations Center."
-- **`media-marketing-creative`** · "Which promotional products distributors are ASI-registered and can run a 5,000-unit branded apparel programme with on-demand fulfilment?" · "Find a B2B content syndication network with verified intent data and a documented lead rejection process."
-- **`government-nonprofit`** · "Which FedRAMP Moderate authorised vendors provide permitting software for a city of 200,000?" · "Find a CMMC Level 2 certified defence supplier registered in SAM.gov with a small-business set-aside designation."
+1. **No collision string may be a ranking target on its own sub-industry page.** A page at
+   `/industries/professional-and-business-services/b2b-marketing-and-demand-gen-agencies` built to rank
+   for `b2b seo agency` is written for two incompatible readers at once — the agency owner buying
+   white-label, and the CMO buying Qognition direct. §8.2 assertion 18's ban on `geo_angle` as a
+   ranking target extends to these strings; assertion 22 makes it mechanical.
+2. **No collision keyword may be bid on from that sub-industry's campaign.** Bidding `b2b seo agency`
+   inside a vertical campaign aimed at agencies spends Qognition's own head-term budget on a
+   white-label audience and competes with Qognition's own `/ai-seo` and `/ppc` pages. Marcus owns the
+   call; the flag is mine.
+3. **`b2b seo agency` and `abm agency` belong to Qognition's own Family Q**, on `/ai-seo` and `/ppc`,
+   tracked in Qognition's own panel, and nowhere else.
+4. **Wave 4 holds `b2b-marketing-and-demand-gen-agencies` until the operator decides** whether
+   Qognition sells white-label to agencies at all. It is a positioning question, not a search one.
+   Ruth sees any copy on that page and on `franchise-marketing-and-lead-generation-agencies` before
+   either ships. `[NEEDS DATA: operator decision — does Qognition sell white-label to B2B marketing
+   and franchise marketing agencies, and if so how is that reconciled with competing for the same
+   prompts]`
 
-### 3.3 Family Q prompts — what a page in this family can be cited for
+#### Finding 4 — 682 prompts do not fill 682 pages' panels, and level 4 is why
 
-These go into the tracked prompt set for Qognition's own citation reporting, re-run monthly into
-`clients/qognition-agency/deliverables/geo-citations.md` or its in-repo equivalent. **Appended, never
-overwritten.** Same prompts every month, so months are comparable.
+§8.2 assertion 3 requires **≥8 distinct prompts per page**; assertion 4 forbids any prompt being shared
+between two pages. Two supplied prompts per sub-industry is a quarter of one page's minimum. The gap
+is six prompts per page, and inventing them would be exactly the fabrication rule 10 forbids.
 
-**Cross-vertical (run every month regardless of which waves have shipped)**
-- "Which agencies do generative engine optimisation for B2B companies?"
-- "Is there data on which sources AI assistants cite when asked to recommend B2B vendors?"
-- "What certifications should a supplier put on its site so AI assistants can match it to an RFQ?"
-- "How do I find out whether ChatGPT recommends my company?"
-- "What is the difference between AI SEO and GEO?"
-- *(new, from the widened ICP)* "Which agencies do both SEO and Google Ads for B2B companies?"
+The source is level 4, per §1.7.2 job 3: **compose the supplied prompt with the sub-niche names under
+the relevant niche.** Every resulting prompt is the operator's own vocabulary, distinct by
+construction because sub-niche slugs are 99.3% unique (8,759 of 8,823), and auditable back to two
+locked fields.
 
-**Per meta-vertical**
+Worked, from `18.02` Specialty, Industrial Cleaning & Restoration:
 
-| Vertical | Family Q prompts |
+| Source | Prompt |
 |---|---|
-| `saas-software` | "Why does ChatGPT recommend my competitor and not my software?" · "How does a vertical SaaS company get into AI-generated category shortlists?" · "Does having G2 reviews affect whether AI recommends your software?" |
-| `professional-services` | "How can a mid-size accounting firm appear in AI answers instead of the Big Four?" · "How do law firms get named when someone asks an assistant for a specialist?" · "How do consulting firms generate inbound leads besides referrals?" |
-| `manufacturing-industrial` | "Why doesn't ChatGPT recommend my CNC machine shop when buyers ask for aerospace suppliers?" · "How do manufacturers generate RFQs besides Thomasnet?" · "What should a contract manufacturer put on its site so AI can match it to a capability query?" |
-| `it-services` | "How do MSPs get named in AI-generated vendor shortlists?" · "How does a Microsoft partner get found when buyers ask an assistant instead of searching?" · "Why does ChatGPT name the national MSPs and not regional ones?" |
-| `financial-services` | "How does a commercial insurance broker appear in AI answers instead of the aggregators?" · "How do fintech vendors get cited by AI assistants?" |
-| `healthcare-life-sciences` | "How does a CDMO get found by sponsors using AI search?" · "What do medical device suppliers need on their site for AI assistants to match them to a requirement?" |
-| `logistics-supply-chain` | "What do 3PL websites need for AI assistants to include them in shortlists?" · "How do freight forwarders get found before an RFP list is written?" |
-| `emerging-micro-niches` | "How does a company market a category that does not have a name yet?" · "How do you get an AI assistant to describe your category correctly?" |
-| Tier B | None tracked until the vertical leaves `spine`. Adding them early inflates the panel and dilutes the monthly comparison. |
+| supplied | "cleanroom cleaning contractors experienced with GMP pharmaceutical facilities" |
+| supplied | "who handles large-loss commercial water damage restoration for a hospital" |
+| `18.02.01` sub-niche `Semiconductor fab cleanroom services` | "who does cleanroom cleaning for a semiconductor fab" |
+| `18.02.01` sub-niche `Compounding pharmacy cleanroom cleaning` | "cleanroom cleaning contractor for a 503B compounding pharmacy" |
+| `18.02.02` sub-niche `Tank & vessel cleaning` | "industrial tank and vessel cleaning contractor for a refinery turnaround" |
+| `18.02.02` sub-niche `Heat exchanger cleaning` | "who does hydroblasting and heat exchanger cleaning on a plant outage schedule" |
+| `18.02.03` sub-niche `Document & electronics recovery` | "document and electronics recovery after a commercial water loss" |
+| `18.02.03` sub-niche `National-account priority response programs` | "restoration contractor with a national priority response program for multi-site retail" |
 
-Note the shape of the last cross-vertical prompt and of the manufacturing set: they are where the two
-families meet. A page that documents which certifications appeared in the cited answers is answering
-a Family Q question **using** Family B data. That is the citable position, and it is the only one
-this family has.
+Eight distinct prompts, two operator-supplied and six operator-derived, nothing invented.
+**This is what the 8,823 rows are for.**
+
+### 3.3 Family Q, derived per level — because the operator supplied none
+
+**The operator supplied 1,705 Family B strings and zero Family Q strings.** That is not an oversight:
+the taxonomy describes the client's market, and Family Q describes Qognition's. But **Family Q is what
+a page targets**, so it has to exist before a page can be written, and it has to be derived by a rule
+rather than written by feel, or the tracked panel stops being comparable month to month (§9.2).
+
+#### The derivation rule
+
+> **Family Q at level L is the question Qognition's buyer asks about their own visibility, phrased in
+> the vocabulary the operator supplied at level 2.**
+
+Every derived prompt must be traceable to a supplied field — `buyer_titles` supplies the asker,
+`client_value` supplies the stakes, `geo_angle` supplies the failure mode, and the Family B prompt
+supplies the qualifier the buyer is absent from. A derived prompt that cannot be traced to one of those
+four is invented and does not go in the panel.
+
+#### Level 1 — industry. Thin, head-shaped, 2 per industry. 42 total.
+
+The only genuinely head-shaped Family Q prompts in the family. They go in the **cross-vertical panel**
+and are run monthly regardless of which waves have shipped, because they are the series that shows
+whether Qognition is becoming visible at all.
+
+- "which agencies do AI search optimisation for `<industry>` companies?"
+- "how do `<industry>` companies get named when buyers ask an assistant for a supplier?"
+
+#### Level 2 — sub-industry. The richest layer, and where the tracked panel lives. 3 shapes × 341.
+
+| Shape | Template | Traced to |
+|---|---|---|
+| **Q-absence** | "why doesn't ChatGPT recommend my `<sub-industry noun>` when buyers ask for `<supplied Family B qualifier>`?" | `ai_prompts` + `geo_angle` |
+| **Q-method** | "what does a `<sub-industry noun>` need on its website for AI assistants to match it to `<supplied qualifier>`?" | `ai_prompts` + `geo_angle` |
+| **Q-channel** | "how do `<sub-industry noun>` firms generate leads besides `<the incumbent channel or directory named in the industry brief>`?" | `docs/icp-industries/<NN>.md` + revision 2 §3.1's widened-ICP shape |
+
+Worked, `19.08` Environmental Testing Labs (supplied prompt: *"best labs for EPA 1633 PFAS analysis
+with fast turnaround"*; supplied `geo_angle`: *"Named by AI for 'certified lab for [method or analyte]
+in [state]'"*):
+
+- Q-absence — "why doesn't ChatGPT recommend my environmental lab when consultants ask for EPA 1633
+  PFAS analysis?"
+- Q-method — "what does an environmental testing lab need on its website for AI assistants to match it
+  to a specific EPA method and state certification?"
+- Q-channel — "how do environmental labs win consultant and utility accounts besides state
+  certification lists and RFP portals?"
+
+**341 × 3 = 1,023 candidate Family Q prompts. Do not track 1,023.** §9.2's comparability rule means
+the panel only grows when a set change is recorded with a reason. **Track the three for a sub-industry
+from the month its page publishes**, plus the 42 level-1 prompts and revision 2 §3.3's six
+cross-vertical prompts, permanently. At the end of the priority-A programme that is roughly
+42 + 6 + 939 prompts — large, but it grew one cohort at a time with a dated line each time, which is
+the only way a panel that size stays worth anything.
+
+#### Level 3 — niche. Family Q exists **only** where it is not a paraphrase of the parent's.
+
+This is where the Family Q derivation and §1.7 meet, and it is the single most useful thing in this
+section:
+
+> **A niche that cannot produce a Family Q prompt distinct from its parent's is a niche that must not
+> have a page.**
+
+That is §1.7.1 test 2, and it is testable in minutes per niche with no data source beyond the locked
+taxonomy and the industry brief. It passes for
+`technology-and-it-services/cybersecurity-consulting-and-testing/incident-response-and-dfir-firms` —
+"how does a DFIR firm get named when a CISO asks an assistant who to call during a live breach?" is
+not a paraphrase of anything its parent asks. It fails for
+`saas-and-software/cybersecurity-saas/network-security` — "why doesn't ChatGPT recommend my network
+security product?" is the parent's Q-absence prompt with one word changed.
+
+When it passes, the niche's Family Q prompt **replaces** the parent's in the panel for that niche and
+is tracked from the niche page's publication date. When it fails, the niche is a section and adds no
+prompt at all.
+
+#### Level 4 — sub-niche. **No Family Q exists. Zero prompts, 8,823 entities.**
+
+A sub-niche is a capability of a firm already identified at level 3. There is no separate buyer,
+therefore no separate question about that buyer's visibility, therefore nothing to be cited for. This
+is not a capacity judgement — it is that the prompt cannot be written without inventing a buyer who
+does not exist. It is the cleanest proof available that level 4 is a section, and it is why §1.7.2
+takes no exceptions.
+
+#### What goes in the tracked file
+
+`clients/qognition-agency/deliverables/geo-citations.md`, or its in-repo equivalent. Appended, never
+overwritten. Per §9.2: date, engine, model version, prompt, **family and level** (new in revision 3 —
+a panel mixing Q1, Q2 and Q3 prompts without labelling the level is uninterpretable), cited or not,
+which URL, what was said. Every set change gets a dated line with the reason.
 
 ### 3.4 What a page must contain to be the cited answer
 
@@ -688,7 +1183,7 @@ extract from is wasted work.
 - One organisation name, one description, one address, everywhere. `lib/schema.ts` already pins
   address to `data/siteConfig.ts` with the comment that entity resolution depends on it. That work is
   blocked by `OPERATOR-DECISIONS` #1: `/contact` says Mumbai, `/about` and `/team` say Bangalore and
-  Sydney, DesignRush and Tracxn say Gurugram. **Publishing 83 new pages on top of a contradicted
+  Sydney, DesignRush and Tracxn say Gurugram. **Publishing roughly 1,020 new pages on top of a contradicted
   entity weakens every one of them**, and the contradiction is worse than revision 1 knew because it
   now reaches third-party directories, which is off-page territory
   (`docs/seo/b2b-offpage-authority.md` §2). Settle #1 before Wave 2.
@@ -730,7 +1225,7 @@ build fails.
 | 2 | **The buyer, named** | ≥3 real job titles, each with the artefact they actually research. Set must be unique across the family. | A commodity manager at an aerospace prime researches an AS9100 scope certificate. A CISO researches an MDR provider's MTTD claim. These do not interchange. |
 | 3 | **Observed AI answers** | ≥8 distinct prompts, ≥3 engines, dated within 90 days, rendered as a table: prompt · engine · vendors named · URLs cited · date. Raw answers stored and re-derivable (`CLAUDE.md` §1, G.O.L.E.M). | This is measurement. It cannot be written. |
 | 4 | **What the cited pages had in common** | ≥3 observations drawn from block 3, each pointing at a specific cited URL. | Derived from that niche's actual results. |
-| 5 | **Vocabulary and standards** | ≥6 terms, each with its issuing body and what it gates. No term may appear on more than 25% of pages in the family. | The 25% cap is what stops "ISO 9001" being the entire vocabulary of the manufacturing branch, which now has 13 pages rather than 14. |
+| 5 | **Vocabulary and standards** | ≥6 terms, each with its issuing body and what it gates. No term may appear on more than 25% of pages in the family. | The 25% cap is what stops "ISO 9001" being the entire vocabulary of the manufacturing branch. **Revision 3: the cap is now per parent, not per family** — at ~1,020 pages a 25% family-wide cap is trivially met by any term while three sibling pages under one sub-industry still share every standard they name. Assert it at both scopes: ≤25% of the family, and ≤60% of the published pages under any one level-2 parent. |
 | 6 | **The comparison axis** | The 3–5 axes buyers in this niche actually compare on, stated as axes, not benefits. | Machining: tolerance, certification scope, capacity, lead time, NPI support. MDR: MTTD/MTTR, coverage hours, telemetry sources, escalation model, contracted SLA. 3PL: network footprint, WMS and EDI capability, SKU profile fit, temperature control, billing model. |
 | 7 | **Why this niche loses the AI answer** | One specific failure mechanism, evidenced from block 3. | Manufacturing: directories and marketplaces occupy the cited slots. Distribution: the distributor is named instead of the principal. Professional services: the Big Four are named because they publish. Government: the registry is cited and the vendor is not. Each is a different fix. |
 | 8 | **Proof, or the absence of it, stated** | Either a case-study id that resolves in `data/case-studies`, or `clientProof: 'none'` and a rendered sentence saying no client has been published in this niche. | `CLAUDE.md` §11 forbids implying experience because a page exists. **Most of these pages will carry the honesty line**: Iris's evidence map gives real reported work in four sub-niches out of 120. That line is itself a differentiator; nobody else writes it. |
@@ -742,17 +1237,30 @@ build fails.
 - ≥40% unique 5-gram shingles against **every** other published page in the family, not just the
   nearest sibling. `CLAUDE.md` §7 says "closest sibling"; measuring against all is cheap and catches
   the case where three pages are each 45% unique against their neighbour and 90% identical as a set.
-  With 75 committed sub-niche pages this matters more than it did at a notional 190, not less —
-  manufacturing alone has 13 pages that share a standards vocabulary.
+  At the priority-A programme's ~1,020 pages this is the assertion most likely to fail, and it should
+  be: `manufacturing-and-industrial` alone has 18 level-2 pages and 55 priority-A niches sharing one
+  standards vocabulary, and `environmental-engineering-and-testing` has 46 priority-A niches that all
+  name ISO/IEC 17025. **A shingle check against every other published page is O(n²) and at ~1,020 pages
+  that is ~520,000 comparisons per build** — still cheap, but it is a build-time cost that should be
+  measured before it is assumed. If it becomes the slow step, shingle-hash the corpus once and compare
+  against the index, not pairwise. Do not weaken the assertion to make the build faster.
 - ≥60% unique against the parent hub.
 - ≥900 words of prose excluding navigation and boilerplate. Word count is not quality. It is a floor
   that catches stubs, and I am naming it as that.
 
-### 4.3 The conversion event, per meta-vertical
+### 4.3 The conversion event, per industry
 
 The event is the same across the family — a booked qualified walkthrough is the North Star
 (`CLAUDE.md` §3) — but the offer wording has to fit the sales cycle, and since the ICP widened every
 page needs a second door.
+
+> **Revision 3.** The table below is keyed on `data/b2b/verticals.ts` slugs and covers eight of the
+> twenty-one industries. The **pattern** transfers; the slugs do not (rule 6). Derive the framing for
+> the remaining thirteen from two supplied fields rather than by writing it fresh: `client_value` sets
+> the sales-cycle reality (a $250k–$5M heavy-check contract is not a $25k/yr lab account) and the
+> sub-industry's `fit` sets the second door — `AI SEO` → classic SEO, `PPC` → paid, `Both` → offer
+> whichever the prospect asked about first. `[NEEDS DATA: conversion-event framing for the thirteen
+> industries not in this table, derived and reviewed before their wave]`
 
 | Vertical | Sales cycle reality | Snapshot framing | Second door |
 |---|---|---|---|
@@ -769,67 +1277,122 @@ Do not promise a placement, a ranking or a citation in any of these (`CLAUDE.md`
 the snapshot observes, and on what date.
 
 ---
-## 5. Internal linking model
+## 5. Internal linking model at 11,561
 
-Rules, written so they can be generated and asserted. Nothing here modifies an existing link.
+Rules, written so they can be generated and asserted. **Nothing here modifies an existing link, an
+existing canonical, an existing redirect or any `robots` directive.** Every rule below applies to new
+pages only, so the rollback for any of it is reverting the commit — there is nothing to undo at
+Google's end because nothing live changes in either direction.
+
+### 5.0 What breaks at four levels, before the rules
+
+Two of revision 2's rules do not survive the arithmetic and have to be re-stated rather than carried:
+
+**The depth rule breaks.** Revision 2 rule 10 said every page ≤3 clicks from `/`, with the path
+`/` → `/industries` → `/industries/<vertical>` → `/industries/<vertical>/<sub-niche>`. At four levels
+the natural path to a level-3 niche page is `/` → `/industries` → `/industries/<industry>` →
+`/industries/<industry>/<sub-industry>` → the niche. **That is four clicks, and it is not fixable by
+wishing.** The fix is stated in rule 10 below and it is a constraint on ADR-0008, not a preference.
+
+**The "hub links to every child" rule breaks.** Revision 2 rule 2 forbade pagination and truncation on
+hubs, which was comfortable at 13 children. `manufacturing-and-industrial` has 21 sub-industries and
+162 niches. A hub that lists every descendant is a directory, which rule 12's ceiling already forbids.
+Restated in rule 2 below: **published children only, never descendants, never unpublished rows as
+text.**
 
 ### 5.1 The rules
 
-1. **Up.** Every sub-niche links to its meta-vertical hub exactly twice: once in the breadcrumb, once
-   in the body's first 200 words. Anchor = the hub's name.
-2. **Down.** Every hub links to every published child. No pagination, no "show more" behind
-   JavaScript, no truncation. A hub that hides children creates orphans. At 13 children
-   (`manufacturing-industrial`) this is comfortable; it is the reason the 40-link ceiling in rule 12
-   is set where it is.
-3. **Sideways, deterministic.** Each sub-niche links to **3–5 siblings**, selected by: shared buyer
-   title first, then shared standard, then alphabetical as tiebreak. Same input, same output, every
-   build. Never random, never all.
-4. **Cross-vertical, capped at 2**, and only where a standard or buyer role is genuinely shared.
-   ISO 27001 links `it-services/msp-mssp` ↔ `saas-software/cybersecurity-saas`. IATF 16949 links
-   `manufacturing-industrial` ↔ `logistics-supply-chain`. **The distribution cluster identified in
-   §1.5 is the clearest legitimate use**: `manufacturing-industrial/industrial-distributors`,
-   `construction-real-estate/building-materials`,
-   `construction-real-estate/hvac-electrical-roofing-distribution`,
-   `hospitality-travel-events/foodservice-distribution` and
-   `media-marketing-creative/print-promotional-distributors` share a buyer problem and a comparison
-   axis. Since four of those five are tier B and unpublished, the cluster is mostly dormant — which
-   is fine, and is a reason not to hard-code it. No cross-link without a shared entity.
-5. **Service links are a fixed block.** Every sub-niche links to `/seo`, `/local-seo`, `/ai-seo`,
-   `/geo` and `/ppc` once each, in one block, same order everywhere. **Five links, not four** — `/ppc`
-   is added in this revision because PPC now qualifies a prospect on its own. This block is the
-   structural alternative to industry × service pages: the combination is expressed as a link, not a
-   URL.
-6. **Proof links are conditional.** Link to a case study only where one resolves for that niche.
-   Otherwise link to `/case-studies/methodology` alongside the honesty line. Never link a niche to an
-   unrelated study — `studiesForTopic()` in the existing template does fuzzy topic matching and will
-   happily attach a dental study to a pumps page. For new rows, require an explicit id or none.
-7. **Prompt library.** Each sub-niche links to its vertical's Type C page; the Type C page links back
-   to every sub-niche in that vertical. This is the second inbound link that satisfies rule 9.
-8. **Anchor text varies deterministically.** Three patterns, chosen by `index % 3`: bare niche name,
-   niche name + "buyers", niche name + "in AI answers". Identical exact-match anchor on 75 pages is a
-   footprint, and it also reads like a machine.
-9. **Orphan rule.** Every indexable page has ≥2 inbound in-content links from other indexable pages.
-   Hub + prompt library satisfies it as a floor; sibling links raise it.
-10. **Depth rule.** Every page ≤3 clicks from `/`. Path: `/` → `/industries` →
-    `/industries/<vertical>` → `/industries/<vertical>/<sub-niche>`.
-11. **Connectivity rule.** Within a hub, the sibling link graph must form **one** connected component.
+1. **Up.** Every page links to its immediate parent exactly twice: once in the breadcrumb, once in the
+   body's first 200 words. Anchor = the parent's `name` from the JSON, verbatim (rule 6).
+2. **Down, published-only.** A page links to its **published immediate children** and to nothing
+   deeper. No pagination, no "show more" behind JavaScript, no truncation of the published set.
+   **Unpublished children do not appear at all — not as links, not as plain text, not as a greyed
+   list.** A page that lists 18 unpublished rows as text is a directory stub, and it is the exact
+   shape `/locations/*` had.
+3. **Sideways, deterministic.** Each page links to **3–5 siblings**, selected by: shared buyer title
+   first, then shared standard or accreditation, then alphabetical by slug as tiebreak. Same input,
+   same output, every build. Never random, never all. **Selection is keyed on slug, never on array
+   position** — §7.2 is the post-mortem for what positional selection does at scale, and it did it at
+   320 pages, not 11,561.
+4. **Cross-parent, capped at 2**, and only where a standard, accreditation or buyer role is genuinely
+   shared. No cross-link without a shared entity that is named on both pages. At 11,561 entities the
+   temptation to build a similarity graph is strong and it is the mesh in disguise; see rule 14.
+5. **Service links are a fixed block.** Every page links to `/seo`, `/local-seo`, `/ai-seo`, `/geo` and
+   `/ppc` once each, in one block, same order everywhere. This block is the structural alternative to
+   industry × service pages: the combination is expressed as a link, not a URL.
+6. **Proof links are conditional.** Link to a case study only where one resolves for that entity.
+   Otherwise link to `/case-studies/methodology` alongside the honesty line. Never fuzzy-match a study
+   to an entity — require an explicit id or none.
+7. **Prompt library.** Each level-2 page links to its industry's Type C page; the Type C page links
+   back to every published level-2 page in that industry. This is the second inbound link that
+   satisfies rule 9.
+8. **Anchor text varies deterministically.** Three patterns chosen by a stable hash **of the slug**,
+   not by `index % 3`: bare name, name + "buyers", name + "in AI answers". Identical exact-match anchor
+   across hundreds of pages is a footprint and it reads like a machine.
+9. **Orphan rule.** Every indexable page has ≥2 inbound in-content links from published indexable
+   pages. Parent + prompt library satisfies it as a floor. **Corollary that is a build-order
+   constraint: a level-3 page may not publish before its level-2 parent, and a level-2 page may not
+   publish before its industry hub is at least routable.**
+10. **Depth rule, restated for four levels.** Every published page ≤3 clicks from `/`. The only way
+    that holds is: **`/industries` links directly to published level-2 pages, not only to the 21
+    hubs.** Path becomes `/` → `/industries` → `/industries/<industry>/<sub-industry>` → niche = three
+    clicks. The industry hub stays in the graph as the entity anchor and the breadcrumb parent; it is
+    not the only path down. If ADR-0008 cannot deliver that, the alternative is that level-3 pages
+    accept depth 4 and the rule is formally relaxed **with the operator told what it costs** — deeper
+    pages get crawled less often, and freshness is a real input to AI citation (§1.4). I would rather
+    change the index page than relax the rule.
+11. **Connectivity rule.** Within a parent, the sibling link graph forms **one** connected component.
 12. **Link ceiling.** ≤40 in-content internal links per page. Above that the page is a directory, and
-    directories are the thing the pages are supposed to displace.
-13. **No in-content link from an indexable page to a noindex page.** Utility links in the footer are
-    exempt. This stops crawl budget draining into the `/growth` noindex subniche briefs, the noindex
-    place profiles, and the `/lp/*` paid destinations in §2.5.
+    directories are the thing these pages exist to displace. A level-2 page with 9 published children
+    + 5 siblings + 5 service links + parent + library + proof is 22. Comfortable. A level-2 page
+    listing all 21 of its niches is not.
+13. **No in-content link from an indexable page to a noindex page.** Footer utility links exempt. This
+    stops crawl budget draining into the `/growth` noindex briefs, the noindex place profiles, and the
+    `/lp/*` paid destinations in §2.5.
+14. **Sub-niche names are never links.** 8,823 sub-niche names appear as on-page vocabulary and in the
+    coverage grid. None may be a link, and none may be a `#fragment` link either — a fragment inflates
+    the internal link count against rule 12 while adding no crawl path. Stating it because somebody
+    will otherwise "help".
+15. **No entity appears in two families.** Carried from §8.2 assertion 17 and extended: no entity id is
+    published under both `/industries/*` and `/growth/industries/*`, **and no industry is published
+    from two spines** (§0.3 decision 7).
 
-### 5.2 What this replaces
+### 5.2 The constraint ADR-0008 has to satisfy — for Kyle
+
+Kyle owns the mechanism. `scripts/check-b2b.cjs` §4 already forbids `data/navigation.ts` and
+`components/shared/CrossLinks.tsx` from importing the spine, and that assertion is right and should not
+be weakened — it is what stops one taxonomy edit changing every page on the site. What follows is the
+**SEO constraint the mechanism has to satisfy**, stated as properties rather than as an implementation,
+because the implementation is his call.
+
+| # | Constraint | Why it is a constraint and not a preference |
+|---|---|---|
+| **C1** | **No component's link set may be a function of the whole taxonomy.** A page's outbound in-content links must be computable from the entity, its parent and its published siblings — O(siblings), not O(11,561). | This is the generalisation of the rule the gate already enforces. §7.2 is the worked failure: `relatedTerms` computed as a modulo over a mutable array meant one upstream row change silently rewired 320 pages' internal links, and the snapshot assertion passed because it compared slug *sets*. At 11,561 the same shape rewires the whole family. |
+| **C2** | **Determinism, keyed on slug.** Same committed data → byte-identical link graph, every build, on every machine. No positional indexing, no `Math.random`, no "recently published", no build-time ordering dependence. | Same post-mortem. A non-deterministic link graph cannot be asserted, so it cannot be gated, so it is not protected by anything. |
+| **C3** | **`/industries` must be able to link directly to published level-2 pages.** | Rule 10. Without it, every level-3 page is at depth 4 and the whole family is crawled at the priority of a footer link. This is the one constraint that requires something to change on an existing page, and it is an **additive** change to one index page — no removal, no canonical, no redirect, no `robots` change. Rollback is reverting that commit; the pre-existing links stay. |
+| **C4** | **Inbound link count per page must be a function of level and priority, not of population size.** | The point of a hierarchical graph is that crawl priority flows to the pages you chose. A mesh flattens it: when everything links to everything, nothing is signalled as important, and the thing you lose is precisely the ability to concentrate on the priority-A cohort that rule 8 exists to prioritise. |
+| **C5** | **No mesh footer, no mega-menu, no A-Z index of the taxonomy.** Not now, not as a "temporary" internal-linking aid. | It is the `/locations` sidebar failure at 90× the scale — a link tax paid on every page on the site into a family that has earned nothing yet, and §5.3 records what that sidebar already cost. It also breaks C1 and C4 simultaneously. |
+| **C6** | **Unpublished entities must be invisible, not merely unlinked.** No text lists, no greyed rows, no `disabled` anchors, no `<link rel>` hints, no sitemap entry. | A page that enumerates 18 things it does not have is a stub with a directory on it. This is also what makes the §1.7 "section not page" decision safe: a folded-in niche appears as an `<h2>` with real content, never as a dead list item. |
+| **C7** | **The link graph must be assertable by a script that reads only committed data.** | Every rule in §5.1 is written to be checkable. If the mechanism computes links at request time from something not in the repo, §8.2 assertion 13 cannot run and the graph is ungated. |
+| **C8** | **Whatever holds the published set must be an explicit hand-written allowlist**, not a predicate derived from the data. | `lib/industryPublication.ts` states the reason in its own comment and it is right: a list derived from the data agrees with the data by construction and therefore gates nothing. The point of the list is that it **can** disagree. At 11,561 this matters more, not less. §8.5. |
+
+**What I am explicitly not asking for.** I am not asking for a similarity engine, an embedding-based
+related-pages block, or a generated "you might also like" module. Rule 3's three-key deterministic
+sibling selection is sufficient, it is auditable, and it is the only version that can be asserted.
+Anything smarter is a system whose output nobody can predict before a build, attached to the crawl
+graph of a family that is meant to be the domain's recovery.
+
+### 5.3 What this replaces
 
 The existing sub-industry template's sidebar links to `/locations`, `/resources` and `/directory` on
 every page. Those are three of the four worst clicks-per-page families on the domain. **I am not
-proposing any change to existing pages** — but new rows must not inherit that sidebar block. It is a
-link tax paid 75 times into families that earn 0.08 to 0.13 clicks per page per quarter. If the
-shared component makes that unavoidable, that is a reason to give new rows their own sidebar variant
-(§0.3 decision 6).
+proposing any change to existing pages** — but new rows must not inherit that sidebar block. At
+revision 2's 75 pages it was a link tax paid 75 times into families earning 0.08–0.13 clicks per page
+per quarter. At the priority-A programme's roughly 1,020 pages it is paid 1,020 times. If the shared
+component makes that unavoidable, that is a reason to give new rows their own sidebar variant (§0.3
+decision 6), and at this scale the decision is no longer marginal.
 
 ---
-
 ## 6. Schema and technical, as of September 2026
 
 ### 6.1 What is real
@@ -1045,6 +1608,62 @@ positionally.** Those are the three operations that turn an additive data change
 publication change.
 
 ---
+### 7.5 Does the glossary fix still come first at 11,561? Yes, and the case is stronger
+
+I put the §7.4 step 1 fix ahead of every wave in revision 2, at a 135-page ceiling. The operator is
+right to re-ask it at 11,561, because "a small fix blocking a large programme" is exactly the shape of
+a rule that should be re-examined rather than inherited. **It holds, and three things about this scale
+strengthen it rather than weakening it.**
+
+**1. The blast radius argument gets worse, not better.** The §7.4 case rests on one sentence:
+seven consumers of `INDUSTRIES` were enumerated and there were eight, and the eighth **removes**
+published URLs when unrelated data changes upstream. The lesson is not "there is a bug in
+`seoExpansion.ts`". The lesson is **"an enumeration of consumers, written by careful people, was
+wrong."** Revision 3 has now found the same class of error twice more, in this session: nothing in the
+repo imports `data/b2b/icp` — including the gate that is supposed to guard it (§8.5) — and there are
+three spines claiming `/industries/*` with only one of the three collisions currently asserted
+(§0.2). A programme about to add an order of magnitude more data is not the moment to trust the next
+enumeration either.
+
+**2. The mechanism is positional, and §5's whole design is now built on the opposite.** §5.2 C2 makes
+slug-keyed determinism a constraint on ADR-0008, justified by citing §7.2 as the post-mortem. It is
+not coherent to require slug-keyed determinism for the new family while leaving the old family's
+`relatedTerms` computed as `[(index+7) % n, (index+19) % n, (index+31) % n]` over a truncated, mutable
+array. Either positional derivation of a link graph is unsafe or it is not.
+
+**3. The cost of the fix did not change and the cost of the failure did.** Step 1 is replacing
+`slice(0, 320)` with an explicit allowlist seeded from the current published set — byte-identical
+output on landing, a no-op at Google's end, revert restores `slice(0, 320)`. It is the cheapest item
+in either document. What changed is what it is protecting: a wave commit now touches a 2.2MB data file
+under active weekly edit rather than a 120-row TypeScript literal.
+
+**What it does not block.** Step 1 blocks **publication**, not work. Wave 0's other items — the ICP
+ceiling assertion, the spine decision, the Family Q derivation, the first prompt runs, the §1.7.1
+screen — all proceed in parallel and none of them touches `SERVICES`, `INDUSTRIES` or `LOCATIONS`.
+Steps 2 through 5 of §7.4 are **not** wave blockers and never were; only step 1 is.
+
+#### A measurement correction, carried honestly
+
+The operator's brief refers to **162 location terms** in the glossary and rule 5 forbids pruning them.
+**I measure 135.** Method, run on 2026-09-29 against `data/seoExpansion.ts` and `data/locations.ts`:
+`GLOSSARY_TERMS` is 320 entries; 135 of them begin with a city name from `LOCATIONS`; the same 135 is
+returned by matching on location slug prefix; they represent **45 distinct cities** out of the 70 the
+source array feeds in, which is the §7.2 truncation biting inside the `LOCATIONS` block. Category
+counts on the published 320: `Digital marketing` 131, `Local SEO` 129, `AI search` 30, `Lead
+generation` 14, `Paid media` 12, `Technical SEO` 4.
+
+I could not reproduce 162 by term prefix, slug prefix, category, or any combination. It may count a
+different source array, a pre-truncation figure, or a different definition of "location term".
+`[NEEDS DATA: how the 162 figure is derived, so the two counts can be reconciled]`
+
+**The constraint is unaffected either way.** Rule 5 says do not expand, do not delete, do not redirect,
+do not noindex, and do not prune. Nothing in this document does any of those to any glossary term,
+location page or city page, and §7.4 step 1 is specifically designed so that the published set is
+**byte-identical** on landing — which is the only change to that family I am recommending at all.
+§7.4 step 5 (whether location terms deserve 135 of 320 slots) stays explicitly out of scope and needs
+the backlink export first.
+
+---
 ## 8. The publishing gate
 
 `CLAUDE.md` §7 is prose. This is the same thing as assertions. **The wave gate mechanism in §8.3 is
@@ -1102,7 +1721,13 @@ Assertions 1–17 are unchanged from revision 1. 18 and 19 are added in this rev
 | 16 | **The page path does not appear in `docs/repositioning/legacy-sitemap-baseline.json`** | Proves mechanically that the operator's "new pages only" constraint is honoured |
 | 17 | No niche id is published in both `/industries/*` and `/growth/industries/*` | Self-competition between the two families |
 | **18** | **No `geoAngle` string from `data/b2b/verticals.ts` appears in a title, an H1, a meta description or a `primaryQuery` field** | Family B leaking into a ranking target — the single failure mode the taxonomy header warns about |
-| **19** | **No page asserts or implies that a firm outside the 15 verticals is not a fit, and no page makes AI search a condition of engagement.** Denylist seeded with `only work with`, `exclusively for`, `if you are not`, `must already` | The widened ICP being narrowed back by copy |
+| **19** | **No page asserts or implies that a firm outside the taxonomy is not a fit, and no page makes AI search a condition of engagement.** Denylist seeded with `only work with`, `exclusively for`, `if you are not`, `must already` | The widened ICP being narrowed back by copy |
+| **20** | **Every published entity's `industrySlug`, `subIndustrySlug`, `nicheSlug` and rendered `name` are byte-identical to `data/b2b/icp/icp-taxonomy.json`.** No derived, pluralised, title-cased or "friendlier" variant anywhere in page data | Rule 6. A renamed slug is an invented slug, and at this scale it will happen by accident before it happens by intent |
+| **21** | **No string from any sub-industry's `ppc_keywords` appears in a title, an H1, a meta description or a `primaryQuery` field on any page** | §2.1. The supplied keywords are Universe B. This is assertion 18's failure mode one field over and 1,023× the count |
+| **22** | **No string in the §3.2 finding-3 collision set appears as a `primaryQuery` on any `/industries/*` page** (`b2b seo agency`, `b2b marketing agency`, `abm agency`, `franchise marketing agency`, `franchise development marketing`) | Those five are Qognition's own Family Q. A vertical page targeting them competes with `/ai-seo` and `/ppc` and addresses two incompatible readers |
+| **23** | **Every prompt in a page's observation set is either verbatim from that sub-industry's `ai_prompts`, or composes a supplied prompt with a `sub_niches[].name` from an entity beneath the page.** Every prompt carries `family: 'B'` and `shape: 'vendor' \| 'problem'`; every Family Q prompt carries `family: 'Q'` and `level: 1 \| 2 \| 3` | §3.2 finding 4 and §3.3. This is what makes assertion 4 passable at scale without inventing a prompt, and what keeps the panel interpretable |
+| **24** | **A level-3 entity may not be `published` unless its §1.7.1 screen record exists**, naming the four test outcomes, the reviewer and the date; and its level-2 parent is already `published` | §1.7 and §5.1 rule 9. Without it, "level 3 earns a page" quietly becomes the default again |
+| **25** | **No sub-niche (level-4) id appears as a route segment, a sitemap entry, an `href`, or a fragment link anywhere** | §1.7.2 and §5.1 rule 14. 8,823 entities, zero routes, asserted rather than assumed |
 
 ### 8.3 The wave gate — how `CLAUDE.md` §7's five tests become a build failure
 
@@ -1139,6 +1764,26 @@ The script asserts, for wave *N+1* to contain any published page:
    `[NEEDS DATA: the agreed ratio — CLAUDE.md §7 references it but does not state a number. Until it
    is set, this assertion cannot run and the gate is incomplete.]`
 
+7. **New in revision 3 — the level test, and it is the only structural addition to the mechanism.**
+   `levelThreeWithParentIndependentImpression / levelThreePublished >= 0.40`, where the numerator
+   counts level-3 pages that earned ≥1 impression for at least one query for which the **level-2
+   parent earned no impression in the same window**.
+
+   The mechanism is unchanged: a committed file, a stale pull fails the build, an unmet ratio blocks
+   the next wave. What test 7 adds is that the gate now measures **whether the level it is scaling is
+   the right level**, not only whether the cohort earned something. At 120 entities that question did
+   not arise. At 2,376 possible level-3 URLs it is the question.
+
+   **What failing it means, and it is not "stop".** If test 7 fails for a cohort, the next wave
+   publishes **level 2 only**, with its priority-A niches folded in as §1.7 sections. The programme
+   continues at a third of the page count and most of the coverage. Re-test at the next cohort. A
+   level-3 page that only ever earns impressions for queries its parent also earns is not adding
+   demand; it is splitting it, and that is cannibalisation with extra reviewer hours attached.
+
+   Wave 1's pre-registered arm split (§1.6) is the first read on this. `[NEEDS DATA: the 0.40
+   threshold is my judgement from query-shape reasoning, not a measurement. Revisit it against Wave
+   1's arms before it gates Wave 3.]`
+
 Wave 1 itself has no predecessor, so it enters on §8.2 alone. Every later wave enters on measurement
 or not at all.
 
@@ -1168,6 +1813,45 @@ breaks — that coupling is deliberate and should be left alone.
 
 ---
 
+### 8.5 The ICP taxonomy has no gate at all, and that is Wave 0's first item
+
+`scripts/check-b2b.cjs` opens by declaring a ceiling:
+
+```js
+const B2B_PUBLISHED_CEILING = 0;
+```
+
+with a comment explaining exactly why it is a literal rather than a computed value — *"a ceiling
+derived from the data agrees with the data by construction and gates nothing"*. That reasoning is
+correct and it is the best thing in the file.
+
+**It guards `data/b2b/verticals.ts`. Nothing guards `data/b2b/icp`.**
+`grep -rn "b2b/icp" app components lib data scripts` returns nothing. The only thing standing between
+11,561 entities and a route is `publishedIcpPaths()` returning a hand-written `[]`, and **no assertion
+anywhere requires it to keep doing so.** The function's own docstring calls it "the single most
+important function in the file" and "what stands between the taxonomy and the scaled-content pattern
+that produced 2,161 location pages at 0.13 clicks each". It is doing that job on a comment.
+
+**Wave 0 item, and it is three assertions in one file:**
+
+1. `ICP_PUBLISHED_CEILING`, a literal, starting at `0`, raised by exactly one cohort's size in that
+   cohort's commit by a human who is therefore on the diff. Same pattern, same reasoning, same file as
+   `B2B_PUBLISHED_CEILING`.
+2. **Slug disjointness across all three spines**, not two. The existing §2 check catches
+   legacy ↔ `verticals.ts` and fails loudly on `financial-services`. The same collision from the ICP
+   side is currently silent, and the ICP spine additionally shares fifteen industries with
+   `verticals.ts` under near-identical slugs. Assert that no ICP industry slug is routable while a
+   legacy or `verticals.ts` entity owns the same URL.
+3. **The blast-radius grep extended.** §4 of the gate greps `data/navigation.ts`,
+   `components/shared/CrossLinks.tsx` and `lib/sitemap.ts` for imports of `data/b2b`. Extend the
+   pattern to `data/b2b/icp` explicitly — the current string match may or may not catch it depending
+   on how the import is written, and "may or may not" is not a gate.
+
+**Until all three land, no entity from this taxonomy may be promoted past `spine`, regardless of how
+green §8.2 and §8.3 are.** A per-page gate on a family with no ceiling is a lock on a door in a wall
+that has not been built.
+
+---
 ## 9. Measurement, reported separately
 
 Ranking and citation are different outcomes produced by different work, and the evidence in §6.3 says
@@ -1194,9 +1878,17 @@ A blended "search" number hides which half is working.
 Source: first-party prompt runs. Fixed prompt set, same prompts every month, per vertical. Appended,
 never overwritten, so months are comparable.
 
-- Date, engine, model version, prompt, cited or not, which URL, what was said
-- Family Q prompts for Qognition's own visibility
-- Family B prompts as the per-niche observation the pages publish
+- Date, engine, model version, prompt, **family (`B` / `Q`), shape (`vendor` / `problem`) and level
+  (1 / 2 / 3)**, cited or not, which URL, what was said. The three new columns are revision 3's
+  addition: at 11,561 entities a panel that mixes level-1 and level-3 Family Q prompts without
+  labelling which is which cannot be read, and a month-on-month comparison of an unlabelled panel is
+  worse than no comparison because it looks authoritative.
+- Family Q prompts for Qognition's own visibility — 42 level-1 prompts and revision 2's six
+  cross-vertical prompts permanently, plus three level-2 prompts per sub-industry **from the month
+  that sub-industry's page publishes**, plus one level-3 prompt per niche that passed §1.7.1 test 2.
+  Every addition gets a dated line with the reason (§3.3).
+- Family B prompts as the per-entity observation the pages publish — supplied verbatim or composed
+  from level-4 sub-niche names, never invented (§3.2 finding 4, §8.2 assertion 23)
 
 Changing the tracked prompt set is recorded with the reason, in the same file. Comparability is the
 entire value. The widened ICP requires adding SEO-only and PPC-only Family Q prompts (§3.1) — that is
@@ -1218,28 +1910,56 @@ presented as a search result.
 
 | # | Item | Blocks |
 |---|---|---|
-| 1 | Reviewer throughput per month (§0.3 #2) | The wave schedule |
-| 2 | Is the observation engine real — G.O.L.E.M yes, `runAudit()` no (§0.3 #3) | Every page in the family |
-| 3 | **The glossary content-model fix** (§7.4 step 1) | Wave 0, and therefore every wave |
-| 4 | The office-claim contradiction (`OPERATOR-DECISIONS` #1), now known to extend to third-party directories | Entity consistency for 83 new pages, and all off-page work |
-| 5 | The agreed indexable-pages-to-sessions ratio | Wave gate test 6 |
-| 6 | Whether new rows may use a sidebar variant omitting `/locations`, `/resources`, `/directory` | §5.2 |
-| 7 | Named compliance reviewer (`OPERATOR-DECISIONS` #7) | Wave 5 (insurance) and Wave 6 (healthcare) |
-| 8 | Paid budget for Qognition's own site | §2.5's demand probe, and therefore the tier B release |
-| 9 | Whether to restore a real page at `/glossary/ai-seo-and-sge-strategy-audit` (§7.4 step 4) | Recovering the domain's best ranking asset |
-| 10 | Competitor-brand bidding: yes or no (§2.5) | Marcus's campaign build; Ruth reviews the ad copy either way |
+| 1 | **No gate over `data/b2b/icp`** — no ceiling, no consumer, no assertion (§8.5) | Every wave. This is now item 1, ahead of everything |
+| 2 | **The glossary content-model fix** (§7.4 step 1, restated for scale in §7.5) | Wave 0, and therefore every wave |
+| 3 | **Which spine is the URL source** (§0.3 decision 7) — three spines claim `/industries/*`, all three claim `financial-services` | Any new URL at all |
+| 4 | **Rule 7 has no `INDEX.md` to read canonical ids from** (§0.3 decision 8), and `unique_niches: 2,371` does not reconcile with the 2,376 the data produces | Overlap handling; the count in every report |
+| 5 | Reviewer throughput per month | The wave schedule, and the §1.7.1 screen rate |
+| 6 | Is the observation engine real — G.O.L.E.M yes, `runAudit()` no | Every page in the family |
+| 7 | The office-claim contradiction (`OPERATOR-DECISIONS` #1), extending to third-party directories | Entity consistency for ~1,020 new pages, and all off-page work |
+| 8 | The agreed indexable-pages-to-sessions ratio | Wave gate test 6 |
+| 9 | Whether new rows may use a sidebar variant omitting `/locations`, `/resources`, `/directory` (§5.3) | Every new page's link tax, now paid ~1,020 times |
+| 10 | Named compliance reviewer (`OPERATOR-DECISIONS` #7) | Wave 9 (`financial-services`) and Wave 10 (`healthcare-and-life-sciences`) |
+| 11 | Paid budget for Qognition's own site | §2.5's demand probe, and therefore the priority-B and C release |
+| 12 | Whether to restore a real page at `/glossary/ai-seo-and-sge-strategy-audit` (§7.4 step 4) | Recovering the domain's best ranking asset |
+| 13 | Competitor-brand bidding: yes or no (§2.5) | Marcus's campaign build; Ruth reviews the ad copy either way |
+| 14 | **Does Qognition sell white-label to B2B marketing and franchise marketing agencies** (§3.2 finding 3) | Wave 4's composition, and five keywords that are both Universe A and Universe B |
+| 15 | **ADR-0008's mechanism against the C1–C8 constraints** (§5.2) | The link graph for the whole family |
 
 ### NEEDS DATA
+
+Carried from revision 2 and still open:
 
 - Keyword export with volume and difficulty for §2.4, US market, Australia secondary
 - Reviewer hours per month, and measured hours per page review, first ten pages
 - Backlink export before any consolidation decision, and before §7.4 step 5
-- Confirmation that no edge bot management is challenging `OAI-SearchBot`, `PerplexityBot` or `Claude-SearchBot`, verified from server logs
+- Confirmation that no edge bot management is challenging `OAI-SearchBot`, `PerplexityBot` or
+  `Claude-SearchBot`, verified from server logs
 - The agreed indexable-pages-to-organic-sessions ratio referenced in `CLAUDE.md` §7
 - Primary log-level evidence on `llms.txt` fetch rates
 - Whether any assistant parses `FAQPage` JSON-LD; no primary source either way
 - Monthly paid budget available for Qognition's own site, or confirmation it is zero
 - Which of the 31 never-published glossary terms have standalone demand
+
+New in revision 3:
+
+- **Operator decision: the ICP spine is the sole route source for new URLs**, `data/b2b/verticals.ts`
+  demoted to a data-only artefact, legacy retains `/industries/financial-services` (§0.3 decision 7)
+- **The canonical id for each declared overlap**, and reconciliation of `counts.unique_niches: 2,371`
+  against the 2,376 rows `allIcpNiches()` returns. Measured, there is one duplicated niche slug
+  (`facilities-management-firms`, `02.16.04` and `07.14.06`), not five (§0.3 decision 8)
+- **How the "162 location terms" figure is derived.** I measure 135, by two independent methods, across
+  45 distinct cities (§7.5). Rule 5's protection applies either way and nothing here prunes any of them
+- **Operator decision: does Qognition sell white-label to B2B marketing and franchise marketing
+  agencies**, and how that is reconciled with competing for the same prompts (§3.2 finding 3)
+- **Whether a Universe A PPC keyword set exists anywhere outside this document.** The supplied 1,023
+  are all Universe B (§2.1)
+- **The §1.7.1 screen run over all 365 priority-A `AI SEO` niches**, with the four test outcomes
+  recorded per niche. My "roughly half pass" is a judgement from query shape, labelled as one (§1.7.3)
+- **Validation of the 0.40 threshold in wave-gate test 7** against Wave 1's pre-registered arms before
+  it gates Wave 3 (§8.3)
+- Off-page: live verification of every row in the six new source maps, with a fetch date
+  (`docs/seo/b2b-offpage-authority.md` §0.2, §3.16–§3.21)
 
 ---
 

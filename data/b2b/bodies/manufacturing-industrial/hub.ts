@@ -69,7 +69,7 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
     {
       claim:
         'Technical buyers complete 62% of the buying journey before contacting a vendor. For ' +
-        'engineers aged 35 and under it is approximately 66%.',
+        'engineers aged 35 and under it is approximately 66%. The publisher does not state the sample size.',
       source: {
         url: 'https://www.trewmarketing.com/state-of-marketing-to-engineers-research-report',
         publisher: 'GlobalSpec, TREW Marketing and Elektor International Media, 2026 State of Marketing to Engineers',
@@ -82,7 +82,7 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
         '69% of technical buyers use generative AI during purchasing decisions and 75% notice ' +
         'AI-generated search summaries. The same report records those buyers rating AI ' +
         'trustworthiness at 4.7 out of 10, and 69% continuing on to the actual search results ' +
-        'after reading a summary.',
+        'after reading a summary. The publisher does not state the sample size.',
       source: {
         url: 'https://www.trewmarketing.com/state-of-marketing-to-engineers-research-report',
         publisher: 'GlobalSpec, TREW Marketing and Elektor International Media, 2026 State of Marketing to Engineers',
@@ -143,8 +143,10 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
       question: 'Will this bring traffic from ChatGPT?',
       answer:
         'Probably not much, and we will not sell it that way. Semrush analysed over a billion lines ' +
-        'of US clickstream data and found over 30% of all ChatGPT referral traffic goes to ten ' +
-        'domains, with online services, software, media and education receiving the most. Industrial ' +
+        'of US clickstream data from a 200 million user panel covering October 2024 to February ' +
+        '2026, published on 7 April 2026, and found over 30% of all ChatGPT referral traffic goes ' +
+        'to ten domains, with online services, software, media and education receiving the most. ' +
+        'Industrial ' +
         'domains are not in that shape of distribution. In manufacturing, AI search is a ' +
         'shortlist-formation channel, not a traffic channel. What matters is whether your name ' +
         'appears in the two or three suggestions the assistant offers, because that decides which ' +

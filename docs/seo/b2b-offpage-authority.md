@@ -1,8 +1,23 @@
 # B2B off-page authority and citation acquisition
 
 Author: Nadia (search). Written 2026-09-28 against branch `b2b-ai-search`.
-Companion to `docs/seo/b2b-niche-architecture.md` (revision 2), which covers on-page and the
-publication mechanics. This document covers everything that happens on domains Qognition does not own.
+**Revision 2, 2026-09-29** — extended for the operator-locked 21-industry taxonomy
+(`data/b2b/icp/icp-taxonomy.json` v2.0.0, 11,561 entities). Companion to
+`docs/seo/b2b-niche-architecture.md` (revision 3), which covers on-page and the publication mechanics.
+This document covers everything that happens on domains Qognition does not own.
+
+**What revision 2 changes: §3 only.** The four-level retrieval ladder in §4.1 is unchanged. The
+pre-qualification rule in §4.2 — *never pursue or pay for a placement on a domain that has never
+appeared as a cited source in the client's panel* — is unchanged and is the single most important
+sentence in the document. The three reporting headings in §6 are unchanged. §5's dated trigger events
+are unchanged; two of the six new industries feed directly into §5.3 (CMMC) and one into §5.1
+(ISO 9001:2026), noted in place.
+
+**What revision 2 adds: §3.16–§3.21**, source maps for the six industries the locked taxonomy
+introduces — Aerospace & Aviation, Automotive/Heavy Equipment & Mobility, Commercial & Facility
+Services, Environmental/Engineering & Testing, Retail CPG & Brand Enablement, and Franchising &
+Multi-Location. **§0.2's standing caveat applies to every row of them and applies harder**, because
+these six were compiled in one pass and none has been fetched or contacted.
 
 Status: **recommendation, not approved.** Not reviewed by Ruth (brand-guard). Nothing here is
 client-facing. Several sections below produce client-facing artefacts (pitches, ranked-list
@@ -134,10 +149,16 @@ more thing to go back and correct.
 
 ---
 
-## 3. The per-meta-vertical source map
+## 3. The per-vertical source map
 
-Fifteen sections, one per meta-vertical in `data/b2b/verticals.ts`, in the tier order used by the
-architecture doc §1.6.
+Twenty-one sections. §3.1–§3.15 are keyed on `data/b2b/verticals.ts`'s fifteen meta-verticals and were
+written in revision 1; §3.16–§3.21 are keyed on the six industries the locked ICP taxonomy adds.
+
+> **A naming caution that matters operationally.** The slugs in §3.1–§3.15 are **not** the locked
+> taxonomy's slugs (`saas-software` there, `saas-and-software` in the JSON), and the architecture doc
+> §0.3 decision 7 has not yet settled which spine owns a URL. **None of the headings below may be used
+> as a slug, an id or a route segment** — rule 6. They are section labels for a research document.
+> §3.16–§3.21 use the locked slugs because those industries exist only in the locked taxonomy.
 
 **Columns.** *Class* is from §1. *Effort*: **Self-serve** (days, no gatekeeper) · **Credentialed**
 (weeks; needs a membership, certification or verified status) · **Editorial** (months; needs a pitch

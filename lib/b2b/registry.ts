@@ -123,7 +123,24 @@ export function resolveSubIndustry(industrySlug: string, subSlug: string): SubIn
   /* A sub-niche is only reachable when its parent renders. An orphan under an
      unpublished parent is unreachable by navigation, which ADR-0007 §5.1 makes
      structurally impossible rather than merely discouraged. */
-  if (!routableState(vertical.publication)) return undefined;
+  /* The parent must render SOMETHING at its URL, but it does not have to be the
+     B2B hub.
+     
+     This used to require the parent vertical itself to be routable, which was
+     mutually exclusive with check-b2b.cjs item 2: that gate asserts a vertical
+     whose slug collides with data/industries.ts must NOT be routable, because
+     legacy owns the hub URL. So for a colliding parent the two rules could never
+     both be satisfied and every child was unreachable. Kyle proved it by
+     execution on 2026-09-29: resolveSubIndustry('financial-services',
+     'commercial-insurance') returned undefined, and I had reported the cause as a
+     missing body, which was wrong.
+
+     A legacy-owned parent DOES render at its URL, it just renders the legacy hub,
+     so its children are not orphans and may resolve. A parent that is neither
+     legacy-owned nor routable renders nothing, so its children would be true
+     orphans and must not. */
+  const parentOwnedByLegacy = INDUSTRIES.some((item) => item.id === industrySlug);
+  if (!parentOwnedByLegacy && !routableState(vertical.publication)) return undefined;
 
   const subNiche = getSubNiche(vertical.id, subSlug);
   if (!subNiche) return undefined;
