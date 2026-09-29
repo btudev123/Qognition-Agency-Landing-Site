@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../data/siteConfig';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -232,7 +233,7 @@ export default function Page() {
               Bring your industry, location, offer, sales cycle, and current traffic. We will map the fastest route to qualified demand.
             </p>
             <a
-              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex px-6 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"

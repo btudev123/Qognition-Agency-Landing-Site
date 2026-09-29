@@ -54,7 +54,12 @@ const FEATURED_CASE_STUDY_ID = 'alliance-insurance-group';
  * fills the actual column, the card upgrades itself and this heading does not
  * have to change. */
 const CASE_STUDY_COUNT = CASE_STUDIES.length;
-const NICHE_COUNT = new Set(CASE_STUDIES.map((s) => s.niche)).size;
+/* NICHE_COUNT was rendered as "45 named clients across 3 sectors", which a B2B
+   reader takes as 45 B2B clients. The split is 19 home services, 20 dental and 6
+   commercial insurance, so 6 of the 45 are in the ICP at all. Stating "3 sectors"
+   without naming them is misleading by omission, on the section whose whole
+   argument is that our numbers are checkable. The copy now names the split and
+   the constant is gone rather than left for someone to reuse. */
 
 const SOURCES = [
   {
@@ -105,10 +110,12 @@ export default function Evidence() {
             <MaskReveal>{`${CASE_STUDY_COUNT} client programmes, and the research behind them.`}</MaskReveal>
           </h2>
           <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-            We run search and AI search programmes for {CASE_STUDY_COUNT} named clients across{' '}
-            {NICHE_COUNT} sectors. Every engagement is scoped against a measured baseline and a
-            target, and both are on the page. Below that, the published research this work is built
-            on, cited so you can check it rather than take it from us.
+            We run {CASE_STUDY_COUNT} named client programmes. Most of that library is home services
+            and dental practices, and six are commercial insurance agencies, so read it as a delivery
+            record rather than as {CASE_STUDY_COUNT} firms like yours. On the B2B side we have
+            delivered in managed IT and cloud, cybersecurity and B2B SaaS in part, all white-label
+            under signed NDAs, which is why those clients are not named. Every engagement is scoped
+            against a measured baseline and a target, and both are on the page.
           </p>
         </ScrollReveal>
 

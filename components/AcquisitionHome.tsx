@@ -7,6 +7,7 @@ import Evidence from './home/Evidence';
 import Snapshot from './home/Snapshot';
 import Fit from './home/Fit';
 import Faqs from './home/Faqs';
+import BookCall from './home/BookCall';
 import FinalCta from './home/FinalCta';
 import ExitIntentPopup from './shared/ExitIntentPopup';
 
@@ -51,6 +52,7 @@ export default function AcquisitionHome() {
       <Snapshot />
       <Fit />
       <Faqs />
+      <BookCall />
       <FinalCta />
       <ExitIntentPopup />
     </main>

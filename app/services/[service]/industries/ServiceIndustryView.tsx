@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../../../data/siteConfig';
 import Link from 'next/link';
 import { ArrowRight, BarChart3, CheckCircle, Layers } from 'lucide-react';
 import { Industry, Service } from '../../../../types';
@@ -74,7 +75,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
             </Link>
           </div>
           <a
-            href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+            href={BOOKING_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-4 hover:brightness-110 transition-all text-sm"

@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../../data/siteConfig';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -62,7 +63,7 @@ export default async function Page({ params }: { params: Promise<{ market: strin
               Get Free Market Audit
             </Link>
             <a
-              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex px-6 py-3 text-sm font-medium border border-[var(--border)] text-[var(--text)] rounded-lg hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"

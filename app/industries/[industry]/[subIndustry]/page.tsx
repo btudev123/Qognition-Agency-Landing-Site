@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../../../data/siteConfig';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -300,7 +301,7 @@ function LegacySubIndustryPage({
                 </Link>
               </div>
               <a
-                href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+                href={BOOKING_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"

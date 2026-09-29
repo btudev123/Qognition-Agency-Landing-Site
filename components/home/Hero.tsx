@@ -134,8 +134,13 @@ export default function Hero() {
               <Link href="/free-ai-audit" className="rf-btn rf-btn--primary w-full sm:w-auto">
                 Get your free snapshot
               </Link>
-              <Link href="/contact" className="rf-btn rf-btn--secondary w-full sm:w-auto">
-                Book a 20-minute walkthrough
+              {/* Anchors to the calendar on this page rather than navigating to
+                  /contact. Every step between intent and a held slot loses people
+                  who had already decided. No duration in the label: the widget a
+                  scroll below renders the real one and a number here could only
+                  contradict it. */}
+              <Link href="#book" className="rf-btn rf-btn--secondary w-full sm:w-auto">
+                Book a call
               </Link>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../../data/siteConfig';
 import AIPlatforms from '../../../components/shared/AIPlatforms';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -275,7 +276,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 Stop guessing. Start growing. Schedule a consultation with our {service.title} leads.
               </p>
               <a
-                href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+                href={BOOKING_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"

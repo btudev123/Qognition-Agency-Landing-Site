@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../data/siteConfig';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getBlogPosts } from '../../lib/sanityContent';
@@ -60,7 +61,7 @@ export default async function Page() {
 
           <div className="mt-16 text-center">
             <a
-              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 text-sm hover:brightness-110 transition-all"

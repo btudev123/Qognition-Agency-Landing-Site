@@ -40,7 +40,13 @@ type Vertical = {
   flagship?: boolean;
 };
 
-/* The three sectors where a client library exists. Everything else on this page
+/* NO REVENUE OR HEADCOUNT BAND ON THIS PAGE. Operator, 2026-09-29: the $3M to
+   $1B+ / 20 to 10,000+ figures are INTERNAL qualification criteria and do not
+   belong on the site. A published floor tells a smaller prospect to leave before
+   they have read the offer, and tells a larger one we are aimed beneath them.
+   The band stays in CLAUDE.md §2 for routing and scoring; it is not copy.
+
+   The three sectors where a client library exists. Everything else on this page
    comes from the locked ICP taxonomy, so this array is the ONLY hand-written
    list here and it is a statement about evidence, not about scope.
 
@@ -96,9 +102,9 @@ export default function Industries() {
             <MaskReveal>{`We sell to ${CARDS.length} B2B sectors.`}</MaskReveal>
           </h2>
           <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
-            B2B firms doing $3M to $1B+ in revenue, with 20 to 10,000+ staff, selling a considered
-            purchase to another business. {SUB_TOTAL} sub-sectors underneath. You need AI search, SEO
-            or paid media, and any one of the three is enough. US-first, in USD.
+            B2B firms selling a considered purchase to another business, across {SUB_TOTAL}{' '}
+            sub-sectors. You need AI search, SEO or paid media, and any one of the three is enough.
+            US-first, in USD.
           </p>
         </ScrollReveal>
 

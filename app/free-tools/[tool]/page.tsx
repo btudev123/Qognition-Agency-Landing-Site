@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { BOOKING_LINK } from '../../../data/siteConfig';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CalculatorTool from '../../../components/CalculatorTool';
@@ -132,7 +133,7 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
                     label: resource.title,
                     href: resource.href || `/${resource.slug}`,
                   })),
-                  { label: 'Book a Strategy Call', href: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency' },
+                  { label: 'Book a Strategy Call', href: BOOKING_LINK },
                 ].map((item) => (
                   <Link
                     key={item.href}

@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../data/siteConfig';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Globe, MapPin, Search, TrendingUp } from 'lucide-react';
 import { INDUSTRIES } from '../../data/industries';
@@ -269,7 +270,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
               ))}
             </div>
             <a
-              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
@@ -444,7 +445,7 @@ export const LocationServiceView = ({
               {location.name} Digital Marketing
             </Link>
             <a
-              href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency"
+              href={BOOKING_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"

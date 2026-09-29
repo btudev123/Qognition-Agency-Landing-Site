@@ -1,3 +1,4 @@
+import { BOOKING_LINK } from '../../data/siteConfig';
 import type { Metadata } from 'next';
 import { SERVICES, INDUSTRIES, REGIONS } from '../../constants';
 import { breadcrumbSchema } from '../../lib/schema';
@@ -30,7 +31,7 @@ export default function Page() {
     '',
     '## Contact',
     'Email: hello@qognitionagency.com',
-    'Booking: https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency',
+    `Booking: ${BOOKING_LINK}`,
   ].join('\n');
 
   return (
