@@ -36,7 +36,27 @@ export type IsoDate = `${number}-${number}-${number}`;
  * `SampleBrand` pattern: `reviewer: 'TBD'` is a compile error, not a review
  * finding. Adding a member is itself a reviewed change.
  */
+/**
+ * Who may sign off a page as indexable.
+ *
+ * A closed union, so `reviewer: 'TBD'` is a compile error rather than a review
+ * finding. This is the field that sets the publishing rate: pages per month is
+ * reviewer hours divided by hours per page, and nothing else caps it.
+ *
+ * Named by the operator on 2026-09-29. The four agent entries below him are
+ * workflow roles, not sign-off authority: an agent drafting a page cannot also
+ * be the human who stands behind it. They remain because existing draft records
+ * reference them and removing one is a separate change.
+ *
+ * `[NEEDS DATA: a specialist reviewer for the regulated verticals.]` Commercial
+ * insurance, healthcare and life sciences, and the TIC accreditation claims each
+ * turn on vocabulary a generalist reviewer cannot verify. docs/OPERATOR-DECISIONS
+ * #7 has carried this since before the ICP import, and the ICP adds aerospace
+ * airworthiness and franchise FDD disclosure to the same list. A page in those
+ * verticals signed off without one is signed off on trust, not on check.
+ */
 export type ReviewerName =
+  | 'Prabal (CEO, Qognition Agency)'
   | 'Nadia (search)'
   | 'Theo (content)'
   | 'Ruth (brand-guard)'
