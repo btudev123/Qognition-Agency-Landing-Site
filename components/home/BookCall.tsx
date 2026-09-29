@@ -23,12 +23,15 @@ import { Eyebrow, Shell } from './primitives';
  *   This band is for someone who has already decided. It should cost them one
  *   scroll, not one navigation.
  *
- * DURATION IS NOT STATED HERE. Elsewhere the site says "20-minute walkthrough";
- * the operator has referred to a 30-minute call. The calendar itself is the
- * source of truth and it renders the real duration a few hundred pixels below
- * this heading, so a number in the heading can only ever contradict it.
- * `[NEEDS DATA: the configured duration on the LeadConnector calendar, so the
- * "20-minute walkthrough" label elsewhere either matches it or changes.]`
+ * DURATION. The LeadConnector calendar is the source of truth and it renders
+ * "Discovery Call, 30 min", verified in the browser on 2026-09-29. That closed an
+ * open question and caught a live contradiction: app/case-studies/[id] offered a
+ * "20-minute call" and the hero offered a "20-minute walkthrough" against a
+ * 30-minute calendar. Both corrected.
+ *
+ * The heading here still states no number, deliberately. The widget renders the
+ * real duration a few hundred pixels below it, so a number in the copy can only
+ * ever drift from the calendar. If the calendar changes, nothing here is wrong.
  *
  * LIGHT SURFACE, deliberately. FinalCta below is dark, and CLAUDE.md §9 says the
  * alternation is the design. It also gives the iframe a white field to render

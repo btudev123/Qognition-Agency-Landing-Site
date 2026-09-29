@@ -338,7 +338,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               href="/book"
               className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-6 py-3 text-body font-medium text-[var(--on-accent,#fff)] transition-opacity hover:opacity-90"
             >
-              Book a 20-minute call <ArrowRight size={18} aria-hidden="true" />
+              Book a 30-minute call <ArrowRight size={18} aria-hidden="true" />
             </Link>
           </section>
         </div>
