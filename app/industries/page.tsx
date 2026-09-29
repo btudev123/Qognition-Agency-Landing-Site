@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { INDUSTRIES } from '../../data/industries';
 import { SERVICES } from '../../data/services';
+import { ICP_INDUSTRIES } from '../../data/b2b/icp';
 import { breadcrumbSchema } from '../../lib/schema';
 import { metadataFor } from '../../lib/seo';
 import Section from '../../components/ui/Section';
@@ -133,6 +134,56 @@ export default function Page() {
               </article>
             ))}
           </div>
+        </Section>
+
+        {/* THE ENTRY POINT FOR THE ICP TAXONOMY.
+          *
+          * Appended, never woven into the grid above. Every existing card, link,
+          * heading and meta tag on this page is untouched, which is the
+          * operator's standing constraint.
+          *
+          * This one section is what the whole 21/341/2,376/8,823 tree hangs on.
+          * Both ADR-0007 §12 and ADR-0008 §7.4 recorded it as blocked on an
+          * operator decision, because without it every page in the family is an
+          * orphan: check-b2b.cjs deliberately forbids navigation.ts and
+          * CrossLinks.tsx from importing the spine, so nothing else can link them.
+          *
+          * A link here is not a publication. Each target renders only when its
+          * own entity is promoted and its body authored; until then it 404s, and
+          * scripts/check-icp.cjs holds the published count at zero. So this
+          * section can ship before a single page exists, and the links light up
+          * as the waves land.
+          */}
+        <Section spacing="lg">
+          <div className="mb-10">
+            <Heading level="h2" className="mb-3">The B2B sectors we sell to</Heading>
+            <p className="text-body text-[var(--text-muted)] max-w-3xl">
+              Twenty-one sectors, {ICP_INDUSTRIES.reduce((n, i) => n + i.sub_industries.length, 0)}{' '}
+              sub-sectors. Listing a sector says we sell AI search, SEO and paid media into it. It is
+              not a claim that we have worked with a firm in it, and a sector that is not listed is
+              not a disqualifier.
+            </p>
+          </div>
+          <ul className="list-none p-0 m-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7">
+            {ICP_INDUSTRIES.map((industry) => (
+              <li key={industry.id} className="min-w-0">
+                <Heading level="h3" className="mb-2">
+                  <Link
+                    href={`/industries/${industry.slug}`}
+                    className="hover:text-[var(--accent)] transition-colors"
+                  >
+                    {industry.name}
+                  </Link>
+                </Heading>
+                <p className="text-meta text-[var(--text-muted)] m-0">
+                  {industry.sub_industries.slice(0, 4).map((sub) => sub.name).join(' · ')}
+                  {industry.sub_industries.length > 4
+                    ? ` and ${industry.sub_industries.length - 4} more`
+                    : ''}
+                </p>
+              </li>
+            ))}
+          </ul>
         </Section>
 
         <Section spacing="lg">
