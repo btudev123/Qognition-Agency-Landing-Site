@@ -257,6 +257,34 @@ Firms above the band stay eligible as inbound and route to a qualification call.
 
 ---
 
+### Two operator decisions, 2026-09-29
+
+**We sell white-label to agencies.** B2B marketing, demand-gen, ABM, PR and franchise-development
+agencies are a CLIENT SEGMENT, not a competitor set. Five strings are simultaneously their buyer's
+language and our own head terms: `b2b marketing agency`, `b2b seo agency`, `abm agency`,
+`franchise marketing agency`, `franchise development marketing`. We do not compete for them, and
+the locked taxonomy's own `geo_angle` on that sub-industry already said so: "Agencies buy GEO for
+themselves."
+
+Consequences. Copy addressed to agencies is written to an agency principal buying capacity, never to
+their client. No page targets those five strings. Ruth reviews any copy in
+`professional-services/b2b-marketing-and-demand-gen-agencies` and the franchise equivalent before it
+ships, because the two audiences must not be able to read each other's page.
+
+**The free audit is form-first and human-delivered. There is no automated AI half.** Operator:
+"just do the form for now, we get the details, review and then revert back to them, they are our
+leads."
+
+So the funnel is: form captures → a human reviews the prospect → we come back to them with the
+snapshot. `lib/audit/aiVisibility.ts` stays wired and stays unconfigured, so it renders `not_checked`
+rather than a guess, and no provider key is set. That is a deliberate product decision, not a gap.
+
+What it makes load-bearing: **the form is now the entire lead channel.** A lead lost at the endpoint
+is a lead lost outright, not a lead that arrives by another route. Every failure mode in
+`/api/lead` is therefore a revenue defect rather than a monitoring one.
+
+---
+
 ## 3. The funnel
 
 ```
