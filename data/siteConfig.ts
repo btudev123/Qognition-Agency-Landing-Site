@@ -1,11 +1,9 @@
 // ── Single source of truth for contact + booking ────────────────────────────
-
 // Booking. LeadConnector (GoHighLevel) is the booking system. BOOKING_LINK is
 // the PUBLIC widget URL used by both the inline embed and every "Book a call"
 // anchor. Swap it in one place and the whole site follows.
 export const BOOKING_LINK =
   "https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency";
-
 /** Script that drives the LeadConnector iframe auto-resize handshake. */
 export const BOOKING_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
 
@@ -27,11 +25,20 @@ export const HQ_DISPLAY = `${HQ_CITY}, ${HQ_COUNTRY_NAME}`;
 // Contact — ONE number across the whole site (WhatsApp + click-to-call).
 export const CONTACT_EMAIL = "hello@qognitionagency.com";
 export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
-export const WHATSAPP_NUMBER = "12363498449";
-export const WHATSAPP_DISPLAY = "+1 (236) 349-8449";
+/* The operator's number, taken from origin/main. Stored WITHOUT the leading `+`,
+   which is what both consumers below require and what the previous value did.
+   The pushed version was "+918527661110", and since WHATSAPP_LINK interpolates
+   the constant raw it produced https://wa.me/+918527661110, which WhatsApp
+   rejects, while PHONE_LINK prepends its own `+` and produced
+   tel:++918527661110. Both are on every page, and both are contact paths, so a
+   broken one loses a lead rather than degrading a layout. Display keeps the `+`;
+   the machine-readable value does not carry it. */
+export const WHATSAPP_NUMBER = "918527661110";
+export const WHATSAPP_DISPLAY = "+91 85276 61110";
 export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 // Same number, click-to-call.
 export const PHONE_NUMBER = WHATSAPP_NUMBER;
 export const PHONE_DISPLAY = WHATSAPP_DISPLAY;
 export const PHONE_LINK = `tel:+${WHATSAPP_NUMBER}`;
+
