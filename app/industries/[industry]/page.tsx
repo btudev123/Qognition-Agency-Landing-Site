@@ -148,7 +148,24 @@ function LegacyIndustryPage({ industry }: { industry: Industry }) {
   const relatedServices = SERVICES.filter((service) =>
     industry.relatedServices?.includes(service.id)
   ).slice(0, 6);
-  const [relatedCaseStudy] = studiesForTopic(`${industry.name} ${industry.id}`, 1);
+  /* RESTORED 2026-10-01 at the operator's request, with the heading changed rather
+   than the data.
+
+   On 2026-09-29 this returned nothing, because 8 of 11 industry hubs were
+   rendering fox-service-company, a residential HVAC contractor, under a heading
+   reading "Case Study Reference" on pages about law firms, accountants,
+   consultants and manufacturers. That implied experience in those sectors
+   through the render, which §11 forbids and which no page copy could correct.
+
+   The fix was to hide the block. The operator wants the work visible, and they
+   are right that hiding 45 real client programmes is the wrong trade. So the
+   studies come back and the HEADING carries the honest part: it now says these
+   are from our wider client library rather than from this sector. A reader sees
+   the work, and nobody is told we have done it in their field. */
+const relatedCaseStudies = studiesForTopic(`${industry.name} ${industry.id}`, 3, {
+  fallback: 'spread',
+});
+const [relatedCaseStudy] = relatedCaseStudies;
 
   const allFaqs = industry.faqs || [];
 
@@ -319,25 +336,39 @@ function LegacyIndustryPage({ industry }: { industry: Industry }) {
                     "Case Study Reference" over nothing once the proof block
                     stopped borrowing a study from another vertical. */}
                 <div>
-                  {relatedCaseStudy && (
-                  <Heading level="h3" className="mb-3">Case Study Reference</Heading>
+                  {relatedCaseStudies.length > 0 && (
+                  <Heading level="h3" className="mb-3">From our client library</Heading>
                   )}
-                  {relatedCaseStudy && (
-                    <Link
-                      href={`/case-studies/${relatedCaseStudy.id}`}
-                      className="block p-4 border border-[var(--border)] rounded-xl hover:border-[var(--accent)]/40 transition-all"
-                    >
-                      <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
-                        {nicheLabel(relatedCaseStudy.niche)} · {relatedCaseStudy.market}
-                      </p>
-                      <h4 className="text-h4 text-[var(--text)] mb-1 font-semibold">
-                        {relatedCaseStudy.client}
-                      </h4>
-                      <p className="text-meta text-[var(--text-muted)]">
-                        {relatedCaseStudy.headline}
-                      </p>
-                    </Link>
-                  )}
+                  {/* All three, not one. `studiesForTopic` with the spread returns
+                      one study per niche in turn, so taking index 0 put the SAME
+                      HVAC contractor on 10 of 11 hubs. Three cards show the
+                      breadth of the library and make the heading true on its
+                      face: a reader sees home services, dental and insurance and
+                      understands at a glance that this is our work rather than a
+                      claim about their sector. */}
+                  <div className="space-y-3">
+                    {relatedCaseStudies.map((study) => (
+                      <Link
+                        key={study.id}
+                        href={`/case-studies/${study.id}`}
+                        className="block p-4 border border-[var(--border)] rounded-xl hover:border-[var(--accent)]/40 transition-all"
+                      >
+                        <p className="text-meta font-semibold uppercase text-[var(--accent)] mb-2">
+                          {nicheLabel(study.niche)} · {study.market}
+                        </p>
+                        <h4 className="text-h4 text-[var(--text)] mb-1 font-semibold">
+                          {study.client}
+                        </h4>
+                        <p className="text-meta text-[var(--text-muted)]">{study.headline}</p>
+                      </Link>
+                    ))}
+                  </div>
+                  <Link
+                    href="/case-studies"
+                    className="mt-4 inline-block text-meta text-[var(--accent)] hover:underline"
+                  >
+                    See all 45 client programmes
+                  </Link>
                 </div>
 
                 <div>

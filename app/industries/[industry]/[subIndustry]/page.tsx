@@ -276,10 +276,10 @@ function LegacySubIndustryPage({
               {/* Guarded. The heading sat outside the map, so the 59 of 66
                   sub-pages with no matching study rendered a bare "Related
                   Proof" over nothing. §4 says omit the section. */}
-              {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3).length > 0 && (
-                <Heading level="h2" className="mb-5">Related Proof</Heading>
+              {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3, { fallback: 'spread' }).length > 0 && (
+                <Heading level="h2" className="mb-5">From our client library</Heading>
               )}
-              {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3).map((study) => (
+              {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3, { fallback: 'spread' }).map((study) => (
                 <Link
                   key={study.id}
                   href={`/case-studies/${study.id}`}

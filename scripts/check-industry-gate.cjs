@@ -191,20 +191,20 @@ assert.ok(
  * by construction and gates nothing. Widening a TOPIC_HINTS pattern is the exact
  * edit that caused this, and it must not be possible to make it quietly. */
 const EXPECTED_INDUSTRY_PROOF = {
-  'law-legal': null,
-  'accounting-cpa': null,
+  'law-legal': 'fox-service-company',
+  'accounting-cpa': 'fox-service-company',
   'financial-services': 'alliance-insurance-group',
-  consulting: null,
-  'real-estate': null,
-  manufacturing: null,
-  coaching: null,
-  'industrial-trade': null,
-  'care-homes': null,
-  'elder-care': null,
-  'waste-management': null,
+  consulting: 'fox-service-company',
+  'real-estate': 'fox-service-company',
+  manufacturing: 'fox-service-company',
+  coaching: 'fox-service-company',
+  'industrial-trade': 'fox-service-company',
+  'care-homes': 'fox-service-company',
+  'elder-care': 'fox-service-company',
+  'waste-management': 'fox-service-company',
 };
 for (const industry of INDUSTRIES) {
-  const [resolved] = studiesForTopic(`${industry.name} ${industry.id}`, 1);
+  const [resolved] = studiesForTopic(`${industry.name} ${industry.id}`, 1, { fallback: 'spread' });
   const actual = resolved ? resolved.id : null;
   const expected = EXPECTED_INDUSTRY_PROOF[industry.id];
   assert.equal(
@@ -237,24 +237,54 @@ for (const industry of INDUSTRIES) {
  * something, so an empty result omits the section instead of leaving a bare
  * <h2>. These assertions freeze the counts so a future data or pattern edit
  * cannot move them silently in either direction. */
-const SUB_INDUSTRY_PAGES_WITH_PROOF = 7;
+const SUB_INDUSTRY_PAGES_WITH_PROOF = 66;
 const LOCATION_PAGES_WITH_PROOF = LOCATIONS.length;
 
-/* The mirror image: a sub-industry page must NOT opt into the spread, because it
-   names a vertical and a borrowed study is a claim of experience (§11). */
-const subIndustryView = fs.readFileSync('app/industries/[industry]/[subIndustry]/page.tsx', 'utf8');
-for (const call of subIndustryView.match(/studiesForTopic\([^)]*\)/g) || []) {
+/* RESTORED 2026-10-01. This previously asserted the opposite: that a sub-industry
+   page must NOT opt into the spread, because a borrowed study under a heading
+   reading "Related Proof" implies experience in that vertical (§11).
+   
+   The operator restored the blocks, and the implication is now carried by the
+   HEADING rather than by hiding the data: both templates say "From our client
+   library", which claims the work is ours and does not claim it is from the
+   reader's sector. So the rule inverts, and what the gate now protects is the
+   heading. If someone renames it back to "Related Proof" or "Case Study
+   Reference" while the spread is on, the §11 defect returns silently. */
+for (const [file, label] of [
+  ['app/industries/[industry]/page.tsx', 'industry hub'],
+  ['app/industries/[industry]/[subIndustry]/page.tsx', 'sub-industry'],
+]) {
+  const raw = fs.readFileSync(file, 'utf8');
+  /* Strip comments before testing for banned headings. The first version matched
+     the phrase inside the comment that EXPLAINS why it is banned, which is the
+     substring-matches-a-comment defect this project keeps producing. Third time. */
+  const view = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const calls = view.match(/studiesForTopic\([^)]*\)/g) || [];
+  assert.ok(calls.length > 0, `${label} no longer calls studiesForTopic at all`);
+  for (const call of calls) {
+    assert.ok(
+      /fallback:\s*'spread'/.test(call),
+      `the ${label} proof block dropped { fallback: 'spread' }:\n  ${call}\n` +
+      `The operator restored these blocks on 2026-10-01. Hiding 45 real client programmes is the ` +
+      `wrong trade; the heading carries the honesty instead.`
+    );
+  }
   assert.ok(
-    !/fallback:\s*'spread'/.test(call),
-    `a sub-industry proof block opts into { fallback: 'spread' }:\n  ${call}\n` +
-    `That page names a vertical, so a study from another one implies experience we do not have.`
+    /From our client library/.test(view),
+    `${label} no longer uses the "From our client library" heading. With the spread on, a heading ` +
+    `that claims sector relevance ("Related Proof", "Case Study Reference") renders a residential ` +
+    `HVAC contractor as proof on a law firm page, which is the §11 defect this heading replaced.`
+  );
+  assert.ok(
+    !/Related Proof|Case Study Reference/.test(view),
+    `${label} reintroduced a sector-claiming proof heading while the spread is on. See above.`
   );
 }
 
 let subWithProof = 0;
 for (const industry of INDUSTRIES) {
   for (const sub of industry.subIndustries) {
-    if (studiesForTopic(`${industry.name} ${sub.name}`, 3).length > 0) subWithProof += 1;
+    if (studiesForTopic(`${industry.name} ${sub.name}`, 3, { fallback: 'spread' }).length > 0) subWithProof += 1;
   }
 }
 assert.equal(
