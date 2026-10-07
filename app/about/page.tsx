@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AIPlatforms from '../../components/shared/AIPlatforms';
-import { HQ_DISPLAY } from '../../data/siteConfig';
+import OfficeList from '../../components/shared/OfficeList';
+import { OFFICES_SENTENCE } from '../../data/siteConfig';
 export const metadata: Metadata={title:'About | AI SEO & GEO for B2B',description:'Qognition helps B2B companies make their expertise easier to discover through AI SEO, GEO, technical search work and useful content.',alternates:{canonical:'/about'}};
 
 /* docs/copy/2026-10/about.md. Sentence 1 of the intro is Nadia's entity string
@@ -22,9 +23,13 @@ export default function Page() {
       <p className="growth-eyebrow">ABOUT QOGNITION AGENCY</p>
       <h1>We run AI search, SEO and PPC for B2B companies.</h1>
       <p className="growth-page-intro">
-        Qognition Agency is a B2B AI search visibility agency that runs AI SEO, GEO, SEO, local SEO and B2B PPC for established B2B companies, including SaaS. We are headquartered in {HQ_DISPLAY}, and work remotely with clients in the markets we serve. Pages about other cities describe markets we serve, not offices.
+        Qognition Agency is a B2B AI search visibility agency that runs AI SEO, GEO, SEO, local SEO and B2B PPC for established B2B companies, including SaaS. {OFFICES_SENTENCE} Pages about other cities describe markets we serve, not offices.
       </p>
       <AIPlatforms />
+      <section className="growth-page-section" aria-labelledby="about-offices-heading">
+        <h2 id="about-offices-heading">Our offices</h2>
+        <OfficeList labelledBy="about-offices-heading" className="grid-cols-1 sm:grid-cols-3 lg:grid-cols-5" />
+      </section>
       <section className="growth-page-section">
         <h2>How we approach the work</h2>
         <div className="growth-plain-grid">

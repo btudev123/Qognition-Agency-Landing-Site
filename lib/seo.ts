@@ -83,7 +83,7 @@ export const SEO_OVERRIDES: Record<string, { title: string; description: string 
   '/case-studies': {
     title: 'Case Studies: Client Programmes | Qognition Agency',
     description:
-      'Client programmes across HVAC, dental and insurance. Targets are set at the start of each engagement and stay targets until client reporting confirms them.'
+      'Named B2B client programmes with dated results, plus HVAC, dental and insurance programmes whose targets stay targets until client reporting confirms them.'
   },
   // /free-seo-audit 308s here (next.config.mjs). One offer, one URL; the title
   // carries both the operator's "free SEO audit" intent and the AI half.
@@ -95,7 +95,7 @@ export const SEO_OVERRIDES: Record<string, { title: string; description: string 
   '/locations/new-york': {
     title: 'Digital Marketing Agency New York: SEO, PPC, GEO | Qognition',
     description:
-      'Qognition helps B2B companies win New York buyers with AI SEO, GEO, SEO and PPC tied to qualified enquiries. Remote delivery. Book a call or enquire.'
+      'Qognition helps B2B companies win New York buyers with AI SEO, GEO, SEO and PPC tied to qualified enquiries. Office in New York. Book a call or enquire.'
   },
   '/locations/london': {
     title: 'Digital Marketing Agency London: SEO & AI Search | Qognition',
@@ -105,7 +105,7 @@ export const SEO_OVERRIDES: Record<string, { title: string; description: string 
   '/locations/dubai': {
     title: 'Digital Marketing Agency Dubai | SEO, GEO & PPC | Qognition',
     description:
-      'Qognition helps B2B companies selling into Dubai and the UAE with AI SEO, GEO, SEO and PPC. Remote delivery. Book a call or send an enquiry.'
+      'Qognition helps B2B companies selling into Dubai and the UAE with AI SEO, GEO, SEO and PPC. Office in Dubai. Book a call or send an enquiry.'
   },
   '/locations/perth': {
     title: 'Digital Marketing Agency Perth: SEO, PPC & GEO | Qognition',
@@ -312,9 +312,8 @@ export const getCoreMetadata = (path: string): Metadata => {
         'Specialized digital marketing for finance, legal, real estate, manufacturing, care, SaaS, and local service companies.'
     },
     '/regions': {
-      title: 'Global Offices | Digital Marketing Agency Near You',
-      description:
-        'Qognition delivers local digital marketing strategy across the US, UK, UAE, India, Australia, Europe, GCC, and global revenue markets.'
+      title: 'Regions | Qognition',
+      description: 'Explore AI SEO and GEO planning for B2B companies reaching buyers across regional markets.'
     },
     '/case-studies': {
       title: 'Case Studies | Digital Marketing Results',

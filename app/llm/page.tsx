@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SERVICES, INDUSTRIES, REGIONS } from '../../constants';
 import { breadcrumbSchema } from '../../lib/schema';
+import { OFFICE_CITIES_TEXT } from '../../data/siteConfig';
 import Heading from '../../components/ui/Heading';
 
 export const metadata: Metadata = {
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
 
 export default function Page() {
   const llmContent = [
-    '# Qognition Agency — Entity & Capabilities Graph',
+    '# Qognition Agency: entity and capabilities graph',
     '',
     '## Agency Overview',
     'Qognition helps B2B companies, including SaaS, improve discovery and consideration through AI SEO and GEO. Supporting work can include content, paid media, ABM, conversion improvement and revenue operations.',
-    'Delivery is scoped around the target market; a market page does not establish a physical office.',
+    `Delivery is scoped around the target market. Qognition has offices in ${OFFICE_CITIES_TEXT}, and serves every other market remotely. A market page is not an office claim.`,
     'Engagements define the disciplines, responsibilities and review process before work begins.',
     '',
     '## Core Capabilities',

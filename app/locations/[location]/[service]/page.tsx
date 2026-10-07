@@ -5,6 +5,7 @@ import { SERVICES, LOCATION_MATRIX_SERVICES } from '../../../../data/services';
 import { getLocationMetadata } from '../../../../lib/seo';
 import { breadcrumbSchema, faqSchema, orgRef } from '../../../../lib/schema';
 import { LocationServiceView } from '../../ProgrammaticLocationView';
+import { officeAnswerFor } from '../../../../data/siteConfig';
 
 export const dynamicParams = false;
 
@@ -36,8 +37,8 @@ export default async function Page({ params }: { params: Promise<{ location: str
         'We review technical access, useful commercial content and the buyer questions relevant to your market. Search platforms decide which pages to index or show; publication does not guarantee discovery.'
     },
     {
-      question: `Do you claim a physical ${location.name} office here?`,
-      answer: `No. This page explains how Qognition supports companies targeting ${location.name}; we only claim a physical office where one exists.`
+      question: `Does Qognition have an office in ${location.name}?`,
+      answer: `${officeAnswerFor(location.name, location.slug, location.country)} This page explains how we support companies targeting ${location.name}.`
     },
     {
       question: `What makes ${service.title} different in ${location.name}?`,

@@ -10,6 +10,7 @@ import { breadcrumbSchema } from '../../lib/schema';
 import Section from '../../components/ui/Section';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
+import OfficeList from '../../components/shared/OfficeList';
 
 export const dynamic = 'force-static';
 
@@ -68,6 +69,11 @@ export default function Page() {
               </article>
             ))}
           </div>
+          <section aria-labelledby="team-offices-heading" className="mt-12">
+            <h2 id="team-offices-heading" className="text-h4 font-semibold text-[var(--text)] mb-4">Our offices</h2>
+            <OfficeList labelledBy="team-offices-heading" className="grid-cols-1 sm:grid-cols-3 lg:grid-cols-5" />
+            <p className="text-body text-[var(--text-muted)] mt-4 mb-0">We serve every other market remotely.</p>
+          </section>
           <div className="mt-10 flex flex-wrap gap-4"><Link className="btn-primary" href="/book">Book a call</Link><Link className="btn-outline" href="/contact#enquiry">Send an enquiry</Link></div>
         </Section>
       </main>

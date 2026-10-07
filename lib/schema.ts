@@ -1,5 +1,6 @@
 import { SITE_URL } from './seo';
-import { HQ_CITY, HQ_REGION, HQ_COUNTRY, CONTACT_EMAIL, PHONE_NUMBER } from '../data/siteConfig';
+import { OFFICES, CONTACT_EMAIL, PHONE_NUMBER } from '../data/siteConfig';
+import { offeredSubServices } from '../data/services';
 import type { SpokeConfig } from './spokes';
 
 const absoluteUrl = (path: string) => `${SITE_URL}${path}`;
@@ -23,6 +24,19 @@ export const ORG_NAME = 'Qognition Agency';
 /** Minimal reference for provider / publisher fields. */
 export const orgRef = () => ({ '@type': 'Organization', '@id': ORG_ID, name: ORG_NAME, url: SITE_URL });
 
+/** OFFICES as schema.org Places: addressLocality and addressCountry only. */
+export function officeLocations() {
+  return OFFICES.map((office) => ({
+    '@type': 'Place',
+    name: `${ORG_NAME}, ${office.city}`,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: office.city,
+      addressCountry: office.countryCode,
+    },
+  }));
+}
+
 export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
@@ -45,14 +59,11 @@ export function organizationSchema() {
       'Pay-Per-Click Advertising',
       'B2B Marketing',
     ],
-    // One address, matching the third-party directory listings. Entity
-    // resolution depends on this string being identical everywhere.
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: HQ_CITY,
-      addressRegion: HQ_REGION,
-      addressCountry: HQ_COUNTRY,
-    },
+    // Five offices and no headquarters (operator, 2026-10-08), so there is no
+    // `address` property: on an Organization that reads as the main address.
+    // Each office is a `location` Place carrying city and country only, never a
+    // street address. Generated from OFFICES so schema and copy cannot drift.
+    location: officeLocations(),
     sameAs: [
       'https://www.linkedin.com/company/qognition-tech',
       'https://x.com/qognition_tech',
@@ -105,7 +116,7 @@ export function serviceCategorySchema(service: {
   id: string;
   title: string;
   shortDescription: string;
-  subServices: { name: string }[];
+  subServices: { name: string; slug?: string }[];
 }) {
   return {
     '@context': 'https://schema.org',
@@ -119,7 +130,8 @@ export function serviceCategorySchema(service: {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: `${service.title} sub-services`,
-      itemListElement: service.subServices.map((sub) => ({
+      /* Not-offered rows stay routable but never enter the catalogue (data/services.ts). */
+      itemListElement: offeredSubServices(service.id, service.subServices).map((sub) => ({
         '@type': 'Offer',
         itemOffered: { '@type': 'Service', name: sub.name },
       })),

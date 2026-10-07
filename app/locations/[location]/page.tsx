@@ -4,6 +4,7 @@ import { getLocationBySlug, LOCATIONS } from '../../../data/locations';
 import { getLocationMetadata } from '../../../lib/seo';
 import { breadcrumbSchema, faqSchema, orgRef } from '../../../lib/schema';
 import { LocationOverviewView } from '../ProgrammaticLocationView';
+import { officeAnswerFor } from '../../../data/siteConfig';
 
 export const dynamicParams = false;
 
@@ -23,8 +24,7 @@ export default async function Page({ params }: { params: Promise<{ location: str
   const faqs = [
     {
       question: `Does Qognition have an office in ${location.name}?`,
-      answer:
-        `Qognition supports companies targeting ${location.name} without pretending to have a local office where one does not exist. The focus is market coverage, demand generation, and measurable leads.`
+      answer: `${officeAnswerFor(location.name, location.slug, location.country)} The focus is market coverage, demand generation and measurable leads.`
     },
     {
       question: `Can you run SEO and PPC campaigns for ${location.name}?`,

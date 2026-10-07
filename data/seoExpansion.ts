@@ -10,6 +10,7 @@ import {
 } from '../types';
 import { INDUSTRIES } from './industries';
 import { LOCATIONS } from './locations';
+import { hasOffice } from './siteConfig';
 import { SERVICES } from './services';
 import { RESOURCES_FROM_AUDITS } from './auditOffers';
 
@@ -750,7 +751,7 @@ export const COMPARISONS: ComparisonPage[] = [
     description: `How to choose the best digital marketing agency in ${city} for SEO, Google Ads, web development, and lead generation.`,
     h1: `Choosing a B2B Search Agency for ${city}`,
     category: 'city' as const,
-    summary: `When evaluating an agency for ${city}, ask which buyers you can actually serve, what local evidence the page needs and how the team will measure enquiries. A city in a page title does not establish an office or local delivery experience.`,
+    summary: `When evaluating an agency for ${city}, ask which buyers you can actually serve, what local evidence the page needs and how the team will measure enquiries. A city in a page title does not establish an office or local delivery experience.${hasOffice(city) ? ` Qognition has an office in ${city}.` : ` Qognition serves ${city} remotely.`}`,
     decisionFactors: ['Local market experience', 'SEO and PPC capability', 'Case-study quality', 'CRM and analytics setup', 'Landing page quality'],
     qognitionFit: [`Consider when companies targeting ${city} plus national or international markets`, 'Strong fit for technical SEO, paid search, and conversion websites'],
     alternatives: ['Local freelancer', 'Traditional media agency', 'Large network agency', 'In-house marketer'],

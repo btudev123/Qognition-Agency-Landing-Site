@@ -123,6 +123,46 @@ assert.deepEqual(missing, [], `llms.txt is missing priority page(s): ${missing.j
 assert.ok(!llms.includes('$'), 'llms.txt contains "$". No public prices (2026-10-03 authority note).');
 assert.ok(!llms.includes('\u2014'), 'llms.txt contains an em dash (CLAUDE.md §10).');
 
+/* 6. Offices, operator 2026-10-08: Toronto, New York, Dubai, Sydney and Gurugram,
+      no headquarters, city and country only. Until that date the site named one HQ
+      (Gurugram) in schema and copy, and before that production claimed London,
+      Mumbai and Bangalore offices that do not exist. One list, data/siteConfig.ts,
+      and every surface below is derived from it. */
+const { OFFICES, hasOffice, officeAnswerFor } = require('../data/siteConfig.ts');
+const { organizationSchema } = require('../lib/schema.ts');
+const { LOCATIONS } = require('../data/locations.ts');
+assert.deepEqual(
+  OFFICES.map((o) => `${o.city}/${o.countryCode}`),
+  ['Toronto/CA', 'New York/US', 'Dubai/AE', 'Sydney/AU', 'Gurugram/IN'],
+  'OFFICES no longer matches the operator list (2026-10-08) or its display order.'
+);
+for (const slug of ['toronto', 'new-york', 'dubai', 'sydney', 'gurugram', 'gurgaon', 'New York City']) {
+  assert.ok(hasOffice(slug), `hasOffice("${slug}") is false; it names an office city.`);
+}
+for (const slug of ['london', 'mumbai', 'bangalore', 'bengaluru', 'perth', 'delhi', 'noida', 'haryana']) {
+  assert.ok(!hasOffice(slug), `hasOffice("${slug}") is true; only the five office cities may read as offices.`);
+}
+assert.ok(!hasOffice('sydney', 'CA') && !hasOffice('toronto', 'US'), 'hasOffice ignores the country, so a same-named town elsewhere reads as an office.');
+const officeSlugs = LOCATIONS.filter((l) => l.type === 'city' && officeAnswerFor(l.name, l.slug, l.country).startsWith('Yes.')).map((l) => l.slug).sort();
+assert.deepEqual(officeSlugs, ['dubai', 'gurugram', 'new-york', 'sydney', 'toronto'], `Location pages answering "Yes" to the office FAQ: ${officeSlugs.join(', ')}.`);
+const org = organizationSchema();
+assert.ok(!('address' in org), 'Organization JSON-LD carries `address`, which marks one office as the main address. There is no HQ.');
+assert.equal(org.location.length, OFFICES.length, 'Organization JSON-LD does not list every office as a location.');
+for (const place of org.location) {
+  assert.equal(place['@type'], 'Place');
+  assert.deepEqual(Object.keys(place.address).sort(), ['@type', 'addressCountry', 'addressLocality'], 'An office address carries more than city and country.');
+}
+assert.ok(!JSON.stringify(org).includes('streetAddress'), 'Organization JSON-LD has a streetAddress. City and country only.');
+assert.ok(llms.includes('Offices: Toronto, New York, Dubai, Sydney and Gurugram.'), 'llms.txt does not list the five offices.');
+/* Narrow on purpose: market descriptions legitimately tell a CLIENT to separate its
+   own headquarters from its buyers' markets. What may not appear is ours. */
+assert.ok(!/Headquarters:|headquartered in/i.test(llms), 'llms.txt names a Qognition headquarters. There is none.');
+for (const file of ['app/about/page.tsx', 'app/contact/page.tsx', 'app/team/page.tsx']) {
+  const src = fs.readFileSync(file, 'utf8');
+  assert.ok(src.includes('<OfficeList'), `${file} no longer renders the office list.`);
+  assert.ok(!/headquartered|HQ_DISPLAY|London office|Mumbai|Bangalore/i.test(src), `${file} names a headquarters or an office that does not exist.`);
+}
+
 console.log(
   `✓ funnel: booking resolves from one constant in ${sources.length} source files, contact links ` +
   `well-formed, /free-ai-audit posts to /api/lead, calendar embedded on the homepage at #book.`
@@ -131,3 +171,4 @@ console.log(
   `✓ llms: one source (route), /llm.txt 308s to /llms.txt, ${PRIORITY.length} priority pages listed ` +
   `(/free-seo-audit via its 308 destination), no "$", no em dash.`
 );
+console.log(`✓ offices: ${OFFICES.length} from one list, no HQ, schema city and country only, location FAQs derived.`);

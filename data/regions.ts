@@ -1,7 +1,10 @@
 import type { Region } from '../types';
+import { OFFICE_CITIES_TEXT, joinWithAnd, officesIn } from './siteConfig';
 
-// Geographic coverage describes target markets, not offices or local teams.
-export const REGIONS: Region[] = [
+// Geographic coverage describes target markets. Offices are only the five in
+// OFFICES (data/siteConfig.ts, operator 2026-10-08); the office sentence in each
+// region's delivery FAQ is generated from that list below, never written here.
+const REGION_SOURCE: Region[] = [
   {
     "id": "usa",
     "name": "USA",
@@ -24,7 +27,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -54,7 +57,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -84,7 +87,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -114,7 +117,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -144,7 +147,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -174,7 +177,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -204,7 +207,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -234,7 +237,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -264,7 +267,7 @@ export const REGIONS: Region[] = [
     "faqs": [
       {
         "question": "How is delivery scoped for this market?",
-        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins."
       },
       {
         "question": "How do we discuss a search program?",
@@ -273,3 +276,32 @@ export const REGIONS: Region[] = [
     ]
   }
 ];
+
+/** ISO alpha-2 codes of the countries each region page covers, for the office check only. */
+const REGION_COUNTRY_CODES: Record<string, readonly string[]> = {
+  usa: ['US'],
+  uk: ['GB'],
+  'uae-ksa': ['AE', 'SA'],
+  india: ['IN'],
+  australia: ['AU'],
+  europe: [],
+  'middle-east': ['AE', 'SA', 'QA', 'KW', 'BH', 'OM', 'JO', 'LB', 'TR', 'IL'],
+  canada: ['CA'],
+  'singapore-sea': ['SG', 'MY', 'ID', 'TH', 'VN', 'PH'],
+};
+
+const DELIVERY_QUESTION = 'How is delivery scoped for this market?';
+
+function regionOfficeSentence(slug: string): string {
+  const cities = (REGION_COUNTRY_CODES[slug] ?? []).flatMap((code) => officesIn(code).map((office) => office.city));
+  return cities.length
+    ? `We have an office in ${joinWithAnd(cities)}, and serve the rest of this market remotely.`
+    : `We serve this market remotely. Our offices are in ${OFFICE_CITIES_TEXT}.`;
+}
+
+export const REGIONS: Region[] = REGION_SOURCE.map((region) => ({
+  ...region,
+  faqs: region.faqs.map((faq) =>
+    faq.question === DELIVERY_QUESTION ? { ...faq, answer: `${faq.answer} ${regionOfficeSentence(region.slug)}` } : faq,
+  ),
+}));

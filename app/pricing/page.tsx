@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AIPlatforms from '../../components/shared/AIPlatforms';
+import { OFFICE_CITIES_TEXT } from '../../data/siteConfig';
 export const metadata: Metadata = { title:'AI SEO & GEO Engagements', description:'Explore a tailored AI SEO and GEO engagement for your B2B business. Agree deliverables, responsibilities and measurement. Book a call or send an enquiry.', alternates:{canonical:'/pricing'} };
 
 /* docs/copy/2026-10/pricing.md. No prices, ranges or tiers (2026-10-03). The PPC
@@ -10,7 +11,7 @@ export const metadata: Metadata = { title:'AI SEO & GEO Engagements', descriptio
 const engagements = [
   ['Ongoing work', 'AI SEO and GEO, with SEO underneath.', 'A monthly scope across the layers your buyers use. Priorities, owners and review dates are agreed in writing. Reports keep AI answers, rankings and enquiries in separate columns.'],
   ['PPC management', 'Paid search, scoped on its own.', 'Google Ads and LinkedIn, priced as a share of ad spend with a monthly minimum. Run it alone or beside search work.'],
-  ['A new market', 'A new country, region or language.', 'We check the questions buyers ask in that market before we publish anything there. We work remotely and do not claim offices in the markets we serve.'],
+  ['A new market', 'A new country, region or language.', `We check the questions buyers ask in that market before we publish anything there. Our offices are in ${OFFICE_CITIES_TEXT}. We serve every other market remotely, and a market we serve is not an office.`],
 ] as const;
 
 function Actions() {

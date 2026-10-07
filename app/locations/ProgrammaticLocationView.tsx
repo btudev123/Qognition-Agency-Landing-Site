@@ -2,11 +2,12 @@ import { appendFunnelContext } from '../../lib/funnelContext';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Globe, MapPin, Search, TrendingUp } from 'lucide-react';
 import { INDUSTRIES } from '../../data/industries';
-import { SERVICES } from '../../data/services';
+import { SERVICES, offeredSubServices } from '../../data/services';
 import { FREE_TOOLS, RESOURCES } from '../../data/seoExpansion';
 import { studiesForTopic, nicheLabel, headlineKpi } from '../../data/case-studies';
 import { Location, Service } from '../../types';
 import { h1For } from '../../lib/seo';
+import { officeAnswerFor } from '../../data/siteConfig';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
 
@@ -329,7 +330,8 @@ export const LocationServiceView = ({
           <section className="mb-14">
             <Heading level="h2" className="mb-5">What We Build</Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {service.subServices.map((subService) => (
+              {/* Not-offered rows (data/services.ts) are never advertised here. */}
+              {offeredSubServices(service.id, service.subServices).map((subService) => (
                 <div
                   key={subService.name}
                   className="p-6 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl"
@@ -400,8 +402,8 @@ export const LocationServiceView = ({
             <div className="space-y-3">
               {[
                 [
-                  `Do you need an office in ${location.name}?`,
-                  `No. Qognition can support companies targeting ${location.name} remotely or as a regional growth partner. We only claim a physical office where one exists.`,
+                  `Does Qognition have an office in ${location.name}?`,
+                  officeAnswerFor(location.name, location.slug, location.country),
                 ],
                 [
                   `Will this support Google discovery?`,

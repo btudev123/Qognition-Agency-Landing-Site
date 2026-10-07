@@ -1,3 +1,5 @@
+import { OFFICES, OFFICE_CITIES_TEXT, joinWithAnd } from './siteConfig';
+
 export type GlobalMarketPage = {
   slug: string;
   country: string;
@@ -22,7 +24,7 @@ export type LanguageSeoPage = {
   services: string[];
 };
 
-export const GLOBAL_MARKETS: GlobalMarketPage[] = [
+const GLOBAL_MARKET_SOURCE: GlobalMarketPage[] = [
   {
     "slug": "china-market-entry",
     "country": "China",
@@ -44,10 +46,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -80,10 +78,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -114,10 +108,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -150,10 +140,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -184,10 +170,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -220,10 +202,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -254,10 +232,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -290,10 +264,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -324,10 +294,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -360,10 +326,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -394,10 +356,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -430,10 +388,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -464,10 +418,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -500,10 +450,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -534,10 +480,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -570,10 +512,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -604,10 +542,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
       "Separately scoped B2B PPC"
     ],
     "faqs": [
-      {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
       {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
@@ -640,10 +574,6 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ],
     "faqs": [
       {
-        "question": "Does this page establish a local office?",
-        "answer": "No. It describes a target market. Office locations and delivery capabilities must be verified separately."
-      },
-      {
         "question": "How is language coverage agreed?",
         "answer": "We identify the audience and the terminology needed, then confirm qualified review and follow-up responsibilities before publishing localized material."
       },
@@ -654,6 +584,26 @@ export const GLOBAL_MARKETS: GlobalMarketPage[] = [
     ]
   }
 ];
+
+/* Offices, operator 2026-10-08: Toronto, New York, Dubai, Sydney and Gurugram, no
+   headquarters. The source rows above all carried "Does this page establish a
+   local office? No.", which became false for the five countries with an office.
+   That row is now generated from OFFICES (data/siteConfig.ts) and placed first,
+   where it was, so a market page can never contradict /about. */
+function officeFaq(market: GlobalMarketPage) {
+  const offices = OFFICES.filter((office) => office.country === market.country);
+  return {
+    question: 'Does Qognition have an office in this market?',
+    answer: offices.length
+      ? `Yes. Qognition has an office in ${joinWithAnd(offices.map((office) => office.city))}, ${market.country}. Buyers elsewhere in ${/^United /.test(market.country) ? 'the ' : ''}${market.country} are served remotely.`
+      : `No. This page describes a target market, and we serve it remotely. Our offices are in ${OFFICE_CITIES_TEXT}.`,
+  };
+}
+
+export const GLOBAL_MARKETS: GlobalMarketPage[] = GLOBAL_MARKET_SOURCE.map((market) => ({
+  ...market,
+  faqs: [officeFaq(market), ...market.faqs],
+}));
 
 export const LANGUAGE_SEO_PAGES: LanguageSeoPage[] = [
   {

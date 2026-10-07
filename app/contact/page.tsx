@@ -4,6 +4,7 @@ import { organizationSchema, breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
 import LeadForm from '../../components/shared/LeadForm';
 import ContactChannelLink from '../../components/shared/ContactChannelLink';
+import OfficeList from '../../components/shared/OfficeList';
 import { CONTACT_EMAIL, PHONE_DISPLAY } from '../../data/siteConfig';
 import { appendFunnelContext, readFunnelContext } from '../../lib/funnelContext';
 import { resolveLeadLocale } from '../../lib/leadCopy';
@@ -88,6 +89,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<Rec
                 </dd>
               </div>
             </dl>
+          </section>
+
+          <section aria-labelledby="contact-offices-heading" className="mt-10">
+            <h2 id="contact-offices-heading" className="text-h4 font-semibold text-[var(--text)] mb-4">Our offices</h2>
+            <OfficeList labelledBy="contact-offices-heading" className="grid-cols-1 sm:grid-cols-3" />
+            <p className="text-body text-[var(--text-muted)] mt-4 mb-0">We serve every other market remotely.</p>
           </section>
         </div>
       </main>
