@@ -1,110 +1,91 @@
 import Link from 'next/link';
+import { CalendarDays, Layers, Link2, Quote } from 'lucide-react';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
+import { byNiche } from '../../data/case-studies';
+import IconTile from '../visual/IconTile';
+import ProgrammeCard from '../visual/ProgrammeCard';
 import { Eyebrow, Shell } from './primitives';
+import v from '../visual/visual.module.css';
 
-
-const SOURCES = [
-  {
-    kicker: 'Before we start', title: 'We fix what to measure',
-    body: 'The prompt set, platforms, markets and review dates go into your proposal. Changing any of them needs a recorded reason, so this month compares with last month.',
-    caveat: 'Fixed before the baseline run.',
-    source: 'How an engagement runs', date: 'Process', href: '/process',
-  },
-  {
-    kicker: 'In every report', title: 'Separate columns, never blended',
-    body: 'Technical fixes delivered, Google rankings, AI answers observed, referral visits and qualified enquiries. Each has its own column, because a citation is not a lead and a ranking is not a citation.',
-    caveat: 'Targets are labelled as targets until results replace them.',
-    source: 'How we handle evidence', date: 'Methodology', href: '/case-studies/methodology',
-  },
+/* The four things every reported observation carries, taken from the lead
+   sentence below (brief §2.7). */
+const METHOD = [
+  { icon: Quote, label: 'The prompt' },
+  { icon: Layers, label: 'The platform' },
+  { icon: CalendarDays, label: 'The date' },
+  { icon: Link2, label: 'The cited sources' },
 ];
 
+/* Insurance only on a B2B surface (operator, 2026-10-07): HVAC and dental are
+   consumer sectors and never render as B2B proof. Deterministic: the first
+   three insurance records in library order. No KPI figures (Ruth, 2026-10-07):
+   see components/visual/ProgrammeCard.tsx. */
 export default function Evidence() {
+  const programmes = byNiche('insurance').slice(0, 3);
 
   return (
     <section data-theme="dark" className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <Shell>
-        <ScrollReveal>
-          <Eyebrow accent>How we report</Eyebrow>
-          <h2 className="text-h2 font-sans m-0 mt-4 max-w-[24ch] font-semibold">
-            <MaskReveal>Every answer we report has a date on it.</MaskReveal>
-          </h2>
-          <p className="text-body mt-5 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-            AI answers change with the prompt, the platform and the day, so a single visibility score
-            tells you little. We report each observation with the prompt we used, the platform, the
-            date and the sources the answer cited. You can re-run any of it yourself.
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 lg:items-end">
+          <ScrollReveal className="lg:col-span-6">
+            <Eyebrow accent>How we report</Eyebrow>
+            <h2 className="text-h2 font-sans m-0 mt-4 max-w-[24ch] font-semibold">
+              <MaskReveal>Every answer we report has a date on it.</MaskReveal>
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal stagger={2} className="lg:col-span-6">
+            <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
+              We report each observation with the prompt we used, the platform, the date and the sources the answer cited. You can re-run any of it yourself.
+            </p>
+            {/* Below lg the caveat follows the method strip (brief §2.7); from lg it sits here. */}
+            <p className="hidden lg:block text-body mt-4 m-0 max-w-[62ch]" style={{ color: 'var(--s-text)' }}>
+              A mention in an answer does not prove a buyer became a customer.
+            </p>
+          </ScrollReveal>
+        </div>
+
+        <ScrollReveal stagger={2} className="mt-10">
+          <ul className={`${v.lattice} list-none p-0 m-0 grid grid-cols-2 lg:grid-cols-4`}>
+            {METHOD.map((m) => (
+              <li key={m.label} className={`${v.latticeCell} flex flex-col items-start gap-3 p-5 sm:flex-row sm:items-center sm:gap-4 sm:p-6`}>
+                <IconTile icon={m.icon} size={24} />
+                <span className="text-h4 font-sans font-medium">{m.label}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="lg:hidden text-body mt-6 m-0 max-w-[62ch]" style={{ color: 'var(--s-text)' }}>
+            A mention in an answer does not prove a buyer became a customer.
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px mt-12" style={{ background: 'var(--s-rule-hairline)' }}>
-          {SOURCES.map((s, i) => (
-            <ScrollReveal key={s.title} stagger={i + 1}>
-              {/* Internal pages open in the same tab, so no "↗". */}
-              <Link
-                href={s.href}
-                className="rf-hoverable rf-card flex h-full flex-col p-7 sm:p-9"
-                style={{ background: 'var(--s-bg)' }}
-              >
-                <span className="flex items-center gap-3">
-                  <span className="rf-dot w-2 h-2 rounded-full" aria-hidden="true" />
-                  <span className="rf-card-label font-mono text-meta tracking-[0.14em] uppercase">
-                    {s.kicker}
-                  </span>
-                </span>
-                <h3 className="text-h3 font-sans mt-7 m-0 font-semibold">{s.title}</h3>
-                <p className="text-body mt-4 m-0 flex-1" style={{ color: 'var(--s-text-muted)' }}>
-                  {s.body}
-                </p>
-                <p className="text-meta mt-5 m-0" style={{ color: 'var(--s-text-faint)' }}>
-                  {s.caveat}
-                </p>
-                <span
-                  className="mt-6 pt-5 font-mono text-meta tracking-[0.1em] flex items-start justify-between gap-4"
-                  style={{ borderTop: '1px solid var(--s-rule-hairline)', color: 'var(--s-accent)' }}
-                >
-                  <span>
-                    {s.source}
-                    <span className="block mt-1" style={{ color: 'var(--s-text-faint)' }}>
-                      {s.date}
-                    </span>
-                  </span>
-                </span>
-              </Link>
-            </ScrollReveal>
-          ))}
-        </div>
+        {programmes.length > 0 && (
+          <ScrollReveal stagger={3} className="mt-10">
+            <ul className={`${v.lattice} list-none p-0 m-0 grid grid-cols-1 md:grid-cols-3`}>
+              {programmes.map((study) => (
+                <ProgrammeCard key={study.id} study={study} />
+              ))}
+            </ul>
+          </ScrollReveal>
+        )}
 
-        {/* A record you can compare. */}
-        <ScrollReveal stagger={3} className="mt-12 pt-8" style={{ borderTop: '1px solid var(--s-rule)' }}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
-            <h3 className="text-h3 font-sans m-0 lg:col-span-5 font-semibold">
-              A record you can compare
-            </h3>
-            <div className="lg:col-span-7">
-              <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-                Ask the same question twice and you can get two answers. So we fix the sampling method first, and we record the answers and sources behind every report.
-              </p>
-              <p className="text-body mt-4 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-                A mention in an answer does not prove a buyer became a customer. We review AI answers next to your enquiries and sales feedback, and say which is which.
-              </p>
-              <Link href="/case-studies/methodology" className="rf-btn rf-btn--secondary mt-6">
-                How we handle evidence
-              </Link>
-            </div>
-          </div>
-        </ScrollReveal>
-
-        <ScrollReveal stagger={4} className="mt-12">
-          <Link href="/case-studies" className="rf-hoverable rf-card block p-7 sm:p-9" style={{ border: '1px solid var(--s-rule)' }}>
-            <span className="rf-card-label font-mono text-meta tracking-[0.14em] uppercase">Client programmes</span>
-            <h3 className="text-h3 font-sans mt-6 m-0 font-semibold">See how we plan and measure a client programme.</h3>
-            <p className="text-body mt-3 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-              Each client programme sets out the business problem, our approach and a measured baseline. Every KPI is labelled as a target until client reporting fills in the result. These programmes are for HVAC, dental and commercial insurance businesses, so read them for the method, not as proof of work in your sector.
+        <ScrollReveal stagger={4} className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 lg:items-start">
+          <div className="lg:col-span-7">
+            <p className="text-meta m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
+              Every KPI is labelled as a target until client reporting fills in the result.
             </p>
-            <span className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-7 pt-6" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
-              {['Business problem', 'Our approach', 'Evidence status'].map(label => <span key={label} className="block text-h4 font-sans font-medium" style={{ color: 'var(--s-accent)' }}>{label}</span>)}
-            </span>
-          </Link>
+            <p className="text-meta m-0 mt-2 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
+              These programmes are for insurance businesses. Outside insurance, read them for the method, not as proof of work in your sector.
+            </p>
+          </div>
+          <div className="lg:col-span-5 flex flex-col sm:flex-row flex-wrap gap-3 lg:justify-end">
+            <Link href="/case-studies/methodology" className="rf-btn rf-btn--secondary">
+              How we handle evidence
+            </Link>
+            <Link href="/case-studies" className="rf-btn rf-btn--secondary">
+              Client programmes
+            </Link>
+          </div>
         </ScrollReveal>
       </Shell>
     </section>

@@ -1,7 +1,9 @@
 import Link from 'next/link';
-import HeroSnapshotPanel from './HeroSnapshotPanel';
+import ProductScreen from '../product-screens/ProductScreen';
+import { PRODUCT_SCREENS } from '../../data/product-screens';
 import { Shell } from './primitives';
 import { AI_PLATFORMS } from '../../data/aiPlatforms';
+import v from '../visual/visual.module.css';
 
 
 const ENGINES = AI_PLATFORMS;
@@ -9,6 +11,7 @@ const ENGINES = AI_PLATFORMS;
 export default function Hero() {
   return (
     <section
+      data-theme="light"
       className="relative overflow-hidden"
       style={{
         paddingTop: 'clamp(104px, 11vh, 140px)',
@@ -16,15 +19,14 @@ export default function Hero() {
       }}
     >
       <Shell>
-        {/* THE PANEL IS RENDERED ONCE.
-            It used to be rendered twice — once inside the left column for
-            mobile DOM order and once in the right column for desktop — which was
-            affordable only while it was a server component with no images. It is
-            now interactive, so a second copy would duplicate the DOM, the state
-            and the hydration for a layout concern. Explicit grid placement gets
-            the same two orders out of one instance:
+        {/* THE TRACKER IS RENDERED ONCE.
+            The panel used to be rendered twice, once inside the left column for
+            mobile DOM order and once in the right column for desktop. It holds
+            interactive tabs, so a second copy would duplicate the DOM, the tab
+            state and the hydration for a layout concern. Explicit grid placement
+            gets the same two orders out of one instance:
 
-              mobile   1 col, natural DOM order: A badge/H1/CTAs, B panel, C chips
+              mobile   1 col, natural DOM order: A badge/H1/CTAs, B tracker, C chips
               lg+      2 cols, A over C in column 1, B spanning both rows in column 2
 
             Do not reintroduce a `lg:hidden` duplicate. */}
@@ -106,10 +108,12 @@ export default function Hero() {
           </div>
           </div>
 
-          {/* B — the panel. order-2 sits it between the CTAs and the platform row
-              on mobile; from lg it is the second grid column. */}
-          <div className="order-2 min-w-0 w-full lg:justify-self-end lg:max-w-[520px]">
-            <HeroSnapshotPanel />
+          {/* B, the tracker (ADR-0006, brief §3.1). order-2 sits it between the
+              CTAs and the platform row on mobile; from lg it is the second grid
+              column. The field, border and panel shadow come from the screenField class
+              because ProductScreen renders frame="none". */}
+          <div className={`order-2 min-w-0 w-full lg:justify-self-end lg:max-w-[560px] ${v.screenField}`}>
+            <ProductScreen screen={PRODUCT_SCREENS['scriblr-visibility-tracker']} frame="none" />
           </div>
         </div>
       </Shell>

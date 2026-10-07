@@ -565,3 +565,152 @@ if (spineCollisions.length) {
     `it resolve through the B2B branch and can publish.`
   );
 }
+
+/* ── 12. PRODUCT SCREENS. ADR-0006 §6 (second amendment, 2026-10-07). ─────────
+ *
+ * Illustrative product screens must not be able to pass for client data. The
+ * type system catches most of it at `tsc`; these are the things it cannot. */
+{
+  const { PRODUCT_SCREENS, TRACKER_SECTORS } = require('../data/product-screens/index.ts');
+  const { SAMPLE_BRANDS } = require('../data/product-screens/sample-entities.ts');
+  const brands = new Set(SAMPLE_BRANDS);
+  const screens = Object.entries(PRODUCT_SCREENS);
+  const DOMAIN_LIKE = /\b[\w-]+\.(com|io|ai|co|net|org|app|uk|de)\b/;
+  /* Case-sensitive and whole-word, so the verbs "thrive" and "spiral" in a prompt
+     do not trip it. Quillmark and Stroud: Iris's trading-name check,
+     docs/design/2026-10-sample-brand-check.md. Both were sample brands and both
+     clash with real firms, so they may not come back. */
+  const DENY = [
+    'Qognition', 'Northgate', 'Epic', 'NetSuite', 'Quillmark', 'Stroud',
+    'Thrive', 'Gorilla 76', 'First Page Sage', 'RevenueZen', 'Siana', 'Bluelinks',
+    'The ABM Agency', 'ChoiceLocal', 'Scorpion', 'Spiral', 'Carnegie', 'Fintel Connect',
+  ];
+  const denyRe = new RegExp(`\\b(${DENY.map((d) => d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`);
+
+  // 1. Provenance, and key equals id.
+  for (const [key, screen] of screens) {
+    assert.equal(screen.provenance, 'illustrative', `product screen ${key}: provenance must be 'illustrative' (ADR-0006 R3).`);
+    assert.equal(screen.id, key, `product screen registry key ${key} holds a screen whose id is ${screen.id}.`);
+  }
+
+  // 2. Tabs.
+  const tracker = PRODUCT_SCREENS['scriblr-visibility-tracker'];
+  assert.deepEqual(
+    tracker.tabs.map((t) => t.sector), [...TRACKER_SECTORS],
+    'the visibility tracker must hold exactly one tab per TRACKER_SECTORS entry, in that order.'
+  );
+  for (const tab of tracker.tabs) {
+    assert.ok(brands.has(tab.brand), `tracker tab ${tab.sector}: brand "${tab.brand}" is not in SAMPLE_BRANDS (ADR-0006 R2).`);
+    assert.ok(/\.example$/.test(tab.domain), `tracker tab ${tab.sector}: domain ${tab.domain} is not an RFC 2606 .example domain.`);
+  }
+  const panel = PRODUCT_SCREENS['scriblr-prompt-panel'];
+  assert.ok(TRACKER_SECTORS.includes(panel.sector), `prompt panel sector "${panel.sector}" is not a tracker sector.`);
+
+  // 3. Rows.
+  /* The type says every Engine is a column; the transpiling loader does not
+     type-check, so the gate checks the shape too (Anton, 2026-10-07). */
+  const { ENGINES } = require('../lib/b2b/observations.ts');
+  const MENTION_STATES = new Set(['cited', 'mentioned', 'absent']);
+  for (const tab of tracker.tabs) {
+    assert.ok(tab.rows.length > 0, `tracker tab ${tab.sector} has no rows.`);
+    for (const row of tab.rows) {
+      const where = `tracker ${tab.sector} row "${row.prompt}"`;
+      assert.deepEqual(Object.keys(row.states), [...ENGINES], `${where}: states must have exactly one entry per ENGINES member, in ENGINES order.`);
+      for (const [engine, state] of Object.entries(row.states)) {
+        assert.ok(MENTION_STATES.has(state), `${where}: ${engine} is "${state}", not cited, mentioned or absent.`);
+      }
+      assert.equal(new Set(row.sourcesCited).size, row.sourcesCited.length, `${where}: sourcesCited has a duplicate.`);
+      const states = Object.values(row.states);
+      assert.ok(
+        !row.sourcesCited.includes('own-site') || states.some((s) => s !== 'absent'),
+        `${where}: 'own-site' is cited on a row where no platform named the brand. An answer cannot cite the brand's domain without naming it.`
+      );
+      assert.ok(states.includes('absent'), `${where}: every platform named the brand. Never an all-named row (Ruth, 2026-10-07).`);
+    }
+  }
+
+  // 4 and 5. Walk every value: no real names or domains, no numbers.
+  /* R6 for strings. Digits are allowed only inside a `prompt`, where they are
+     part of the buyer's question ("ISO 9001", "SOC 2"). Everywhere else (tab
+     labels, brands, domains, sources) a percent sign or a digit not preceded
+     by a letter fails: "64%", "3", "3x" and "1st" fail, "B2B" passes. The same
+     pattern runs on the served page in scripts/lib/served-screens.mjs. */
+  const FIGURE = /%|(?<![A-Za-z])\d/;
+  const walk = (node, where, key) => {
+    if (typeof node === 'number') assert.fail(`${where}: a number in screen data (${node}). ADR-0006 R6 allows none.`);
+    if (typeof node === 'string') {
+      assert.ok(!DOMAIN_LIKE.test(node), `${where}: domain-like token in "${node}". Sample domains end in .example.`);
+      const hit = node.match(denyRe);
+      assert.ok(!hit, `${where}: "${hit && hit[0]}" is a real or banned name, in "${node}".`);
+      assert.ok(
+        key === 'prompt' || !FIGURE.test(node),
+        `${where}: "${node}" carries a figure. ADR-0006 R6 allows digits only inside a prompt.`
+      );
+      return;
+    }
+    if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${where}[${i}]`, key));
+    if (node && typeof node === 'object') for (const [k, v] of Object.entries(node)) walk(v, `${where}.${k}`, k);
+  };
+  for (const [key, screen] of screens) {
+    walk(screen, key);
+    assert.ok(!/[0-9%]/.test(screen.caption), `${key}: the caption contains a digit or %, which reads as a result.`);
+  }
+
+  // 6. Server-only components, and no timers in the tab state.
+  const SCREEN_DIR = 'components/product-screens';
+  const CLIENT_OR_TIME = /['"]use client['"]|\buseState\b|\buseEffect\b|\buseReducer\b|\bsetTimeout\b|\bsetInterval\b|\brequestAnimationFrame\b/;
+  const literalDomain = /['"`][^'"`\n]*\b[\w-]+\.(com|io|ai|co|net|org|app|uk|de)\b[^'"`\n]*['"`]/i;
+  for (const file of walkTsx(SCREEN_DIR)) {
+    const code = fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ');
+    assert.ok(!CLIENT_OR_TIME.test(code), `${file}: client or time-based code under ${SCREEN_DIR}. ADR-0006 R4: nothing here holds state.`);
+    assert.ok(!literalDomain.test(code), `${file}: a domain-like string literal. Screen text comes from data/product-screens.`);
+  }
+  /* SectorTabs holds the active index and nothing else. It needs no effect and
+     no observer: an effect or an observer is how a tab advances without the
+     user, timer or not (an IntersectionObserver auto-advance passed the old
+     timer-only check). Comments are stripped so this note cannot trip it. */
+  const tabsSrc = fs
+    .readFileSync('components/visual/SectorTabs.tsx', 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/^\s*\/\/.*$/gm, ' ');
+  const TAB_MOTION =
+    /\b(setTimeout|setInterval|requestAnimationFrame|requestIdleCallback|useEffect|useLayoutEffect|useInsertionEffect|IntersectionObserver|ResizeObserver|MutationObserver)\b/;
+  const tabHit = tabsSrc.match(TAB_MOTION);
+  assert.ok(
+    !tabHit,
+    `components/visual/SectorTabs.tsx uses ${tabHit && tabHit[0]}. Tabs change only when the user selects one ` +
+    '(ADR-0006 R4: no timers, effects or observers, no auto-rotation).'
+  );
+
+  // 7. The badge cannot be dropped.
+  const BADGE_TAIL = 'product interface. Sample data, not client results.';
+  const badgeFile = `${SCREEN_DIR}/ProvenanceBadge.tsx`;
+  const badgeSrc = fs.readFileSync(badgeFile, 'utf8');
+  assert.ok(
+    badgeSrc.includes('Illustrative') && badgeSrc.includes(BADGE_TAIL),
+    `${badgeFile} no longer contains the ADR-0006 R3 badge sentence.`
+  );
+  for (const file of [...walkTsx('app'), ...walkTsx('components'), ...walkTsx('data'), ...walkTsx('lib')]) {
+    if (file === badgeFile) continue;
+    assert.ok(
+      !fs.readFileSync(file, 'utf8').includes('Sample data, not client results'),
+      `${file} contains the badge sentence. It lives in ${badgeFile} only, so it cannot drift.`
+    );
+  }
+  assert.ok(
+    /import\s+ProvenanceBadge\s+from\s+['"]\.\/ProvenanceBadge['"]/.test(fs.readFileSync(`${SCREEN_DIR}/ProductScreen.tsx`, 'utf8')),
+    'ProductScreen.tsx no longer imports ProvenanceBadge, so a screen could render without its disclosure.'
+  );
+
+  // Industry visuals: every locked ICP industry has an icon (brief §2.5).
+  const { icpIndustryCards } = require('../data/b2b/icp/index.ts');
+  const { INDUSTRY_ICON } = require('../data/b2b/icp/industryVisuals.ts');
+  const missingIcon = icpIndustryCards().filter((c) => !INDUSTRY_ICON[c.slug]).map((c) => c.slug);
+  assert.deepEqual(missingIcon, [], `data/b2b/icp/industryVisuals.ts has no INDUSTRY_ICON for: ${missingIcon.join(', ')}`);
+
+  const rows = tracker.tabs.reduce((n, t) => n + t.rows.length, 0);
+  console.log(
+    `✓ product screens: ${screens.length} screens illustrative, ${tracker.tabs.length} tracker tabs, ${rows} rows, ` +
+    `no numbers, no real names, badge in one file. ${icpIndustryCards().length} industries have an icon.`
+  );
+}

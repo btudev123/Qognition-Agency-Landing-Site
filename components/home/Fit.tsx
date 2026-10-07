@@ -1,6 +1,9 @@
+import { Check, Minus } from 'lucide-react';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
+import { InlineIcon } from '../visual/IconTile';
 import { Eyebrow, Shell } from './primitives';
+import v from '../visual/visual.module.css';
 
 
 const FITS = [
@@ -22,25 +25,17 @@ const NOT_A_FIT = [
 ];
 
 function List({ title, items, accent }: { title: string; items: string[]; accent: boolean }) {
+  /* A lattice cell. The fits cell carries a 2px accent top edge (brief §2.10). */
   return (
-    <div>
-      <h3
-        className="text-h4 font-sans m-0 pb-4 font-semibold"
-        style={{ borderBottom: `1px solid ${accent ? 'var(--s-accent-graphic)' : 'var(--s-rule-strong)'}` }}
-      >
-        {title}
-      </h3>
+    <div
+      className={`${v.latticeCell} p-6 sm:p-8`}
+      style={accent ? { boxShadow: 'inset 0 2px 0 var(--s-accent-graphic)' } : undefined}
+    >
+      <h3 className="text-h4 font-sans m-0 font-semibold">{title}</h3>
       <ul className="list-none p-0 m-0 mt-5 grid gap-4">
         {items.map((item) => (
           <li key={item} className="text-body flex gap-3" style={{ color: 'var(--s-text-muted)' }}>
-            <span
-              className="mt-2 w-1.5 h-1.5 flex-shrink-0"
-              style={{
-                background: accent ? 'var(--s-accent-graphic)' : 'transparent',
-                border: accent ? 'none' : '1px solid var(--s-rule-strong)',
-              }}
-              aria-hidden="true"
-            />
+            <InlineIcon icon={accent ? Check : Minus} muted={!accent} />
             {item}
           </li>
         ))}
@@ -51,20 +46,19 @@ function List({ title, items, accent }: { title: string; items: string[]; accent
 
 export default function Fit() {
   return (
-    <section className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
+    /* Fit and Faqs are one light band (brief §2.0): Faqs carries no top border
+       and a reduced top padding, so the two read as one section. */
+    <section data-theme="light" className="pt-20 sm:pt-28 pb-12 sm:pb-16" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <Shell>
         <ScrollReveal>
           <Eyebrow>Fit</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[22ch] font-semibold">
             <MaskReveal>Start with the business you want to win.</MaskReveal>
           </h2>
-          <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
-            A short check before you book. It saves us both a call.
-          </p>
         </ScrollReveal>
 
         <ScrollReveal stagger={2} className="mt-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <div className={`${v.lattice} grid grid-cols-1 lg:grid-cols-2`}>
             <List title="Worth a conversation if" items={FITS} accent />
             <List title="Probably not a fit if" items={NOT_A_FIT} accent={false} />
           </div>

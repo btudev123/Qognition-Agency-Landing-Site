@@ -6,6 +6,8 @@
  *
  *   1. Client JS budget. ADR-0005 §5.
  *   2. No content hidden behind an animation that may never run.
+ *   3. ADR-0006 product screens: one visible badge per screen, no figures,
+ *      every string traceable to the screen data (scripts/lib/served-screens.mjs).
  *
  * ── 1. CLIENT JS BUDGET ────────────────────────────────────────────────────
  *
@@ -52,6 +54,7 @@ import { spawn } from 'node:child_process';
 import { readFile, access } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 import path from 'node:path';
+import { checkProductScreens, productScreenContract } from './lib/served-screens.mjs';
 
 const BUDGET_BYTES = 40 * 1024;
 const ROUTE = '/';
@@ -124,10 +127,13 @@ try {
   const base = `http://127.0.0.1:${PORT}`;
   await waitForServer(`${base}${CONTROL_ROUTE}`);
 
-  const [routeHtml, controlHtml] = await Promise.all([
-    fetch(`${base}${ROUTE}`).then((r) => r.text()),
-    fetch(`${base}${CONTROL_ROUTE}`).then((r) => r.text()),
-  ]);
+  /* A 500 page or an error body would otherwise pass every check vacuously. */
+  const page = async (route) => {
+    const res = await fetch(`${base}${route}`);
+    if (!res.ok) throw new Error(`${route} answered ${res.status}, not 200. Nothing below can be checked.`);
+    return res.text();
+  };
+  const [routeHtml, controlHtml] = await Promise.all([page(ROUTE), page(CONTROL_ROUTE)]);
 
   const routeSrcs = scriptSources(routeHtml);
   const controlSrcs = scriptSources(controlHtml);
@@ -180,10 +186,31 @@ try {
     );
   }
 
+  /* ── 3. product screens, ADR-0006 R3 R5 R6 ─────────────────────────────
+     Enforced under --report too: like hidden content, this is correctness,
+     not a budget. A badge that is imported but never rendered, or a figure
+     computed in a component, passes tsc and every source grep; only the
+     served page shows it. */
+  const screens = checkProductScreens(routeHtml, productScreenContract());
+  let screensOk = true;
+  if (screens.figures === 0) {
+    console.error(`✗ product screens: ${ROUTE} renders no figure[data-provenance]. The hero tracker is required (brief §3.1).`);
+    screensOk = false;
+  } else if (screens.errors.length) {
+    console.error(`✗ product screens on ${ROUTE}:`);
+    for (const e of screens.errors) console.error(`  ${e}`);
+    screensOk = false;
+  } else {
+    console.log(
+      `✓ product screens: ${screens.figures} on ${ROUTE}, ${screens.badges} visible badge(s), no figures, every string from the screen data.`
+    );
+  }
+  const correctnessOk = hiddenContentOk && screensOk;
+
   if (reportOnly) {
     console.log('✓ bundle budget: report only, not enforced.');
-    process.exitCode = hiddenContentOk ? 0 : 1;
-  } else if (!hiddenContentOk) {
+    process.exitCode = correctnessOk ? 0 : 1;
+  } else if (!correctnessOk) {
     process.exitCode = 1;
   } else if (only.total > BUDGET_BYTES) {
     console.error(

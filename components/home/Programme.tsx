@@ -1,38 +1,42 @@
+import { BadgeCheck, Blocks, CalendarCheck, Compass } from 'lucide-react';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
 import { Eyebrow, GhostWord, Shell } from './primitives';
-
+import v from '../visual/visual.module.css';
 
 const PHASES = [
   {
-    n: '01', window: 'Discovery', title: 'Understand the buying decision',
-    body: 'We learn what you sell, who approves it and which questions put a firm on their shortlist. Then we fix a prompt set and run the first baseline.',
+    n: '01', window: 'Discovery', title: 'Understand the buying decision', icon: Compass,
     deliverable: 'A buyer brief, the prompt set and a dated baseline on the agreed platforms.',
   },
   {
-    n: '02', window: 'Foundations', title: 'Make your firm easy to read',
-    body: 'We fix what stops search engines and assistants reading you correctly: crawl and indexing problems, unclear service pages and inconsistent company facts.',
+    n: '02', window: 'Foundations', title: 'Make your firm easy to read', icon: Blocks,
     deliverable: 'A prioritized list of fixes, each with an owner and a date.',
   },
   {
-    n: '03', window: 'Authority', title: 'Support the claims buyers check',
-    body: 'AI answers cite sources beyond your own site. We find the publications, directories and associations your buyers trust, and work on getting them to describe you accurately.',
+    n: '03', window: 'Authority', title: 'Support the claims buyers check', icon: BadgeCheck,
     deliverable: 'An authority plan built on real expertise, with every external claim checked.',
   },
   {
-    n: '04', window: 'Review', title: 'Compare against the baseline',
-    body: 'We re-run the same prompt set on the agreed schedule. AI answers, rankings and qualified enquiries are reported in separate columns.',
+    n: '04', window: 'Review', title: 'Compare against the baseline', icon: CalendarCheck,
     deliverable: 'A dated comparison and the next priorities.',
   },
 ];
 
+/* Brief §2.6. The ghost numeral that sat behind each step was white at 0.028
+   alpha on the off-white ground, so it was invisible; it was aria-hidden and
+   duplicated the visible label, and it is gone. The step marker is a 48px icon
+   tile on the rail, and the "01 · Discovery" label is the accent colour.
+
+   Below lg: a vertical timeline, a 1px rail through the tile centres at x = 24px.
+   lg+: four columns, the .rf-rail drawn through the tile centres at y = 24px. */
 export default function Programme() {
   return (
-    <section className="relative overflow-hidden py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
+    <section data-theme="light" className="relative overflow-hidden py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <GhostWord>PROCESS</GhostWord>
 
       <Shell>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 lg:items-end">
           <ScrollReveal className="lg:col-span-6">
             <Eyebrow>How the programme works</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 font-semibold">
@@ -46,68 +50,50 @@ export default function Programme() {
           </ScrollReveal>
         </div>
 
-        <div className="relative mt-16">
-          {/* The rail. Decorative, so it is hidden from assistive tech and only
-              drawn where there is a horizontal axis to draw along. */}
-          <div className="absolute left-0 right-0 top-0 hidden lg:block overflow-hidden" style={{ height: 1 }} aria-hidden="true">
+        <div className="relative mt-14">
+          {/* Rails. Decorative. Vertical below lg, horizontal from lg. */}
+          <div
+            className="absolute left-6 top-6 bottom-6 w-px lg:hidden"
+            style={{ background: 'var(--s-rule)' }}
+            aria-hidden="true"
+          />
+          <div className="absolute left-0 right-0 top-6 hidden lg:block overflow-hidden" style={{ height: 1 }} aria-hidden="true">
             <div className="rf-rail h-full" />
           </div>
 
-          <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 list-none p-0 m-0">
-            {PHASES.map((p, i) => (
-              <ScrollReveal key={p.n} as="li" stagger={i + 1}>
-                <div className="relative pt-10 lg:pt-14">
-                  {/* Node on the rail. First one is live, the rest are not yet. */}
+          <ol className="relative grid grid-cols-1 lg:grid-cols-4 gap-10 lg:gap-8 list-none p-0 m-0">
+            {PHASES.map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <ScrollReveal key={p.n} as="li" stagger={i + 1} className="relative pl-16 lg:pl-0">
                   <span
-                    className="absolute left-0 hidden lg:block w-3 h-3 rounded-full"
-                    style={{
-                      top: -6,
-                      background: 'var(--s-bg)',
-                      border: `2px solid ${i === 0 ? 'var(--s-accent-graphic)' : 'var(--s-rule-strong)'}`,
-                    }}
-                    aria-hidden="true"
-                  />
-                  {/* Ghost numeral. aria-hidden because the same number is in
-                      the visible label directly below it. */}
-                  <span
-                    className="absolute left-0 select-none pointer-events-none font-mono"
-                    style={{
-                      top: i === 0 ? 4 : 4,
-                      fontSize: 80,
-                      fontWeight: 700,
-                      letterSpacing: '-0.05em',
-                      lineHeight: 1,
-                      color: 'rgba(255,255,255,0.028)',
-                    }}
+                    className={`${v.iconTile} absolute left-0 top-0 h-12 w-12 lg:static`}
+                    style={{ borderColor: i === 0 ? 'var(--s-accent-graphic)' : 'var(--s-rule-strong)' }}
                     aria-hidden="true"
                   >
-                    {p.n}
+                    <Icon size={32} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />
                   </span>
-
                   <div
-                    className="relative font-mono text-meta tracking-[0.14em] uppercase"
-                    style={{ color: 'var(--s-text-faint)' }}
+                    className="font-mono text-meta tracking-[0.14em] uppercase pt-3 lg:pt-6"
+                    style={{ color: 'var(--s-accent)' }}
                   >
                     {p.n} · {p.window}
                   </div>
-                  <h3 className="text-h3 font-sans relative mt-4 m-0 font-semibold">{p.title}</h3>
-                  <p className="text-body mt-4 m-0" style={{ color: 'var(--s-text-muted)' }}>
-                    {p.body}
-                  </p>
+                  <h3 className="text-h3 font-sans mt-3 m-0 font-semibold">{p.title}</h3>
                   <p
                     className="text-meta mt-4 m-0 pl-4"
-                    style={{ color: 'var(--s-text-faint)', borderLeft: '1px solid var(--s-rule)' }}
+                    style={{ color: 'var(--s-text-muted)', borderLeft: '1px solid var(--s-rule)' }}
                   >
                     {p.deliverable}
                   </p>
-                </div>
-              </ScrollReveal>
-            ))}
+                </ScrollReveal>
+              );
+            })}
           </ol>
         </div>
 
         {/* This paragraph is the point of the section. It replaces
-            "every quarter your CAC drops", and it is not a hedge — it is the
+            "every quarter your CAC drops", and it is not a hedge. It is the
             differentiator. CLAUDE.md §4. */}
         <ScrollReveal stagger={5} className="mt-16 pt-8" style={{ borderTop: '1px solid var(--s-rule)' }}>
           <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--s-text)' }}>

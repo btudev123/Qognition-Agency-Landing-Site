@@ -40,7 +40,9 @@ export const HOME_FAQS = [
 
 export default function Faqs() {
   return (
-    <section className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
+    /* Shares one light band with Fit (brief §2.0): no top border, reduced top
+       padding, and one hairline divider inside the Shell. */
+    <section data-theme="light" className="pt-4 sm:pt-8 pb-20 sm:pb-28">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -48,7 +50,7 @@ export default function Faqs() {
         }}
       />
       <Shell>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 pt-12 sm:pt-16" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
           <ScrollReveal className="lg:col-span-4">
             <Eyebrow>Before we talk</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 max-w-[14ch] font-semibold">

@@ -1,0 +1,29 @@
+{
+  "featured/saas-and-software": {
+    "src": "/images/industries/featured/saas-and-software.jpg",
+    "width": 1200,
+    "height": 1500,
+    "alt": "A row of server racks with mesh doors in a data center aisle",
+    "photographer": "Brett Sayles",
+    "photographer_url": "https://www.pexels.com/@brett-sayles",
+    "pexels_url": "https://www.pexels.com/photo/black-server-racks-5203849/"
+  },
+  "featured/manufacturing-and-industrial": {
+    "src": "/images/industries/featured/manufacturing-and-industrial.jpg",
+    "width": 1200,
+    "height": 1500,
+    "alt": "A CNC router spindle cutting a sheet of board, with dust in the air",
+    "photographer": "cottonbro studio",
+    "photographer_url": "https://www.pexels.com/@cottonbro",
+    "pexels_url": "https://www.pexels.com/photo/close-up-shot-of-cnc-equipment-7480241/"
+  },
+  "featured/professional-and-business-services": {
+    "src": "/images/industries/featured/professional-and-business-services.jpg",
+    "width": 1200,
+    "height": 1500,
+    "alt": "An empty boardroom with a long wooden table, conference microphones, tilted screens and floor-to-ceiling windows",
+    "photographer": "Werner Pfennig",
+    "photographer_url": "https://www.pexels.com/@werner-pfennig",
+    "pexels_url": "https://www.pexels.com/photo/modern-conference-room-6949365/"
+  }
+}

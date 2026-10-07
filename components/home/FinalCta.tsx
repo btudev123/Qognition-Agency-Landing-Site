@@ -20,7 +20,7 @@ export default function FinalCta() {
 
           <ScrollReveal stagger={2} className="lg:col-span-5">
             <p className="text-body m-0 max-w-[56ch]" style={{ color: 'var(--s-text-muted)' }}>
-              Book a 30-minute call. Bring your website and the buyers you want to reach, and we will tell you where we would start.
+              Book a 30-minute call.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
               <Link href="#book" className="rf-btn rf-btn--primary">

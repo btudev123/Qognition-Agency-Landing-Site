@@ -1,315 +1,397 @@
 # ADR-0006: Product screen component contract
 
-- Status: proposed
-- Date: 2026-09-28
+- Status: **accepted (operator, 2026-10-07)**
+- Date: 2026-09-28. Amended 2026-10-07 (twice, see below).
 - Depends on: ADR-0004 (token layer), ADR-0005 (server-first, 40KB budget on `/`)
-- Constrains: `components/product-screens/**`, `data/product-screens/**`
-- Deletes: `components/interactive/AICitationSimulator.tsx`
-- **Blocked on an operator decision.** See §7. The `ScreenId` union cannot be written until it is answered.
-- Interface only. Implementation goes to Mira (`frontend-dev`).
+- Constrains: `components/product-screens/**`, `data/product-screens/**`, and the tab state in
+  `components/visual/SectorTabs.tsx`
+- Visual source: `docs/design/2026-10-visual-upgrade.md` §3 (Ruth-reviewed, 2026-10-07)
+- Interface only. Implementation goes to Mira (`frontend-dev`). Gate goes to Owen (`quality`).
+
+## Amendments, 2026-10-07
+
+**First amendment.** The operator approved illustrative product screens for the visual upgrade
+(CLAUDE.md authority block, 2026-10-07), which unblocks the old §7.
+- **Product names corrected.** The nameable in-house engines are **LinkersPro**, **Scriblr** (AI
+  citation and GEO tracking) and **M.A.R.S.** (CLAUDE.md §1, `docs/icp-positioning.md`). Linkdex and
+  G.O.L.E.M are removed and may not appear in a screen.
+- **New rule R6** (no client-result metrics).
+- **File layout and types** for two Scriblr screens.
+- **`capture` deferred** (§9).
+- **`AICitationSimulator.tsx` is already deleted.** Verified: nothing in `components/` or `app/`
+  references it.
+
+**Second amendment (Ruth's visual review).**
+- **Tabs.** The tracker is one screen holding five sector tabs. Tab state lives outside the
+  contract's directories (§5).
+- **Brands.** Ondrell Software and Thornbury Precision are added. Northgate Mutual is replaced by
+  **Varrowfield Group**, because it reads as Northwestern Mutual.
+- **Sources cited.** A closed `SourceType` union is added, and an own-site rule with it.
+- **Display constants.** The "Fixed" status and the Named / Not named mapping are display-only (§4.3).
+- **Removed fields.**
+  - The summary strip (`summarise`, `SampleMetric`), because Ruth's review says no score of any kind.
+  - `competitorsNamed`, which is not in the approved strings.
+  - `PromptPanelEntry`. The panel now reads its prompts from the tracker, so the two screens cannot
+    drift apart.
 
 ## Decision
 
-One component, `<ProductScreen screen={...} />`, renders a screen object taken from a typed registry
-in `data/product-screens/`. Screens are declared as **data, never as JSX literals**. Every screen
-renders inside a frame carrying a provenance badge that **cannot be omitted, because it is derived
-from a required single-member union on the type rather than passed as a prop.** The component holds
-no time-based state, so it ships zero client JS and cannot simulate computation.
+One server component, `<ProductScreen screen={...} />`, renders a screen object from a typed registry
+in `data/product-screens/`. Screens are data, never JSX literals. Every screen renders inside a frame
+carrying a provenance badge whose text the component owns, driven by a required single-member union on
+the type. No time-based state.
 
 ---
 
-## 0. Why the counter-example failed
-
-`components/interactive/AICitationSimulator.tsx` is the specification for what must be impossible. A
-policy that says "do not fabricate" stops none of the four mechanisms below, which is why the
-contract forbids each one structurally.
-
-**F1. It renders a third party's output.** The artefact is a *ChatGPT answer*. Rendering an assistant
-answer is a claim about what that assistant says. CLAUDE.md §4: "a sampled AI result is an
-observation on a date, not a state."
-
-**F2. It names real third parties as sources.** `g2.com/agencies`, `crunchbase.com`,
-`reddit.com/r/marketing`, each with an invented snippet. Real organisations made to appear to say
-something.
-
-**F3. It simulates computation.** `scanning 142,000 sources…` driven by `setTimeout`. It asserts a
-process that is not running and a number that was not measured.
-
-**F4. The data is inline literals inside the render body.** `const sources = [...]` sits in the
-component function. Nothing outside the file can inspect it, gate it, lint it or label it. There is
-no seam to attach a control to.
-
-It is also, verified by grep, **imported by nothing.** It is an unmounted loaded gun.
-
----
-
-## 1. The contract: five rules, one per failure
-
-### R1. A screen renders only first-party UI. (closes F1)
-
-`ProductScreen` renders Qognition's own product chrome. It may never render a third-party surface.
-
-Enforced by the type: there is no `provider`, `assistant` or `answer` field to put "ChatGPT" in. The
-`ScreenId` union is closed and contains only Qognition products.
-
-Where a screen legitimately needs to show which assistant a row came from, that is a `platform`
-**label on a data row inside our table**, not a rendering of that assistant's interface. The
-difference is not cosmetic: a labelled row in our UI says "our tool recorded this"; a rendered
-ChatGPT bubble says "ChatGPT said this".
-
-### R2. Every entity in sample data is fictional, and that is typed. (closes F2)
-
-```ts
-// data/product-screens/sample-entities.ts
-/** Invented. Checked against no real registry on purpose. Adding a member is a reviewed change. */
-export type SampleBrand =
-  | 'Northgate Mutual' | 'Harbour & Vane' | 'Calderwood Risk'
-  | 'Pellman IT Group' | 'Stroud & Fenner';
-
-export type SampleDomain = `${string}.example`;   // RFC 2606 reserved. Cannot resolve.
-```
-
-A real company name **cannot be typed into a screen**, because the field is `SampleBrand`, not
-`string`. Domains are constrained to the `.example` TLD, which is reserved by RFC 2606 and can never
-be a real site.
-
-Qognition's own name and domain are not members of `SampleBrand`. Combined with R1, "an AI answer
-ranking Qognition #1" is unrepresentable in this type system. That specific artefact is the one the
-counter-example produced, and it is now a compile error.
-
-### R3. Provenance is required, and is a single-member union. (closes the "it looks real" problem)
-
-```ts
-// data/product-screens/types.ts
-export interface ProductScreen {
-  id: ScreenId;
-  product: ProductName;
-  /** One line, present tense, what this screen shows. Rendered in the frame caption. */
-  caption: string;
-
-  /**
-   * Non-negotiable. A single-member union, so a screen cannot be constructed without it
-   * and cannot be set to anything that reads as real.
-   * Widening this union is a deliberate type change that every call site sees.
-   */
-  provenance: 'illustrative';
-
-  /** Present only when an approved real capture replaces the built UI. See R6. */
-  capture?: ScreenCapture;
-
-  rows: readonly SampleRow[];
-}
-```
-
-`provenance: 'illustrative'` as a **required single-member union** is the load-bearing choice.
-
-Rejected: `isDemo?: boolean`. An optional boolean defaults to "this is real", which is precisely the
-failure that shipped. Omission must be impossible, not merely discouraged.
-
-Rejected: a `label?: string`. An author-supplied label can be softened to "Example view" or
-"Preview", which are both weaker than the truth. The badge text is produced by the **component**, not
-the data, and authors cannot reword it:
-
-> **Illustrative product interface. Sample data, not client results.**
-
-The badge renders inside the frame, at every viewport, in both light and inverted sections. It is
-not a `title` attribute, not a tooltip, not below the fold of the frame.
-
-### R4. No simulated computation. (closes F3)
-
-`ProductScreen` exposes **no time-based state.** No `useState`, no `setTimeout`, no `setInterval`,
-no typing effect, no counter, no progress bar, no loading stage.
-
-A screen is a static render of a fixed dataset. If a screen wants to imply progression it does so
-with a static "as at {date}" row, never with an animation that mimics work happening.
-
-This is the rule that would have deleted `scanning 142,000 sources…` before it was written, and it
-is also what makes R5's server-component guarantee possible.
-
-### R5. Data lives in `data/product-screens/`, never in the component. (closes F4)
-
-```ts
-export const PRODUCT_SCREENS: Record<ScreenId, ProductScreen> = { /* ... */ };
-```
-
-Components import a screen. They never declare one. This creates the seam that R1 to R4 need: one
-directory to review, one place a gate script can read, and a diff in which a copy change appears as
-a data change rather than as a JSX edit buried in markup.
-
----
-
-## 2. The call site
-
-One prop, so there is nothing to get wrong:
-
-```tsx
-<ProductScreen screen={PRODUCT_SCREENS.scriblr} frame="laptop" />
-```
-
-`frame: 'laptop' | 'phone' | 'none'`.
-
-`frame="none"` still renders the caption and the provenance badge. **The frame is styling; the
-provenance is not.** Removing the device chrome must never remove the disclosure, or the first time
-someone wants a borderless layout the label goes with it.
-
-The four screens are responsive React components, not images: real `<table>` and `<dl>` markup, the
-ADR-0004 token layer for colour, the canonical Tailwind breakpoints. They reflow rather than scale.
-A screenshot of a dashboard at 360px is unreadable; a table is not.
-
----
-
-## 3. Scroll animation without heavy JS
-
-`ProductScreen` is a **server component.** R4 guarantees it has no state, so this is not a
-restriction, it is a consequence.
-
-Animation comes from the existing `ScrollReveal` wrapper, which ADR-0005 keeps on the page anyway:
-
-```tsx
-<ScrollReveal>                                     {/* client, ~1KB, already paid for */}
-  <ProductScreen screen={PRODUCT_SCREENS.mars} />  {/* server, 0KB */}
-</ScrollReveal>
-```
-
-The reveal is `.rf-reveal` / `.rf-reveal.is-in` in `globals.css`, driven by IntersectionObserver.
-No per-screen client boundary, no framer-motion, nothing added to ADR-0005's 40KB budget.
-
-`.rf-reveal` starts at `opacity: 1` in its base rule, so the screen is visible without JS, and it is
-already listed in the `prefers-reduced-motion` block at `globals.css:461`.
-
----
-
-## 4. Swapping in a real screenshot later
-
-The `capture` field, which is why it exists on the type from day one rather than being added when
-needed:
-
-```ts
-export interface ScreenCapture {
-  src: string;
-  /** ISO date. CLAUDE.md §4: an observation on a date, not a state. */
-  capturedAt: string;
-  /** Required literal. You cannot add a capture without asserting you redacted it. */
-  redacted: true;
-}
-```
-
-`ProductScreen` renders `capture.src` through `next/image` when present, and the built UI otherwise.
-**The call site does not change.** No page edit, no import change, no prop added.
-
-When `capture` is present the badge changes to:
-
-> **Captured {capturedAt}. Client identifiers removed.**
-
-`redacted: true` as a required literal means adding a screenshot forces an explicit assertion in the
-diff that redaction happened. `redacted: false` does not typecheck, so there is no way to add an
-unredacted capture "temporarily".
-
-If the capture shows real client data it also needs `provenance` widened to `'captured'`, which is a
-type change touching every screen and therefore cannot happen without review. That is deliberate
-friction on exactly the change most likely to go wrong.
-
----
-
-## 5. The gate
-
-Add `scripts/check-product-screens.cjs` to the pre-build gate chain. It fails the build if any file
-under `components/product-screens/` contains:
-
-1. a string literal matching `/\.(com|io|ai|co|net|org)\b/`, a real domain (catches F2);
-2. `setTimeout` or `setInterval` (catches F3);
-3. `useState`, `useEffect` or `'use client'` (catches F3 and F4, and enforces §3's server guarantee).
-
-Three greps. Crude, and exactly sufficient: every one of the counter-example's four failures trips at
-least one, and each rule has a clean escape hatch (real domains belong in `data/`, animation belongs
-in `ScrollReveal`).
-
-[UNVERIFIED: whether this should be a fourth script or an addition to `scripts/test-growth.cjs`.
-`package.json`'s `gates` script is the insertion point either way. Jonas owns the decision.]
-
-**Immediate, in the same PR as the contract:** delete
-`components/interactive/AICitationSimulator.tsx`. It is imported by nothing (verified). Leaving it on
-disk means someone eventually mounts it. Owen should see the deletion and the contract together, so
-the reason is on the record next to the rule.
-
----
-
-## 6. Alternatives rejected
-
-**Images or Figma exports in device frames.** Cheapest, and rejected. They do not reflow, they blur
-on retina at the sizes a hero needs, they cannot use the ADR-0004 token layer so they drift from the
-site's palette on every rebrand, and their text is invisible to search and to assistants, which is a
-direct cost given what this agency sells.
-
-**A `<Disclaimer>` component placed next to each screen.** Rejected because it is omittable. Every
-disclosure mechanism that can be forgotten will eventually be forgotten, usually by the person in the
-biggest hurry. The badge has to be structurally inseparable from the render.
-
-**A lint rule instead of the type constraints in R2.** Rejected. Lint rules are suppressible with a
-comment and are usually suppressed at 6pm. `SampleBrand` being a closed union is not suppressible.
-
-**One component per product (`<GolemScreen>`, `<ScriblrScreen>`, ...).** Rejected. Four components
-means four places the provenance badge can drift or be dropped, and four datasets to audit. One
-component with a registry means the disclosure is written once.
-
----
-
-## 7. Blocking: the product names do not match the repo
-
-I have not picked, because these names are already in published copy and a rename is a content
-migration, not a constant change. `data/case-studies/*.ts` ships these in `engines:` fields today:
-
-| Brief says | Repo ships | Status |
+## 1. The rules
+
+The counter-example these rules close was `AICitationSimulator.tsx`:
+- F1: it rendered a ChatGPT answer.
+- F2: it named real third parties as sources.
+- F3: it faked a scan with `setTimeout`.
+- F4: it held its data as literals inside the render body.
+
+**R1. First-party UI only. Never render a third-party AI answer.** (F1)
+- A screen shows Scriblr's own chrome. There is no `answer`, `response` or `provider` field.
+- An assistant appears only as a **text label on a column or chip in our table**, never as a chat
+  bubble, quoted assistant text, or that assistant's interface.
+- No assistant logos or brand colours.
+- The assistant vocabulary is the existing `Engine` type in `lib/b2b/observations.ts` (ChatGPT,
+  Perplexity, Gemini, Google AI Overviews), not a second list.
+
+**R2. Sample brands are a closed union on `.example` domains.** (F2)
+- `SampleBrand` is derived from one `as const` array, so the type and the gate read the same list.
+  Qognition is not a member.
+- Domains are `${string}.example` (RFC 2606).
+- Prompt text may not name a real company or product either. That is why "Epic" and "NetSuite" were
+  replaced in the brief.
+- Adding a member is a reviewed change.
+- Every member is **[UNVERIFIED: trading-name check]** until Iris runs it.
+
+**R3. `provenance: 'illustrative'` is required, plus a visible badge.**
+- It is a single-member union. A `isDemo?: boolean` flag would default to "real" when omitted, and an
+  author-written label would get softened to "Preview".
+- The badge text is fixed in `ProvenanceBadge.tsx`:
+
+  > **Illustrative product interface. Sample data, not client results.**
+
+- The badge renders inside the frame at every viewport, in light and dark sections, including
+  `frame="none"`. It is never a tooltip.
+
+**R4. No time-based state.** (F3)
+- No timers, `requestAnimationFrame`, typing effect, counter, progress bar, loading stage, or
+  auto-rotating tabs (CLAUDE.md §9).
+- No dates in screen data, because a dated fictional run reads as an observation (CLAUDE.md §4).
+  Where the real product shows a run date, the screen prints "Sample run".
+- The **only** state permitted is the user-selected tab index in `components/visual/SectorTabs.tsx`
+  (§5). Nothing under `components/product-screens/` holds state.
+
+**R5. Screens are data, not JSX literals.** (F4)
+Components import from `PRODUCT_SCREENS`. They never declare rows, prompts, brands or tags.
+
+**R6. No client-result metrics. No numbers at all.**
+- Screen data has **no `number` fields**.
+- Screens render no score, percentage, share of voice, rank, trend arrow, delta or count derived from
+  the sample rows. A "prompts with a mention" count beside one brand is a visibility score in all but
+  name.
+- Digits that sit inside a prompt string ("ISO 9001", "SOC 2") are part of the buyer's question, not
+  a metric. They are allowed.
+- If a future screen genuinely needs a figure, it comes by amendment as a value derived from the rows
+  with a visible `SAMPLE` label. Never as an authored number.
+
+## 2. Products and screens
+
+| Product | Nameable | Screens in this build |
 |---|---|---|
-| **Scriblr** = content for AI citation | `'Scriblr for AI citation tracking'` | **Conflict.** Repo has Scriblr doing tracking, the brief gives tracking to G.O.L.E.M |
-| **Linkdex** = AI backlink generation | `'LinkersPro for earned mention acquisition'` | **Conflict.** Different name, adjacent role |
-| **M.A.R.S** = multi-agent routing, lead routing and attribution | `'M.A.R.S. for quote routing, speed-to-lead response and bind attribution'` | Compatible |
-| **G.O.L.E.M** = AI visibility tracking | **Appears nowhere in the repo** | Unresolved. Its stated role is the one Scriblr already holds |
+| Scriblr | Yes. AI citation and GEO tracking, in production use (operator, 2026-10-07) | `scriblr-visibility-tracker` (hero, five tabs), `scriblr-prompt-panel` (Snapshot, ≥1024px only) |
+| LinkersPro | Yes. Authority and link acquisition | None |
+| M.A.R.S. | Yes. Lead routing, outreach, booking attribution | None |
 
-Two further notes for whoever answers:
+- A screen depicts only a capability stated for that product in CLAUDE.md §1.
+- A LinkersPro or M.A.R.S. screen is a new `ScreenId` with that capability sentence cited in the PR.
+- [UNVERIFIED: that Scriblr's real UI uses this layout.] The screens show the capability. Copy must
+  never call them screenshots.
 
-- "Linkdex" was a real third-party SEO platform brand. [UNVERIFIED: current trademark status. Check
-  before it appears on a public page, not after.]
-- CLAUDE.md §4 forbids presenting a capability we cannot demonstrate. A product screen for a tool
-  that does not exist yet is a product claim, whatever the badge says. Which of the four are built,
-  and which are roadmap, is part of the same answer.
+## 3. File layout
 
-`ScreenId` is written once this is settled. Nothing else in the contract depends on it.
+```
+data/product-screens/
+  sample-entities.ts       SAMPLE_BRANDS, SampleBrand, SampleDomain
+  types.ts                 §4.2, including TRACKER_SECTORS
+  visibility-tracker.ts    the one VisibilityTrackerScreen (five tabs, three rows each)
+  prompt-panel.ts          the one PromptPanelScreen (sector: 'msp')
+  index.ts                 PRODUCT_SCREENS registry
 
----
+components/product-screens/          server components only, no 'use client', no hooks
+  ProductScreen.tsx        frame, title bar, badge, caption; switches on screen.kind
+  ProvenanceBadge.tsx      the only file containing the badge sentence; takes no props
+  VisibilityTrackerView.tsx  context <dl> and table per tab; passes the panels to SectorTabs
+  PromptPanelView.tsx      resolves its tracker tab, renders prompt, platform chips and status
+  labels.ts                §4.3 display constants
+
+components/visual/SectorTabs.tsx     'use client'. Active index and keyboard pattern only (§5)
+```
+
+Accessibility:
+- Mention states render as a word plus a dot, never the dot alone (WCAG 1.4.1).
+- Focus indicators use `--accent-deep` (CLAUDE.md §9).
+- Markup is a real `<table>`, reflowing to stacked rows below 640px as the brief specifies.
+
+## 4. Types
+
+### 4.1 `data/product-screens/sample-entities.ts`
+
+```ts
+/** Invented. Every member is [UNVERIFIED: trading-name check]. Adding one is a reviewed change. */
+export const SAMPLE_BRANDS = [
+  'Ondrell Software',   // tab: saas           ondrell.example
+  'Thornbury Precision',  // tab: manufacturing  thornbury-precision.example
+  'Corran & Whitlow',      // tab: legal          corranwhitlow.example
+  'Pellman IT Group',     // tab: msp            pellman-it.example
+  'Harbour & Vane',       // tab: logistics      harbourvane.example
+  'Calderwood Risk',      // unused in this build
+  'Varrowfield Group',    // unused in this build. Replaces Northgate Mutual
+] as const;
+export type SampleBrand = (typeof SAMPLE_BRANDS)[number];
+
+/** RFC 2606 reserved TLD. Cannot resolve. */
+export type SampleDomain = `${string}.example`;
+```
+
+On 2026-10-07, a search of `app components data lib docs scripts` for "Varrowfield" returned no
+hits. That only shows the name is unused in this repo. It is not a trading-name check.
+
+### 4.2 `data/product-screens/types.ts`
+
+```ts
+import type { Engine } from '../../lib/b2b/observations';
+import type { SampleBrand, SampleDomain } from './sample-entities';
+
+/** The in-house engines nameable on the site. CLAUDE.md §1. */
+export type ProductName = 'Scriblr' | 'LinkersPro' | 'M.A.R.S.';
+
+/** Closed. One member per built screen. */
+export type ScreenId = 'scriblr-visibility-tracker' | 'scriblr-prompt-panel';
+
+/** Single-member on purpose. Widening it is a reviewed type change. */
+export type Provenance = 'illustrative';
+
+/** Tab order. Ids match the existing hero sector ids. */
+export const TRACKER_SECTORS = ['saas', 'manufacturing', 'legal', 'msp', 'logistics'] as const;
+export type TrackerSector = (typeof TRACKER_SECTORS)[number];
+
+/** Stored state. Displayed through MENTION_LABEL (§4.3): cited and mentioned both show "Named". */
+export type MentionState =
+  | 'cited'      // named, and its .example domain cited
+  | 'mentioned'  // named, not cited
+  | 'absent';    // not named
+
+/** Closed. Displayed through SOURCE_TYPE_LABEL (§4.3). */
+export type SourceType =
+  | 'own-site'           // only on a row with at least one cited or mentioned state (gate)
+  | 'directory'
+  | 'trade-publication'
+  | 'review-site'
+  | 'association';
+
+interface ScreenBase {
+  readonly id: ScreenId;
+  readonly product: ProductName;
+  /** One line, present tense. No digits, no '%'. */
+  readonly caption: string;
+  readonly provenance: Provenance;
+}
+
+export interface VisibilityTrackerRow {
+  /** Sample buyer prompt (Family B). Verbatim. No real company or product names. */
+  readonly prompt: string;
+  /** Every Engine is a column, so every row fills every column. */
+  readonly states: Readonly<Record<Engine, MentionState>>;
+  /** "Sources cited:" tags. One or two, no duplicates. */
+  readonly sourcesCited: readonly [SourceType] | readonly [SourceType, SourceType];
+}
+
+export interface TrackerTab {
+  readonly sector: TrackerSector;
+  /** Tab label, e.g. 'B2B SaaS', 'IT and MSP'. */
+  readonly label: string;
+  readonly brand: SampleBrand;
+  readonly domain: SampleDomain;
+  readonly rows: readonly VisibilityTrackerRow[];
+}
+
+export interface VisibilityTrackerScreen extends ScreenBase {
+  readonly kind: 'visibility-tracker';
+  readonly id: 'scriblr-visibility-tracker';
+  readonly product: 'Scriblr';
+  /** One per TrackerSector, in TRACKER_SECTORS order (gate). */
+  readonly tabs: readonly TrackerTab[];
+}
+
+export interface PromptPanelScreen extends ScreenBase {
+  readonly kind: 'prompt-panel';
+  readonly id: 'scriblr-prompt-panel';
+  readonly product: 'Scriblr';
+  /**
+   * The panel has no prompt data of its own. It renders this tracker tab's brand, domain and
+   * prompts, with all four Engine labels as platform chips. The panel and the hero therefore
+   * show the same fixed set by construction.
+   */
+  readonly sector: TrackerSector;
+}
+
+export type ProductScreen = VisibilityTrackerScreen | PromptPanelScreen;
+
+/** Key and id cannot disagree. */
+export type ProductScreenRegistry = {
+  readonly [K in ScreenId]: Extract<ProductScreen, { id: K }>;
+};
+```
+
+```ts
+// data/product-screens/index.ts
+export const PRODUCT_SCREENS: ProductScreenRegistry = { /* two entries */ };
+```
+
+### 4.3 `components/product-screens/labels.ts` (display-only, not data)
+
+```ts
+import type { MentionState, SourceType } from '../../data/product-screens/types';
+
+export const MENTION_LABEL = {
+  cited: 'Named',
+  mentioned: 'Named',
+  absent: 'Not named',
+} as const satisfies Record<MentionState, 'Named' | 'Not named'>;
+
+export const SOURCE_TYPE_LABEL = {
+  'own-site': 'Own site',
+  directory: 'Directory',
+  'trade-publication': 'Trade publication',
+  'review-site': 'Review site',
+  association: 'Association',
+} as const satisfies Record<SourceType, string>;
+
+/** Every prompt in an illustrative set is fixed. A constant, never a field. */
+export const PROMPT_STATUS = 'Fixed';
+export const PROMPT_SET_NOTE = 'Fixed before the baseline run.';
+export const RUN_LABEL = 'Sample run';
+export const SOURCES_CITED_LABEL = 'Sources cited:';
+```
+
+The `cited` / `mentioned` distinction is kept in the data because it is what Scriblr records and it
+drives the own-site rule. The public display collapses both to "Named", per Ruth's review.
+
+## 5. Call sites, tabs and motion
+
+```tsx
+<ProductScreen screen={PRODUCT_SCREENS['scriblr-visibility-tracker']} frame="none" />
+<ProductScreen screen={PRODUCT_SCREENS['scriblr-prompt-panel']} frame="none" />
+```
+
+`frame: 'laptop' | 'phone' | 'none'`. The props are unchanged.
+
+**Tabs.**
+- `VisibilityTrackerView` (server) renders one panel per tab and passes them as children to
+  `components/visual/SectorTabs.tsx`.
+- `SectorTabs` (`'use client'`) holds only the active index and the keyboard pattern copied from
+  `HeroSnapshotPanel`, and toggles panels with the `hidden` attribute.
+- The badge and title bar sit outside `SectorTabs`, so switching tabs never hides the disclosure.
+- `SectorTabs` has no timers and imports nothing heavy (no lucide).
+
+**Motion** comes only from the existing `ScrollReveal`. Nothing is added to ADR-0005's budget beyond
+`SectorTabs`, which replaces `HeroSnapshotPanel`.
+
+## 6. The gate
+
+Owen appends one block to **`scripts/check-b2b.cjs`**, which is already in `gates` and already loads
+TypeScript through `scripts/lib/load-typescript.cjs`. A separate file is his call. The block
+requires `data/product-screens/index.ts`, `sample-entities.ts` and `types.ts`, then asserts:
+
+1. **Provenance.** Every screen has `provenance === 'illustrative'`, and `screen.id` equals its
+   registry key.
+2. **Tabs.**
+   - The tracker's `tabs.map(t => t.sector)` deep-equals `TRACKER_SECTORS`.
+   - Every `tab.brand` is in `SAMPLE_BRANDS`, and every `tab.domain` ends in `.example`.
+   - The prompt panel's `sector` is in `TRACKER_SECTORS`.
+3. **Rows.** For every tracker row:
+   - `sourcesCited` has no duplicates.
+   - `'own-site'` appears only if at least one state is not `'absent'`.
+   - The row is not all-named, meaning at least one state is `'absent'` (Ruth: never an all-N row).
+4. **No real names or domains.** Walk every string in every screen and fail on either of these:
+   - any domain-like token (`/\b[\w-]+\.(com|io|ai|co|net|org|app|uk|de)\b/i`);
+   - a case-sensitive, whole-word match against `Qognition`, `Northgate`, `Epic`, `NetSuite`, or the
+     competitors in CLAUDE.md §1 (Thrive, Gorilla 76, First Page Sage, RevenueZen, Siana, Bluelinks,
+     The ABM Agency, ChoiceLocal, Scorpion, Spiral, Carnegie, Fintel Connect).
+5. **No numbers (R6).** The walk fails on any `number` value. Captions fail on `/[0-9%]/`.
+6. **Server-only components (R4).**
+   - No file under `components/product-screens/` contains `'use client'`, `useState`, `useEffect`,
+     `useReducer`, `setTimeout`, `setInterval`, `requestAnimationFrame` or a domain-like literal.
+   - `components/visual/SectorTabs.tsx` contains no `setTimeout`, `setInterval` or
+     `requestAnimationFrame`.
+7. **Badge cannot be dropped (R3).** The badge sentence appears in `ProvenanceBadge.tsx` and in no
+   other file, and `ProductScreen.tsx` imports `ProvenanceBadge`.
+
+## 7. Alternatives rejected
+
+- **Images or Figma exports.** They do not reflow, they drift from the ADR-0004 tokens, and their
+  text is invisible to search and to assistants.
+- **A `<Disclaimer>` beside each screen.** It can be omitted, so eventually it will be.
+- **A lint rule instead of the closed union.** Lint rules can be suppressed with a comment.
+- **Five tracker screens, one per sector id** (`scriblr-visibility-tracker-<sector>`).
+  - Each would need its own frame and badge, so the disclosure would repeat five times inside one
+    hero.
+  - The registry's `Extract<ProductScreen, { id: K }>` collapses to `never` when one interface owns
+    five ids, so the registry type would get harder to read.
+  - One screen with a `tabs` array keeps the `ScreenId` union and the registry type unchanged.
+- **The prompt panel holding its own copy of the prompts.** Two copies drift. The panel points at
+  the tracker tab instead.
+- **A derived summary strip.** It was in the first amendment and is removed: Ruth's review says no
+  score.
 
 ## 8. Consequences
 
-**Good.** The failure mode cannot recur by construction rather than by vigilance: a real company
-name is a compile error, an assistant UI has no field to live in, an animation trips the gate, and a
-missing disclosure is unrepresentable. Four server components, zero client JS, inside ADR-0005's
-budget. Real screenshots swap in without touching a page.
+**Good.** Each of these fails at compile time or at the gate, not in review:
+- a real brand;
+- an assistant answer;
+- an animation or auto-rotating tab;
+- a missing badge;
+- an invented figure;
+- an all-named row;
+- "Own site" on a row where nothing named the brand.
 
-**Unpleasant.** `SampleBrand` as a closed union means every new sample entity is a two-file change,
-which will feel like friction to whoever is writing the fifth screen at speed. That friction is the
-feature, and it will be argued about.
-
-Invented brand names in a screen are less persuasive than a real logo. That is the trade. CLAUDE.md
-§4 already made it and this ADR only enforces it.
-
-The gate's domain regex will produce false positives on legitimate prose. The fix is to move the
-prose to `data/`, which is where R5 wanted it.
+**Unpleasant.**
+- Invented brands with no figures persuade less than a real logo and a percentage. CLAUDE.md §4 made
+  that trade; this ADR enforces it.
+- A new sample brand means editing two files. The friction is intended.
+- The denylist is not exhaustive. R2 and review carry the rest.
+- `SectorTabs` sits outside the contract's directories but is governed by R4 and gate check 6.
+- [UNVERIFIED: trading-name check] on all seven `SAMPLE_BRANDS`. Iris owns it. Renaming a member
+  fixes any clash and touches only data.
 
 ## 9. Rollback
 
-The registry and component are additive; nothing existing depends on them. Rollback is a directory
-delete plus removing one line from `gates`. The `AICitationSimulator` deletion reverts independently
-of everything else.
+Additive. To roll back:
+- delete `components/product-screens/`, `data/product-screens/` and `components/visual/SectorTabs.tsx`;
+- restore `components/home/HeroSnapshotPanel.tsx` from git;
+- remove the gate block from `scripts/check-b2b.cjs`.
+
+There is no data migration and no URL change.
+
+**Deferred, not rejected:** a `capture` field for a real, redacted screenshot. It would need a
+`redacted: true` required literal, `provenance` widened to `'captured'`, and the badge "Captured
+{date}. Client identifiers removed." It comes as its own amendment when the first real capture
+exists.
 
 ## 10. What would make this wrong later
 
-- **A screen needs to be genuinely interactive**, a working demo the prospect drives. R4 forbids it,
-  correctly. The answer is then a separate `<ProductDemo>` with its own contract and its own
-  disclosure rules. **Do not relax R4 in place.** R4 is the rule that closed F3, and F3 is the
-  failure that is hardest to spot in review.
-- **Real client screenshots become routine** rather than exceptional. At that point `provenance`
-  widens, the badge logic grows a branch, and the redaction assertion should probably become a
-  reviewed checklist rather than a type literal.
-- **A fifth product ships.** That is fine and costs one registry entry. It is not a trigger.
-</content>
-</invoke>
+- **A screen needs to be a real interactive demo.** Write a separate `<ProductDemo>` contract. Do not
+  relax R4 in place.
+- **Real client screenshots become routine.** Build the deferred `capture` design.
+- **A screen needs a figure.** Add a derived, `SAMPLE`-labelled value by amendment. Never allow
+  authored numbers.
+- **A prospect on a call notices that Scriblr's real UI diverges from these screens.** The fix is
+  the `capture` path, not a new caption.
+- **The `Engine` list changes** (for example, Claude is added as a sampled surface). Every tracker
+  row must then fill the new column. That is correct, and is a data change, not a contract change.
+- **A fourth product ships.** Not a trigger. It costs one `ProductName` member and one `ScreenId`.
