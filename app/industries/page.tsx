@@ -1,4 +1,3 @@
-import { BOOKING_LINK } from '../../data/siteConfig';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -52,7 +51,7 @@ export default function Page() {
             <Badge className="mb-4">Industries</Badge>
             <Heading level="h1" className="mb-4">Industries We Serve</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
-              AI growth marketing by buyer journey, compliance pressure, local demand, sales cycle, and proof requirements.
+              AI SEO, GEO, SEO and PPC for B2B firms, written to the way your buyer decides: a software evaluation, an RFQ, a regulated purchase or a specialist consultation.
             </p>
           </div>
         </Section>
@@ -60,9 +59,9 @@ export default function Page() {
         <Section spacing="lg">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
             {[
-              'Each industry page maps pain points, verticals, services, case studies, FAQs, and internal links into one useful decision cluster.',
-              'We focus on qualified demand, not vanity traffic, so the content speaks to founders, CMOs, operators, and revenue teams.',
-              'Industry pages connect to services, locations, tools, resources, and case studies for Google, Bing, and AI discovery.',
+              'We write to your buyer’s decision: the spec an engineer checks, the integration an IT lead needs, the expertise a CFO looks for.',
+              'The pages speak to the people your sales team wants to meet, and we judge them on qualified enquiries, not traffic.',
+              'Every sector page ends with a clear next step: a call with us, and the evidence behind what we say.',
             ].map((item) => (
               <div
                 key={item}
@@ -162,12 +161,11 @@ export default function Page() {
           */}
         <Section spacing="lg">
           <div className="mb-10">
-            <Heading level="h2" className="mb-3">The B2B sectors we sell to</Heading>
+            <Heading level="h2" className="mb-3">Built for specialist B2B businesses</Heading>
+            {/* The not-a-claim-of-experience disclosure is part of this paragraph
+                (CLAUDE.md §11). It replaces the separate meta line that said it. */}
             <p className="text-body text-[var(--text-muted)] max-w-3xl">
-              Twenty-one sectors, {icpSubIndustryTotal()}{' '}
-              sub-sectors. Listing a sector says we sell AI search, SEO and paid media into it. It is
-              not a claim that we have worked with a firm in it, and a sector that is not listed is
-              not a disqualifier.
+              We sell AI SEO, GEO, SEO and PPC into every sector below. A name becomes a link once its page has been written and reviewed. Listing a sector is not a claim that we have worked with a firm in it, and a sector that isn&apos;t listed is no reason to stay away.
             </p>
           </div>
           {/* A NAME IS NOT A LINK UNTIL THERE IS A PAGE.
@@ -230,15 +228,13 @@ export default function Page() {
           <div className="max-w-xl mx-auto text-center">
             <Heading level="h2" className="mb-3">Need a market-specific plan?</Heading>
             <p className="text-body text-[var(--text-muted)] mb-8">
-              Bring your industry, location, offer, sales cycle, and current traffic. We will map the fastest route to qualified demand.
+              Bring your industry, your markets, your sales cycle and the buyers you want to reach. We&apos;ll tell you what we would check first.
             </p>
             <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/book"
               className="inline-flex px-6 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
             >
-              Book a Strategy Call
+              Book a call
             </a>
           </div>
         </Section>

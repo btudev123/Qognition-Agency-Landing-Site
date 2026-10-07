@@ -1,260 +1,275 @@
-import { Region } from '../types';
+import type { Region } from '../types';
 
-const COMMON_FAQS = [
-    { question: "Do you have local teams?", answer: "Yes, we have strategic hubs in these regions to ensure cultural context and timezone alignment." }
-];
-
-const LEGACY_REGION_DATA: Region[] = [
-  { 
-    id: 'usa', 
-    name: 'USA', 
-    slug: 'usa', 
-    description: 'Serving the largest digital economy in the world with hubs in New York, San Francisco, and Austin.', 
-    marketFocus: ['SaaS', 'Fintech', 'Enterprise'],
-    localStrategy: "Aggressive growth hacking combined with Fortune 500 compliance standards.",
-    officeCoordinates: "40.7128° N, 74.0060° W",
-    relatedCaseStudy: 'saas-brand',
-    marketDynamics: "The US market is characterized by extreme saturation and high cost-per-acquisition. Success here requires hyper-niche targeting and brand differentiation.",
-    competitiveLandscape: "The landscape is dominated by large holding companies and specialized boutique agencies.",
-    localInsights: [
-        "CCPA and State Privacy Laws: Strict compliance is non-negotiable for targeting CA, VA, CO residents.",
-        "Voice Search Dominance: over 40% of US adults use voice search daily, necessitating conversational SEO strategies."
+// Geographic coverage describes target markets, not offices or local teams.
+export const REGIONS: Region[] = [
+  {
+    "id": "usa",
+    "name": "USA",
+    "slug": "usa",
+    "description": "AI SEO and GEO for B2B companies for US buyers.",
+    "marketFocus": [
+      "SaaS",
+      "Fintech",
+      "Enterprise"
     ],
-    stats: [
-        { label: "Ad Spend Managed", value: "$150M+" },
-        { label: "US Leads Generated", value: "2.5M+" },
-        { label: "Revenue Driven", value: "$400M" },
-        { label: "States Covered", value: "50" }
+    "localStrategy": "Define the purchasing committee, serviceable market and commercial questions before choosing channels.",
+    "officeCoordinates": "",
+    "marketDynamics": "Define the purchasing committee, serviceable market and commercial questions before choosing channels.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Separate national software demand from regional industrial service demand.",
+      "Ask sales which objections delay a shortlist or procurement decision."
     ],
-    faqs: [
-        { question: "Do you have a physical office in New York?", answer: "Yes, our US headquarters is located in Manhattan." },
-        ...COMMON_FAQS
-    ]
-  },
-  { 
-    id: 'uk', 
-    name: 'United Kingdom', 
-    slug: 'uk', 
-    description: 'Our European HQ in London driving innovation across EMEA.', 
-    marketFocus: ['Fintech', 'Fashion', 'Professional Services'],
-    localStrategy: "Balancing creativity with data-privacy regulations (GDPR).",
-    officeCoordinates: "51.5074° N, 0.1278° W",
-    relatedCaseStudy: 'fintech-scale',
-    marketDynamics: "UK consumers are highly cynical of overt advertising. Content must be authentic, value-driven, and culturally nuanced.",
-    competitiveLandscape: "London is a global creative hub. Design standards are exceptionally high.",
-    localInsights: [
-        "GDPR Stringency: The UK (and EU) requires explicit cookie consent. We implement server-side tracking to mitigate data loss.",
-        "Mobile First: 80% of UK e-commerce traffic is mobile. We prioritize mobile UX/UI above desktop."
-    ],
-    stats: [
-        { label: "UK Clients", value: "45+" },
-        { label: "Traffic Generated", value: "10M+" },
-        { label: "Awards Won", value: "12" },
-        { label: "Avg Retention", value: "3.5 Yrs" }
-    ],
-    faqs: [
-        { question: "Are you GDPR compliant?", answer: "100%. We have a dedicated data protection officer." },
-        ...COMMON_FAQS
-    ]
-  },
-  { 
-    id: 'uae', 
-    name: 'UAE & KSA', 
-    slug: 'uae-ksa', 
-    description: 'The fastest growing digital market. Hubs in Dubai and Riyadh.', 
-    marketFocus: ['Real Estate', 'Government', 'Luxury Retail'],
-    localStrategy: "Mobile-first, video-centric strategies tailored for Arabic and Expat audiences.",
-    officeCoordinates: "25.2048° N, 55.2708° E",
-    relatedCaseStudy: 'retail-ai',
-    marketDynamics: "High smartphone penetration and social media usage. Snapchat and TikTok are dominant platforms in KSA.",
-    competitiveLandscape: "Rapidly digitizing economy with Vision 2030 driving massive government and infrastructure investment.",
-    localInsights: [
-        "Localization: Standard translation fails. We use native Arabic copywriters to capture dialect nuances (Khaleeji vs. Levantine).",
-        "WhatsApp Commerce: WhatsApp is a primary business channel. We integrate chatbots and CRM directly into WhatsApp API."
-    ],
-    stats: [
-        { label: "Regional Spend", value: "$50M+" },
-        { label: "Arabic Campaigns", value: "200+" },
-        { label: "Leads/Mo", value: "50k+" },
-        { label: "Growth YoY", value: "120%" }
-    ],
-    faqs: [
-        { question: "Do you create Arabic content?", answer: "Yes, we have a fully bilingual team in Dubai." },
-        ...COMMON_FAQS
-    ]
-  },
-   { 
-    id: 'india', 
-    name: 'India', 
-    slug: 'india', 
-    description: 'Our technical center of excellence in Bangalore.', 
-    marketFocus: ['Startups', 'E-commerce', 'EdTech'],
-    localStrategy: "High-volume, high-scale engineering and SEO execution.",
-    officeCoordinates: "12.9716° N, 77.5946° E",
-    relatedCaseStudy: 'fintech-scale',
-    marketDynamics: "Price-sensitive but volume-heavy market. Requires scalable automated systems.",
-    competitiveLandscape: "Highly competitive with many domestic players.",
-    localInsights: [
-        "Scale: Systems must handle massive concurrent traffic.",
-        "Vernacular: Tier 2/3 cities require local language optimization."
-    ],
-    stats: [
-        { label: "Engineering Team", value: "60+" },
-        { label: "Code Deployed", value: "Daily" },
-        { label: "Uptime", value: "99.99%" },
-        { label: "Support", value: "24/7" }
-    ],
-    faqs: [
-        { question: "Is this an outsourcing center?", answer: "No, it is a core part of our global agency with strategic leadership." },
-        ...COMMON_FAQS
-    ]
-  },
-   { 
-    id: 'australia', 
-    name: 'Australia', 
-    slug: 'australia', 
-    description: 'Serving APAC from Sydney.', 
-    marketFocus: ['Mining', 'Retail', 'Tourism'],
-    localStrategy: "Lifestyle-oriented branding with robust backend performance.",
-    officeCoordinates: "33.8688° S, 151.2093° E",
-    relatedCaseStudy: 'retail-ai',
-    marketDynamics: "High cost of media. Requires high conversion rates to be profitable.",
-    competitiveLandscape: "Mature market with high expectations for design quality.",
-    localInsights: [
-        "Timezone: We use the timezone difference to offer 'follow the sun' development cycles.",
-        "Video: High consumption of video content across platforms."
-    ],
-    stats: [
-        { label: "APAC Revenue", value: "$20M" },
-        { label: "Brands", value: "15" },
-        { label: "Campaigns", value: "50+" },
-        { label: "ROAS", value: "4.5x" }
-    ],
-    faqs: [
-        { question: "Do you handle Asian markets from Aus?", answer: "Yes, our Sydney team coordinates strategies for SEA and ANZ." },
-        ...COMMON_FAQS
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
     ]
   },
   {
-    id: 'europe',
-    name: 'Europe',
-    slug: 'europe',
-    description: 'Pan-European growth programs across the UK, DACH, Nordics, Iberia, and beyond — multilingual and GDPR-first.',
-    marketFocus: ['SaaS', 'Fintech', 'Manufacturing'],
-    localStrategy: 'Multilingual SEO and localized creative tuned to each market, unified under one cross-border strategy.',
-    officeCoordinates: '52.5200° N, 13.4050° E',
-    relatedCaseStudy: 'fintech-scale',
-    marketDynamics: 'Europe is not one market but dozens. Language, regulation, and buying culture differ sharply between regions, so a single English campaign rarely travels well.',
-    competitiveLandscape: 'Fragmented and sophisticated. Local incumbents are strong, so differentiation and native-language content win.',
-    localInsights: [
-        'GDPR & consent: server-side tracking and consent-mode compliance are mandatory across the EU and UK.',
-        'Localization over translation: native copywriters per market consistently outperform machine-translated pages.'
+    "id": "uk",
+    "name": "United Kingdom",
+    "slug": "uk",
+    "description": "AI SEO and GEO for B2B companies for the United Kingdom.",
+    "marketFocus": [
+      "Fintech",
+      "Fashion",
+      "Professional Services"
     ],
-    stats: [
-        { label: 'Markets Served', value: '20+' },
-        { label: 'Languages', value: '12' },
-        { label: 'EU Leads/Mo', value: '30k+' },
-        { label: 'Avg ROAS', value: '4.1x' }
+    "localStrategy": "Connect specialist expertise with the questions UK buying teams use to assess a provider.",
+    "officeCoordinates": "",
+    "marketDynamics": "Connect specialist expertise with the questions UK buying teams use to assess a provider.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Distinguish corporate services from consumer enquiries.",
+      "Confirm terminology, language and sales ownership for UK campaigns."
     ],
-    faqs: [
-        { question: 'Do you run multilingual campaigns?', answer: 'Yes — native-language SEO, ads, and content across all major European languages.' },
-        ...COMMON_FAQS
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
     ]
   },
   {
-    id: 'middle-east',
-    name: 'Middle East',
-    slug: 'middle-east',
-    description: 'Growth across the GCC and Levant — Arabic-first creative, WhatsApp commerce, and Vision 2030-aligned strategy.',
-    marketFocus: ['Real Estate', 'Government', 'Luxury Retail'],
-    localStrategy: 'Bilingual Arabic/English programs, mobile-first video, and WhatsApp-led conversion journeys.',
-    officeCoordinates: '25.2048° N, 55.2708° E',
-    relatedCaseStudy: 'retail-ai',
-    marketDynamics: 'High smartphone penetration and social usage. TikTok and Snapchat dominate in KSA; WhatsApp is the default business channel.',
-    competitiveLandscape: 'Fast-digitizing economies with major government and infrastructure investment driving demand.',
-    localInsights: [
-        'Dialect nuance: native Arabic copy (Khaleeji vs. Levantine) materially lifts engagement.',
-        'WhatsApp commerce: chatbots and CRM integrated into the WhatsApp Business API drive conversions.'
+    "id": "uae",
+    "name": "UAE & KSA",
+    "slug": "uae-ksa",
+    "description": "AI SEO and GEO for B2B companies for buyers in the UAE and Saudi Arabia.",
+    "marketFocus": [
+      "Real Estate",
+      "Government",
+      "Luxury Retail"
     ],
-    stats: [
-        { label: 'Regional Spend', value: '$50M+' },
-        { label: 'Arabic Campaigns', value: '200+' },
-        { label: 'Leads/Mo', value: '50k+' },
-        { label: 'Growth YoY', value: '120%' }
+    "localStrategy": "Scope English and Arabic buyer journeys around the specific country and sector.",
+    "officeCoordinates": "",
+    "marketDynamics": "Scope English and Arabic buyer journeys around the specific country and sector.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Validate Arabic terminology and right-to-left forms.",
+      "Agree country coverage and local sales follow-up before launch."
     ],
-    faqs: [
-        { question: 'Do you create Arabic content?', answer: 'Yes, with a fully bilingual team across Dubai and Riyadh.' },
-        ...COMMON_FAQS
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
     ]
   },
   {
-    id: 'canada',
-    name: 'Canada',
-    slug: 'canada',
-    description: 'Coast-to-coast Canadian growth from Toronto, Vancouver, and Montreal — bilingual where it counts.',
-    marketFocus: ['SaaS', 'Finance', 'Professional Services'],
-    localStrategy: 'English and French-Canadian campaigns with privacy-compliant tracking (PIPEDA, Law 25).',
-    officeCoordinates: '43.6532° N, 79.3832° W',
-    relatedCaseStudy: 'saas-brand',
-    marketDynamics: 'A concentrated population along the US border with strong B2B and SaaS demand and high digital maturity.',
-    competitiveLandscape: 'Competitive but less saturated than the US — disciplined SEO and paid media compound quickly.',
-    localInsights: [
-        'Quebec French: Law 25 and French-first requirements make native Québécois content essential in QC.',
-        'US spillover: messaging must distinguish Canadian offers from US competitors bidding on the same terms.'
+    "id": "india",
+    "name": "India",
+    "slug": "india",
+    "description": "AI SEO and GEO programs for India-based B2B businesses.",
+    "marketFocus": [
+      "Startups",
+      "E-commerce",
+      "EdTech"
     ],
-    stats: [
-        { label: 'Canadian Clients', value: '30+' },
-        { label: 'Provinces Covered', value: '10' },
-        { label: 'Leads/Mo', value: '12k+' },
-        { label: 'Avg Retention', value: '3.1 Yrs' }
+    "localStrategy": "Separate the company’s headquarters from the countries where its buyers evaluate suppliers.",
+    "officeCoordinates": "",
+    "marketDynamics": "Separate the company’s headquarters from the countries where its buyers evaluate suppliers.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "For exporters, build content for destination-market buyer questions.",
+      "For domestic programs, validate language and regional requirements separately."
     ],
-    faqs: [
-        { question: 'Do you run French-Canadian campaigns?', answer: 'Yes — native Québécois copywriting and Law 25-compliant tracking.' },
-        ...COMMON_FAQS
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
     ]
   },
   {
-    id: 'singapore',
-    name: 'Singapore & SEA',
-    slug: 'singapore-sea',
-    description: 'APAC growth hub serving Singapore and Southeast Asia — fintech, SaaS, and cross-border B2B.',
-    marketFocus: ['Fintech', 'SaaS', 'B2B'],
-    localStrategy: 'English-first regional strategy with localized expansion into ID, MY, TH, VN, and PH.',
-    officeCoordinates: '1.3521° N, 103.8198° E',
-    relatedCaseStudy: 'fintech-scale',
-    marketDynamics: 'Singapore is the regional HQ market for APAC. Mobile-first, super-app ecosystems, and high English proficiency.',
-    competitiveLandscape: 'Dense and well-funded. Speed, performance creative, and clean attribution separate winners.',
-    localInsights: [
-        'Super-apps: Grab, Shopee, and WhatsApp/Telegram shape discovery and conversion paths.',
-        'Cross-border: a Singapore base is the launchpad for regulated expansion into the wider ASEAN bloc.'
+    "id": "australia",
+    "name": "Australia",
+    "slug": "australia",
+    "description": "AI SEO and GEO for B2B companies for Australian buyers.",
+    "marketFocus": [
+      "Mining",
+      "Retail",
+      "Tourism"
     ],
-    stats: [
-        { label: 'APAC Markets', value: '6' },
-        { label: 'SaaS Clients', value: '25+' },
-        { label: 'Leads/Mo', value: '18k+' },
-        { label: 'Avg ROAS', value: '4.3x' }
+    "localStrategy": "Connect industrial, technology and professional-services capabilities to the relevant buying process.",
+    "officeCoordinates": "",
+    "marketDynamics": "Connect industrial, technology and professional-services capabilities to the relevant buying process.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Distinguish national solutions from region-specific service capabilities.",
+      "Validate the buyer’s procurement and delivery requirements."
     ],
-    faqs: [
-        { question: 'Do you cover the wider ASEAN region?', answer: 'Yes — Singapore is our hub for Indonesia, Malaysia, Thailand, Vietnam, and the Philippines.' },
-        ...COMMON_FAQS
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
+    ]
+  },
+  {
+    "id": "europe",
+    "name": "Europe",
+    "slug": "europe",
+    "description": "AI SEO and GEO for B2B companies across European markets.",
+    "marketFocus": [
+      "SaaS",
+      "Fintech",
+      "Manufacturing"
+    ],
+    "localStrategy": "Treat language, buyer expectations and market coverage as separate planning decisions.",
+    "officeCoordinates": "",
+    "marketDynamics": "Treat language, buyer expectations and market coverage as separate planning decisions.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Publish complete, reviewed translations rather than swapping country names.",
+      "Confirm privacy and outreach requirements with the appropriate adviser."
+    ],
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
+    ]
+  },
+  {
+    "id": "middle-east",
+    "name": "Middle East",
+    "slug": "middle-east",
+    "description": "AI SEO and GEO for B2B companies for Middle Eastern markets.",
+    "marketFocus": [
+      "Real Estate",
+      "Government",
+      "Luxury Retail"
+    ],
+    "localStrategy": "Prioritize specific countries, languages and sectors before expanding a regional campaign.",
+    "officeCoordinates": "",
+    "marketDynamics": "Prioritize specific countries, languages and sectors before expanding a regional campaign.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Map buying roles and the evidence they require.",
+      "Use regional language expertise when reviewing claims and commercial terminology."
+    ],
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
+    ]
+  },
+  {
+    "id": "canada",
+    "name": "Canada",
+    "slug": "canada",
+    "description": "AI SEO and GEO for B2B companies for Canadian buyers.",
+    "marketFocus": [
+      "SaaS",
+      "Finance",
+      "Professional Services"
+    ],
+    "localStrategy": "Map English and French buyer journeys to the provinces and sectors you can serve.",
+    "officeCoordinates": "",
+    "marketDynamics": "Map English and French buyer journeys to the provinces and sectors you can serve.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Review French content and form journeys before launching in Quebec.",
+      "Clarify how the offer differs from cross-border alternatives."
+    ],
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
+    ]
+  },
+  {
+    "id": "singapore",
+    "name": "Singapore & SEA",
+    "slug": "singapore-sea",
+    "description": "AI SEO and GEO for B2B companies for Singapore and selected Southeast Asian markets.",
+    "marketFocus": [
+      "Fintech",
+      "SaaS",
+      "B2B"
+    ],
+    "localStrategy": "Use Singapore as a defined market, then assess each additional country on its own merits.",
+    "officeCoordinates": "",
+    "marketDynamics": "Use Singapore as a defined market, then assess each additional country on its own merits.",
+    "competitiveLandscape": "Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.",
+    "localInsights": [
+      "Distinguish regional headquarters from end-customer locations.",
+      "Validate language, payment and follow-up requirements before expansion."
+    ],
+    "stats": [],
+    "faqs": [
+      {
+        "question": "How is delivery scoped for this market?",
+        "answer": "We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office."
+      },
+      {
+        "question": "How do we discuss a search program?",
+        "answer": "Book a call or send an enquiry with your services, priority buyers and target market. We agree the relevant content, language review and delivery responsibilities before proposing the scope."
+      }
     ]
   }
 ];
-
-// Keep every legacy route, while removing claims without published evidence.
-// Coordinates in the historical data identify cities, not Qognition offices.
-const marketBriefs: Record<string, [string, string, string[]]> = {
-  usa: ['B2B growth programs for US buyers.', 'Define the purchasing committee, serviceable market and commercial questions before choosing channels.', ['Separate national software demand from regional industrial service demand.', 'Ask sales which objections delay a shortlist or procurement decision.']],
-  uk: ['B2B growth programs for the United Kingdom.', 'Connect specialist expertise with the questions UK buying teams use to assess a provider.', ['Distinguish corporate services from consumer enquiries.', 'Confirm terminology, language and sales ownership for UK campaigns.']],
-  uae: ['B2B growth programs for buyers in the UAE and Saudi Arabia.', 'Scope English and Arabic buyer journeys around the specific country and sector.', ['Validate Arabic terminology and right-to-left forms.', 'Agree country coverage and local sales follow-up before launch.']],
-  india: ['Search and demand programs for India-based B2B businesses.', 'Separate the company’s headquarters from the countries where its buyers evaluate suppliers.', ['For exporters, build content for destination-market buyer questions.', 'For domestic programs, validate language and regional requirements separately.']],
-  australia: ['B2B growth programs for Australian buyers.', 'Connect industrial, technology and professional-services capabilities to the relevant buying process.', ['Distinguish national solutions from region-specific service capabilities.', 'Validate the buyer’s procurement and delivery requirements.']],
-  europe: ['B2B growth programs across European markets.', 'Treat language, buyer expectations and market coverage as separate planning decisions.', ['Publish complete, reviewed translations rather than swapping country names.', 'Confirm privacy and outreach requirements with the appropriate adviser.']],
-  'middle-east': ['B2B growth programs for Middle Eastern markets.', 'Prioritize specific countries, languages and sectors before expanding a regional campaign.', ['Map buying roles and the evidence they require.', 'Use regional language expertise when reviewing claims and commercial terminology.']],
-  canada: ['B2B growth programs for Canadian buyers.', 'Map English and French buyer journeys to the provinces and sectors you can serve.', ['Review French content and form journeys before launching in Quebec.', 'Clarify how the offer differs from cross-border alternatives.']],
-  singapore: ['B2B growth programs for Singapore and selected Southeast Asian markets.', 'Use Singapore as a defined market, then assess each additional country on its own merits.', ['Distinguish regional headquarters from end-customer locations.', 'Validate language, payment and follow-up requirements before expansion.']],
-};
-export const REGIONS: Region[] = LEGACY_REGION_DATA.map(region => {
-  const brief = marketBriefs[region.id] || ['B2B growth programs for ' + region.name + '.', 'Agree priority buyers and markets before building the program.', ['Use sales feedback to choose commercial questions.']];
-  return { ...region, description: brief[0], localStrategy: brief[1], marketDynamics: brief[1], competitiveLandscape: 'Review the actual alternatives your buyers shortlist, using dated search observations and sales feedback.', localInsights: brief[2], officeCoordinates: '', relatedCaseStudy: undefined, stats: [], faqs: [{ question: 'How is delivery scoped for this market?', answer: 'We agree the target buyers, languages, responsibilities and evidence needed before work begins. This page describes market coverage; it does not establish a local office.' }] };
-});

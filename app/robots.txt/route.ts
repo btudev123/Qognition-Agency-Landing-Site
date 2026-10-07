@@ -1,6 +1,8 @@
+import { isPreviewDeployment } from '../../lib/deploymentMode';
 import { SITE_URL } from '../../lib/seo';
 export const dynamic = 'force-static';
 export function GET() {
+  if (isPreviewDeployment()) return new Response('User-agent: *\nDisallow: /\n', {headers: {'Content-Type':'text/plain; charset=utf-8','X-Robots-Tag':'noindex, nofollow'}});
   const restricted = ['Allow: /', 'Disallow: /api/', 'Disallow: /studio/'];
   const body = [
     '# Qognition: public search discovery is allowed.',

@@ -131,7 +131,7 @@ export default function IndexFilters({ studies }: { studies: ResolvedCaseStudy[]
       <StudyGrid
         studies={filtered}
         emptyTitle="No case studies match those filters"
-        emptyMessage="Try a different industry, service or state — or clear the filters to see the full library."
+        emptyMessage="Try a different industry, service or state, or clear the filters to see the full library."
         emptyAction={{ label: 'Clear filters', onClick: clear }}
       />
     </div>

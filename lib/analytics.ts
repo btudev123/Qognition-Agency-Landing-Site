@@ -63,7 +63,7 @@ export function newEventId(): string {
 
 /** Push a GTM dataLayer event. */
 export function pushDataLayer(event: string, params: Record<string, unknown> = {}) {
-  if (!hasConsent('analytics')) return;
+  if (process.env.NEXT_PUBLIC_QOGNITION_PREVIEW === '1' || !hasConsent('analytics')) return;
   const w = getWindow();
   if (!w) return;
   w.dataLayer = w.dataLayer || [];
@@ -72,14 +72,14 @@ export function pushDataLayer(event: string, params: Record<string, unknown> = {
 
 /** Send an event straight to GA4 via gtag, bypassing GTM tag configuration. */
 export function trackGtag(event: string, params: Record<string, unknown> = {}) {
-  if (!hasConsent('analytics')) return;
+  if (process.env.NEXT_PUBLIC_QOGNITION_PREVIEW === '1' || !hasConsent('analytics')) return;
   const w = getWindow();
   w?.gtag?.('event', event, params);
 }
 
 /** Fire a Meta pixel event, optionally carrying a dedup id. */
 export function trackMeta(event: string, params: Record<string, unknown> = {}, eventId?: string) {
-  if (!hasConsent('advertising')) return;
+  if (process.env.NEXT_PUBLIC_QOGNITION_PREVIEW === '1' || !hasConsent('advertising')) return;
   const w = getWindow();
   if (!w?.fbq) return;
   const method = META_STANDARD_EVENTS.has(event) ? 'track' : 'trackCustom';

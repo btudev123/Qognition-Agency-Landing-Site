@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { appendFunnelContext, readFunnelContext, type FunnelContext } from '../../lib/funnelContext';
 import { getFunnelStage, getFunnelCTA, type FunnelStage } from '../../lib/funnel';
 import { pushDataLayer } from '../../lib/analytics';
 
@@ -10,15 +12,22 @@ import { pushDataLayer } from '../../lib/analytics';
 export default function FunnelCTA({
   stage: stageProp,
   service,
+  context,
   className = '',
 }: {
   stage?: FunnelStage;
   service?: string;
+  context?: FunnelContext;
   className?: string;
 }) {
   const pathname = usePathname();
   const stage = stageProp ?? getFunnelStage(pathname || '/');
   const cta = getFunnelCTA(stage, { service });
+  const [incoming, setIncoming] = useState<FunnelContext>();
+  useEffect(() => setIncoming(readFunnelContext(new URLSearchParams(window.location.search))), [pathname]);
+  const leadContext = { ...incoming, ...context, stage, page_id: context?.page_id || incoming?.page_id || pathname || '/' };
+  const primaryHref = pathname === '/' && cta.primary.href === '/book' ? '#book' : appendFunnelContext(cta.primary.href, leadContext);
+  const secondaryHref = appendFunnelContext(cta.secondary.href, leadContext);
 
   const external = (href: string) => href.startsWith('http');
   const track = (action: string) => pushDataLayer('cta_click', { cta_stage: stage, cta_action: action });
@@ -50,32 +59,32 @@ export default function FunnelCTA({
             lineHeight: 1.02,
             letterSpacing: '-0.035em',
             fontWeight: 600,
-            color: '#F3F0EA',
+            color: 'var(--s-text)',
           }}
         >
           {cta.headline}
         </h2>
         <div className="flex flex-wrap gap-3 justify-center">
           <Primary
-            href={cta.primary.href}
+            href={primaryHref}
             onClick={() => track('primary')}
             {...(external(cta.primary.href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             className="inline-flex items-center gap-2 px-7 py-4 text-sm font-semibold transition-colors"
-            style={{ background: 'var(--accent)', color: '#04221E', borderRadius: 9999 }}
+            style={{ background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-fg)', borderRadius: 9999 }}
           >
             {cta.primary.label} →
           </Primary>
           <Secondary
-            href={cta.secondary.href}
+            href={secondaryHref}
             onClick={() => track('secondary')}
             {...(external(cta.secondary.href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             className="inline-flex items-center gap-2 px-7 py-4 text-sm font-medium transition-colors"
-            style={{ background: 'transparent', color: '#F3F0EA', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 9999 }}
+            style={{ background: 'transparent', color: 'var(--s-text)', border: '1px solid var(--s-rule-strong)', borderRadius: 9999 }}
           >
             {cta.secondary.label}
           </Secondary>
         </div>
-        <p className="text-meta mt-5" style={{ color: 'rgba(243,240,234,0.5)' }}>
+        <p className="text-meta mt-5" style={{ color: 'var(--s-text-muted)' }}>
           {cta.reassurance}
         </p>
       </div>

@@ -1,5 +1,51 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AIPlatforms from '../../components/shared/AIPlatforms';
-export const metadata: Metadata={title:'About Qognition | AI-native B2B Growth Agency',description:'Qognition connects AI search, demand generation, ABM and revenue operations around the way B2B buyers choose a partner.',alternates:{canonical:'/about'}};
-export default function Page(){return <main className="growth-shell growth-page"><p className="growth-eyebrow">ABOUT QOGNITION</p><h1>Specialist expertise deserves to be discovered.</h1><p className="growth-page-intro">Qognition is an AI-native B2B growth agency. We connect search visibility, content, paid demand, account-based marketing and revenue operations around one question: what helps the right buyer take the next step?</p><AIPlatforms /><section className="growth-page-section"><h2>How we approach the work</h2><div className="growth-plain-grid">{[['Start with the business','Understand the customer, the buying decision and what a qualified opportunity means before choosing channels.'],['Use AI with judgment','Use automation for research and repeatable workflows, with people responsible for accuracy, relevance and decisions.'],['Make expertise useful','Work with your specialists to explain capabilities, use cases, trade-offs and evidence in language buyers can evaluate.'],['Keep measurement honest','Distinguish visibility from visits, enquiries from sales-qualified leads, and proposals from revenue.']].map(([title,body])=><article key={title} className="growth-plain-card"><h3>{title}</h3><p>{body}</p></article>)}</div></section><section className="growth-page-section"><h2>Work with Qognition</h2><p className="growth-page-intro">Bring a defined challenge or a program that needs connecting. We will agree the right scope, the expertise required and how your team participates.</p><div className="growth-actions"><Link className="growth-button" href="/book">Discuss your growth plan ↗</Link></div></section></main>}
+import { HQ_DISPLAY } from '../../data/siteConfig';
+export const metadata: Metadata={title:'About | AI SEO & GEO for B2B',description:'Qognition helps B2B companies make their expertise easier to discover through AI SEO, GEO, technical search work and useful content.',alternates:{canonical:'/about'}};
+
+/* docs/copy/2026-10/about.md. Sentence 1 of the intro is Nadia's entity string
+   (O2, pending operator approval): if the operator edits it, match it word for
+   word here, in schema and in profiles. Held until confirmed: "Who you work with"
+   (/team accuracy), "Software we built" (D9), and the rewritten AI-use card,
+   which carries a CONFIRM, so the current card 2 stays. */
+const principles = [
+  ['Start with the buying decision', 'We learn what you sell, who approves the purchase and what they check, before we choose a channel.'],
+  ['Use AI with judgment', 'Use automation for research and repeatable workflows, with people responsible for accuracy, relevance and decisions.'],
+  ['Date every observation', 'An AI answer is an observation on a date, not a permanent position. We record the prompt, platform, date and sources every time.'],
+  ['Keep the measures apart', 'Rankings, AI answers, visits, enquiries and revenue are different things. We report them separately, and targets stay labelled as targets.'],
+] as const;
+
+export default function Page() {
+  return (
+    <main className="growth-shell growth-page">
+      <p className="growth-eyebrow">ABOUT QOGNITION AGENCY</p>
+      <h1>We run AI search, SEO and PPC for B2B companies.</h1>
+      <p className="growth-page-intro">
+        Qognition Agency is a B2B AI search visibility agency that runs AI SEO, GEO, SEO, local SEO and B2B PPC for established B2B companies, including SaaS. We are headquartered in {HQ_DISPLAY}, and work remotely with clients in the markets we serve. Pages about other cities describe markets we serve, not offices.
+      </p>
+      <AIPlatforms />
+      <section className="growth-page-section">
+        <h2>How we approach the work</h2>
+        <div className="growth-plain-grid">
+          {principles.map(([title, body]) => (
+            <article key={title} className="growth-plain-card">
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="growth-page-section">
+        <h2>Work with Qognition</h2>
+        <p className="growth-page-intro">
+          Bring the search problem you want solved and the buyers you want to reach. On a 30-minute call, we&apos;ll tell you where we would start and whether we&apos;re the right fit.
+        </p>
+        <div className="growth-actions">
+          <Link className="growth-button" href="/book">Book a call</Link>
+          <Link className="growth-text-link" href="/contact#enquiry">Send an enquiry</Link>
+        </div>
+      </section>
+    </main>
+  );
+}

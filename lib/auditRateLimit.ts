@@ -13,7 +13,7 @@ const DEVICE_COOKIE = 'qognition_audit_device';
  * a real prospect costs far more than letting a duplicate through, so every
  * ambiguous case here resolves in favour of accepting the lead.
  */
-export type RatePolicy = 'audit' | 'lead';
+export type RatePolicy = 'audit' | 'lead' | 'confirmation';
 
 /** How long one identity is asked to wait before submitting the same thing again. */
 const IDENTITY_WINDOW_MS: Record<RatePolicy, number> = {
@@ -22,6 +22,9 @@ const IDENTITY_WINDOW_MS: Record<RatePolicy, number> = {
   // A contact message costs nothing to receive and a client to refuse.
   // Just long enough to swallow a double-tap on the submit button.
   lead: 2 * 60 * 1000,
+  // The prospect's acknowledgement email. Anyone can type any address into the
+  // form, so one per address per day stops the form being used to mail a stranger.
+  confirmation: 24 * 60 * 60 * 1000,
 };
 
 /**
@@ -47,7 +50,7 @@ const identityKeyFor = (policy: RatePolicy, email: string) =>
  * unrelated visitors on a single address, so an IP must never lock anyone out.
  * It gets a burst ceiling only — set high enough that no real visitor meets it.
  */
-const IP_BURST_MAX: Record<RatePolicy, number> = { audit: 12, lead: 30 };
+const IP_BURST_MAX: Record<RatePolicy, number> = { audit: 12, lead: 30, confirmation: 30 };
 const IP_BURST_WINDOW_MS = 60 * 60 * 1000;
 const BURST_RETRY_SECONDS = 15 * 60;
 
@@ -103,9 +106,13 @@ const prune = (now: number) => {
   }
 };
 
-export const getAuditClientIp = (request: NextRequest) => {
+/**
+ * Production is Vercel with no Cloudflare in front, so cf-connecting-ip is whatever
+ * the client chose to send and is never read. Vercel sets x-real-ip and x-forwarded-for.
+ */
+export const getAuditClientIp = (request: Pick<NextRequest, 'headers'>) => {
   const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
-  return request.headers.get('cf-connecting-ip') || request.headers.get('x-real-ip') || forwarded || 'unknown';
+  return request.headers.get('x-real-ip')?.trim() || forwarded || 'unknown';
 };
 
 export const getAuditDeviceCookie = () => DEVICE_COOKIE;

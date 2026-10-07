@@ -64,8 +64,11 @@ export interface CaseStudyImage {
   src: string;
   /** Describes the photograph, not the client. */
   alt: string;
-  /** Pexels attribution — photographer name and photo URL. */
-  credit?: { photographer: string; url: string };
+  /** Intrinsic pixel size, when known. */
+  width?: number;
+  height?: number;
+  /** Pexels attribution: photographer, their profile and the photo page. */
+  credit?: { photographer: string; photographerUrl: string; url: string };
 }
 
 export interface Faq {
@@ -158,7 +161,7 @@ export const SERVICE_LABEL: Record<ServiceKey, string> = {
 
 /** Which spoke page each service hub links out to. */
 export const SERVICE_SPOKE_HREF: Record<ServiceKey, string> = {
-  'ai-seo': '/marketing/ai-seo',
-  ppc: '/marketing/paid-media',
-  social: '/marketing/social',
+  'ai-seo': '/services/ai-seo',
+  ppc: '/services/ppc',
+  social: '/services/smm',
 };

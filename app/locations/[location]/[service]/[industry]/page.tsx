@@ -58,11 +58,11 @@ export default async function Page({
   const faqs = [
     {
       question: `Why does ${service.title} for ${industry.name} differ in ${location.name}?`,
-      answer: `Buyer language, competitor density, CPC, compliance norms, and trust signals for ${industry.name} all shift by market. The ${location.name} plan is built around local demand and ${industry.name} buying behavior, not a copied template.`,
+      answer: `Buyer language, competitor density, CPC, compliance norms, and trust signals for ${industry.name} all shift by market. We validate these factors against your actual accounts and the evidence your team can provide before recommending a ${location.name} scope.`,
     },
     {
       question: `What outcomes do ${industry.name} companies target with ${service.title} in ${location.name}?`,
-      answer: `Typically: qualified local enquiries, lower cost per lead, stronger visibility against ${location.name} competitors, and measurable pipeline — with reporting tied to revenue, not vanity metrics.`,
+      answer: `Agree the useful next action first: a suitable enquiry, evaluation request or sales conversation. Track discovery and campaign measures separately from accepted opportunities and attributable revenue.`,
     },
   ];
 
@@ -131,7 +131,7 @@ export default async function Page({
           </Link>
         </div>
 
-        <FunnelCTA stage="mofu" service={service.title} className="mb-8" />
+        <FunnelCTA stage="bofu" service={service.id} context={{ page_id: path }} className="mb-8" />
       </main>
     </>
   );

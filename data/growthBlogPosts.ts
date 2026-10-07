@@ -1,719 +1,183 @@
+// Existing article IDs remain stable; unsupported figures and results are removed.
 export const GROWTH_BLOG_POSTS = [
   {
-    id: 'signs-your-business-needs-a-marketing-agency',
-    title: '7 Signs Your Business Needs a Marketing Agency (And What to Do Next)',
-    excerpt:
-      'Is your marketing stuck, inconsistent, or producing zero results? Here are 7 clear signs your business needs a professional marketing agency and how Qognition Agency can help.',
-    date: 'May 10, 2026',
-    readTime: '14 min read',
-    author: {
-      name: 'Qognition',
-      title: 'Growth Strategy Team',
-      avatar: '/qognition-mark.png'
+    "id": "signs-your-business-needs-a-marketing-agency",
+    "title": "When a B2B Team Needs Specialist Search Support",
+    "excerpt": "Use the work you need done and the capacity you have to decide whether an agency fits.",
+    "date": "May 10, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
     },
-    image: '/default-og.svg',
-    tags: ['Marketing Agency', 'Lead Generation', 'Business Growth'],
-    category: 'Growth Strategy',
-    content: `## Quick Answer
-
-Your business probably needs a marketing agency if marketing is inconsistent, you cannot measure ROI, competitors outrank you, paid campaigns waste budget, your team is stretched thin, your brand has outgrown its marketing, or you keep postponing marketing because other work feels more urgent.
-
-Most business owners know their marketing is not working before they admit it. Revenue has plateaued. Leads have dried up. You post on social media but hear crickets. You run ads but cannot explain what they actually returned. Meanwhile, competitors seem to be everywhere online and you cannot figure out how they are doing it.
-
-These are not isolated problems. They are symptoms of a marketing operation that has hit its ceiling. Recognizing that moment is not failure. It is good business judgment.
-
-## 1. Your Marketing Is Inconsistent or Completely Non-Existent
-
-You posted on Instagram twice last month. Your blog has not been updated since last quarter. You started an email newsletter and sent two issues before abandoning it. Your website still has placeholder copy from launch.
-
-Inconsistent marketing is often worse than no marketing. When a prospect finds your social media and sees the last post was months ago, it signals unreliability. When a buyer lands on an outdated website, they move to a competitor who looks more credible.
-
-Marketing compounds only when it runs consistently. Every blog post builds search visibility. Every email keeps your brand top-of-mind. Every social post expands distribution. Stop-start execution resets momentum.
-
-The reason most businesses fall into this pattern is not laziness. It is capacity. You are running clients, operations, hiring, delivery, and finance. Marketing falls through the cracks because nobody owns it deeply enough.
-
-## 2. You Have No Idea What Is Actually Working
-
-If someone asks how marketing is performing and the answer is "pretty good, I think", you have a measurement problem.
-
-You may be spending on Facebook ads without knowing return. You may get website visitors without knowing where they came from. You may have conversions configured incorrectly. That means decisions are being made on gut feeling.
-
-Marketing without measurement is gambling. A professional agency builds analytics, conversion tracking, CRM source fields, campaign KPIs, and reporting that answers the right question: what is creating qualified pipeline?
-
-## 3. Your Competitors Are Outranking and Outpacing You Online
-
-Search your primary keywords. If competitors dominate page one while your site sits on page three, visibility is leaking.
-
-They may not be better at the core service. They are investing more strategically in being found. Search authority, social following, content depth, and brand recognition all compound. The longer you wait, the harder the gap becomes to close.
-
-A strong SEO strategy helps you catch up and stay ahead by building organic visibility that keeps working after the first campaign ends.
-
-## 4. You Are Spending Money With Nothing to Show for It
-
-Google Ads, boosted social posts, freelance blog content, and one-off campaigns all fail when they are not part of a connected strategy.
-
-The problem is rarely the channel itself. Paid search, social, and content all work when audience targeting, messaging, landing pages, tracking, and follow-up are aligned. When they run in isolation, they waste budget.
-
-A competent agency audits where budget leaks, rebuilds campaigns around business outcomes, and connects paid media to landing pages and CRM quality.
-
-## 5. Your Team Is Overwhelmed and Stretched Too Thin
-
-Marketing is not one skill. SEO, paid advertising, content strategy, social media, email, web development, analytics, and automation are distinct disciplines.
-
-When one person handles everything, every channel gets surface-level attention. Your team spends time on tasks they are not equipped to handle, and that time is pulled away from work they do best.
-
-A full-service agency gives you specialist depth without hiring an entire internal department.
-
-## 6. Your Business Has Grown But Your Marketing Has Not
-
-Your revenue may have doubled. Your team may be bigger. Your service quality may be stronger. But your website, messaging, and marketing assets still look like the business you were 18 months ago.
-
-Growth exposes weak marketing foundations. As you scale, your online presence needs to match the credibility of the business you have built.
-
-This is a key inflection point. Professional marketing protects the growth you have already achieved and helps you attract the next tier of clients.
-
-## 7. You Keep Postponing Marketing
-
-If you have been saying "we will sort marketing next quarter" for two years, marketing is not being treated as a growth system.
-
-There will always be something urgent. Client work, product issues, hiring, operations, finance. But every month without strategic marketing is a month competitors build audience, rankings, trust, and pipeline.
-
-Hiring an agency removes marketing from the list of things you need to personally restart every week. Campaigns run, content ships, ads are managed, and data gets reviewed.
-
-## What to Do Next
-
-Start with an honest audit:
-
-- Which channels are active?
-- What is being measured?
-- Where is the budget going?
-- Which pages produce leads?
-- How do you compare with your top competitors?
-- What would need to be true for marketing to become predictable?
-
-If you want a team that builds and executes that plan across SEO, paid advertising, content, social, web development, and AI search, that is what Qognition does.
-
-## Frequently Asked Questions
-
-### How do I know if I need an agency or better internal processes?
-
-If you have the right people, tools, and time in-house but lack coordination, internal process can help. If your team is stretched across too many channels, results are inconsistent, or ROI cannot be measured, you likely need agency support.
-
-### At what stage should a business hire a digital marketing agency?
-
-Most businesses benefit once they have a proven product or service and want to scale consistently. If you are already spending on marketing without a clear strategy or measurable return, the signal is strong.
-
-### Can a small business afford an agency?
-
-An agency can be more cost-effective than hiring a full internal marketing team when you factor in salaries, tools, training, and management time.
-
-### How long before results show?
-
-Paid media can show early data within 2 to 4 weeks. SEO and content usually compound over 3 to 6 months. A good plan combines quick wins with long-term growth.
-
-### What makes Qognition the right choice?
-
-Qognition connects SEO, PPC, social, web development, AI search, and analytics under one measurable growth strategy built around qualified leads and revenue.`
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "Growth Strategy",
+    "content": "## Start with the bottleneck\n\nA search problem can be a publishing problem, a technical problem or a lack of useful expertise on the website. An agency makes sense when the required work has a clear owner and your current team cannot complete it at the necessary depth. More content is not automatically the answer.\n\n## Look for a defined gap\n\nReview the pages buyers use to assess you. Are applications explained? Can an engineer or finance leader find the information relevant to their decision? Do enquiries reach the right person with enough context? A diagnosis should identify which gap a specialist would address.\n\n## Compare delivery responsibilities\n\nAsk a potential partner which work they will implement, which access they need and where your subject experts must contribute. Review how claims are approved and how technical changes are tested. A proposal should make dependencies visible.\n\n## Agree what will be reviewed\n\nUseful measures include relevant search discovery, observed AI citations, enquiries and sales acceptance. A traffic increase alone does not demonstrate fit. Define the next review and the evidence needed to change priorities.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'digital-marketing-trends',
-    title: 'What Are the Most Important Digital Marketing Trends You Need to Know in 2026',
-    excerpt:
-      'Discover the most important digital marketing trends you need to know, from AI-powered personalization and search everywhere optimization to short-form video.',
-    date: 'May 10, 2026',
-    readTime: '18 min read',
-    author: {
-      name: 'Qognition',
-      title: 'Growth Strategy Team',
-      avatar: '/qognition-mark.png'
+    "id": "digital-marketing-trends",
+    "title": "AI Search and B2B Marketing: What to Evaluate",
+    "excerpt": "Assess changes in buyer research without treating every platform announcement as a reason to rebuild your strategy.",
+    "date": "May 10, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
     },
-    image: '/default-og.svg',
-    tags: ['Digital Marketing Trends', 'AI Marketing', 'SEO'],
-    category: 'Digital Marketing',
-    content: `## Quick Answer
-
-The most important digital marketing trends today include AI-powered personalization, search everywhere optimization, short-form video, micro-influencer marketing, social commerce, voice search, hyper-personalization, omnichannel marketing, first-party data, and authentic brand storytelling.
-
-## Why Staying Updated Matters
-
-Digital marketing does not sit still. Algorithms change, customer behavior shifts, and new discovery platforms emerge quickly. If you are not adapting, you are falling behind.
-
-More than 5.4 billion people use social media worldwide, and digital advertising spend continues to grow. The brands that win understand where attention is moving and how to reach it with the right message at the right moment.
-
-## Trend 1: AI-Powered Marketing and Automation
-
-AI now supports content ideation, segmentation, ad copy, bidding, reporting, personalization, and predictive analytics.
-
-Use AI for first drafts, campaign analysis, customer segmentation, and support automation, but keep human editorial control. AI should amplify strategy, not replace brand voice.
-
-## Trend 2: Search Everywhere Optimization
-
-Traditional SEO is no longer enough. Brands also need Answer Engine Optimization and Generative Engine Optimization.
-
-For SEO, build topic authority, internal links, Core Web Vitals, and search-intent pages. For AEO, use direct answers, FAQs, schema, and clear definitions. For GEO, publish expert-led content, original opinions, proof, and structured data that AI systems can cite.
-
-## Trend 3: Short-Form Video Dominance
-
-Short-form video drives attention across TikTok, Instagram Reels, YouTube Shorts, and even search results.
-
-Hook viewers in the first second. Turn blog posts into short videos. Use captions. Show the service or product in context. Post consistently if you want the algorithm to learn what audience responds.
-
-## Trend 4: Hyper-Personalization at Scale
-
-Personalization has moved beyond first-name email fields. Strong brands use behavior, purchase history, CRM stages, page visits, and preferences to tailor offers and messages.
-
-Use deep segments, dynamic email content, website personalization, and zero-party data collection through quizzes, calculators, and preference centers.
-
-## Trend 5: Micro-Influencer and Authentic Content Marketing
-
-Audiences trust people more than logos. Micro-influencers, employee content, founder storytelling, and user-generated content often outperform polished brand ads.
-
-Build partnerships in specific communities. Encourage your team to share expertise. Turn customer stories into proof. Use founder narratives to make the brand more human.
-
-## Trend 6: Social Commerce and Shoppable Content
-
-Social platforms increasingly let users discover, evaluate, and buy without leaving the app.
-
-Set up shoppable posts where relevant. Use live demos. Make content useful before it sells. Bring ratings, reviews, and user proof into the discovery moment.
-
-## Trend 7: Voice Search Optimization
-
-Voice search queries are conversational, longer, local, and question-based.
-
-Target natural-language questions. Build FAQ sections. Optimize Google Business Profile. Structure answers so assistants can extract them clearly.
-
-## Trend 8: First-Party Data and Privacy-First Marketing
-
-As third-party data becomes less reliable, owned data becomes a competitive advantage.
-
-Grow your email list, CRM, loyalty programs, preference centers, quizzes, calculators, and gated resources. Be transparent about what you collect and how it benefits the customer.
-
-## Trend 9: Omnichannel Marketing Integration
-
-Customers interact with brands across multiple touchpoints before converting. Website, social, email, ads, search, sales calls, and CRM follow-up need one message and one data layer.
-
-Unify data in a CRM. Map the journey. Coordinate campaign messaging. Measure cross-channel attribution.
-
-## Trend 10: Sustainable and Purpose-Driven Marketing
-
-Customers increasingly evaluate values, ethics, and impact. Purpose works only when it is real.
-
-Lead with action. Share measurable impact. Avoid vague claims. Keep values consistent across website, social, email, and customer communications.
-
-## Step-by-Step Action Plan
-
-1. Audit your current digital presence.
-2. Prioritize trends by business impact and feasibility.
-3. Build a connected content ecosystem.
-4. Integrate AI into one workflow first.
-5. Invest in first-party data infrastructure.
-6. Measure, refine, and scale every 30 to 90 days.
-
-## Conclusion
-
-Digital marketing in 2026 is defined by authenticity, authority, and intelligence. The winning brands are not chasing every shiny tool. They are building genuine expertise, using AI to move faster, collecting owned data, and showing up consistently where their audience lives.
-
-## Frequently Asked Questions
-
-### Can small businesses use these trends?
-
-Yes. Short-form video, email marketing, SEO, micro-influencers, and first-party data can all start with focused budgets.
-
-### Is SEO still important with AI search?
-
-Yes. The same technical clarity and content authority that helps Google understand your site also helps AI engines cite it.
-
-### What is the biggest digital marketing trend for 2026?
-
-AI-first discovery is the biggest shift. Brands now need to be chosen by answer engines, not only ranked by traditional search engines.
-
-### How does influencer marketing fit in?
-
-Influencer marketing is shifting toward niche creators and authentic proof. Micro and nano-influencers often bring stronger trust than celebrity campaigns.`
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "Digital Marketing",
+    "content": "## Start with your buyers\n\nAsk recent prospects how they researched the category and which sources helped them compare suppliers. Record the wording of their questions. An AI answer is one possible source within a longer buying process, not a complete explanation of every purchase.\n\n## Review the information available\n\nTechnical product detail, service scope and documented expertise should be easy to find and verify. These assets are useful to buyers across search, AI-assisted research and internal referrals. Keep them accurate before creating more channels.\n\n## Test a defined observation\n\nChoose relevant commercial questions and record answers by platform, language and date. Compare cited sources with your own content coverage. Treat a small prompt sample as a sample, and repeat it before asserting a trend.\n\n## Protect the commercial handoff\n\nAn interested buyer needs a clear contact or booking path. Confirm that the request reaches the CRM, that someone owns it and that replies stop automated nurture. This operational work remains necessary regardless of which discovery surface grows.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'what-is-a-digital-marketing-strategy',
-    title: 'What Is a Digital Marketing Strategy and Why Does Your Business Need One?',
-    excerpt:
-      'Learn what a digital marketing strategy is, why your business needs one in 2026, and how to build one that drives real results.',
-    date: 'May 10, 2026',
-    readTime: '16 min read',
-    author: {
-      name: 'Qognition',
-      title: 'Growth Strategy Team',
-      avatar: '/qognition-mark.png'
+    "id": "what-is-a-digital-marketing-strategy",
+    "title": "A B2B Marketing Strategy Starts with a Buying Decision",
+    "excerpt": "Connect audience, evidence, channels and follow-up in one practical plan.",
+    "date": "May 10, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
     },
-    image: '/default-og.svg',
-    tags: ['Digital Marketing Strategy', 'Marketing Plan', 'Growth'],
-    category: 'Strategy',
-    content: `## Quick Answer
-
-A digital marketing strategy is a structured plan that guides how a business uses digital channels such as SEO, paid ads, social media, email, content, and its website to attract, engage, and convert its target audience.
-
-Many businesses publish content, run ads, and post on social media without a plan connecting those actions to a business goal. That wastes money, burns out teams, and creates inconsistent results.
-
-## What Is a Digital Marketing Strategy?
-
-A digital marketing strategy outlines how your business will use online channels to reach its target audience and achieve specific goals.
-
-It answers:
-
-- Who are you trying to reach?
-- Where do they spend time online?
-- What message will resonate?
-- Which channels will you use?
-- How will success be measured?
-
-Think of it as a GPS for growth. Without it, you may still move, but you waste time and budget taking wrong turns.
-
-## Strategy vs Tactics vs Campaigns
-
-Strategy sets the long-term vision. Tactics are the actions that support that vision. Campaigns are time-bound executions.
-
-You need all three. Strategy without tactics stays theoretical. Tactics without strategy create random activity. Campaigns without strategy burn budget.
-
-## Key Components of a Strong Strategy
-
-### Clear Business Goals
-
-Use SMART goals. "Get more traffic" becomes "increase organic website traffic by 30% in six months through SEO and content marketing."
-
-### Target Audience and Buyer Personas
-
-Your strategy needs detailed profiles of ideal customers, including pain points, online behavior, preferred content, and buying motivations.
-
-### Competitor Analysis
-
-Study rankings, content, ads, offers, reviews, and positioning. Competitor research shows where the gaps are.
-
-### Channel Selection
-
-Not every channel works for every business. Choose based on audience behavior and realistic execution capacity.
-
-### Content Strategy
-
-Define the topics, formats, cadence, and conversion goals behind your content. Content fuels SEO, social, email, paid landing pages, and AI search visibility.
-
-### Budget and Resources
-
-Decide what you invest by channel, which tools you need, and whether work is handled in-house, by freelancers, or by an agency.
-
-### KPIs and Reporting
-
-Track metrics that connect to business outcomes: qualified leads, conversion rate, cost per lead, ROAS, organic traffic, booked calls, and pipeline.
-
-## Core Digital Marketing Channels
-
-SEO drives long-term organic traffic. PPC creates faster demand capture. Content builds trust. Social supports distribution and brand memory. Email nurtures leads. Influencer and video marketing add credibility and reach.
-
-The right strategy usually combines several channels, but only when they work together.
-
-## Why Your Business Needs a Strategy
-
-Without a strategy, marketing becomes guessing. You post and hope. You run ads and hope. You spend money without understanding what works.
-
-A strategy gives direction, maximizes budget, improves competition, keeps messaging customer-focused, defines measurement, builds long-term brand authority, and makes the business more adaptable.
-
-## How to Build a Strategy Step by Step
-
-1. Audit your current website, content, social, email, ads, and analytics.
-2. Define SMART goals tied to business outcomes.
-3. Research your target audience.
-4. Analyze two to four direct competitors.
-5. Choose two to three core channels first.
-6. Build your content plan.
-7. Set budget and resource allocation.
-8. Define KPIs and tracking setup.
-9. Launch, measure, and optimize every 30 to 90 days.
-
-## Common Mistakes Without Strategy
-
-Businesses without strategy often chase every new platform, publish content without purpose, ignore data, use inconsistent messaging, and copy competitors instead of differentiating.
-
-## What Changed in 2026
-
-Digital strategy now needs AI-driven search, Answer Engine Optimization, Generative Engine Optimization, short-form video, personalization, and first-party data.
-
-AI Overviews and answer engines reward clear, expert-led, structured content. Short-form video is now a discovery layer. Privacy changes make owned data more valuable. A strategy must account for all of this.
-
-## Final Thoughts
-
-A digital marketing strategy is not a luxury for big companies. It is necessary for any business that wants to grow online.
-
-The businesses winning are not always the ones with the biggest budgets. They are the ones with the clearest strategies.
-
-## Frequently Asked Questions
-
-### What is the difference between a strategy and a plan?
-
-A strategy defines what you want to achieve and why. A plan outlines the actions, timelines, and resources needed to execute.
-
-### How long does it take to see results?
-
-Paid advertising can show traffic quickly. SEO and content usually take 3 to 6 months. Email can show results within weeks.
-
-### Do small businesses need a strategy?
-
-Yes. Small businesses need strategy even more because limited budget and team capacity must be focused.
-
-### How often should strategy be updated?
-
-Review performance monthly and do a full strategic review every 6 to 12 months.
-
-### What is GEO?
-
-GEO stands for Generative Engine Optimization. It helps content get cited by AI-powered tools such as ChatGPT, Gemini, and Perplexity.`
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "Strategy",
+    "content": "## Name the buying situation\n\nIdentify the event that makes a company consider a supplier: a compliance requirement, a capacity issue, a software replacement or another specific need. Name the people who research, evaluate and authorize the decision.\n\n## Build the information path\n\nEducational content explains the problem. Evaluation material compares approaches and requirements. Commercial pages explain the service, relevant evidence and how to discuss a project. Link those stages so readers can move at their own pace.\n\n## Choose channels for a reason\n\nAI SEO and GEO support discovery and consideration. Paid campaigns can test clearly defined demand, while expert social content can support familiarity. Each channel needs an audience, a destination, an owner and a measure.\n\n## Define the feedback loop\n\nSeparate enquiries from qualified opportunities. Review actual records with sales and investigate why suitable buyers stop or why unsuitable people make contact. Update the content and routing from that evidence.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'what-makes-qognition-agency-different',
-    title: 'What Makes Qognition Agency Different from Other Marketing Agencies',
-    excerpt:
-      'Thousands of agencies promise results. Qognition Agency delivers them. Discover the 8 core differences that make Qognition the growth partner serious businesses choose in 2026.',
-    date: 'May 10, 2026',
-    readTime: '17 min read',
-    author: {
-      name: 'Qognition',
-      title: 'Growth Strategy Team',
-      avatar: '/qognition-mark.png'
+    "id": "what-makes-qognition-agency-different",
+    "title": "How Qognition Approaches B2B AI SEO and GEO",
+    "excerpt": "Evaluate our scope, working method and evidence standards before choosing a partner.",
+    "date": "May 10, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
     },
-    image: '/default-og.svg',
-    tags: ['Qognition', 'Agency Comparison', 'Growth Partner'],
-    category: 'Company',
-    content: `## Quick Answer
-
-Qognition is different because we lead with strategy, integrate channels under one growth plan, connect work to revenue, build for AI search, report transparently, stay involved after onboarding, and work alongside your team instead of disappearing behind generic deliverables.
-
-Every marketing agency says the same things: results-driven, data-first, growth partner, full-service. The language has become so overused that it barely means anything.
-
-So here is the concrete version: what Qognition does differently, why it matters, and how it affects your business.
-
-## The Problem With Most Agencies
-
-Many agencies are built to win the pitch, not the result. Senior people show up during sales, then your account is handed to a junior team.
-
-Many agencies specialize in one channel and upsell everything else. Many reports focus on impressions, rankings, and followers without connecting to leads or revenue. Many accounts run on autopilot after onboarding.
-
-Qognition was built to solve those patterns.
-
-## Difference 1: Strategy Before Everything Else
-
-Most agencies ask what channels you want and start executing. Qognition starts with the business goal.
-
-Before content, ads, or website changes, we audit your digital presence, audience, competitors, tracking, and conversion path. Then we build a roadmap with goals, channels, and measurable outcomes.
-
-Starting with strategy saves months of scattered execution.
-
-## Difference 2: True Integration Across Channels
-
-Full-service should not mean one strong specialty and several weak add-ons.
-
-At Qognition, SEO, PPC, social, content, web development, email, analytics, and AI search work from one shared strategy. SEO and PPC share keyword data. Content supports organic rankings and landing pages. Social builds brand demand. Email nurtures leads. Analytics connects the system.
-
-When channels reinforce each other, acquisition gets more efficient.
-
-## Difference 3: Global Reach With Local Market Expertise
-
-Search behavior, trust signals, CPCs, competitor density, and content expectations change by market.
-
-Qognition serves businesses across London, New York, Dubai, Mumbai, and major global markets. The goal is global strategy with local nuance, not one generic campaign translated into every country.
-
-## Difference 4: AI-Powered and Future-Ready
-
-Marketing is now shaped by AI Overviews, answer engines, short-form video, privacy changes, first-party data, and new discovery platforms.
-
-Qognition builds for the current landscape: AI search visibility, Answer Engine Optimization, Generative Engine Optimization, structured data, first-party lead capture, and content that can be cited by AI systems.
-
-## Difference 5: Radical Transparency in Reporting
-
-Reports should not hide bad news behind good-looking metrics.
-
-Qognition reports against KPIs defined at the start: qualified leads, booked calls, conversion rate, cost per lead, ROAS, organic pipeline, and revenue signals. If something is not working, we say so and explain what changes next.
-
-## Difference 6: We Measure Revenue, Not Just Rankings
-
-Rankings matter, but rankings alone do not fund growth.
-
-We connect activity to lead generation and revenue wherever tracking allows. That changes prioritization. We invest time in the pages, campaigns, and channels that can create business outcomes, not just positive slides.
-
-## Difference 7: We Do Not Disappear After Onboarding
-
-The real test of an agency is what happens six months in.
-
-Qognition keeps proactive communication, senior attention, and strategy alignment throughout the relationship. We bring competitive shifts, new opportunities, and performance issues to you before you have to ask.
-
-## Difference 8: We Build Alongside You
-
-We explain our reasoning, involve your team, and share the thinking behind major decisions. You should understand why marketing is working, not only receive the output.
-
-That makes you a stronger operator and creates a better partnership.
-
-## Who Qognition Is Built For
-
-Qognition works best with businesses that treat marketing as a growth investment. That includes startups with product-market fit, growing companies that have outgrown their marketing setup, and established brands expanding into new markets.
-
-We serve technology, professional services, ecommerce, finance, legal, healthcare, hospitality, and B2B companies that need measurable growth.
-
-## The Honest Summary
-
-The best agency is not always the biggest or most awarded. It is the one that leads with strategy, integrates channels, reports on what matters, communicates proactively, and treats clients as long-term partners.
-
-That is what Qognition is built to be.
-
-## Frequently Asked Questions
-
-### How is Qognition different from large global agencies?
-
-Large agencies offer scale, but often through junior teams and high account volume. Qognition combines global reach with focused senior strategy and faster execution.
-
-### Does Qognition work outside its core markets?
-
-Yes. Qognition works with businesses in additional markets where SEO, paid media, content, web development, and AI search strategy apply.
-
-### What does onboarding look like?
-
-Every engagement starts with an audit, strategy session, competitor review, KPI definition, and 90-day roadmap.
-
-### What if a previous agency mismanaged marketing?
-
-We begin with an honest baseline audit, identify inherited technical or campaign problems, and prioritize fixes by business impact.
-
-### What is the minimum commitment?
-
-Some clients begin with a focused audit or project. Others begin with a full-service retainer. The structure depends on the goals, current marketing situation, and growth timeline.`
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "Company",
+    "content": "## The work begins with a buyer question\n\nQognition focuses on AI SEO and GEO for B2B companies, including SaaS and specialist services. We map what a buyer needs to understand before making contact, then identify the technical, content and authority work relevant to that journey.\n\n## Implementation has an owner\n\nA scope should distinguish research, writing, technical changes and client review. We agree responsibilities and access before starting. PPC can run alongside search work under a separate scope.\n\n## Evidence has a label\n\nAn observed AI answer needs a date, platform and source record. A projected scenario is not a client result. We distinguish mentions, citations, referrals and enquiries so different measurements are not presented as the same achievement.\n\n## The next step is a conversation\n\nDiscuss your business, the buyers you want to reach and the acquisition problem you see. We use that context to decide whether a scoped program is appropriate. An enquiry does not require you to accept a predefined package.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'how-to-check-law-firm-visible-on-chatgpt',
-    title: 'How to Check if Your Law Firm Is Visible on ChatGPT',
-    excerpt:
-      'Use a free AI visibility audit to check whether your law firm gives ChatGPT, Gemini, Perplexity, and AI Overviews enough clear proof to cite you.',
-    date: 'May 15, 2026',
-    readTime: '9 min read',
-    author: { name: 'Qognition', title: 'AI Search Team', avatar: '/qognition-mark.png' },
-    image: '/default-og.svg',
-    tags: ['AI SEO', 'Law Firm Marketing', 'LLM Visibility'],
-    category: 'AI Search',
-    content: `## Quick Answer
-
-To check whether your law firm is visible on ChatGPT and other AI search systems, review your service pages, attorney or leadership proof, case-study evidence, schema, robots.txt, llm.txt, FAQs, and local market pages. Then run Qognition's free AI audit to find the biggest blockers.
-
-## Why AI Visibility Matters for Law Firms
-
-High-value legal buyers increasingly research options through AI answers, Google AI Overviews, Perplexity, Gemini, and comparison-style searches. If your firm does not have clear service pages, local proof, authorship, and structured answers, AI systems have less reason to mention you.
-
-## What to Check First
-
-- Does the website clearly state practice areas and locations?
-- Are case outcomes, testimonials, attorney profiles, and credentials easy to find?
-- Does robots.txt allow major search and AI discovery bots?
-- Is there schema for Organization, LocalBusiness, FAQPage, Article, and Service where relevant?
-- Does the homepage explain who the firm helps and why it is credible in three seconds?
-
-## Use the Free AI Audit
-
-The free AI audit checks the page for basic AI readiness signals: metadata, headings, schema, robots access, llm.txt, internal links, and source-of-truth clarity.
-
-Run it here: [Free AI Audit](/free-ai-audit).
-
-## What to Do With the Results
-
-Fix blockers first. Then build proof-rich service pages, local pages, FAQs, attorney/leadership pages, comparison content, and case-study assets that answer the questions prospects ask before contacting a firm.
-
-## Frequently Asked Questions
-
-### Can ChatGPT guarantee leads for a law firm?
-
-No. AI visibility is one discovery layer. It works best when connected to SEO, local intent, paid search, strong landing pages, and fast follow-up.
-
-### Is this different from SEO?
-
-It builds on SEO. Clear technical structure, helpful content, schema, and authority help both Google and AI systems understand your firm.
-
-### Can Qognition help legal teams implement this?
-
-Yes. Qognition builds AI search, SEO, paid media, landing pages, and HubSpot tracking for professional services and legal firms.`
+    "id": "how-to-check-law-firm-visible-on-chatgpt",
+    "title": "How to Review a Law Firm’s AI-Search Visibility",
+    "excerpt": "Build a repeatable review around practice areas, jurisdictions and business-buyer questions.",
+    "date": "May 15, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
+    },
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "AI Search",
+    "content": "## Choose the actual buying question\n\nA general counsel researching technology transactions has a different need from an individual seeking family-law advice. Define the practice area, jurisdiction and buyer before checking an assistant. Avoid using a broad best-law-firm prompt as the only measure.\n\n## Record what the answer says\n\nKeep the prompt, platform, language, date, answer and cited sources. Note whether the firm is mentioned, how its expertise is described and whether the cited information supports the description. Repeat observations because answers vary.\n\n## Review the underlying evidence\n\nCheck practice pages, lawyer biographies and authorized external profiles for factual consistency. A directory listing or professional ranking must be described accurately, with the relevant year and permission where required. Do not imply a credential from a logo alone.\n\n## Connect research to a suitable enquiry\n\nMake the relevant practice and jurisdiction clear on the landing page. Provide a discreet contact route and an appropriate notice about information submitted. Qualified legal professionals must review legal claims and advertising requirements.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'free-seo-audit-tool-guide',
-    title: 'How to Use a Free SEO Audit Tool Without Getting Bad Advice',
-    excerpt:
-      'Free SEO audit tools are useful when they prioritize real blockers. Learn what to trust, what to ignore, and what to fix first.',
-    date: 'May 15, 2026',
-    readTime: '8 min read',
-    author: { name: 'Qognition', title: 'SEO Strategy Team', avatar: '/qognition-mark.png' },
-    image: '/default-og.svg',
-    tags: ['SEO Audit', 'Technical SEO', 'Lead Generation'],
-    category: 'SEO',
-    content: `## Quick Answer
-
-A free SEO audit is useful when it checks the basics that stop pages from being indexed, understood, or trusted: metadata, headings, canonicals, robots.txt, sitemap access, schema, internal links, and HTTPS.
-
-## What a Free SEO Audit Should Tell You
-
-It should identify blockers, not overwhelm you with vanity scores. The best first-pass audits explain what is missing, why it matters, and which fixes should happen before you spend more on content or ads.
-
-## What to Ignore
-
-Ignore generic warnings that do not affect your buyer journey. A score means little unless the recommendation connects to rankings, qualified traffic, conversion rate, or lead quality.
-
-## Run the Audit
-
-Use Qognition's [AI Search Visibility Report](/free-ai-audit) to get a practical first-pass report. Then compare the findings with Search Console, analytics, CRM data, and competitor pages.
-
-## Fix Order
-
-1. Crawl/index blockers.
-2. Missing or weak metadata.
-3. H1 and heading clarity.
-4. Canonical and duplicate page issues.
-5. Internal links to priority services.
-6. Schema and proof content.
-7. Conversion CTA and lead capture.
-
-## Frequently Asked Questions
-
-### Does a free audit replace a full SEO audit?
-
-No. It is the starting point. Full audits add crawl data, keyword data, logs, competitors, page speed, analytics, and revenue prioritization.
-
-### How often should we run one?
-
-Run a quick audit after major page changes, migrations, redesigns, or new campaign launches.
-
-### Can Qognition fix the issues?
-
-Yes. We can prioritize and implement the fixes through an SEO sprint or ongoing growth program.`
+    "id": "free-seo-audit-tool-guide",
+    "title": "What a Website Readiness Check Can Tell You",
+    "excerpt": "Use technical findings to start an investigation, then review commercial relevance separately.",
+    "date": "May 15, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
+    },
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "SEO",
+    "content": "## Understand the measurement\n\nA page fetch can reveal visible content, response behaviour and selected technical signals. It cannot prove how every search system interprets a site or whether a business will appear in an AI recommendation. A useful report states what was checked and what was unavailable.\n\n## Investigate the finding\n\nA missing title, blocked page or broken form has a different implication from a short paragraph. Inspect the affected URL and its purpose before assigning priority. Avoid turning every detected pattern into a penalty.\n\n## Review the buyer journey\n\nCheck whether the page explains the service, who it fits and what information a buyer needs before contact. Technical readiness supports a useful page; it does not replace subject expertise or commercial clarity.\n\n## Choose a next step\n\nFix confirmed defects, assign owners and retest. If the question concerns AI mentions or competitors, commission a separate observation with a defined question set and source records. Contact Qognition when you want help assessing the relevant scope.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'llm-visibility-audit-checklist',
-    title: 'Free LLM Visibility Audit Checklist for B2B Brands',
-    excerpt:
-      'Check whether your site is understandable to LLMs with robots access, llm.txt, structured data, concise summaries, and proof-rich source pages.',
-    date: 'May 15, 2026',
-    readTime: '8 min read',
-    author: { name: 'Qognition', title: 'LLM Optimization Team', avatar: '/qognition-mark.png' },
-    image: '/default-og.svg',
-    tags: ['LLM Optimization', 'AI Discovery', 'Robots.txt'],
-    category: 'AI Search',
-    content: `## Quick Answer
-
-An LLM visibility audit checks whether AI systems can access, parse, and trust the facts on your website. Start with robots.txt, llm.txt, schema, canonical URLs, service pages, case studies, leadership proof, and concise summaries.
-
-## Why LLM Visibility Is Different
-
-Traditional SEO focuses heavily on ranking pages in search results. LLM visibility focuses on whether AI systems can summarize your brand accurately and cite the right source pages when buyers ask questions.
-
-## Checklist
-
-- AI/search bots are not blocked at the root.
-- Content Signals declare search and AI input preferences.
-- llm.txt lists the most important source pages.
-- Services and locations are described in plain language.
-- Case studies show proof, timelines, and outcomes.
-- FAQs answer natural-language questions.
-- Schema supports Organization, Article, FAQPage, Service, and BreadcrumbList.
-
-## Run the Audit
-
-Use Qognition's [AI Search Visibility Report](/free-ai-audit) to check the technical discovery layer, then use the report to build missing source-of-truth pages.
-
-## Frequently Asked Questions
-
-### Should we allow AI bots?
-
-If the goal is AI discovery, allow search and AI input while opting out of training where possible.
-
-### What if our claims are inconsistent?
-
-Fix them first. LLMs struggle when service pages, about pages, case studies, and schema describe the company differently.
-
-### Does Qognition build llm.txt?
-
-Yes. We build llm.txt, entity summaries, schema, and AI-ready content paths.`
+    "id": "llm-visibility-audit-checklist",
+    "title": "A B2B AI-Visibility Review Checklist",
+    "excerpt": "Separate technical readiness, factual consistency and observed answers.",
+    "date": "May 15, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
+    },
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "AI Search",
+    "content": "## Confirm access and content\n\nReview search access, rendering, status codes and internal links for useful pages. Provider crawler controls differ; search discovery and model training are separate decisions. Use current provider documentation rather than assuming every AI crawler serves the same purpose.\n\n## Check the business facts\n\nReview service descriptions, product names, applications, credentials and external profiles. Keep structured data consistent with what people can read on the page. Remove unsupported results and relationships.\n\n## Define the observation\n\nChoose commercial questions drawn from buyer research and sales conversations. Record platform, locale, time, answer and cited URLs. State the sample and repeat conditions so a reader can understand the limitations.\n\n## Connect findings to work\n\nA citation gap can suggest a content or evidence question, but it does not reveal a platform’s private ranking rules. Prioritize improvements that help buyers evaluate the business, then monitor discovery and enquiries separately.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'branding-audit-for-b2b-websites',
-    title: 'Branding Audit for B2B Websites: What to Fix First',
-    excerpt:
-      'A practical branding audit for B2B websites covering positioning, proof, visual consistency, CTAs, and trust signals.',
-    date: 'May 15, 2026',
-    readTime: '7 min read',
-    author: { name: 'Qognition', title: 'Brand Strategy Team', avatar: '/qognition-mark.png' },
-    image: '/default-og.svg',
-    tags: ['Branding', 'B2B Website', 'Conversion'],
-    category: 'Branding',
-    content: `## Quick Answer
-
-A B2B branding audit should answer three questions: can buyers understand the offer quickly, do they believe the company can deliver, and is the next step obvious?
-
-## The Three-Second Test
-
-Above the fold, your page should say who you help, what outcome you create, and how the visitor can take the next step. Vague claims like "future-ready partner" need proof and specificity.
-
-## Proof Matters
-
-Use case studies, testimonials, client journey details, before/after metrics, screenshots, team profiles, certifications, and specific industry experience. High-ticket buyers need reassurance before they talk to sales.
-
-## Visual Consistency
-
-Design should make the company feel credible without hiding the offer. Typography, spacing, logo use, colors, button styles, and content hierarchy all affect trust.
-
-Run the [AI Search Visibility Report](/free-ai-audit) to identify the biggest clarity and trust gaps.
-
-## Frequently Asked Questions
-
-### Is branding measurable?
-
-Yes. Measure conversion rate, booked calls, form completion, sales feedback, branded search, and lead quality.
-
-### Should branding come before SEO?
-
-They should work together. SEO brings the buyer in; branding and proof help them convert.
-
-### Can Qognition handle brand and website execution?
-
-Yes. We connect positioning, creative direction, web design, SEO, and conversion tracking.`
+    "id": "branding-audit-for-b2b-websites",
+    "title": "Review B2B Website Messaging Before Redesigning",
+    "excerpt": "Find clarity and trust problems while preserving a useful visual identity.",
+    "date": "May 15, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
+    },
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "Branding",
+    "content": "## Check the first explanation\n\nA visitor should understand what the business provides and who it serves. Read the headline and supporting paragraph without the rest of the site. Replace broad claims with the applications and decisions that matter to buyers.\n\n## Review the proof\n\nSeparate current client evidence from scenarios and aspirations. Check that named relationships, testimonials and credentials have permission and support. A familiar layout can remain while the claims become more precise.\n\n## Check the route to contact\n\nUse clear labels for an enquiry form and booking calendar. Confirm mobile readability, keyboard access and error handling. Do not describe a form as a download or a calendar view as a completed booking.\n\n## Preserve what works\n\nKeep the existing logo, colours, typography and components when they serve the business. Rewrite inconsistent page copy and fix usability issues before assuming the identity itself is the problem.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   },
   {
-    id: 'social-media-audit-for-b2b-founders',
-    title: 'Social Media Audit for B2B Founders',
-    excerpt:
-      'Audit your founder-led social presence for positioning, proof, consistency, content pillars, profile clarity, and lead capture.',
-    date: 'May 15, 2026',
-    readTime: '7 min read',
-    author: { name: 'Qognition', title: 'Social Strategy Team', avatar: '/qognition-mark.png' },
-    image: '/default-og.svg',
-    tags: ['Social Media', 'Founder Led Content', 'LinkedIn'],
-    category: 'Social Media',
-    content: `## Quick Answer
-
-A B2B social media audit should check profile clarity, content consistency, founder POV, proof posts, offer CTAs, and whether attention is routed into a lead capture path.
-
-## Start With the Profile
-
-The profile should explain who you help, what outcome you create, why you are credible, and where people should go next. For many B2B founders, the LinkedIn profile is a landing page.
-
-## Audit the Content Mix
-
-Strong B2B social content usually includes education, contrarian lessons, client proof, behind-the-scenes process, market commentary, and direct offers. Too much generic advice gets ignored.
-
-## Connect Social to Lead Capture
-
-Send attention to a useful offer: a free audit, calculator, benchmark report, newsletter, webinar, or case study. Social media should not stop at impressions.
-
-Run the [AI Search Visibility Report](/free-ai-audit) to find your biggest gaps.
-
-## Frequently Asked Questions
-
-### Which platform matters most for B2B?
-
-LinkedIn is usually the strongest starting point, but short-form video and YouTube can support authority.
-
-### How often should founders post?
-
-Start with 3 to 5 strong posts per week and improve quality before increasing volume.
-
-### Can Qognition create the content?
-
-Yes. We build content pillars, post formats, creative templates, publishing workflows, and reporting.`
+    "id": "social-media-audit-for-b2b-founders",
+    "title": "Review a Founder’s B2B Social Journey",
+    "excerpt": "Assess whether expertise reaches the right audience and leads to useful next steps.",
+    "date": "May 15, 2026",
+    "readTime": "4 min read",
+    "author": {
+      "name": "Qognition",
+      "title": "B2B Search Team",
+      "avatar": "/qognition-mark.png"
+    },
+    "image": "/default-og.svg",
+    "tags": [
+      "B2B",
+      "AI SEO",
+      "GEO"
+    ],
+    "category": "Social Media",
+    "content": "## Review audience relevance\n\nLook at the people responding and the questions they ask. High engagement from peers can be useful without representing buyer demand. Separate recruiting, community and acquisition goals so the same post is not judged against incompatible outcomes.\n\n## Review the substance\n\nPublish explanations the founder can defend from experience. Use approved examples and make limitations visible. An unsupported statistic does not become reliable because it appears in a personal post.\n\n## Review destinations\n\nLink an educational discussion to a relevant resource and a commercial discussion to the appropriate service page. Make contact possible without forcing every interested reader through an audit or gated asset.\n\n## Review the handoff\n\nWhen someone enquires, preserve the original topic and their request. Track observable referrals and confirmed conversations separately from likes. Obtain appropriate consent for any ongoing follow-up.\n\n## Discuss your requirements\n\n[Book a call](/book) or [send an enquiry](/contact#enquiry) with your business, audience and the problem you want to solve.\n\nRelated guidance: [AI SEO and GEO](/services/ai-seo) · [Buyer journeys](/content-marketing-for-b2b) · [Our approach](/process)"
   }
 ];

@@ -162,7 +162,9 @@ export async function sendMetaCapiEvent({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      cache: 'no-store'
+      cache: 'no-store',
+      signal: AbortSignal.timeout(10_000),
+      redirect: 'error'
     });
 
     const data = await response.json().catch(() => ({}));

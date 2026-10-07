@@ -10,7 +10,7 @@ export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
   title: 'Agency Comparisons | Qognition',
-  description: 'Compare Qognition with other agencies, in-house teams, and city-level agency options for SEO, PPC, and growth.',
+  description: 'Evaluate agencies, in-house teams and service approaches for B2B AI SEO, GEO and supporting acquisition work.',
   alternates: { canonical: '/comparisons' },
 };
 
@@ -37,7 +37,7 @@ export default function Page() {
             <Badge className="mb-4">Comparisons</Badge>
             <Heading level="h1" className="mb-4">Agency and Strategy Comparisons</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl">
-              Buyer-intent pages for teams comparing agencies, internal hiring, and local options before committing budget.
+              Compare responsibilities, evidence, delivery scope and measurement before choosing a partner. Use these guides to build a brief around your team and the buyers you need to reach.
             </p>
           </div>
         </Section>

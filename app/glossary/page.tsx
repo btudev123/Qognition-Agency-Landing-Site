@@ -8,7 +8,7 @@ import Badge from '../../components/ui/Badge';
 export const dynamic = 'force-static';
 
 export const metadata = {
-  title: 'Digital Marketing Glossary | 300+ SEO, AI and Growth Terms',
+  title: 'AI SEO, GEO & B2B Marketing Glossary | Qognition',
   description:
     'A useful glossary of SEO, AI search, PPC, analytics, content, local SEO, and lead generation terms.',
   alternates: { canonical: '/glossary' },
@@ -39,7 +39,7 @@ export default function Page() {
             <Badge className="mb-4">Glossary</Badge>
             <Heading level="h1" className="mb-4">Digital Marketing Glossary</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl">
-              More than 300 definitions across SEO, AI search, paid media, analytics, lead generation, and conversion strategy.
+              Understand the language behind AI SEO, GEO, paid media and measurement. Start with a definition, then explore how the concept affects a buyer’s ability to find, evaluate or contact your business.
             </p>
           </div>
         </Section>

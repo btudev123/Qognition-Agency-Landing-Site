@@ -2,28 +2,6 @@ import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
 import { Eyebrow, GhostWord, Shell } from './primitives';
 
-/* Section 4 — Four surfaces, four different jobs. docs/copy/home.md §4.
- *
- * Replaces `FourSpokes` in the orphaned app/HomePage.tsx, which rendered eleven
- * service cards from the retired hub-and-spokes model. That model is dead
- * (CLAUDE.md §11 anti-pattern 1) and its copy claimed "one partner" for eleven
- * services we no longer sell as eleven things.
- *
- * REAL <table> MARKUP, DELIBERATELY. This block is the one on the page most
- * likely to be lifted verbatim by a retrieval system, which is the entire
- * product. A model can parse a <table> with a <caption> and scoped headers; it
- * cannot parse four divs pretending to be rows. Theo's build note in
- * docs/copy/home.md says so explicitly. Do not "improve" this into a card grid.
- *
- * Emphasis order is CLAUDE.md §1: AI SEO and GEO first, SEO and Local SEO as
- * the supporting layers that make them work. Never blur AI SEO and GEO; they
- * are different surfaces run by different systems.
- *
- * The four layers are not linked. /seo, /local-seo, /ai-seo and /geo are in the
- * §5 route plan and do not exist yet. Theo's copy carries a link line for them;
- * it is omitted here rather than pointed at /services/*, which §5 lists as
- * being consolidated.
- */
 
 const LAYERS = [
   {
@@ -34,7 +12,7 @@ const LAYERS = [
   {
     layer: 'GEO',
     surface: 'ChatGPT, Perplexity, Gemini, Claude, Copilot',
-    moves: 'What third-party sources say about you, and whether your entity is unambiguous',
+    moves: 'What your site states, what third-party sources say about you, and whether your company name resolves to you',
   },
   {
     layer: 'SEO',
@@ -43,8 +21,8 @@ const LAYERS = [
   },
   {
     layer: 'Local SEO',
-    surface: 'Google Maps, the local pack, Bing Places, Business Profile, reviews, listings',
-    moves: 'Profile completeness, categories, review velocity, listing consistency',
+    surface: 'Google Maps, local pack, Bing Places, Business Profile, reviews, listings',
+    moves: 'Accurate profiles, relevant categories, authentic reviews and consistent listings',
   },
 ];
 
@@ -65,8 +43,7 @@ export default function FourLayers() {
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-6">
             <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
-              Most of this industry uses these four words interchangeably. They are four different
-              places, run by different systems, and they respond to different work.
+              AI SEO and GEO are different surfaces from SEO, and from each other. We use the definitions below on every page, in every report and on every call.
             </p>
           </ScrollReveal>
         </div>
@@ -101,7 +78,7 @@ export default function FourLayers() {
                     className="font-mono text-meta tracking-[0.14em] uppercase font-normal py-3 align-bottom"
                     style={{ color: 'var(--s-text-faint)' }}
                   >
-                    What actually moves it
+                    What we work on
                   </th>
                 </tr>
               </thead>
@@ -130,9 +107,7 @@ export default function FourLayers() {
 
         <ScrollReveal stagger={4}>
           <p className="text-body mt-10 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-            All four are in every retainer. We do not sell them separately, because the last two do
-            not work without the first two. Tiers differ by scope: locations covered, prompts
-            tracked, assets produced.
+            Start with the layer you need. We scope the work around your products and markets, and add local SEO only where location shapes the buying decision. B2B PPC runs alongside the four layers and is scoped separately, priced as a share of ad spend with a monthly minimum. A firm that wants only PPC is a full client.
           </p>
         </ScrollReveal>
       </Shell>

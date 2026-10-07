@@ -26,8 +26,10 @@ const walk = (dir, out = []) => {
   }
   return out;
 };
-const sources = [...walk('app'), ...walk('components')].filter((f) => !f.includes('siteConfig'));
-const hardCoded = sources.filter((f) => fs.readFileSync(f, 'utf8').includes('leadconnectorhq.com'));
+// lib/ included: on 2026-10-06 spokes, the audit email and the audit PDF still hard-coded it.
+const sources = [...walk('app'), ...walk('components'), ...walk('lib')].filter((f) => !f.includes('siteConfig'));
+// services.leadconnectorhq.com is the GHL REST API used by lib/leadCrm.ts, not the calendar.
+const hardCoded = sources.filter((f) => /(?<!services\.)leadconnectorhq\.com/.test(fs.readFileSync(f, 'utf8')));
 assert.deepEqual(
   hardCoded, [],
   `${hardCoded.length} file(s) hard-code the booking URL instead of importing BOOKING_LINK:\n  ` +
@@ -70,7 +72,62 @@ assert.ok(bookCall.includes('id="book"'), 'BookCall lost its id="book" anchor, w
 const hero = fs.readFileSync('components/home/Hero.tsx', 'utf8');
 assert.ok(hero.includes('href="#book"'), 'The hero secondary CTA no longer points at the on-page calendar.');
 
+/* 5. One machine-readable self-description, and it names the priority pages.
+      On 2026-10-06 production served three different ones: /llms.txt from the
+      route (retired "Demand, ABM, Revenue Systems" positioning), /llm.txt from a
+      static public file (invented offices, published prices, the retired spokes)
+      that every page's Link header advertised, and a public/llms.txt that the
+      route shadowed in production and that made `next dev` 500 with "conflicting
+      public file and page file". The route is now the only source. */
+for (const stale of ['public/llms.txt', 'public/llm.txt']) {
+  assert.ok(
+    !fs.existsSync(stale),
+    `${stale} exists. app/llms.txt/route.ts (lib/llms.ts) is the single source; a static copy drifts ` +
+    `silently and public/llms.txt conflicts with the route.`
+  );
+}
+const nextConfig = fs.readFileSync('next.config.mjs', 'utf8');
+assert.ok(
+  /source:\s*'\/llm\.txt',\s*destination:\s*'\/llms\.txt',\s*permanent:\s*true/.test(nextConfig),
+  'next.config.mjs no longer 308s /llm.txt to /llms.txt. Crawlers cached the old address from the Link header.'
+);
+assert.ok(
+  fs.readFileSync('proxy.ts', 'utf8').includes('</llms.txt>; rel="alternate"'),
+  'proxy.ts Link header no longer advertises /llms.txt.'
+);
+
+const { buildLlmsTxt } = require('../lib/llms.ts');
+const { SITE_URL } = require('../lib/seo.ts');
+const llms = buildLlmsTxt();
+/* The operator's 18 priority pages (2026-10-06). /free-seo-audit is a 308 to
+   /free-ai-audit (next.config.mjs), so it is satisfied by its destination plus
+   that redirect: listing a redirecting URL in llms.txt would send readers
+   through a hop. Matched as `(<absolute url>)` so /services cannot pass on the
+   strength of /services/seo, nor /locations/perth on /locations/perth/seo. */
+const PRIORITY = [
+  '/', '/services', '/services/seo', '/services/ai-seo', '/services/ppc',
+  '/services/web-development', '/services/content', '/services/branding-creative',
+  '/services/cro-analytics', '/industries', '/case-studies', '/free-seo-audit',
+  '/locations/new-york', '/locations/london', '/locations/dubai',
+  '/locations/perth/ai-seo', '/locations/perth', '/locations/perth/seo',
+];
+const REDIRECTED = { '/free-seo-audit': '/free-ai-audit' };
+for (const [from, to] of Object.entries(REDIRECTED)) {
+  const rule = new RegExp(`source:\\s*'${from}',\\s*destination:\\s*'${to}',\\s*permanent:\\s*true`);
+  assert.ok(rule.test(nextConfig), `${from} is no longer a 308 to ${to}, so llms.txt must list ${from} itself.`);
+}
+const missing = PRIORITY
+  .map((p) => REDIRECTED[p] || p)
+  .filter((p) => !llms.includes(`(${p === '/' ? SITE_URL : SITE_URL + p})`));
+assert.deepEqual(missing, [], `llms.txt is missing priority page(s): ${missing.join(', ')}`);
+assert.ok(!llms.includes('$'), 'llms.txt contains "$". No public prices (2026-10-03 authority note).');
+assert.ok(!llms.includes('\u2014'), 'llms.txt contains an em dash (CLAUDE.md §10).');
+
 console.log(
   `✓ funnel: booking resolves from one constant in ${sources.length} source files, contact links ` +
   `well-formed, /free-ai-audit posts to /api/lead, calendar embedded on the homepage at #book.`
+);
+console.log(
+  `✓ llms: one source (route), /llm.txt 308s to /llms.txt, ${PRIORITY.length} priority pages listed ` +
+  `(/free-seo-audit via its 308 destination), no "$", no em dash.`
 );

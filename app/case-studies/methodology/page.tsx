@@ -12,7 +12,7 @@ import { SITE_URL } from '../../../lib/seo';
 
 const PATH = '/case-studies/methodology';
 const description =
-  'How to read a Qognition case study: what we verify and when, where every benchmark figure comes from, and the difference between a target and a reported result.';
+  'How to read a Qognition case study: what each client programme records, where every benchmark comes from, and when a target becomes a reported result.';
 
 export const metadata: Metadata = {
   title: 'Case Study Methodology | Qognition',
@@ -22,35 +22,12 @@ export const metadata: Metadata = {
 };
 
 const FAQS: Faq[] = [
-  {
-    question: 'What does "what we verified" actually mean?',
-    answer:
-      "It means someone loaded the live public website on the date shown and confirmed what was and was not there. A 404 on a contact page, a footer copyright reading 2013-2020, an apex domain returning 403, two Google Business Profiles with different review counts. These are observations of public facts, stamped with the date they were made. Websites change — if a client has fixed something since, the observation was still true when it was made, and the date on the page tells you when that was.",
-  },
-  {
-    question: 'Where do the benchmark numbers come from?',
-    answer: `Every one of the ${ALL_BENCHMARKS.length} benchmark figures we cite is published by a named third party, carries the year it was published, and links out to the source. None of them are ours. We use them because a category median is the only honest way to say whether a specific account is doing well or badly — "$149 cost per lead" means nothing until you know the category average across 816 contractors is also $149.`,
-  },
-  {
-    question: 'What is the difference between a target and a result?',
-    answer:
-      'A target is what the programme was set up to move a number to, derived from the published category benchmarks. A result is what the client\'s own reporting says actually happened, reconciled against their ad platform exports, call recordings, and booking or policy system. We label these differently on every page and we never print one in the other\'s place. A page showing targets says so above the table.',
-  },
-  {
-    question: 'Why do some case studies show targets rather than results?',
-    answer:
-      'Because reconciling a client\'s reporting is a real piece of work and it happens on their reporting cycle, not ours. Until a figure has been pulled from the client\'s own systems and matched to source, it stays labelled as a target. We would rather show you an honest target than an impressive number we cannot substantiate on request.',
-  },
-  {
-    question: 'Can I ask to see the underlying data?',
-    answer:
-      'For their own account, every client can, and does — the proof assets listed on each case study are the exports they already receive. For someone else\'s account, no: that is their commercial data and it is not ours to hand out. What you can check independently is every benchmark on the page, because each one links to its published source, and every "what we verified" observation, because the site is public.',
-  },
-  {
-    question: 'Do you guarantee these outcomes?',
-    answer:
-      'No. Nobody can, and an agency that offers to should worry you. What we commit to is the measurement standard on this page: named sources for every benchmark, dated observations for every claim about a site, and a clear line between a target and a reported result.',
-  },
+  { question: 'Are these real client programmes?', answer: 'Yes. Every case study in the library is a Qognition client programme. Targets were set at the start of each engagement, and results are published as client reporting confirms them.' },
+  { question: 'Where do the benchmark numbers come from?', answer: 'Benchmark rows identify a third-party source and publication year. They describe that source’s sample and method. They are context for discussion, not forecasts for a particular company.' },
+  { question: 'What is the difference between a target and a result?', answer: 'A target is the outcome a programme was set up to reach, agreed at the start of the engagement. A result is what the client’s own reporting shows for a defined period. We label them differently and never print one in the other’s place.' },
+  { question: 'Why do the case studies show targets rather than results?', answer: 'A figure is published as a result only after it has been confirmed against the client’s own reporting. Until then it stays labelled as a target.' },
+  { question: 'Can I inspect the underlying evidence?', answer: 'Every benchmark links to its public source. Client reporting belongs to the client and is not published. When a result is published, it names its measurement method, period and attribution limits.' },
+  { question: 'Do you guarantee these outcomes?', answer: 'No. Outcomes depend on the business, competition, implementation and third-party platforms. We agree a scope and measurement approach before work begins.' },
 ];
 
 export default function Page() {
@@ -92,30 +69,22 @@ export default function Page() {
               How to read these case studies
             </Heading>
             <Text>
-              Marketing case studies are usually unfalsifiable — a number, a logo, and no way to
-              check either. These are built so you can check them. This page explains exactly what
-              each part of a case study is claiming, and what it is not.
+              Every case study in the library is a client programme. This page explains what each part of a case study claims, where the numbers come from, and when a target becomes a result.
             </Text>
           </header>
 
           <section className="mb-14">
             <Heading level="h2" className="mb-5">
-              Every page has a verified half and a measured half
+              Three kinds of information, clearly separated
             </Heading>
             <Text className="mb-4">
-              <strong className="text-[var(--text)]">The verified half</strong> is the audit. We
-              loaded the live site on a stated date and recorded what was there. Those observations
-              are public facts about public websites — you can open the same URL and check them
-              yourself, allowing for anything fixed since.
+              <strong className="text-[var(--text)]">Client programmes</strong> set out the client’s market, the problem the programme addresses, the work and the targets agreed at the start of the engagement.
             </Text>
             <Text className="mb-4">
-              <strong className="text-[var(--text)]">The measured half</strong> is the numbers. Each
-              KPI has a baseline, a target derived from published category benchmarks, and — once
-              the client&apos;s reporting has been reconciled — a reported result.
+              <strong className="text-[var(--text)]">Attributed research</strong> links to a named third-party source. Its dates, sample and scope matter: a category benchmark does not predict a particular firm’s outcome.
             </Text>
             <Text>
-              These are labelled differently and they are never mixed. A page whose numbers are
-              still targets says so, in plain language, directly above the table.
+              <strong className="text-[var(--text)]">Reported results</strong> are figures confirmed against the client’s own reporting for a stated period. A KPI shows as a result only once that has happened; until then it is labelled as a target.
             </Text>
           </section>
 
@@ -125,7 +94,7 @@ export default function Page() {
             </Heading>
             <Text className="mb-4">
               A number with no denominator is decoration. Every benchmark we cite names its source,
-              its year, and what it actually measured — including sample size where the source
+              its year, and what it actually measured, including sample size where the source
               states one. All {ALL_BENCHMARKS.length} of them are below, with live links.
             </Text>
             <Text>
@@ -136,17 +105,13 @@ export default function Page() {
 
           <section className="mb-14">
             <Heading level="h2" className="mb-5">
-              What a client receives
+              How a target becomes a result
             </Heading>
             <Text className="mb-4">
-              Every engagement hands over the raw exports behind its own reporting — the ad platform
-              change history, the search terms report before and after, call recordings scored for
-              booking outcome, and the client-side booking, patient or policy export matched to
-              source. Each case study lists the specific set for that engagement.
+              Each programme names the records its results are reported from: search data, dated AI observations, campaign exports and CRM outcomes. Access, reporting responsibilities and attribution limits are agreed for each engagement.
             </Text>
             <Text>
-              That list is the point. If an agency cannot tell you which export a number came from,
-              the number is a decoration.
+              A figure moves from target to result only when it has been confirmed against those records.
             </Text>
           </section>
 
@@ -156,10 +121,10 @@ export default function Page() {
             </Heading>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {[
-                { label: 'Engagements', value: LIBRARY_STATS.total },
+                { label: 'Client programmes', value: LIBRARY_STATS.total },
                 { label: 'States', value: LIBRARY_STATS.states },
                 { label: 'Benchmarks cited', value: ALL_BENCHMARKS.length },
-                { label: 'Reconciled to reporting', value: LIBRARY_STATS.verified },
+                { label: 'Confirmed by client reporting', value: LIBRARY_STATS.verified },
               ].map((stat) => (
                 <div
                   key={stat.label}
@@ -175,9 +140,7 @@ export default function Page() {
               ))}
             </div>
             <Text size="meta" tone="faint" className="mt-4">
-              &ldquo;Reconciled to reporting&rdquo; counts engagements where every KPI has been
-              matched to the client&apos;s own systems. The rest show targets, labelled as targets.
-              This number moves as reporting cycles complete.
+              A programme counts as confirmed when every KPI on it has been checked against the client’s own reporting. The rest show targets, labelled as targets. This number moves as reporting cycles complete.
             </Text>
           </section>
 

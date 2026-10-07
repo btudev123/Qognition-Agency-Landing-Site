@@ -1,3 +1,5 @@
+import { BOOKING_LINK } from '../data/siteConfig';
+
 export type SpokeId = 'marketing' | 'tech' | 'finance' | 'automation';
 
 export interface SpokeConfig {
@@ -29,7 +31,7 @@ export const SPOKES: Record<SpokeId, SpokeConfig> = {
     subhead: 'SEO, paid media, content, brand strategy, and CRO — built for measurable revenue, not vanity metrics.',
     primaryBuyer: 'CMO / Founder',
     pricingModel: 'Individually scoped',
-    calLink: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency',
+    calLink: BOOKING_LINK,
     slackChannel: '#leads-marketing',
   },
   tech: {
@@ -44,7 +46,7 @@ export const SPOKES: Record<SpokeId, SpokeConfig> = {
     subhead: 'Websites, web apps, integrations, and performance optimization — built to ship fast and scale.',
     primaryBuyer: 'CTO / Founder',
     pricingModel: 'Individually scoped',
-    calLink: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency',
+    calLink: BOOKING_LINK,
     slackChannel: '#leads-tech',
   },
   finance: {
@@ -59,7 +61,7 @@ export const SPOKES: Record<SpokeId, SpokeConfig> = {
     subhead: 'Bookkeeping, tax, fractional CFO, and payroll — tech-enabled finance that goes beyond compliance.',
     primaryBuyer: 'CFO / Founder',
     pricingModel: 'Individually scoped',
-    calLink: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency',
+    calLink: BOOKING_LINK,
     slackChannel: '#leads-finance',
   },
   automation: {
@@ -74,7 +76,7 @@ export const SPOKES: Record<SpokeId, SpokeConfig> = {
     subhead: 'Custom AI agents, workflow automation, CRM integration, and data pipelines — built for founders who want to scale without scaling headcount.',
     primaryBuyer: 'COO / Ops Lead',
     pricingModel: 'Individually scoped',
-    calLink: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency',
+    calLink: BOOKING_LINK,
     slackChannel: '#leads-automation',
   },
 };

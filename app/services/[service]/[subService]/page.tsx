@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { SERVICE_SUB_PAGES, getServiceSubPage } from '../../../../data/seoExpansion';
 import { SERVICES } from '../../../../data/services';
+import { SERVICE_PROMISES } from '../../../../data/servicePromises';
 import { breadcrumbSchema, faqSchema } from '../../../../lib/schema';
 import Heading from '../../../../components/ui/Heading';
 import Badge from '../../../../components/ui/Badge';
+import { appendFunnelContext } from '../../../../lib/funnelContext';
 
 export const dynamicParams = false;
 
@@ -74,12 +76,9 @@ export default async function Page({ params }: { params: Promise<{ service: stri
           <Heading level="h1" className="mt-6 mb-6">{page.h1}</Heading>
           <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
 
+          <div className="mt-8 flex flex-wrap gap-4"><Link className="btn-primary" href={appendFunnelContext("/book", { page_id: path, service_id: service, stage: "bofu" })}>Book a call</Link><Link className="btn-outline" href={appendFunnelContext("/contact#enquiry", { page_id: path, service_id: service, stage: "bofu" })}>Send an enquiry</Link></div>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              `Quick summary: ${page.title} should connect strategy, execution, tracking, and proof to a measurable lead or revenue outcome.`,
-              `Qognition builds this as part of a wider ${parent.title} system, not as an isolated tactic or thin SEO page.`,
-              'The page includes service schema, FAQ schema, breadcrumbs, related links, and useful content in the HTML before JavaScript runs.',
-            ].map((item) => (
+            {SERVICE_PROMISES.map((item) => (
               <div
                 key={item}
                 className="rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-5 text-sm leading-relaxed text-[var(--text-muted)]"
@@ -129,7 +128,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               </div>
             </div>
             <div className="rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8">
-              <Heading level="h2" className="mb-6">Related Growth Paths</Heading>
+              <Heading level="h2" className="mb-6">Useful next steps</Heading>
               <div className="space-y-3">
                 {page.relatedLinks.map((link) => (
                   <Link
@@ -149,7 +148,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
             <div className="mt-20 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
               <Heading level="h2" className="mb-6">More {parent.title} Sub-Services</Heading>
               <p className="text-body text-[var(--text-muted)] mb-6">
-                Internal links help buyers understand how this service fits inside the wider AI growth marketing system.
+                Explore related capabilities to decide which combination addresses your current priorities.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {siblingPages.map((sibling) => (

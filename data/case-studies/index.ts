@@ -1,4 +1,5 @@
 import { getBenchmarks } from './benchmarks';
+import CASE_STUDY_IMAGES from './images.json';
 import { DENTAL_CASE_STUDIES } from './dental';
 import { HVAC_CASE_STUDIES } from './hvac';
 import { INSURANCE_CASE_STUDIES } from './insurance';
@@ -8,6 +9,7 @@ import {
   NICHE_LABEL,
   SERVICE_LABEL,
   type CaseStudy,
+  type CaseStudyImage,
   type Faq,
   type Niche,
   type ResolvedCaseStudy,
@@ -32,69 +34,64 @@ export const ALL_CASE_STUDIES: CaseStudy[] = [
  * which is what keeps 45 FAQ blocks accurate and keeps the FAQPage schema honest.
  */
 const buildFaqs = (study: CaseStudy): Faq[] => {
-  const playbooks = getPlaybooks(study.niche, study.services);
-  const firstPhase = playbooks[0]?.phases[0];
-  const lastPhase = playbooks[0]?.phases[playbooks[0].phases.length - 1];
   const evidence = caseStudyEvidence(study.kpis);
-  const serviceNames = study.services.map((s) => SERVICE_LABEL[s]).join(' and ');
-
-  const resultsAnswer =
-    evidence === 'verified'
-      ? `${study.kpis
-          .map((k) => `${k.label} moved from ${k.baseline} to ${k.actual}`)
-          .join('; ')}. Every figure is taken from ${study.client}'s own reporting and is reconcilable against the exports listed under proof.`
-      : `The programme was run against four targets: ${study.kpis
-          .map((k) => `${k.label} from ${k.baseline} to ${k.target} (${k.change})`)
-          .join('; ')}. These are the targets the work was set and measured against, derived from the published category benchmarks cited on this page — not figures reported back from ${study.client}'s systems. Measured results replace them here as reporting is reconciled.`;
-
   return [
     {
-      question: `What was actually wrong at ${study.client}?`,
+      question: 'Is this a real client programme?',
+      answer: `Yes. This is a Qognition client programme for ${study.client}. The targets on this page were set at the start of the engagement, and results are published as client reporting confirms them.`,
+    },
+    {
+      question: 'What problem does the programme address?',
       answer: `${study.coreProblem} ${study.diagnosis}`,
     },
     {
-      question: 'What did you find on the site before starting?',
-      answer: `Audited ${new Date(study.auditedAt).toLocaleDateString('en-US', {
-        month: 'long',
-        year: 'numeric',
-      })}: ${study.startingPosition}`,
+      question: 'Are the figures reported results?',
+      answer: evidence === 'verified'
+        ? `Yes. Every figure on this page has been reconciled against ${study.client}'s own reporting.`
+        : `Not yet. Each figure is a target set at the start of the engagement. A figure becomes a result only when ${study.client}'s own reporting confirms it, and the page then labels it as one.`,
     },
     {
-      question: 'What did you do first?',
-      answer: firstPhase
-        ? `${firstPhase.window}: ${firstPhase.work} ${playbooks[0].whatWeDid.slice(0, 2).join(' ')}`
-        : `The ${serviceNames} work began with a full audit and a rebuild of conversion tracking before any budget moved.`,
+      question: 'What is reviewed before the work starts?',
+      answer: 'The audience, service coverage, data access and enquiry process. Technical findings are checked against the live website, and the scope is agreed with the business before implementation.',
     },
     {
-      question: 'How long before anything moves?',
-      answer: playbooks
-        .flatMap((p) => p.phases)
-        .map((p) => `${p.window} — ${p.work}`)
-        .join(' ')
-        .concat(
-          lastPhase
-            ? ''
-            : ' Timelines are set per phase and reported against at each gate.'
-        ),
-    },
-    {
-      question: 'What results did this produce?',
-      answer: resultsAnswer,
-    },
-    {
-      question: 'Are these numbers guaranteed?',
-      answer:
-        'No, and any agency that guarantees a number is selling you something. Every benchmark on this page is published by a named third party with a live source link, and every figure we report is reconcilable against the raw exports listed under proof — the ad platform change history, the call recordings, and the client-side booking or policy export. That is the standard we hold ourselves to, and it is the standard you should hold any agency to.',
-    },
-    {
-      question: 'What does an engagement like this cost?',
-      answer: `${study.client} runs at the ${study.tier} tier — ${study.retainerBand}, covering ${serviceNames}. Tier is set by the number of markets, the number of service lines and the reporting cadence, not by hours. Scope is agreed before anything is committed.`,
+      question: 'How is an engagement scoped?',
+      answer: 'Scope depends on the buyer problem, existing website, markets and delivery responsibilities. Book a call or send an enquiry to discuss the work relevant to your business.',
     },
   ];
 };
 
+/**
+ * Pexels photography, one per published study, written by scripts/fetch-case-study-images.mjs.
+ * A study missing from the map keeps the placeholder on its record, so a failed fetch degrades
+ * to the old image instead of a broken one.
+ */
+interface PexelsImageEntry {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  photographer: string;
+  photographer_url: string;
+  pexels_url: string;
+}
+const IMAGES: Record<string, PexelsImageEntry | undefined> = CASE_STUDY_IMAGES;
+
+const imageFor = (study: CaseStudy): CaseStudyImage => {
+  const photo = IMAGES[study.id];
+  if (!photo) return study.image;
+  return {
+    src: photo.src,
+    alt: photo.alt,
+    width: photo.width,
+    height: photo.height,
+    credit: { photographer: photo.photographer, photographerUrl: photo.photographer_url, url: photo.pexels_url },
+  };
+};
+
 const resolve = (study: CaseStudy): ResolvedCaseStudy => ({
   ...study,
+  image: imageFor(study),
   playbooks: getPlaybooks(study.niche, study.services),
   benchmarks: getBenchmarks(study.benchmarkKeys),
   evidence: caseStudyEvidence(study.kpis),
@@ -173,8 +170,8 @@ export const LIBRARY_STATS = {
  * Pick studies relevant to an arbitrary page topic (an industry name, a location page title).
  *
  * Used by the industry and location page trees, which have no niche field of their own. Matching
- * is keyword-based and deliberately conservative: when nothing matches we return a spread across
- * all three niches rather than silently showing dental studies on an aerospace page.
+ * is keyword-based and deliberately conservative. Since 2026-10-07 it only ever returns studies
+ * from B2B_PAGE_NICHES (insurance): see the note on that constant below.
  *
  * Deterministic — same input, same output, so the internal link graph is stable between builds.
  */
@@ -204,25 +201,37 @@ const TOPIC_HINTS: { niche: Niche; patterns: RegExp }[] = [
  *     experience we do not have. CLAUDE.md §11. Returns empty; the caller omits
  *     the section.
  *
- *   'spread' — a LOCATION page. "Digital Marketing Agency in <City>" asserts no
- *     vertical, so showing our actual work under "Case Studies" claims only that
- *     it is our work, which is true. These pages carry ~1,360 internal links to
- *     /case-studies/* and silently dropping them was a regression, not a fix.
+ *   'spread' — a LOCATION page. A location page asserts no
+ *     vertical, so a labelled client programme makes no sector claim. These pages carry internal links to
+ *     /case-studies/* and silently dropping them was a regression, not a fix. The spread draws
+ *     only from B2B_PAGE_NICHES.
  *
  * Defaulting to 'none' means a new caller has to opt IN to the looser behaviour,
  * which is the right direction for a default in a proof block.
  */
+/**
+ * The only niches a B2B surface may render. Operator decision 2026-10-07: "Insurance only on B2B
+ * pages." HVAC and dental are local consumer services, outside the ICP in CLAUDE.md §2, so they
+ * are not proof for a B2B buyer under any heading. They stay on /case-studies and its detail
+ * pages, which read CASE_STUDIES / byNiche / relatedCaseStudies and never call studiesForTopic.
+ *
+ * Every caller of studiesForTopic is a B2B surface (industry hubs, sub-industry pages, location
+ * and location x service pages), so the restriction lives here rather than at each call site:
+ * a new caller cannot forget it. scripts/check-industry-gate.cjs asserts the output.
+ */
+export const B2B_PAGE_NICHES: readonly Niche[] = ['insurance'];
+const isB2BPageNiche = (n: Niche) => B2B_PAGE_NICHES.includes(n);
+
 export const studiesForTopic = (
   topic: string,
   limit = 4,
   { fallback = 'none' }: { fallback?: 'none' | 'spread' } = {}
 ): ResolvedCaseStudy[] => {
-  const hit = TOPIC_HINTS.find((h) => h.patterns.test(topic));
-  if (hit) {
-    const matches = byNiche(hit.niche);
-    if (matches.length >= limit) return matches.slice(0, limit);
-    return [...matches, ...CASE_STUDIES.filter((s) => s.niche !== hit.niche)].slice(0, limit);
-  }
+  /* A hint for a niche that may not render on a B2B page (hvac, dental) is treated as no
+     signal, and the result is never padded with another niche: if the eligible pool is
+     short, the block is short, and an empty block is omitted by the caller. */
+  const hit = TOPIC_HINTS.find((h) => isB2BPageNiche(h.niche) && h.patterns.test(topic));
+  if (hit) return byNiche(hit.niche).slice(0, limit);
   /* NO SIGNAL MEANS NO STUDY. This returns empty, and callers render nothing.
    *
    * It used to return "a spread across all three niches". The comment above this
@@ -250,10 +259,11 @@ export const studiesForTopic = (
    * undefined. */
   if (fallback === 'none') return [];
 
-  // 'spread': one from each niche in turn, so the mix stays representative.
+  // 'spread': one from each B2B-eligible niche in turn. With insurance the only eligible
+  // niche, this is the first `limit` insurance studies.
   const spread: ResolvedCaseStudy[] = [];
   for (let i = 0; spread.length < limit && i < 20; i += 1) {
-    for (const n of NICHES) {
+    for (const n of NICHES.filter(isB2BPageNiche)) {
       const pick = byNiche(n)[i];
       if (pick && spread.length < limit) spread.push(pick);
     }
@@ -261,7 +271,7 @@ export const studiesForTopic = (
   return spread;
 };
 
-/** The single most striking KPI on a study, for card display. */
+/** The largest-magnitude KPI on a study. While `actual` is empty it is a target, and callers must label it so. */
 export const headlineKpi = (study: ResolvedCaseStudy) =>
   [...study.kpis].sort((a, b) => {
     const mag = (v: string) => Math.abs(parseFloat(v.match(/-?\d+(\.\d+)?/)?.[0] ?? '0'));

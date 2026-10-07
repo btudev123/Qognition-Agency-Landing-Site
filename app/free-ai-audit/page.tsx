@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
 import LocalAuditExperience from '../../components/LocalAuditExperience';
-export const metadata: Metadata = {title: 'AI Search Visibility Report | Qognition', description: 'A human-reviewed report on how visible and citable your brand is across AI search, delivered within 48 hours. See what was tested, when it was checked and what remains unknown.', alternates: {canonical: '/free-ai-audit'}};
+import { metadataFor } from '../../lib/seo';
+// Title and description come from SEO_OVERRIDES['/free-ai-audit'] in lib/seo.ts.
+export const metadata: Metadata = metadataFor({ title: 'AI Search Visibility Report', description: 'A human-reviewed audit of how your firm appears in Google and AI answers.', path: '/free-ai-audit' });
 export default function Page(){return <LocalAuditExperience />;}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { appendFunnelContext } from '../../lib/funnelContext';
 import type { IndustryRecord } from '../../lib/b2b/registry';
 import { childrenOf } from '../../lib/b2b/graph';
 import type { ObservationView } from '../../lib/b2b/observations';
@@ -61,7 +62,7 @@ export default function VerticalHubPage({ record, observation }: Props) {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-10">
             <div className="lg:col-span-7">
-              <Label accent>Tier {vertical.tier} vertical</Label>
+              <Label accent>AI SEO & GEO for B2B</Label>
               <h1 className="text-h1 font-sans m-0 mt-4 max-w-[18ch] font-semibold">
               {/* NEVER lowercase a taxonomy label. `.toLowerCase()` shipped here
                   first and rendered "cnc machining", destroying the acronym; it
@@ -82,11 +83,11 @@ export default function VerticalHubPage({ record, observation }: Props) {
               </p>
 
               <div className="mt-9 flex flex-col sm:flex-row flex-wrap gap-3">
-                <Link href="/free-ai-audit" className="rf-btn rf-btn--primary">
-                  Get your free snapshot
+                <Link href={appendFunnelContext("/book", { page_id: path, stage: "bofu" })} className="rf-btn rf-btn--primary">
+                  Book a call
                 </Link>
-                <Link href="/pricing" className="rf-btn rf-btn--secondary">
-                  What it costs
+                <Link href={appendFunnelContext("/contact#enquiry", { page_id: path, stage: "bofu" })} className="rf-btn rf-btn--secondary">
+                  Send an enquiry
                 </Link>
               </div>
             </div>

@@ -1,37 +1,9 @@
 import Link from 'next/link';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
-import { icpIndustryCards, icpSubIndustryTotal } from '../../data/b2b/icp';
+import { icpIndustryCards } from '../../data/b2b/icp';
 import { Eyebrow, Shell } from './primitives';
 
-/* Section 6 — Who we build this for. docs/copy/home.md §6.
- *
- * Replaces the `Coverage` block in the orphaned app/HomePage.tsx. The visual
- * device is kept: a single hairline lattice, mono index per cell, the flagship
- * given the full-width row so the wedge looks like a wedge.
- *
- * The content model is replaced. INDUSTRIES_DATA listed eight sectors under
- * "Industries we dominate. Globally." — "dominate" is an unevidenced
- * superlative, "globally" implied a footprint that does not exist (CLAUDE.md §4
- * forbids presenting countries served as offices), and listing eight sectors
- * implied experience in eight, which is CLAUDE.md §11's "implying experience in
- * an industry because a page exists for it". Three verticals, because three is
- * what we sell.
- *
- * WHY THESE CELLS ARE NOT LINKS. /industries/insurance,
- * /industries/professional-services and /industries/it-services are in the
- * CLAUDE.md §5 route plan and do not exist yet — data/industries.ts carries
- * law-legal, accounting-cpa, financial-services and eight others, none of them
- * these. Linking would 404. The one real destination available today is
- * /case-studies/industry/insurance, which does resolve, and it carries the
- * whole section's CTA.
- *
- * When those three pages ship, each cell becomes a <Link className="rf-hoverable
- * rf-cell"> and gets the invert-on-hover-and-focus device that is already
- * written and waiting in globals.css. Do not add the interaction styling before
- * the destination exists; a card that lights up and goes nowhere is worse than
- * a card that does not light up.
- */
 
 type Vertical = {
   name: string;
@@ -40,49 +12,30 @@ type Vertical = {
   flagship?: boolean;
 };
 
-/* NO REVENUE OR HEADCOUNT BAND ON THIS PAGE. Operator, 2026-09-29: the $3M to
-   $1B+ / 20 to 10,000+ figures are INTERNAL qualification criteria and do not
-   belong on the site. A published floor tells a smaller prospect to leave before
-   they have read the offer, and tells a larger one we are aimed beneath them.
-   The band stays in CLAUDE.md §2 for routing and scoring; it is not copy.
-
-   The three sectors where a client library exists. Everything else on this page
-   comes from the locked ICP taxonomy, so this array is the ONLY hand-written
-   list here and it is a statement about evidence, not about scope.
-
-   It was previously the whole section, headed "We sell to three kinds of firm",
-   which told a reader in 18 of 21 sectors that we do not sell to them. The ICP
-   locked on 2026-09-28 is 21 industries and 341 sub-industries, and says in
-   terms that the taxonomy is a route to market rather than a qualifier. */
 const CARDS = icpIndustryCards();
-const SUB_TOTAL = icpSubIndustryTotal();
-/* The three above map to ICP industries 04, 02 and 09. Matched by slug so a
-   rename in the locked taxonomy surfaces here rather than silently duplicating a
-   sector in both lists. */
-const EVIDENCED_SLUGS = new Set([
-  'financial-services',
-  'professional-and-business-services',
-  'technology-and-it-services',
-]);
 
-const EVIDENCED: Vertical[] = [
+const FEATURED_SLUGS = new Set([
+  'saas-and-software', 'manufacturing-and-industrial', 'professional-and-business-services',
+]);
+/* Featured, not evidenced. These three are where the copy is written in most
+   detail. Nothing in this array is proof of client work; do not write copy that
+   says it is (docs/copy/2026-10/home.md §5). */
+const FEATURED: Vertical[] = [
   {
-    name: 'Commercial and specialty insurance',
-    buyer: 'A risk manager, CFO or operations lead comparing agencies before a renewal.',
-    detail:
-      'Independent agencies, MGAs and wholesale brokers with 5 to 50 producers. Right now the AI answer for most commercial coverage questions points at aggregators and carriers.',
+    name: 'B2B SaaS and software',
+    buyer: 'A buying team comparing integrations, security reviews and implementation effort.',
+    detail: 'Pages that answer the integration, security and implementation questions a buying team asks before the demo. We test the comparison prompts they run, such as one vendor against another for a company their size.',
     flagship: true,
   },
   {
-    name: 'B2B professional services',
-    buyer: 'A founder, CFO or general counsel looking for a specialist, usually under a deadline.',
-    detail: 'CPA and tax advisory firms, corporate law boutiques, management advisory practices.',
+    name: 'Industrial and manufacturing',
+    buyer: 'An engineer or sourcing lead checking certifications, capacity and lead times.',
+    detail: 'Pages built on process, material, tolerance and certification, so an engineer can shortlist you before asking for a quote. We test supplier prompts such as "ISO 9001 and AS9100 certified CNC machining suppliers".',
   },
   {
-    name: 'IT services and security',
-    buyer:
-      'An IT director, CISO or operations lead who has already read a vendor comparison an assistant generated for them.',
-    detail: 'MSPs, MSSPs, cybersecurity consultancies and cloud partners.',
+    name: 'Professional B2B services',
+    buyer: 'A CFO, general counsel or founder choosing an adviser for a specific matter.',
+    detail: 'Practice pages that show what you do, for whom and where. We test the prompts a CFO or general counsel uses to find a firm for a specific deal or problem.',
   },
 ];
 
@@ -99,12 +52,10 @@ export default function Industries() {
         <ScrollReveal>
           <Eyebrow>Who we build this for</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[20ch] font-semibold">
-            <MaskReveal>{`We sell to ${CARDS.length} B2B sectors.`}</MaskReveal>
+            <MaskReveal>A software demo, an RFQ and a consultation need different pages.</MaskReveal>
           </h2>
           <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
-            B2B firms selling a considered purchase to another business, across {SUB_TOTAL}{' '}
-            sub-sectors. You need AI search, SEO or paid media, and any one of the three is enough.
-            US-first, in USD.
+            We write to the person who approves the purchase: an engineer checking a spec, an IT lead comparing integrations, a finance leader looking for sector expertise. Each one needs a different page and a different next step.
           </p>
         </ScrollReveal>
 
@@ -120,7 +71,7 @@ export default function Industries() {
               borderLeft: '1px solid var(--s-rule-hairline)',
             }}
           >
-            {EVIDENCED.map((v, i) => (
+            {FEATURED.map((v, i) => (
               <article
                 key={v.name}
                 /* Two columns, not three. At three the flagship spans the full
@@ -137,9 +88,9 @@ export default function Industries() {
                     className="font-mono text-meta tracking-[0.14em] uppercase"
                     style={{ color: v.flagship ? 'var(--s-accent)' : 'var(--s-text-faint)' }}
                   >
-                    {String(i + 1).padStart(2, '0')} / {String(EVIDENCED.length).padStart(2, '0')}
+                    {String(i + 1).padStart(2, '0')} / {String(FEATURED.length).padStart(2, '0')}
                     <span className="ml-4">
-                      {v.flagship ? 'Flagship vertical' : 'Client work in this sector'}
+                      Buyer journey
                     </span>
                   </div>
                   <h3 className="text-h3 font-sans mt-4 mb-2 font-semibold">{v.name}</h3>
@@ -167,21 +118,20 @@ export default function Industries() {
             className="font-mono text-meta tracking-[0.14em] uppercase m-0 mb-5"
             style={{ color: 'var(--s-text-faint)' }}
           >
-            And {CARDS.length - EVIDENCED.length} more sectors
+            Explore other B2B sectors
           </p>
           <ul className="list-none p-0 m-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-4">
-            {CARDS.filter((c) => !EVIDENCED_SLUGS.has(c.slug)).map((card) => (
+            {CARDS.filter((c) => !FEATURED_SLUGS.has(c.slug)).map((card) => (
               <li key={card.id} className="min-w-0">
                 <p className="text-body m-0 font-medium">{card.name}</p>
                 <p className="text-meta m-0 mt-1" style={{ color: 'var(--s-text-faint)' }}>
-                  {card.subCount} sub-sectors
+                  {card.subNames.slice(0, 3).join(' · ')}
                 </p>
               </li>
             ))}
           </ul>
           <p className="text-meta mt-8 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-faint)' }}>
-            Listing a sector means we sell into it. It is not a claim that we have worked with a firm
-            in it, and a sector that is not listed is not a disqualifier.
+            Listing a sector means we sell AI SEO, GEO, SEO and PPC into it. It is not a claim that we have worked with a firm in it. If your sector is not listed, you can still book a call.
           </p>
         </ScrollReveal>
 

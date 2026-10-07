@@ -1,3 +1,5 @@
+import { previewCandidate, previewCandidateMetadata } from '../../../../../lib/nicheCandidates';
+import NicheCandidatePage from '../../../../../components/b2b/NicheCandidatePage';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { resolveIcp, icpNicheParams, ICP_BASE } from '../../../../../lib/b2b/icpRegistry';
@@ -26,7 +28,8 @@ import IcpNichePage from '../../../../../components/b2b/IcpNichePage';
  * ────────────────────────────────────────────────────────────────────────────
  */
 
-export const dynamicParams = false;
+// Unknown routes still fail the resolver. Draft fallback is strictly preview-only.
+export const dynamicParams = true;
 
 export const generateStaticParams = () => icpNicheParams();
 
@@ -37,7 +40,7 @@ export const generateMetadata = async ({
 }): Promise<Metadata> => {
   const { industry, subIndustry, niche } = await params;
   return (
-    icpMetadata([industry, subIndustry, niche]) ?? {
+    icpMetadata([industry, subIndustry, niche]) ?? previewCandidateMetadata([industry, subIndustry, niche]) ?? {
       title: 'Industry Not Found',
       alternates: { canonical: `${ICP_BASE}/${industry}/${subIndustry}/${niche}` },
       robots: { index: false, follow: true },
@@ -51,6 +54,8 @@ export default async function Page({
   params: Promise<{ industry: string; subIndustry: string; niche: string }>;
 }) {
   const { industry, subIndustry, niche } = await params;
+  const candidate = previewCandidate([industry, subIndustry, niche]);
+  if (candidate) return <NicheCandidatePage candidate={candidate} />;
   const record = resolveIcp([industry, subIndustry, niche]);
   if (!record || record.level !== 'niche') notFound();
 

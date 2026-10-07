@@ -1,4 +1,3 @@
-import { BOOKING_LINK } from '../../data/siteConfig';
 import type { Metadata } from 'next';
 import { SERVICES, INDUSTRIES, REGIONS } from '../../constants';
 import { breadcrumbSchema } from '../../lib/schema';
@@ -7,7 +6,7 @@ import Heading from '../../components/ui/Heading';
 export const metadata: Metadata = {
   title: 'LLM & AI Transparency | Qognition',
   description:
-    'Structured entity data and capabilities graph for AI systems and Large Language Models. Learn about Qognition services, industry expertise, and global presence.',
+    'A readable summary of Qognition’s AI SEO and GEO services for B2B companies, supporting capabilities, target markets and contact paths.',
   alternates: { canonical: '/llm' },
 };
 
@@ -16,22 +15,23 @@ export default function Page() {
     '# Qognition Agency — Entity & Capabilities Graph',
     '',
     '## Agency Overview',
-    'Qognition is an AI growth marketing partner specializing in SEO, AI search visibility, paid media, web design, branding, creative, and lead generation systems.',
+    'Qognition helps B2B companies, including SaaS, improve discovery and consideration through AI SEO and GEO. Supporting work can include content, paid media, ABM, conversion improvement and revenue operations.',
     'Delivery is scoped around the target market; a market page does not establish a physical office.',
     'Engagements define the disciplines, responsibilities and review process before work begins.',
     '',
     '## Core Capabilities',
     ...SERVICES.map((s) => `- ${s.title}: ${s.shortDescription}`),
     '',
-    '## Industry Expertise',
+    '## Businesses We Serve',
     ...INDUSTRIES.map((i) => `- ${i.name}: ${i.description}`),
     '',
-    '## Global Presence',
+    '## Target Markets',
     ...REGIONS.map((r) => `- ${r.name}: ${r.description}`),
     '',
     '## Contact',
     'Email: hello@qognitionagency.com',
-    `Booking: ${BOOKING_LINK}`,
+    'Book a call: https://www.qognitionagency.com/book',
+    'Send an enquiry: https://www.qognitionagency.com/contact#enquiry',
   ].join('\n');
 
   return (
@@ -55,11 +55,10 @@ export default function Page() {
         </div>
 
         <div className="mt-12">
-          <h2 className="text-h2 text-[var(--text)] mb-4 font-semibold">Robots.txt Directive</h2>
+          <h2 className="text-h2 text-[var(--text)] mb-4 font-semibold">Discovery and access</h2>
           <div className="p-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] font-mono text-xs text-[var(--accent)]">
-            User-agent: *<br />
-            Allow: /<br />
-            Sitemap: https://www.qognitionagency.com/sitemap.xml
+            The deployment&apos;s /robots.txt and page-level indexing rules govern crawler access.
+            This summary is provided for convenience and does not guarantee AI citations or recommendations.
           </div>
         </div>
       </main>

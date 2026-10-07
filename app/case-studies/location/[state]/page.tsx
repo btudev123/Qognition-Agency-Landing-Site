@@ -25,7 +25,7 @@ const findState = (slug: string) =>
 
 const describe = (name: string, studies: ResolvedCaseStudy[]) => {
   const markets = [...new Set(studies.map((s) => s.market))];
-  return `${studies.length} engagements across ${markets.length} ${name} markets. Each opens with a dated audit of the live site and cites the benchmarks the work was measured against.`;
+  return `${studies.length} client programmes across ${markets.length} ${name} markets. Targets are labelled as targets until client reporting confirms a result.`;
 };
 
 export async function generateMetadata({
@@ -78,7 +78,7 @@ export default async function Page({ params }: { params: Promise<{ state: string
                   '@type': 'ListItem',
                   position: i + 1,
                   url: `${SITE_URL}/case-studies/${s.id}`,
-                  name: `${s.client} — ${s.headline}`,
+                  name: s.headline,
                 })),
               },
             },
@@ -105,20 +105,19 @@ export default async function Page({ params }: { params: Promise<{ state: string
               {match.name} Case Studies
             </Heading>
             <Text className="mb-4">
-              {studies.length} engagements across {markets.join(', ')} — covering{' '}
+              {studies.length} client programmes across {markets.join(', ')}, covering{' '}
               {niches.map(nicheLabel).join(', ')}.
             </Text>
             <Text>
-              Local search is won market by market, not state by state. Each of these opens with a
-              dated audit of that specific business&apos;s live site.
+              Local search is won market by market. Each programme sets out its market context and the targets agreed at the start; targets stay labelled as targets until client reporting confirms a result.
             </Text>
           </header>
 
           <section className="mb-14">
             <StudyGrid
               studies={studies}
-              emptyTitle={`No ${match.name} engagements published yet`}
-              emptyMessage="Browse the full library for a comparable engagement in another market."
+              emptyTitle={`No ${match.name} case studies published yet`}
+              emptyMessage="Browse the full library for a comparable programme in another market."
             />
           </section>
 

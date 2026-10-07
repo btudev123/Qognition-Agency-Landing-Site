@@ -70,7 +70,7 @@ const buildProduct = (tool: Tool, profile: (typeof PRODUCT_PROFILES)[number]): D
     .slice(0, 3)
     .map((candidate) => candidate.name);
   const serviceId = serviceForProfile(profileSlug, tool.relatedServiceId);
-  const profileSentence = `${tool.name} is strongest for ${audience} when the team has a clear owner, clean data inputs, and a measurable conversion or visibility goal.`;
+  const profileSentence = `For ${audience}, start by checking whether ${tool.name} has capabilities relevant to the task. A directory category match does not establish suitability.`;
 
   return {
     ...tool,
@@ -79,9 +79,9 @@ const buildProduct = (tool: Tool, profile: (typeof PRODUCT_PROFILES)[number]): D
     categorySlug,
     name: `${tool.name} for ${profileName}`,
     shortDescription: `${tool.name} evaluated for ${profileName}.`,
-    fullDescription: `${tool.fullDescription}\n\nThis directory profile focuses on how ${tool.name} supports ${audience}. ${profileSentence} Qognition reviews fit, implementation effort, SEO impact, data needs, and the kind of marketing stack where the product makes sense.`,
+    fullDescription: `${tool.fullDescription}\n\nThis profile provides evaluation questions for ${profileName}. ${profileSentence} Assess implementation effort, data handling, integration limits and how you would verify a useful outcome.`,
     tags: Array.from(new Set([...tool.tags, profileName, 'Qognition Directory'])).slice(0, 5),
-    agencyVerdict: `${tool.agencyVerdict} For ${profileName}, we judge it by setup speed, integration depth, reporting clarity, and whether it improves measurable pipeline or organic visibility.`,
+    agencyVerdict: `${tool.agencyVerdict} For a possible ${profileName} use case, first verify feature fit. This generated profile is a planning reference, not a hands-on review, endorsement or record of Qognition implementation.`,
     relatedServiceId: serviceId,
     source: 'generated',
     profileSlug,
@@ -94,13 +94,13 @@ const buildProduct = (tool: Tool, profile: (typeof PRODUCT_PROFILES)[number]): D
     ],
     useCases: [
       `Build a repeatable ${profileName} workflow with documented inputs and outputs.`,
-      `Connect ${tool.name} to analytics, CRM, or content operations so performance can be measured.`,
-      `Use ${tool.name} as a specialist layer beside Qognition's ${serviceId.replace(/-/g, ' ')} execution.`
+      `Check whether ${tool.name} supports the required data inputs, integrations and exports.`,
+      `Evaluate the tool separately from the service scope; confirm who would own setup, review and ongoing operation.`
     ],
     pros: [
-      `Strong fit for ${profileName} when the use case is specific.`,
-      `Clear role inside a modern ${tool.category.toLowerCase()} stack.`,
-      `Can support faster execution when paired with documented process.`
+      `A defined ${profileName} task makes a small evaluation easier to assess.`,
+      `Documented inputs and outputs help determine whether the tool belongs in your workflow.`,
+      `A trial can reveal review effort and operating limits before a wider commitment.`
     ],
     cons: [
       'Results depend on data quality and team ownership.',
@@ -110,16 +110,16 @@ const buildProduct = (tool: Tool, profile: (typeof PRODUCT_PROFILES)[number]): D
     alternatives,
     implementationSteps: [
       `Define the exact ${profileName} workflow and success metric.`,
-      `Connect source data, permissions, tracking, and approval steps before scaling.`,
+      `Verify supported capabilities, permissions, tracking and approval requirements before connecting data.`,
       `Run a small pilot, document outputs, then expand to more campaigns or pages.`,
       `Review quality weekly and retire workflows that do not create pipeline or visibility.`
     ],
-    workflowExample: `A practical ${profileName} workflow starts with a weekly brief, uses ${tool.name} to accelerate research or production, pushes outputs into a review queue, and measures the impact in search visibility, qualified leads, or campaign efficiency.`,
-    seoNotes: `For SEO teams, ${tool.name} should support original content, better internal links, cleaner workflows, or stronger proof. Avoid publishing generic AI output or near-duplicate pages just because the tool makes them easy to produce.`,
+    workflowExample: `An evaluation for ${profileName} starts with a defined task and representative inputs. If ${tool.name} supports the task, trial it with limited permissions, inspect the outputs and compare effort and quality with your current process. No integration or performance outcome is assumed.`,
+    seoNotes: `A tool may have no direct SEO role. Evaluate ${tool.name} only where its verified capabilities address a concrete requirement. Search content still needs useful expertise, supporting evidence and editorial review.`,
     faqs: [
       {
         question: `Is ${tool.name} good for ${profileName}?`,
-        answer: `${tool.name} can be useful for ${profileName} when it is tied to a clear workflow, quality control, and measurable business outcome.`
+        answer: `This profile does not establish that ${tool.name} supports ${profileName}. Check the current vendor documentation against the exact task, then evaluate a small example before committing.`
       },
       {
         question: `What should teams check before adopting ${tool.name}?`,
@@ -129,7 +129,7 @@ const buildProduct = (tool: Tool, profile: (typeof PRODUCT_PROFILES)[number]): D
       {
         question: `Does Qognition implement ${tool.name}?`,
         answer:
-          'Qognition helps clients evaluate, integrate, and operationalize growth tools when they support SEO, paid media, content, automation, or conversion goals.'
+          'Implementation is not implied by inclusion in this directory. Send your requirements so we can assess fit, relevant experience, access needs and delivery responsibilities before proposing any work.'
       }
     ]
   };

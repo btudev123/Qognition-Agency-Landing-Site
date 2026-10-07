@@ -24,12 +24,12 @@ const serviceFaq = (topic: string) => [
   {
     question: `How fast can ${topic.toLowerCase()} improve performance?`,
     answer:
-      'Most clients see implementation wins in the first 30 to 60 days, while durable SEO and pipeline gains compound over 3 to 6 months.'
+      'Timing depends on the starting website, available evidence, implementation access and buying cycle. We agree milestones and review dates; we do not promise a ranking or revenue deadline.'
   },
   {
     question: `Does Qognition handle strategy and execution for ${topic.toLowerCase()}?`,
     answer:
-      'Yes. Each engagement includes audit, roadmap, implementation, reporting, and ongoing optimization so the work does not stop at recommendations.'
+      'The proposal identifies research, implementation, review and reporting responsibilities. Work is scoped to your business problem and existing team.'
   },
   {
     question: `Can ${topic.toLowerCase()} work with an existing internal team?`,
@@ -37,6 +37,21 @@ const serviceFaq = (topic: string) => [
       'Yes. Qognition can operate as the strategy lead, embedded execution pod, or specialist layer beside your internal marketing and engineering teams.'
   }
 ];
+
+/* Title and meta description for a custom entry, built exactly as
+   buildGeneratedServiceSubPage builds them. Used where a draft proposed new meta
+   that the owner (Nadia, search) has not yet approved: the page body changes,
+   the meta stays what the generator would emit. */
+const generatedMeta = (serviceId: string, slug: string) => {
+  const sub = SERVICES.find((service) => service.id === serviceId)?.subServices.find(
+    (item) => (item.slug || slugify(item.name)) === slug
+  );
+  if (!sub) throw new Error(`generatedMeta: no sub-service ${serviceId}/${slug}`);
+  return {
+    title: `${sub.name} Services`,
+    description: `${sub.description} Part of a scoped B2B program supporting buyer discovery and evaluation.`
+  };
+};
 
 const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
   {
@@ -142,16 +157,16 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     serviceId: 'ai-seo',
     slug: 'ai-search-visibility',
     title: 'AI Search Visibility Services',
-    description: 'Optimize for ChatGPT, Gemini, Perplexity, SGE, AI Overviews, and LLM citation visibility.',
+    description: 'AI SEO and GEO for B2B discovery across Google AI Overviews, AI Mode, ChatGPT, Gemini and Perplexity.',
     h1: 'AI Search Visibility for LLMs, AI Overviews, and Answer Engines',
     intro:
       'Search discovery now happens across Google, AI Overviews, ChatGPT, Gemini, Perplexity, and vertical answer engines. We help your brand become easier to cite, summarize, and trust.',
-    deliverables: ['Entity audit', 'LLM citation map', 'Answer-ready content briefs', 'AI discovery files and schema'],
+    deliverables: ['Entity audit', 'LLM citation map', 'Answer-ready content briefs', 'Accurate content and supported schema'],
     sections: [
       {
         title: 'Entity and Evidence Layer',
         content:
-          'We clarify who you are, what you offer, who you serve, which proof assets support your claims, and how those facts should appear across pages, schema, sitemaps, and llm.txt.'
+          'We clarify who you are, what you offer, who you serve, which proof assets support your claims, and how those facts should appear across visible pages, relevant profiles and accurate structured data.'
       },
       {
         title: 'Answer-Ready Content',
@@ -161,7 +176,7 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
       {
         title: 'Citation Monitoring',
         content:
-          'We track where your brand appears, which competitors are cited, and which missing proof points prevent your content from being selected.'
+          'We record observed brand mentions, competitor citations and cited sources against a defined question set. The observations inform research; they do not reveal the private selection rules of an AI platform.'
       }
     ],
     faqs: serviceFaq('AI Search Visibility'),
@@ -175,16 +190,16 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
     serviceId: 'ai-seo',
     slug: 'llm-optimization',
     title: 'LLM Optimization Services',
-    description: 'LLM discoverability, entity feeds, llm.txt, AI discovery readiness, and answer engine optimization.',
+    description: 'AI-search discovery through accessible service information, consistent business facts and useful evidence.',
     h1: 'LLM Optimization for Discoverable Brand Knowledge',
     intro:
       'We organize your website so large language models can understand your services, markets, proof, expertise, and preferred source pages.',
-    deliverables: ['llm.txt strategy', 'Entity summary pages', 'Structured content blocks', 'Source-of-truth cleanup'],
+    deliverables: ['Search access review', 'Entity summary pages', 'Structured content blocks', 'Source-of-truth cleanup'],
     sections: [
       {
         title: 'Machine-Readable Positioning',
         content:
-          'We create concise, accurate summaries of your services, markets, leadership, case studies, pricing guidance, and resources.'
+          'We create concise, accurate summaries of your services, markets, leadership, verified work, engagement scope and resources.'
       },
       {
         title: 'Prompt Demand Mapping',
@@ -368,6 +383,142 @@ const CUSTOM_SERVICE_SUB_PAGES: ServiceSubPage[] = [
       { label: 'Blog', href: '/blog' },
       { label: 'Resources', href: '/resources' }
     ]
+  },
+  /* docs/copy/2026-10/services-geo.md. Meta pending Nadia, so generatedMeta. */
+  {
+    serviceId: 'ai-seo',
+    slug: 'generative-engine-optimization',
+    ...generatedMeta('ai-seo', 'generative-engine-optimization'),
+    h1: 'Generative Engine Optimization (GEO) for B2B Firms',
+    intro:
+      'GEO is the work that affects how ChatGPT, Perplexity, Gemini, Claude and Copilot describe your firm when a buyer asks them for a supplier. It covers what your own site states, what third-party sources say about you, and whether your company name resolves to you. We record every answer with its prompt, platform and date.',
+    deliverables: [
+      'A prompt set built from your buyers’ real questions',
+      'A dated baseline on the assistants we agree for your market',
+      'Company-fact fixes across your site, schema and main profiles',
+      'A source map: the third-party pages answers cite for your buyers’ questions',
+      'Re-runs on the agreed schedule, compared with the baseline',
+      'Referral visits and enquiries, reported in their own columns'
+    ],
+    sections: [
+      {
+        title: 'What GEO is, and how it differs from AI SEO',
+        content:
+          'AI SEO is the work on Google AI Overviews and AI Mode. GEO is the work on the assistants. They share foundations, but each assistant searches, selects and cites sources in its own way. So we measure them separately and never merge them into one score.'
+      },
+      {
+        title: 'What we change, and what we can’t',
+        content:
+          'We can change what your site says and how consistently your company is described, and we can work on whether the sources answers cite describe you accurately. We cannot decide what an assistant says. No one can, so we don’t promise a citation or a date for one.'
+      },
+      {
+        title: 'Why other sites matter',
+        content:
+          'When an assistant cites sources, they are often directories, trade publications, comparison pages and association listings rather than your own site. We find the sources that appear for your buyers’ questions and work on the ones you can influence honestly: profiles you own, publications that cover your field, listings that are wrong.'
+      },
+      {
+        title: 'How we measure it',
+        content:
+          'We fix the prompt set and the platforms before the first run. Each answer is recorded with its date and the sources it cited, then re-run on the agreed schedule. A change can be checked against the recorded answer, not taken on trust.'
+      }
+    ],
+    faqs: [
+      {
+        question: 'Is GEO just SEO with a new name?',
+        answer:
+          'No. SEO is about Google’s search results. GEO is about what assistants say when someone asks them a question. Good SEO helps, but a page can rank well and still not be cited.'
+      },
+      {
+        question: 'Can you get us recommended by ChatGPT?',
+        answer:
+          'No one can promise that. We work on what the assistants draw on and record what they say, with dates, so you can see whether it is changing.'
+      },
+      {
+        question: 'Which assistants do you test?',
+        answer:
+          'ChatGPT, Perplexity, Gemini, Claude and Copilot, plus Google AI Overviews and AI Mode under AI SEO. We agree the set for your market before the first run.'
+      },
+      {
+        question: 'How do you choose the prompts?',
+        answer:
+          'From your sales team’s questions, your buyers’ language and the comparisons they make. Once agreed, the set stays fixed, so each run compares with the last.'
+      }
+    ],
+    relatedLinks: [
+      { label: 'AI SEO and GEO for B2B', href: '/services/ai-seo' },
+      { label: 'Answer Engine Optimization (AEO)', href: '/services/ai-seo/answer-engine-optimization' },
+      { label: 'AI citation and mention tracking', href: '/services/ai-seo/ai-citation-tracking' },
+      { label: 'Request a free AI visibility audit', href: '/free-ai-audit' },
+      { label: 'Book a call', href: '/book' }
+    ]
+  },
+  /* docs/copy/2026-10/services-local-seo.md. Meta pending Nadia, so generatedMeta.
+     No profile or city page for a place the client has no presence (CLAUDE.md §4). */
+  {
+    serviceId: 'seo',
+    slug: 'local-seo',
+    ...generatedMeta('seo', 'local-seo'),
+    h1: 'Local SEO for B2B Companies',
+    intro:
+      'Local SEO is the work on Google Maps, the local pack, Bing Places, your Business Profile, reviews and listings. For a B2B firm it matters when buyers choose by location: a lab within courier range, an MSP that can send an engineer on site, a broker licensed in their state. If location doesn’t shape the decision, we’ll say so.',
+    deliverables: [
+      'A check of whether location shapes your buyers’ decision at all',
+      'Business Profile and Bing Places fixes, for real addresses only',
+      'Categories and services that match what you sell to businesses',
+      'Consistent name, address and phone across the listings your buyers use',
+      'A review request process for real clients, with no incentives',
+      'Location pages only where you have a presence or documented demand'
+    ],
+    sections: [
+      {
+        title: 'When local matters in B2B',
+        content:
+          'It matters when the buyer needs you nearby: on-site service, sample delivery, a license that applies in one state, a site visit before a contract. It matters less when you sell software or advice that works anywhere. We check this first, because local work on the wrong firm is wasted effort.'
+      },
+      {
+        title: 'Real locations only',
+        content:
+          'We set up and fix profiles for addresses where you operate. We don’t create profiles or city pages for places where you have no presence. Listing an office that doesn’t exist misleads buyers.'
+      },
+      {
+        title: 'Reviews from real clients',
+        content:
+          'A B2B buyer reads reviews for evidence of the work, not star counts. We help you ask real clients at the right moment and reply to every review. We never buy, gate or incentivize reviews.'
+      },
+      {
+        title: 'How we measure it',
+        content:
+          'Business Profile actions (calls, direction requests and website clicks), rankings in the local pack for the queries that matter, and the enquiries that follow. Each is reported in its own column.'
+      }
+    ],
+    faqs: [
+      {
+        question: 'Do B2B companies need local SEO?',
+        answer:
+          'Only when the buyer chooses by location. If your buyers would hire you from anywhere, we’ll put the effort into SEO, AI SEO or GEO instead.'
+      },
+      {
+        question: 'Can you create listings in cities where we don’t have an office?',
+        answer:
+          'No. A profile needs a real address where you serve clients. We can build market pages that explain how you serve a region remotely, labelled as such.'
+      },
+      {
+        question: 'Does local SEO affect AI answers?',
+        answer:
+          'Assistants and Google’s AI features can draw on listings, profiles and reviews when a question involves a place. We test those questions separately and report them with dates.'
+      },
+      {
+        question: 'Can we do local SEO without the rest?',
+        answer:
+          'Yes, if location is what limits your enquiries. On the call, we’ll tell you if something else is holding it back.'
+      }
+    ],
+    relatedLinks: [
+      { label: 'B2B SEO services', href: '/services/seo' },
+      { label: 'AI SEO and GEO for B2B', href: '/services/ai-seo' },
+      { label: 'Perth SEO for B2B companies', href: '/locations/perth/seo' },
+      { label: 'Book a call', href: '/book' }
+    ]
   }
 ];
 
@@ -382,15 +533,15 @@ const serviceOutcomeCopy: Record<string, string> = {
 
 const buildGeneratedServiceSubPage = (service: Service, subService: SubService): ServiceSubPage => {
   const slug = subService.slug || slugify(subService.name);
-  const serviceOutcome = serviceOutcomeCopy[service.id] || 'measurable growth';
+  const serviceOutcome = serviceOutcomeCopy[service.id] || 'clearer buyer information and a dependable enquiry journey';
   return {
     serviceId: service.id,
     slug,
     title: `${subService.name} Services`,
-    description: `${subService.description} Built by Qognition as part of ${service.title.toLowerCase()} programs for AI-led growth marketing.`,
-    h1: `${subService.name} Services for AI Growth Marketing`,
+    description: `${subService.description} Part of a scoped B2B program supporting buyer discovery and evaluation.`,
+    h1: `${subService.name} for B2B Buyer Journeys`,
     intro:
-      `${subService.description} Qognition turns this into a practical growth system with strategy, implementation, tracking, internal links, schema, and conversion paths so the work can be discovered by search engines, AI agents, and qualified buyers.`,
+      `${subService.description} We agree how this work supports your buyer journey, which team owns it and how an interested buyer can make contact. Scope and measurement follow the service rather than a fixed package.`,
     deliverables: [
       `${subService.name} audit and opportunity map`,
       'Buyer-intent messaging and page architecture',
@@ -408,12 +559,12 @@ const buildGeneratedServiceSubPage = (service: Service, subService: SubService):
       {
         title: 'What Qognition Builds',
         content:
-          `We connect ${subService.name.toLowerCase()} to ${service.title.toLowerCase()} strategy, content, creative, analytics, and CRM handoff. The result is ${serviceOutcome} without relying on thin templates or disconnected deliverables.`
+          `We connect ${subService.name.toLowerCase()} to ${service.title.toLowerCase()} strategy, content, creative, analytics, and CRM handoff. The intended outcome is ${serviceOutcome}. We review implementation and actual enquiries before drawing conclusions about performance.`
       },
       {
         title: 'How It Gets Discovered',
         content:
-          'Every important page includes a single H1, structured headings, concise summaries, semantic HTML, internal links, canonical metadata, and JSON-LD so Googlebot, Bingbot, GPTBot, CCBot, and Google-Extended can understand the page quickly.'
+          'For web deliverables, review visible content, headings, internal links, canonical metadata and appropriate structured data. Treat search-crawler access and model-training permissions as separate decisions. For off-site assets, connect the relevant content to an accessible source page.'
       },
       {
         title: 'How We Measure It',
@@ -428,7 +579,8 @@ const buildGeneratedServiceSubPage = (service: Service, subService: SubService):
       { label: 'Locations', href: '/locations' },
       { label: 'Industries', href: '/industries' },
       { label: 'Tools Directory', href: '/directory' },
-      { label: 'Book a Strategy Call', href: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency' }
+      { label: 'Book a call', href: '/book' },
+      { label: 'Send an enquiry', href: '/contact#enquiry' }
     ]
   };
 };
@@ -547,9 +699,9 @@ export const COMPARISONS: ComparisonPage[] = [
     h1: 'Qognition vs WebFX',
     category: 'competitor',
     summary:
-      'WebFX is a large established agency. Qognition is built for companies that want senior strategy, faster execution, technical SEO, Next.js implementation, and AI search visibility in one focused team.',
+      'Use this page as a buying checklist when comparing proposals from Qognition and WebFX. Ask each team for the exact scope, delivery owners, relevant evidence and reporting method. Qognition focuses on AI SEO and GEO for B2B companies, with PPC scoped separately.',
     decisionFactors: ['Agency size and delivery model', 'Technical implementation depth', 'AI search readiness', 'Speed of iteration'],
-    qognitionFit: ['Best for B2B and service businesses that need qualified leads', 'Strong fit when SEO and web engineering must move together'],
+    qognitionFit: ['Consider when B2B and service businesses that need qualified leads', 'Strong fit when SEO and web engineering must move together'],
     alternatives: ['WebFX', 'NP Digital', 'Dentsu', 'In-house team'],
     faqs: serviceFaq('Agency Comparison')
   },
@@ -560,9 +712,9 @@ export const COMPARISONS: ComparisonPage[] = [
     h1: 'Qognition vs NP Digital',
     category: 'competitor',
     summary:
-      'NP Digital brings a large global agency footprint. Qognition is stronger for clients that want a leaner senior team focused on technical SEO, content systems, conversion pages, and AI search discoverability.',
+      'Compare the actual proposals from Qognition and NP Digital rather than assuming a name determines fit. Ask how technical implementation, expert review, AI-search observations and sales outcomes are handled. This page does not rank either agency or claim independently measured superiority.',
     decisionFactors: ['Global agency scale', 'Senior attention', 'Technical SEO and Next.js depth', 'Lead generation focus'],
-    qognitionFit: ['Best for teams that want direct strategy access', 'Strong fit for SEO plus conversion website builds'],
+    qognitionFit: ['Consider when teams that want direct strategy access', 'Strong fit for SEO plus conversion website builds'],
     alternatives: ['NP Digital', 'WebFX', 'Dentsu', 'Specialist SEO consultant'],
     faqs: serviceFaq('Agency Comparison')
   },
@@ -573,9 +725,9 @@ export const COMPARISONS: ComparisonPage[] = [
     h1: 'Qognition vs Dentsu',
     category: 'competitor',
     summary:
-      'Dentsu is a global network agency suited to complex enterprise media programs. Qognition is better suited when the priority is fast execution, technical growth infrastructure, and clear lead generation outcomes.',
+      'For a Qognition and Dentsu comparison, start with your procurement requirements and the work to be delivered. Review ownership, platform coverage, evidence, reporting access and how scope changes are handled. The right choice depends on the proposal and your internal capabilities.',
     decisionFactors: ['Enterprise procurement needs', 'Media buying scale', 'Implementation speed', 'SEO and conversion focus'],
-    qognitionFit: ['Best for ambitious growth teams that need action quickly', 'Strong fit for SEO, paid search, and landing page execution'],
+    qognitionFit: ['Consider when ambitious growth teams that need action quickly', 'Strong fit for SEO, paid search, and landing page execution'],
     alternatives: ['Dentsu', 'WebFX', 'NP Digital', 'Boutique performance agency'],
     faqs: serviceFaq('Agency Comparison')
   },
@@ -594,13 +746,13 @@ export const COMPARISONS: ComparisonPage[] = [
   },
   ...['London', 'Dubai', 'Bangalore', 'Sydney', 'New York'].map((city) => ({
     slug: `best-digital-marketing-agency-in-${slugify(city)}`,
-    title: `Best Digital Marketing Agency in ${city}`,
+    title: `Choosing a B2B Search Agency for ${city}`,
     description: `How to choose the best digital marketing agency in ${city} for SEO, Google Ads, web development, and lead generation.`,
-    h1: `Best Digital Marketing Agency in ${city}`,
+    h1: `Choosing a B2B Search Agency for ${city}`,
     category: 'city' as const,
-    summary: `The best agency in ${city} should understand local search behavior, buyer intent, competitive density, landing page conversion, and the regional proof your buyers expect.`,
+    summary: `When evaluating an agency for ${city}, ask which buyers you can actually serve, what local evidence the page needs and how the team will measure enquiries. A city in a page title does not establish an office or local delivery experience.`,
     decisionFactors: ['Local market experience', 'SEO and PPC capability', 'Case-study quality', 'CRM and analytics setup', 'Landing page quality'],
-    qognitionFit: [`Best for companies targeting ${city} plus national or international markets`, 'Strong fit for technical SEO, paid search, and conversion websites'],
+    qognitionFit: [`Consider when companies targeting ${city} plus national or international markets`, 'Strong fit for technical SEO, paid search, and conversion websites'],
     alternatives: ['Local freelancer', 'Traditional media agency', 'Large network agency', 'In-house marketer'],
     faqs: serviceFaq(`Digital Marketing Agency in ${city}`)
   }))
@@ -662,12 +814,27 @@ const coreTerms = [
   'Website Traffic'
 ];
 
+// Stable terminology preserves existing glossary URLs when service labels change.
+const glossaryServiceTitles: Record<string, string> = {
+  "strategy": "Strategy & Consulting",
+  "branding-creative": "Branding & Creative",
+  "web-development": "Web Design & Development",
+  "seo": "SEO & Organic Growth",
+  "ai-seo": "GEO & AI Search",
+  "ppc": "Paid Media (PPC)",
+  "content": "Content Marketing",
+  "smm": "Social Media Marketing",
+  "video": "Video & Multimedia",
+  "email-automation": "Email & Marketing Automation",
+  "cro-analytics": "CRO & Analytics"
+};
+
 const generatedTerms = [
   ...SERVICES.flatMap((service) => [
-    `${service.title} Strategy`,
-    `${service.title} Audit`,
-    `${service.title} Reporting`,
-    `${service.title} KPIs`
+    `${glossaryServiceTitles[service.id] || service.title} Strategy`,
+    `${glossaryServiceTitles[service.id] || service.title} Audit`,
+    `${glossaryServiceTitles[service.id] || service.title} Reporting`,
+    `${glossaryServiceTitles[service.id] || service.title} KPIs`
   ]),
   ...INDUSTRIES.flatMap((industry) => [
     `${industry.name} Marketing`,
@@ -728,11 +895,97 @@ const categoryForTerm = (term: string) => {
   return 'Digital marketing';
 };
 
+const glossaryDefinitions: Record<string, string> = {
+  "AI SEO": "AI SEO describes work intended to support discovery through AI-assisted search. At Qognition, the work connects technical accessibility and useful buyer information with dated observations of how a business is represented.",
+  "AI Overviews": "AI Overviews are generated summaries within Google Search that can include links to supporting pages. Eligibility relies on the underlying Search requirements; inclusion is not guaranteed.",
+  "Answer Engine Optimization": "Answer engine optimization is a term for making useful information easier to retrieve and understand in answer-based experiences. Clear explanations and evidence matter; an answer format does not guarantee a citation.",
+  "B2B Lead Generation": "B2B lead generation creates opportunities for business buyers to identify themselves and discuss a need. Lead quality depends on fit and intent, with sales qualification separate from a download or form submission.",
+  "Backlink Authority": "Backlink authority describes the relevance and credibility associated with links from other websites. A third-party score is a proxy, not a search engine\u2019s disclosed assessment of a business.",
+  "Brand Search": "Brand search is a query containing a business, product or other recognized brand name. Separate it from non-branded demand when reviewing search performance and acquisition activity.",
+  "Canonical Tag": "A canonical link identifies the preferred URL for a page or substantially similar content. It is a consolidation signal, not a substitute for a sound URL structure or an access control.",
+  "Click Through Rate": "Click-through rate is clicks divided by impressions for the same defined source and period. The denominator, placement and query mix must be comparable before interpreting a change.",
+  "Content Brief": "A content brief defines the audience, question, intended contribution, evidence and next step for an asset. It should identify the subject expert and reviewer as well as keywords.",
+  "Content Cluster": "A content cluster links related resources around a subject or buying problem. Each page needs its own useful purpose; internal links should help readers move between learning, evaluation and commercial detail.",
+  "Content Decay": "Content decay is a decline in an asset\u2019s usefulness or performance over time. Investigate outdated facts, changed demand, competing resources and technical problems before assuming a rewrite is required.",
+  "Content Gap": "A content gap is information a relevant audience needs that the current material does not adequately provide. A competitor\u2019s page alone is not proof that a matching page is useful.",
+  "Content Pruning": "Content pruning reviews whether existing assets should be improved, consolidated or retired. Assess their purpose, search value and inbound links before changing availability or indexing.",
+  "Conversion Rate Optimization": "Conversion rate optimization improves the path to a defined action. For a B2B site, confirmed enquiries and bookings should be measured separately from clicks and calendar views.",
+  "Core Web Vitals": "Core Web Vitals measure aspects of page loading, responsiveness and visual stability. Use field measurements where available and connect technical findings to the affected user journey.",
+  "Crawl Budget": "Crawl budget describes the resources a search engine allocates to crawling a site. For a growing catalogue, useful URLs, accessible pages and controlled duplication are practical concerns.",
+  "Customer Acquisition Cost": "Customer acquisition cost divides the included acquisition costs by acquired customers over a defined period or cohort. State which costs and customers are counted before comparing programs.",
+  "Digital PR": "Digital PR seeks relevant editorial attention through useful expertise, information or research. Keep outreach records and distinguish earned coverage from paid placements.",
+  "Domain Authority": "Domain Authority is a third-party metric associated with Moz. It is not a Google ranking score, a certification or evidence that a particular page will be selected for an AI answer.",
+  "E-E-A-T": "E-E-A-T refers to experience, expertise, authoritativeness and trustworthiness in Google\u2019s quality-evaluation framework. Credible authorship and supported claims help readers assess content; there is no universal E-E-A-T score to install.",
+  "Entity SEO": "Entity SEO concerns the clarity of people, organizations, products and their relationships in content and supporting records. Describe real, supported relationships rather than inventing schema connections.",
+  "FAQ Schema": "FAQPage structured data describes visible questions and answers where the type is appropriate. It does not guarantee rich-result eligibility, search placement or AI citations.",
+  "First Input Delay": "First Input Delay is a historical responsiveness metric measuring the delay before a browser begins handling a first interaction. Do not treat an old FID result as a complete assessment of current page responsiveness.",
+  "Google Ads": "Google Ads is Google\u2019s advertising platform. A B2B campaign needs appropriate targeting, a useful destination and a clear definition of the enquiry or sales outcome being measured.",
+  "Google Business Profile": "Google Business Profile provides eligible businesses with information that can appear on Google surfaces. Locations, categories and reviews must describe the real business and follow platform requirements.",
+  "Google Search Console": "Google Search Console provides site owners with search-performance and technical information. It is useful for investigating discovery and indexing, while customer and revenue outcomes require other records.",
+  "Hreflang": "Hreflang identifies language or regional alternatives for equivalent content. Publish consistent, reciprocal references between complete versions rather than linking to unfinished translations.",
+  "Internal Linking": "Internal linking connects pages within a site. Descriptive links help readers find related evidence and move from educational material to the relevant service and contact path.",
+  "Keyword Cannibalization": "Keyword cannibalization describes situations where overlapping pages compete for the same intended search purpose. Review the actual content and search data before consolidating URLs.",
+  "Keyword Difficulty": "Keyword difficulty is a tool-specific estimate of ranking competition. It should inform research alongside buyer relevance and existing capability, not decide a content plan by itself.",
+  "Landing Page": "A landing page is the destination for a visit from a campaign or other source. Its information and next action should match the promise that brought the visitor there.",
+  "Lead Magnet": "A lead magnet is a useful resource offered in exchange for contact information. Explain what is delivered and keep consent for optional follow-up distinct from the requested transaction.",
+  "Local SEO": "Local SEO improves accurate discovery for businesses with genuine local relevance. Service coverage and eligible business profiles matter; a city name alone does not justify a separate page.",
+  "LLM Optimization": "LLM optimization is a broad term for work around how language-model systems use and represent information. Website improvements cannot directly control a model\u2019s training or guarantee a recommendation.",
+  "Marketing Attribution": "Marketing attribution assigns credit to observed interactions under a defined model. It does not fully recover unobserved conversations, AI answers or other influences on a B2B purchase.",
+  "Meta Description": "A meta description summarizes a page in its HTML metadata. Search engines may use another passage instead, so it should accurately describe the page rather than promise a fixed snippet.",
+  "Noindex": "Noindex asks supporting search engines not to include a page in their index. A crawler must be able to access the instruction; blocking the URL in robots.txt can prevent that.",
+  "Open Graph": "Open Graph metadata describes a page for sharing previews, including a title, description and image. Preview text must reflect the visible page and its supported claims.",
+  "Organic CTR": "Organic click-through rate compares clicks and impressions from unpaid search within a defined dataset. Changes can reflect query mix and result layout as well as the page itself.",
+  "Page Speed": "Page speed describes how quickly useful content and interactions become available. Assess the affected devices and visits rather than treating one synthetic test score as the whole experience.",
+  "Scalable SEO Pages": "Scalable SEO pages use structured content and reusable templates to serve distinct search needs. Every published page still needs useful information, evidence and review; changing names alone is insufficient.",
+  "Rank Tracking": "Rank tracking records observed positions for specified queries, locations and conditions. Those observations are a sample and should not be confused with AI-answer visibility or sales outcomes.",
+  "Redirect Chain": "A redirect chain sends a request through multiple URLs before reaching its destination. Review the chain for unnecessary hops, loops and incorrect final destinations.",
+  "Return on Ad Spend": "Return on ad spend divides attributed revenue by advertising spend. It is not profit and depends on the attribution model and the completeness of the revenue data.",
+  "Robots.txt": "Robots.txt communicates crawl instructions to cooperating agents. It is not authentication, and search-crawler permissions should be reviewed separately from model-training permissions.",
+  "Schema Markup": "Schema markup adds structured descriptions of visible entities and content. It should be accurate and relevant; additional markup cannot substitute for useful information or guarantee inclusion.",
+  "Search Generative Experience": "Search Generative Experience was a name used for Google\u2019s experimental generative search experience. Current program planning should use the platform\u2019s current feature names and documented requirements.",
+  "Search Intent": "Search intent is the task a person is trying to complete with a query. In B2B, similar words can reflect learning, supplier evaluation or an active procurement need.",
+  "Sitemap XML": "An XML sitemap lists URLs a site wants search engines to discover. Include canonical, published, indexable pages and use truthful modification dates; listing does not guarantee indexing.",
+  "Technical SEO": "Technical SEO reviews whether useful pages can be crawled, rendered, indexed and understood. Prioritize defects affecting meaningful content and verify the result of each implementation.",
+  "Topical Authority": "Topical authority is a descriptive term for credible coverage of a subject. It should come from useful expertise and evidence, not the number of near-duplicate pages published.",
+  "UTM Parameters": "UTM parameters label campaign links so analytics can identify source context. Preserve first-touch and last-touch records separately and avoid putting personal information in URLs.",
+  "Website Traffic": "Website traffic measures observed visits under a tool\u2019s definitions and consent conditions. Relevant visitors, confirmed enquiries and sales outcomes are different measures."
+};
+
+const definitionForTerm = (term: string): string => {
+  if (glossaryDefinitions[term]) return glossaryDefinitions[term];
+  const industry = INDUSTRIES.find(item => term.startsWith(item.name));
+  const subindustry = INDUSTRIES.flatMap(item => item.subIndustries).find(item => term.startsWith(item.name));
+  const location = [...LOCATIONS].sort((a, b) => b.name.length - a.name.length).find(item => term.startsWith(item.name + ' '));
+  if (location) {
+    const topic = term.slice(location.name.length + 1);
+    const purpose = topic === 'SEO' ? 'search discovery for the buyers and applications a business can actually serve' : topic === 'Lead Generation' ? 'relevant enquiries with enough context for sales follow-up' : 'the channels and information a defined audience needs before contacting a supplier';
+    return `${term} concerns ${purpose} in ${location.name}. Review real service coverage, language and regional evidence before creating or promoting a location page.`;
+  }
+  if (subindustry) return `${term} connects the audience and service scope of ${subindustry.name.toLowerCase()} with useful discovery and evaluation content. ${subindustry.description} The page describes a planning topic rather than verified client experience.`;
+  if (industry) {
+    const topic = term.slice(industry.name.length + 1);
+    const purpose = topic === 'PPC' ? 'paid-campaign targeting, exclusions and qualified-enquiry measurement' : topic === 'Lead Generation' ? 'the path from relevant buyer interest to a confirmed enquiry' : topic === 'SEO' ? 'retrievable service information and relevant search demand' : 'the relationship between audience, offer, evidence and sales follow-up';
+    return `${term} addresses ${purpose}. ${industry.description} Define the exact buyer and applicable service before choosing the next action.`;
+  }
+  const service = Object.entries(glossaryServiceTitles).find(([, label]) => term.startsWith(label + ' '));
+  if (service) {
+    const suffix = term.slice(service[1].length + 1);
+    const purpose: Record<string, string> = {
+      Strategy: 'defines the audience, problem, delivery responsibilities and sequence of work',
+      Audit: 'records the current state, supporting evidence and issues to investigate before implementation',
+      Reporting: 'explains completed work and observed outcomes, with source definitions and measurement limitations',
+      KPIs: 'identifies the measures used to evaluate agreed objectives rather than promising a particular result',
+    };
+    return `${term} ${purpose[suffix] || 'connects the work to a defined business need'}. For B2B programs, keep search discovery, enquiries and sales acceptance distinct.`;
+  }
+  return `${term} is a topic to evaluate within the relevant search, content or measurement workflow. Define its role, source information and intended buyer action before treating it as a required deliverable.`;
+};
+
 export const GLOSSARY_TERMS: GlossaryTerm[] = glossarySource.slice(0, 320).map((term, index, all) => ({
   slug: slugify(term),
   term,
   category: categoryForTerm(term),
-  definition: `${term} is a digital growth concept Qognition uses when planning SEO, paid media, content, analytics, and conversion systems. In practical terms, it affects how buyers discover a brand, evaluate trust, and turn search demand into measurable pipeline.`,
+  definition: definitionForTerm(term),
   relatedTerms: [all[(index + 7) % all.length], all[(index + 19) % all.length], all[(index + 31) % all.length]].map(slugify)
 }));
 
@@ -788,23 +1041,5 @@ export const TEAM_MEMBERS: TeamMember[] = [
   }
 ];
 
-export const PRICING_PACKAGES = [
-  {
-    name: 'Growth Sprint',
-    price: 'Individually scoped',
-    bestFor: 'SMBs and founder-led teams that need SEO, content, and conversion momentum.',
-    includes: ['SEO and content roadmap', 'Technical fixes', 'Monthly reporting', 'Lead capture improvements']
-  },
-  {
-    name: 'Performance Engine',
-    price: 'Individually scoped',
-    bestFor: 'B2B teams scaling SEO, Google Ads, landing pages, and HubSpot reporting.',
-    includes: ['SEO and paid media pods', 'Landing page experiments', 'CRM attribution', 'Biweekly strategy calls']
-  },
-  {
-    name: 'Enterprise Authority',
-    price: 'Individually scoped',
-    bestFor: 'Multi-market teams that need AI search, scalable SEO pages, content operations, and executive reporting.',
-    includes: ['Scalable SEO architecture', 'AI search visibility', 'Digital PR assets', 'Executive dashboards']
-  }
-];
+// Compatibility export: the public engagement page describes scope, not pricing tiers.
+export const PRICING_PACKAGES: { name: string; price: string; bestFor: string; includes: string[] }[] = [];

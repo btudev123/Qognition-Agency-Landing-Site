@@ -4,9 +4,9 @@ import { useState, useRef, useEffect, useId, type FormEvent } from 'react';
 import { usePathname } from 'next/navigation';
 import { contactSchema, type SpokeId, type LeadIntent, type LeadPayload } from '../../lib/validation';
 import { getAttribution, newEventId, track } from '../../lib/analytics';
-import { CONSENT_POLICY_VERSION, effectiveConsent } from '../../lib/consent';
+import { CONSENT_POLICY_VERSION, consentEvidence } from '../../lib/consent';
 import { leadCopy, resolveLeadLocale, type LeadLocale } from '../../lib/leadCopy';
-import { BOOKING_LINK } from '../../data/siteConfig';
+import { appendFunnelContext, readFunnelContext } from '../../lib/funnelContext';
 import Button from '../ui/Button';
 
 interface LeadFormProps {
@@ -30,8 +30,10 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, qualifyi
   const [emailMarketing, setEmailMarketing] = useState(false);
   const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error' | 'preview'>('idle');
   const [serverError, setServerError] = useState('');
+  const [bookingHref, setBookingHref] = useState('/book');
+  useEffect(() => { setBookingHref(appendFunnelContext('/book', { ...readFunnelContext(new URLSearchParams(window.location.search)), ...context, page_id: context?.page_id || sourcePage })); }, [context, sourcePage]);
   const inFlight = useRef(false);
   const attempt = useRef<{ fingerprint: string; payload: LeadPayload } | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -56,9 +58,11 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, qualifyi
     setServerError('');
     inFlight.current = true;
     setStatus('submitting');
-    const preferences = effectiveConsent();
+    const preferences = consentEvidence();
     const source = window.location.pathname || sourcePage;
-    const fingerprint = JSON.stringify({ contact: validated.data, qualification, emailMarketing, source, preferences, context });
+    const inherited = readFunnelContext(new URLSearchParams(window.location.search));
+    const submissionContext = { ...inherited, ...context, locale, page_id: context?.page_id || inherited?.page_id || sourcePage, stage: context?.stage || inherited?.stage || (intent === 'newsletter' ? 'tofu' as const : 'bofu' as const) };
+    const fingerprint = JSON.stringify({ contact: validated.data, qualification, emailMarketing, source, preferences, context: submissionContext });
     if (!attempt.current || attempt.current.fingerprint !== fingerprint) {
       const attribution = getAttribution();
       const submissionId = newEventId();
@@ -66,22 +70,35 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, qualifyi
         service: spoke, intent, source_page: source,
         submission_id: submissionId, event_id: submissionId,
         contact: validated.data, honeypot, attribution, utm: attribution?.first_touch,
-        context: { ...context, locale, page_id: context?.page_id || sourcePage, stage: context?.stage || (intent === 'newsletter' ? 'tofu' : 'bofu') },
+        context: submissionContext,
         qualification: { ...qualification, revenue_basis: 'annual-revenue' },
-        consent: { email_marketing: emailMarketing, analytics: preferences?.analytics === true, advertising: preferences?.advertising === true, policy_version: CONSENT_POLICY_VERSION, recorded_at: new Date().toISOString() },
+        consent: { email_marketing: emailMarketing, analytics: preferences.analytics, advertising: preferences.advertising, basis: preferences.basis, policy_version: CONSENT_POLICY_VERSION, recorded_at: preferences.recorded_at },
       } };
     }
     track('lead_submit_attempt', { intent, source_page: source, locale });
     try {
       const response = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(attempt.current.payload) });
       const result = await response.json().catch(() => ({}));
+      if (result.status === 'validated' && process.env.NEXT_PUBLIC_QOGNITION_PREVIEW === '1') {
+        setServerError('Preview test validated. No enquiry was sent and no marketing workflow was started.');
+        setStatus('preview');
+        return;
+      }
       if (!response.ok || result.success !== true) {
         if (response.status === 409) attempt.current = null;
         setServerError(c.failed);
         setStatus('error');
         return;
       }
-      if (!result.duplicate) track('lead_submit_success', { intent, source_page: source, locale }, { event: 'Lead', eventId: result.event_id || attempt.current.payload.event_id, params: { lead_intent: intent } });
+      // Success is success===true on a 2xx, whatever `status` says: 'captured'
+      // (GHL) and 'emailed' (the Resend fallback, fallback:true) both qualify.
+      // contact_submitted is the canonical §8 name. lead_submit_success stays
+      // for one release so GA4 history joins up; only it mirrors to Meta, so the
+      // pixel still counts one Lead per submission. Neither carries PII.
+      if (!result.duplicate) {
+        track('lead_submit_success', { intent, source_page: source, locale }, { event: 'Lead', eventId: result.event_id || attempt.current.payload.event_id, params: { lead_intent: intent } });
+        track('contact_submitted', { intent, source_page: source, locale, lead_status: typeof result.status === 'string' ? result.status : 'unknown' });
+      }
       setStatus('success');
       onSuccess?.();
     } catch { setServerError(c.failed); setStatus('error'); }
@@ -89,7 +106,7 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, qualifyi
   }
 
   if (status === 'success') return <div ref={successRef} tabIndex={-1} role="status" aria-live="polite" className={`rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-8 ${className}`} dir={locale === 'ar' ? 'rtl' : undefined}>
-    <h3 className="text-h3 mb-3 font-semibold">{c.received}</h3><p className="text-body mb-6">{c.next}</p><a href={BOOKING_LINK} className="inline-block rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-medium text-[var(--accent-deep)]">{c.booking}</a>
+    <h3 className="text-h3 mb-3 font-semibold">{c.received}</h3><p className="text-body mb-6">{c.next}</p><a href={bookingHref} className="inline-block rounded-full bg-[var(--btn-primary-bg)] px-5 py-3 text-sm font-medium text-[var(--btn-primary-fg)]">{c.booking}</a>
   </div>;
 
   return <form ref={formRef} onSubmit={submit} className={`space-y-5 ${className}`} noValidate dir={locale === 'ar' ? 'rtl' : undefined}>
@@ -107,7 +124,7 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, qualifyi
     </div></details>
     <label className="flex items-start gap-3 text-sm"><input type="checkbox" checked={emailMarketing} onChange={e => setEmailMarketing(e.target.checked)} className="mt-1" /><span>{c.marketing}</span></label>
     {errors.consent && <p className="text-meta text-red-700">{errors.consent}</p>}
-    {serverError && <div role="alert" className="rounded-lg border border-red-300 p-3 text-sm">{serverError} <a className="underline" href={BOOKING_LINK}>{c.booking}</a></div>}
+    {serverError && <div role={status === 'preview' ? 'status' : 'alert'} className={`rounded-lg border p-3 text-sm ${status === 'preview' ? 'border-[var(--border)]' : 'border-red-300'}`}>{serverError} {status !== 'preview' && <a className="underline" href={bookingHref}>{c.booking}</a>}</div>}
     <Button type="submit" className="w-full" size="lg" disabled={status === 'submitting'}>{status === 'submitting' ? c.sending : ctaLabel || (intent === 'audit' ? c.audit : c.send)}</Button>
     <p className="text-meta">{c.note} <a href="/legal/privacy" className="underline">{c.privacy}</a></p>
   </form>;

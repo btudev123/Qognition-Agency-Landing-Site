@@ -13,7 +13,7 @@ interface StudyGridProps {
 export default function StudyGrid({
   studies,
   emptyTitle = 'No case studies match yet',
-  emptyMessage = 'Check back soon, or browse the full library for a comparable engagement.',
+  emptyMessage = 'Check back soon, or browse the full library for a comparable programme.',
   emptyAction = { label: 'View all case studies', href: '/case-studies' },
 }: StudyGridProps) {
   if (studies.length === 0) {

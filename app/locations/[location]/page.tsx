@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocationBySlug, LOCATIONS } from '../../../data/locations';
 import { getLocationMetadata } from '../../../lib/seo';
-import { breadcrumbSchema, faqSchema } from '../../../lib/schema';
+import { breadcrumbSchema, faqSchema, orgRef } from '../../../lib/schema';
 import { LocationOverviewView } from '../ProgrammaticLocationView';
 
 export const dynamicParams = false;
@@ -57,11 +57,7 @@ export default async function Page({ params }: { params: Promise<{ location: str
               '@type': 'Service',
               name: `Digital Marketing Services in ${location.name}`,
               description: location.intro,
-              provider: {
-                '@type': 'Organization',
-                name: 'Qognition',
-                url: 'https://www.qognitionagency.com',
-              },
+              provider: orgRef(),
               areaServed: {
                 '@type': location.schemaType,
                 name: location.name,

@@ -15,7 +15,7 @@ export default function FaqAccordion({ faqs }: { faqs: Faq[] }) {
 
   if (faqs.length === 0) {
     return (
-      <p className="text-body text-[var(--text-muted)]">No FAQ is available for this engagement yet.</p>
+      <p className="text-body text-[var(--text-muted)]">No questions are published for this programme yet.</p>
     );
   }
 

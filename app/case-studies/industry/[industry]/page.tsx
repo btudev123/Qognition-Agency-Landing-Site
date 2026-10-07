@@ -26,7 +26,7 @@ export const generateStaticParams = () => NICHES.map((industry) => ({ industry }
 const isNiche = (value: string): value is Niche => (NICHES as string[]).includes(value);
 
 const describe = (niche: Niche, count: number) =>
-  `${count} ${nicheLabel(niche)} engagements. Each opens with a dated audit of the live site and cites the third-party benchmarks the work was measured against.`;
+  `${count} ${nicheLabel(niche)} client programmes. Targets set at the start of each engagement are labelled as targets until client reporting confirms a result.`;
 
 export async function generateMetadata({
   params,
@@ -82,7 +82,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
                   '@type': 'ListItem',
                   position: i + 1,
                   url: `${SITE_URL}/case-studies/${s.id}`,
-                  name: `${s.client} — ${s.headline}`,
+                  name: s.headline,
                 })),
               },
             },
@@ -109,9 +109,7 @@ export default async function Page({ params }: { params: Promise<{ industry: str
               {label} Case Studies
             </Heading>
             <Text className="mb-4">
-              {studies.length} {label} engagements across {markets.length} markets. Every one opens
-              with a dated audit of the live site, a named diagnosis, and the third-party benchmarks
-              the work was measured against.
+              {studies.length} {label} client programmes across {markets.length} markets. Each sets out the work and the targets agreed at the start of the engagement. Targets stay labelled as targets until client reporting confirms a result.
             </Text>
           </header>
 
@@ -144,12 +142,12 @@ export default async function Page({ params }: { params: Promise<{ industry: str
 
           <section className="mb-14">
             <Heading level="h2" className="mb-6">
-              The engagements
+              The case studies
             </Heading>
             <StudyGrid
               studies={studies}
-              emptyTitle={`No ${label} engagements published yet`}
-              emptyMessage="Browse the full library for a comparable engagement in another sector."
+              emptyTitle={`No ${label} case studies published yet`}
+              emptyMessage="Browse the full library for a comparable programme in another sector."
             />
           </section>
 

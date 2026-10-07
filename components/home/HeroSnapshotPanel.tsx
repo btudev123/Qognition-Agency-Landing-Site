@@ -3,38 +3,6 @@
 import Link from 'next/link';
 import { useId, useState } from 'react';
 
-/* The hero's right-hand panel — the interactive one.
- *
- * WHAT THIS IS AND WHY IT IS NOT THE OLD ROI CALCULATOR.
- *
- * The operator approved the live site's hero composition: a dense, interactive
- * card beside the display type, with sector chips, live content, a large figure,
- * a segmented bar and an inline CTA. That composition is kept exactly. What is
- * NOT kept is the old HeroRoiCalculator's OUTPUT, which was a projected revenue
- * figure with no measurement behind it — the claim CLAUDE.md §4 forbids, and the
- * decorative-dashboard-with-invented-metrics pattern §9 bans outright.
- *
- * So every number this panel renders is a fact about OUR OWN METHOD, derived at
- * render time from the data directly below, and never a claim about the reader's
- * position, their competitors' position, or any result. Read that again before
- * adding a figure here. "18 prompts across 5 platforms" is checkable by counting
- * the array. "You are losing $145,152" is not checkable by anyone.
- *
- * The prompts are real buyer prompts for each sector — Family B in
- * docs/seo/b2b-niche-architecture.md, the question the CLIENT'S buyer asks, not
- * the one Qognition targets. Showing them is the entire persuasion: the reader
- * recognises their own buyer's words, and can paste any line into ChatGPT right
- * now and see for themselves. That reproducibility is the offer.
- *
- * CLIENT COMPONENT, deliberately and minimally. One useState over a frozen
- * array, no effects, no observers, no libraries. The interaction IS the design
- * the operator asked for; a server render of four static lists would ship more
- * HTML than this ships JS.
- *
- * The limit line at the bottom is not a disclaimer bolted on. It is the reason
- * the offer converts: a reader told plainly what a thing cannot do believes what
- * they are told it can. Do not move it and do not shrink it.
- */
 
 type Sector = {
   id: string;
@@ -46,12 +14,21 @@ type Sector = {
 
 const SECTORS: readonly Sector[] = [
   {
+    id: 'saas',
+    label: 'B2B SaaS',
+    prompts: [
+      'Compare procurement software for a multi-site manufacturing business',
+      'Which compliance platforms support our existing identity provider?',
+      'What should a mid-market finance team evaluate before changing payroll software?',
+    ],
+  },
+  {
     id: 'manufacturing',
     label: 'Manufacturing',
     prompts: [
       'Find ISO 9001 and AS9100 certified CNC machining suppliers in the Midwest',
       'Which contract manufacturers handle low-volume medical device parts?',
-      'Compare injection moulding vendors with ITAR registration',
+      'Compare injection molding vendors with ITAR registration',
     ],
   },
   {
@@ -59,7 +36,7 @@ const SECTORS: readonly Sector[] = [
     label: 'Legal',
     prompts: [
       'Best commercial litigation firms for mid-market SaaS disputes',
-      'Which law firms specialise in cross-border M&A under $50M?',
+      'Which law firms specialize in cross-border M&A under $50M?',
       'Employment counsel with experience defending WARN Act claims',
     ],
   },
@@ -83,11 +60,8 @@ const SECTORS: readonly Sector[] = [
   },
 ] as const;
 
-/* Every platform here is one we actually query. Adding a row is a claim. */
 const PLATFORMS = ['ChatGPT', 'Perplexity', 'Gemini', 'Claude', 'Google AI'] as const;
 
-/* The four steps the snapshot actually performs, in order. The bar below is a
-   description of this process, not a score. */
 const STEPS = ['Prompt set', 'Run', 'Crawl', 'Report'] as const;
 
 export default function HeroSnapshotPanel() {
@@ -117,7 +91,7 @@ export default function HeroSnapshotPanel() {
           className="font-mono text-meta tracking-[0.14em] uppercase"
           style={{ color: 'var(--s-text-faint)' }}
         >
-          Free AI visibility snapshot
+          Your buyers’ questions
         </span>
         {/* Two uses of rf-pulse maximum per page (docs/design/motion.md §2).
             This is one; the other is nowhere. */}
@@ -133,10 +107,10 @@ export default function HeroSnapshotPanel() {
 
       <div className="px-5 sm:px-6 pt-5 sm:pt-6 pb-5 sm:pb-6">
         <h2 id={`${panelId}-heading`} className="text-h3 font-sans m-0">
-          See what AI says when your buyer asks.
+          Start with the questions behind the shortlist.
         </h2>
         <p className="text-meta mt-2.5 m-0" style={{ color: 'var(--s-text-muted)' }}>
-          Pick your sector. These are real prompts we run — no email required to look.
+          Pick a sector to see example buyer questions. These are prompts we would test, not answers we observed.
         </p>
 
         {/* ── Sector chips ──────────────────────────────────────────────── */}
@@ -154,6 +128,18 @@ export default function HeroSnapshotPanel() {
                 role="tab"
                 id={`${panelId}-tab-${s.id}`}
                 aria-selected={on}
+                tabIndex={on ? 0 : -1}
+                onKeyDown={(event) => {
+                  let next: number | undefined;
+                  if (event.key === 'ArrowRight') next = (i + 1) % SECTORS.length;
+                  if (event.key === 'ArrowLeft') next = (i - 1 + SECTORS.length) % SECTORS.length;
+                  if (event.key === 'Home') next = 0;
+                  if (event.key === 'End') next = SECTORS.length - 1;
+                  if (next === undefined) return;
+                  event.preventDefault();
+                  setActive(next);
+                  document.getElementById(`${panelId}-tab-${SECTORS[next].id}`)?.focus();
+                }}
                 aria-controls={`${panelId}-prompts`}
                 onClick={() => setActive(i)}
                 className="font-sans text-meta rounded-full px-3.5 py-1.5 transition-colors duration-150"
@@ -181,7 +167,7 @@ export default function HeroSnapshotPanel() {
             className="font-mono text-meta tracking-[0.14em] uppercase px-4 pt-3.5 pb-2 m-0"
             style={{ color: 'var(--s-text-faint)' }}
           >
-            Prompts we run
+            Example buyer questions
           </p>
           <ul className="list-none p-0 m-0 px-4 pb-4 grid gap-2.5">
             {sector.prompts.map((p, i) => (
@@ -209,7 +195,7 @@ export default function HeroSnapshotPanel() {
           className="font-mono text-meta tracking-[0.14em] uppercase mt-6 mb-2.5 m-0"
           style={{ color: 'var(--s-text-faint)' }}
         >
-          Sampled across
+          Platforms we would test
         </p>
         <ul className="list-none p-0 m-0 flex flex-wrap gap-x-4 gap-y-1.5">
           {PLATFORMS.map((name) => (
@@ -238,14 +224,7 @@ export default function HeroSnapshotPanel() {
           ))}
         </ul>
 
-        {/* ── The figure.
-               It is a turnaround commitment we control, NOT a measurement of the
-               reader, their competitors or any platform. It was briefly the
-               platform count, which was both redundant with the row directly
-               above and a number with nothing at stake in it. 48 hours is the
-               promise the funnel is actually judged on. Change it here and you
-               have changed a service commitment — check /free-ai-audit says the
-               same thing. ────────────────────────────────────────────────── */}
+        {/* Example count, not a delivery promise or measured outcome. */}
         <div
           className="mt-6 pt-5 flex items-end justify-between gap-4 flex-wrap"
           style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
@@ -261,16 +240,16 @@ export default function HeroSnapshotPanel() {
                 lineHeight: 1,
               }}
             >
-              48
+              {sector.prompts.length}
             </span>{' '}
-            hours
+            example questions
           </p>
           {/* Right-aligned only from sm. Below that it wraps to its own line,
               where right alignment reads as a mistake. */}
           <p className="m-0 text-meta sm:text-right" style={{ color: 'var(--s-text-muted)' }}>
-            Your prompt set, your competitors,
+            Your free audit uses your buyers&apos;
             <br />
-            named and dated.
+            questions, not these.
           </p>
         </div>
 
@@ -298,8 +277,8 @@ export default function HeroSnapshotPanel() {
           ))}
         </ol>
 
-        <Link href="/free-ai-audit" className="rf-btn rf-btn--primary w-full mt-6">
-          Get your free snapshot
+        <Link href="#book" className="rf-btn rf-btn--primary w-full mt-6">
+          Book a call
         </Link>
       </div>
 
@@ -307,8 +286,7 @@ export default function HeroSnapshotPanel() {
         className="text-meta px-5 sm:px-6 py-3.5 m-0"
         style={{ borderTop: '1px solid var(--s-rule-hairline)', color: 'var(--s-text-faint)' }}
       >
-        A sample of prompts is a sample. It tells you what we observed on one date, not your
-        permanent position.
+        These are examples. A free AI visibility audit records the actual answers, the sources they cited and the date we ran them.
       </p>
     </aside>
   );

@@ -58,6 +58,7 @@ import { z } from 'zod';
 import { AuditError, runAudit } from '../../../lib/auditEngine';
 import { observeAiVisibility } from '../../../lib/audit/aiVisibility';
 import { checkAuditRateLimit, releaseAuditRateLimit } from '../../../lib/auditRateLimit';
+import { isPreviewDeployment } from '../../../lib/deploymentMode';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -71,6 +72,13 @@ const auditRequestSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  // A preview must not crawl targets or spend production provider credits.
+  if (isPreviewDeployment()) {
+    return NextResponse.json(
+      { success: false, status: 'preview_disabled', error: 'Audits are disabled in this preview. No website crawl or AI check was performed.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    );
+  }
   const raw = await request.text();
   if (raw.length > 10_000) {
     return NextResponse.json({ error: 'Request is too large.' }, { status: 413 });

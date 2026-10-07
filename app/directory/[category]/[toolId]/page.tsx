@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { appendFunnelContext } from '../../../../lib/funnelContext';
 import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Star, XCircle } from 'lucide-react';
 import { DIRECTORY_PRODUCTS } from '../../../../data/directoryProducts';
 import { INDUSTRIES } from '../../../../data/industries';
@@ -72,11 +73,6 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   description: product.shortDescription,
                   category: product.category,
                   brand: { '@type': 'Brand', name: product.name },
-                  review: {
-                    '@type': 'Review',
-                    author: { '@type': 'Organization', name: 'Qognition' },
-                    reviewBody: product.agencyVerdict,
-                  },
                   url: `https://www.qognitionagency.com${path}`,
                 },
               ],
@@ -118,7 +114,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   <Heading level="h1">{product.name}</Heading>
                   <div className="flex flex-wrap items-center gap-4 mt-2 text-sm">
                     <span className="text-[var(--accent)] font-bold flex items-center gap-1">
-                      <Star fill="currentColor" size={16} /> {product.rating}/5.0
+                      Evaluation reference
                     </span>
                     <span className="text-[var(--text-muted)]">|</span>
                     <span className="text-[var(--text-muted)]">{product.category}</span>
@@ -134,7 +130,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
               {[
                 `${product.name} is useful when it solves a defined workflow bottleneck, not when it becomes another unused subscription.`,
                 `For SEO and AI discovery, pair ${product.name} with human review, analytics, documented prompts, and clear ownership.`,
-                'This profile includes verdict, best fit, use cases, pros/cons, workflow, alternatives, FAQs, and internal links.',
+                'Confirm current capabilities, plans and support with the vendor before making a purchase. This profile is a starting point for evaluation.',
               ].map((item) => (
                 <div
                   key={item}
@@ -149,10 +145,10 @@ export default async function Page({ params }: { params: Promise<{ category: str
               <section className="border border-[var(--border)] bg-[var(--card-bg)] p-8 rounded-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-12 bg-[var(--accent)]/10 blur-[60px] rounded-full" />
                 <h2 className="text-h2 text-[var(--text)] mb-4 flex items-center gap-2 font-semibold">
-                  <ShieldCheck className="text-[var(--accent)]" /> Qognition Take
+                  <ShieldCheck className="text-[var(--accent)]" /> Evaluation notes
                 </h2>
                 <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6 mb-6">
-                  &ldquo;{product.agencyVerdict}&rdquo;
+                  {product.agencyVerdict}
                 </p>
               </section>
 
@@ -322,7 +318,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
               )}
 
               <section className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
-                <Heading level="h2" className="mb-6">Related Qognition Pages</Heading>
+                <Heading level="h2" className="mb-6">Continue your evaluation</Heading>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {[
                     ...(relatedService
@@ -357,13 +353,15 @@ export default async function Page({ params }: { params: Promise<{ category: str
 
           <aside className="md:col-span-4 space-y-8">
             <div className="p-6 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl sticky top-28">
+              <Link href={appendFunnelContext("/book", { page_id: path, stage: "mofu" })} className="mb-4 block rounded-lg bg-[var(--accent)] px-6 py-4 text-center text-sm font-medium text-[var(--accent-deep)]">Book a call</Link>
+              <Link href={appendFunnelContext("/contact#enquiry", { page_id: path, stage: "mofu" })} className="mb-6 block text-center text-[var(--accent)]">Send an enquiry</Link>
               <a
                 href={product.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mb-6 block rounded-lg bg-[var(--accent)] px-6 py-4 text-center text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"
               >
-                Visit Website
+                Check the vendor’s website
               </a>
               <div className="border-t border-[var(--border)] pt-6">
                 <h2 className="text-h2 text-[var(--text-muted)] mb-4 font-semibold">
@@ -376,8 +374,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                       <ArrowRight size={16} className="text-[var(--accent)]" />
                     </div>
                     <p className="text-meta text-[var(--text-muted)] mt-2">
-                      Need help implementing {product.name}? Our {relatedService.title} team can turn the tool into a
-                      measurable workflow.
+                      Discuss whether {product.name} fits your requirements and the implementation responsibilities within your {relatedService.title} scope.
                     </p>
                   </Link>
                 ) : (
@@ -397,7 +394,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                     { label: 'OpenAI API for SEO', href: '/openai-api-seo' },
                     { label: `Browse all ${product.category} tools`, href: `/directory/${product.categorySlug}` },
                     { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
-                    { label: 'Free AI visibility audit', href: '/free-ai-audit' },
+
                   ].map((link) => (
                     <li key={link.href}>
                       <Link

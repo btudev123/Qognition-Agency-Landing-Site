@@ -14,7 +14,7 @@ const city = (name: string, country: string, region: string, marketFocus: string
   region,
   type: 'city',
   marketFocus,
-  intro: `Qognition builds service-area digital growth programs for brands targeting ${name}, with local SEO, paid media, content, and conversion systems tuned to the market.`,
+  intro: `AI SEO and GEO for B2B companies serving ${name}. Scope useful service and application content around actual buyer needs, with a clear route to an enquiry or booked call.`,
   localModifiers: [`${name} agency`, `${name} SEO`, `${name} PPC`, `${name} web design`],
   canonicalParent: slugify(region),
   schemaType: 'City'
@@ -33,7 +33,7 @@ const area = (
   region,
   type,
   marketFocus,
-  intro: `Qognition supports companies across ${name} with search visibility, performance marketing, AI search optimization, and high-converting web experiences built around real buyer demand.`,
+  intro: `Plan AI SEO and GEO for the B2B markets you serve across ${name}. Define relevant buyers, service coverage, language requirements and sales follow-up before expanding content.`,
   localModifiers: [`${name} digital marketing`, `${name} SEO services`, `${name} growth agency`],
   schemaType: type === 'country' ? 'Country' : type === 'city' ? 'City' : 'AdministrativeArea'
 });

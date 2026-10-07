@@ -1,4 +1,4 @@
-import { BOOKING_LINK } from '../../../data/siteConfig';
+import { appendFunnelContext } from '../../../lib/funnelContext';
 import AIPlatforms from '../../../components/shared/AIPlatforms';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -156,13 +156,12 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                 <Heading level="h3">{region.name} Strategy</Heading>
                 <p className="text-body text-[var(--text-muted)]">{region.localStrategy || region.description}</p>
                 <a
-                  href={BOOKING_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={appendFunnelContext("/book", { page_id: `/regions/${region.slug}`, stage: "bofu" })}
                   className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
                 >
-                  Book Region Strategy
+                  Book a call
                 </a>
+                <Link href={appendFunnelContext("/contact#enquiry", { page_id: `/regions/${region.slug}`, stage: "bofu" })} className="block text-center text-[var(--accent)]">Send an enquiry</Link>
               </div>
             </aside>
           </div>

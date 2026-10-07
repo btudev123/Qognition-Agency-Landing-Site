@@ -2,32 +2,23 @@ import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
 import { Eyebrow, Shell } from './primitives';
 
-/* Section 8 — Who this suits. docs/copy/home.md §8.
- *
- * Both columns carry equal visual weight. No red, no green, no crosses, no
- * struck-through text on the right-hand list. A disqualifier rendered as a
- * failure state reads as a judgement on the reader; rendered as a statement of
- * fit it reads as candour, and candour is what makes someone in the left column
- * trust the left column.
- *
- * The two lists are siblings under one H2 with their own H3s, so a screen
- * reader gets the contrast from the headings rather than from the layout.
- */
 
 const FITS = [
-  'You sell a considered purchase with a sales cycle measured in weeks, not minutes',
+  'You sell to other businesses, and a purchase takes weeks of evaluation, not minutes',
+  'You want AI search, SEO or PPC. Any one of them is enough to start',
   'Referrals have carried your growth and you want a second channel',
   'Someone at your firm can approve and publish website changes',
-  'You have people who are willing to be named and quoted publicly',
-  'You can commit to three months before judging the work',
+  'You want enquiry quality measured, not just traffic',
 ];
 
-const DOES_NOT_FIT = [
-  'You are pre-revenue, or selling something low-ticket and transactional',
+/* CLAUDE.md §2 disqualifiers. No revenue floor (docs/icp-positioning.md v2.1). */
+const NOT_A_FIT = [
+  'You are pre-revenue',
+  'You sell mainly to consumers, or sell low-ticket products online',
   'You need leads this week',
-  'You want a one-off project rather than a programme',
-  'Nobody at your firm can edit the website',
-  'Leads arrive and nobody follows up',
+  'You want a one-off project rather than ongoing work',
+  'You cannot edit your own website',
+  'No one at your firm follows up on enquiries',
 ];
 
 function List({ title, items, accent }: { title: string; items: string[]; accent: boolean }) {
@@ -65,17 +56,17 @@ export default function Fit() {
         <ScrollReveal>
           <Eyebrow>Fit</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[22ch] font-semibold">
-            <MaskReveal>We would rather say no at the snapshot stage.</MaskReveal>
+            <MaskReveal>Start with the business you want to win.</MaskReveal>
           </h2>
           <p className="text-body mt-5 m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
-            Than bill you for six months of the wrong thing.
+            A short check before you book. It saves us both a call.
           </p>
         </ScrollReveal>
 
         <ScrollReveal stagger={2} className="mt-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             <List title="Worth a conversation if" items={FITS} accent />
-            <List title="Not worth either of our time if" items={DOES_NOT_FIT} accent={false} />
+            <List title="Probably not a fit if" items={NOT_A_FIT} accent={false} />
           </div>
         </ScrollReveal>
       </Shell>

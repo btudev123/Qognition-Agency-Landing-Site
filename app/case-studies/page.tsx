@@ -15,20 +15,14 @@ import {
   serviceLabel,
 } from '../../data/case-studies';
 import { breadcrumbSchema } from '../../lib/schema';
-import { SITE_URL } from '../../lib/seo';
+import { SITE_URL, metadataFor } from '../../lib/seo';
 
-const description = `${LIBRARY_STATS.total} engagements across HVAC, dental and insurance in ${LIBRARY_STATS.states} US states. Each one opens with a dated audit of the live site and cites the third-party benchmarks it was measured against.`;
+const description = `${LIBRARY_STATS.total} client programmes across HVAC, dental and insurance. Targets set at the start of each engagement are labelled as targets until client reporting confirms a result.`;
 
-export const metadata: Metadata = {
-  title: 'Case Studies | Qognition',
-  description,
-  alternates: { canonical: `${SITE_URL}/case-studies` },
-  openGraph: {
-    title: 'Case Studies | Qognition',
-    description,
-    url: `${SITE_URL}/case-studies`,
-  },
-};
+// Title and description come from SEO_OVERRIDES['/case-studies'] in lib/seo.ts.
+// The hard-coded 'Case Studies | Qognition' here doubled the layout's
+// '| Qognition' template on production ("Case Studies | Qognition | Qognition").
+export const metadata: Metadata = metadataFor({ title: 'Case Studies', description, path: '/case-studies' });
 
 export default function Page() {
   const jsonLd = [
@@ -46,7 +40,7 @@ export default function Page() {
           '@type': 'ListItem',
           position: i + 1,
           url: `${SITE_URL}/case-studies/${study.id}`,
-          name: `${study.client} — ${study.headline}`,
+          name: study.headline,
         })),
       },
     },
@@ -72,19 +66,28 @@ export default function Page() {
               Case Studies
             </Heading>
             <Text className="mb-4">
-              {LIBRARY_STATS.total} engagements across{' '}
+              {LIBRARY_STATS.total} client programmes across{' '}
               {LIBRARY_STATS.byNiche.map((n) => `${n.label} (${n.count})`).join(', ')}, in{' '}
               {LIBRARY_STATS.states} states.
             </Text>
-            <Text>
-              Every one opens the same way: a dated audit of the live site, a named diagnosis, and
-              the third-party benchmarks the work was measured against — each with a live source
-              link you can check.{' '}
+            {/* O7 (operator, 2026-10-07): client programmes. KPIs stay targets
+                until `actual` is filled; caseStudyEvidence() is unchanged. The
+                count line above is HOLD pending the operator's B2B-relevant count,
+                so it stays as it was. HVAC and dental are never B2B proof. */}
+            <Text className="mb-4">
+              These are client programmes. Each one sets out the business problem, our approach and a measured baseline. Every KPI is labelled as a target until client reporting fills in the result.{' '}
               <Link
                 href="/case-studies/methodology"
-                className="text-[var(--accent)] underline underline-offset-2"
+                className="text-[var(--accent-deep)] underline underline-offset-2"
               >
                 How we measure this
+              </Link>
+              .
+            </Text>
+            <Text>
+              These programmes are for local service businesses and commercial insurance. Read them for how we plan and measure, not as evidence of work in your sector. For your own sector,{' '}
+              <Link href="/free-ai-audit" className="text-[var(--accent-deep)] underline underline-offset-2">
+                request a free AI visibility audit
               </Link>
               .
             </Text>

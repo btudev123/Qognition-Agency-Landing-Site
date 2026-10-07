@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { appendFunnelContext } from '../../lib/funnelContext';
 import type { ReactNode } from 'react';
 import { growthSectors, growthNiches, growthPillars, growthServices, growthMarkets, growthPrograms, getNichePath, getServicePath, getSectorNiches, legacyGrowthServiceMappings } from '../../data/growth';
 import { getGrowthBreadcrumbs, type GrowthPageRecord } from '../../lib/growth/publication';
@@ -8,7 +9,7 @@ import styles from './GrowthPage.module.css';
 
 type Params = Record<string, string | string[] | undefined>;
 const action = '/book';
-function Actions() { return <div className={styles.actions}><Link className={styles.primary} href={action}>Book a tailored strategy call <span aria-hidden="true">&nbsp;↗</span></Link><Link className={styles.secondary} href="/free-ai-audit">Request a free AI audit</Link></div>; }
+function Actions({ path }: { path: string }) { return <div className={styles.actions}><Link className={styles.primary} href={appendFunnelContext(action, { page_id: path, stage: "bofu" })}>Book a call <span aria-hidden="true">&nbsp;↗</span></Link><Link className={styles.secondary} href={appendFunnelContext("/contact#enquiry", { page_id: path, stage: "bofu" })}>Send an enquiry</Link></div>; }
 function Section({ title, children }: { title: string; children: ReactNode }) { return <section className={styles.section}><h2>{title}</h2>{children}</section>; }
 function List({ items, numbered = false }: { items: string[]; numbered?: boolean }) { return <ul className={`${styles.list} ${numbered ? styles.numbered : ''}`}>{items.map((item) => <li key={item}>{item}</li>)}</ul>; }
 function Cards({ items, two = false }: { items: { title: string; text: string; href: string; label?: string }[]; two?: boolean }) { return <div className={two ? styles.gridTwo : styles.grid}>{items.map((item) => <article key={item.href} className={styles.card}><h3>{item.title}</h3><p>{item.text}</p><Link href={item.href}>{item.label || 'Explore the approach'} <span aria-hidden="true">↗</span></Link></article>)}</div>; }
@@ -79,7 +80,7 @@ async function CatalogContent({ id, params }: { id: string; params: Params }) {
 
 export async function GrowthPage({ page, searchParams = {} }: { page: GrowthPageRecord; searchParams?: Params }) {
   let content: ReactNode;
-  if (page.kind === 'home') content = <><Section title="Four connected ways to grow"><Cards items={pillarCards} two/></Section><Section title="Built around the way your buyers decide"><p>Complex B2B purchases involve several people, technical questions and an evaluation process. Start with that reality: make your expertise discoverable, explain where it fits and give the right buyer a useful next step.</p><Cards items={sectorCards}/></Section><Section title="Start with a specific growth problem"><Cards items={programCards(growthPrograms.slice(0,3))}/></Section></>;
+  if (page.kind === 'home') content = <><Section title="AI search and the work that supports it"><Cards items={pillarCards} two/></Section><Section title="Built around the way your buyers decide"><p>Complex B2B purchases involve several people, technical questions and an evaluation process. Start with that reality: make your expertise discoverable, explain where it fits and give the right buyer a useful next step.</p><Cards items={sectorCards}/></Section><Section title="Start with a specific growth problem"><Cards items={programCards(growthPrograms.slice(0,3))}/></Section></>;
   else if (page.kind === 'services') content = <><Section title="Choose the problem you want to solve"><Cards items={pillarCards} two/></Section><Section title="An engagement with a clear purpose"><p>Begin with one audience, one commercial problem and an agreed definition of progress. Add connected services when they support that objective. Media spend, platforms and implementation responsibilities belong in the scope, not in assumptions.</p><List numbered items={['Review the current buyer journey and available evidence','Agree priorities, deliverables and responsibilities','Implement the work with clear review points','Measure qualified outcomes and decide what to improve']}/></Section></>;
   else if (page.kind === 'industries') content = <><Section title="Find your industry"><Cards items={sectorCards}/></Section><Section title="Specialist context matters"><p>The questions behind an industrial RFQ differ from the questions behind a software evaluation or a professional-services consultation. Industry, niche and subniche guides help define the buyer’s decision, the evidence required and the right conversion.</p><p>Company size is a planning input. The stronger fit is a B2B company with a considered purchase, a real growth challenge and the resources to act on a sustained program.</p></Section></>;
   else if (page.kind === 'pillar') {
@@ -111,9 +112,9 @@ export async function GrowthPage({ page, searchParams = {} }: { page: GrowthPage
   return <main className={styles.page}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(growthStructuredData(page)).replace(/</g,'\\u003c') }}/>
     <nav className={styles.breadcrumbs} aria-label="Breadcrumb">{getGrowthBreadcrumbs(page).map((crumb,index,array) => <span key={crumb.path}>{index > 0 && <span aria-hidden="true"> / </span>}{index === array.length - 1 ? <span aria-current="page">{crumb.name}</span> : <Link href={crumb.path}>{crumb.name}</Link>}</span>)}</nav>
-    <header className={styles.hero}><p className={styles.eyebrow}>{page.kind === 'program' ? 'Growth program brief' : 'Qognition / B2B growth'}</p><h1 className={styles.title}>{page.title}</h1><p className={styles.intro}>{page.description}</p>{page.kind !== 'catalog' && <Actions/>}</header>
+    <header className={styles.hero}><p className={styles.eyebrow}>{page.kind === 'program' ? 'Growth program brief' : 'Qognition / AI SEO & GEO for B2B'}</p><h1 className={styles.title}>{page.title}</h1><p className={styles.intro}>{page.description}</p>{page.kind !== 'catalog' && <Actions path={page.path}/>}</header>
     {content}
     {page.kind === 'pillar' && <SupportingCapabilities pillarId={page.entityId!}/>}
-    {page.kind !== 'catalog' && <section className={styles.banner}><h2>Build around your next growth decision.</h2><p>Tell us what you sell, who you need to reach and where the current approach falls short. We will use the conversation to assess fit and define a useful next step.</p><Actions/></section>}
+    {page.kind !== 'catalog' && <section className={styles.banner}><h2>Build around your next growth decision.</h2><p>Tell us what you sell, who you need to reach and where the current approach falls short. We will use the conversation to assess fit and define a useful next step.</p><Actions path={page.path}/></section>}
   </main>;
 }

@@ -1,4 +1,5 @@
-import { BOOKING_LINK } from '../../../data/siteConfig';
+import { previewCandidate, previewCandidateMetadata } from '../../../lib/nicheCandidates';
+import NicheCandidatePage from '../../../components/b2b/NicheCandidatePage';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -21,7 +22,8 @@ import Heading from '../../../components/ui/Heading';
 import CrossLinks from '../../../components/shared/CrossLinks';
 import FunnelCTA from '../../../components/shared/FunnelCTA';
 
-export const dynamicParams = false;
+// Unknown routes still fail the resolver. Draft fallback is strictly preview-only.
+export const dynamicParams = true;
 
 /* Gated by lib/industryPublication.ts: an industry row that is not on the
    frozen allowlist generates no params, so its URL 404s rather than rendering a
@@ -85,6 +87,8 @@ export const generateMetadata = async ({
      lib/b2b/icpRegistry.ts expressed as branch order. `financial-services` is
      the one industry-level collision and legacy keeps it, here and in the
      render below, so the two cannot disagree on the same URL. */
+  const candidateMetadata = previewCandidateMetadata([industry]);
+  if (candidateMetadata) return candidateMetadata;
   const icp = icpMetadata([industry]);
   if (icp) return icp;
 
@@ -100,6 +104,8 @@ export default async function Page({
   const record = resolveIndustry(industrySlug);
 
   if (!record) {
+    const candidate = previewCandidate([industrySlug]);
+    if (candidate) return <NicheCandidatePage candidate={candidate} />;
     const icp = resolveIcp([industrySlug]);
     if (!icp || icp.level !== 'industry') notFound();
     const canonical = icp.canonicalPath ? resolveIcp(icp.canonicalPath) : undefined;
@@ -339,13 +345,10 @@ const [relatedCaseStudy] = relatedCaseStudies;
                   {relatedCaseStudies.length > 0 && (
                   <Heading level="h3" className="mb-3">From our client library</Heading>
                   )}
-                  {/* All three, not one. `studiesForTopic` with the spread returns
-                      one study per niche in turn, so taking index 0 put the SAME
-                      HVAC contractor on 10 of 11 hubs. Three cards show the
-                      breadth of the library and make the heading true on its
-                      face: a reader sees home services, dental and insurance and
-                      understands at a glance that this is our work rather than a
-                      claim about their sector. */}
+                  {/* Operator decision 2026-10-07: insurance only on B2B pages.
+                      studiesForTopic returns insurance studies only (B2B_PAGE_NICHES),
+                      so HVAC and dental never render here; they stay on
+                      /case-studies. The heading still claims library, not sector. */}
                   <div className="space-y-3">
                     {relatedCaseStudies.map((study) => (
                       <Link
@@ -367,7 +370,7 @@ const [relatedCaseStudy] = relatedCaseStudies;
                     href="/case-studies"
                     className="mt-4 inline-block text-meta text-[var(--accent)] hover:underline"
                   >
-                    See all 45 client programmes
+                    View all case studies
                   </Link>
                 </div>
 
@@ -392,18 +395,18 @@ const [relatedCaseStudy] = relatedCaseStudies;
                 </div>
 
                 <a
-                  href={BOOKING_LINK}
+                  href="/book"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
                 >
-                  Book a Strategy Call
+                  Book a call
                 </a>
               </div>
             </aside>
           </div>
         </Section>
-        <FunnelCTA stage="mofu" className="mt-16 mb-8" />
+        <FunnelCTA stage="bofu" className="mt-16 mb-8" />
         <CrossLinks exclude={{ type: 'industry', id: industry.id }} />
       </main>
     </>

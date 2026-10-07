@@ -104,12 +104,10 @@ export function BuyersBlock({ buyers, id }: { buyers: readonly BuyerRole[]; id: 
   return (
     <Band labelledBy={id}>
       <BandHeading id={id} eyebrow="Who is actually searching">
-        Four people decide this, and only one of them is our customer.
+        Understand the people behind the decision.
       </BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        The first three are your buyers. The fourth is ours. Keeping them apart is the whole
-        discipline of this page: the questions your buyer asks are questions we measure, never
-        questions we try to rank for.
+        Your prospective customers need evidence that fits their role in the buying decision. Your internal marketing and commercial owners help us decide what to publish, review and measure.
       </p>
       <div className={`grid grid-cols-1 md:grid-cols-2 mt-9 ${LATTICE_CELLS}`} style={LATTICE}>
         {buyers.map((b, i) => (
@@ -288,12 +286,10 @@ export function ChildrenBlock({
   return (
     <Band labelledBy={id}>
       <BandHeading id={id} eyebrow="Inside this vertical">
-        {entries.length} kinds of firm we sell to in {verticalLabel}.
+        Explore specialist businesses in {verticalLabel}.
       </BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        A row here is a kind of firm, not a claim of experience in it. Where a page exists it is
-        linked. Where one does not, the row is still listed, because truncating the list to only
-        what we have written would misrepresent what we cover.
+        Each specialist business has different applications, requirements and buying questions. Explore the relevant approach, or tell us about your business so we can discuss the right scope.
       </p>
 
       {linked.length > 0 && (
@@ -301,7 +297,7 @@ export function ChildrenBlock({
           {linked.map((c) => (
             <Link key={c.id} href={c.href!} className="rf-hoverable rf-cell block p-6">
               <span className="rf-cell-meta font-mono text-meta tracking-[0.14em] uppercase">
-                Page published
+                Explore the approach
               </span>
               <h3 className="text-h3 font-sans mt-3 mb-2 font-semibold">{c.label}</h3>
               {c.geoAngle && (
@@ -316,7 +312,7 @@ export function ChildrenBlock({
 
       {listed.length > 0 && (
         <div className="mt-10">
-          <Label>No page yet</Label>
+          <Label>Other specialist areas</Label>
           {/* A plain list, not a grid of cards. Cards imply destinations, and
               these have none — linking a spine entity would 404, because
               dynamicParams is false on this route. */}
@@ -376,11 +372,10 @@ export function ServiceLinksBlock({ id }: { id: string }) {
   return (
     <Band labelledBy={id}>
       <BandHeading id={id} eyebrow="The four surfaces">
-        All four are in the retainer. They are never sold apart.
+        Connect AI visibility with the search foundations.
       </BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        Paid media sits alongside these rather than inside them, because it is priced against ad
-        spend and these are priced by scope.
+        Agree which search surfaces matter to your buyers and what evidence supports the work. PPC can support acquisition through a separately agreed scope.
       </p>
       <ul className={`list-none p-0 m-0 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 mt-8 ${LATTICE_CELLS}`} style={LATTICE}>
         {SERVICE_LINKS.map((s) => (
@@ -404,7 +399,7 @@ export function ProofBlock({ proof, id }: { proof: ClientProof; id: string }) {
   return (
     <Band labelledBy={id}>
       <BandHeading id={id} eyebrow="Proof">
-        {proof.kind === 'case-study' ? 'A published engagement in this niche.' : 'We have not done this here.'}
+        {proof.kind === 'case-study' ? 'An example relevant to this niche.' : 'How to evaluate the evidence.'}
       </BandHeading>
       {proof.kind === 'none' ? (
         <>
@@ -423,7 +418,7 @@ export function ProofBlock({ proof, id }: { proof: ClientProof; id: string }) {
       ) : (
         <div className="mt-7">
           <Link href={`/case-studies/${proof.caseStudyId}`} className="rf-btn rf-btn--secondary">
-            Read the case study
+            Read the example
           </Link>
         </div>
       )}
@@ -484,16 +479,14 @@ export function SnapshotCta({ question, id }: { question: string; id: string }) 
               {question}
             </h2>
             <p className="text-body mt-5 m-0 max-w-[58ch]" style={{ color: 'var(--s-text-muted)' }}>
-              The snapshot answers it with a run rather than an opinion: your prompt set, the four
-              platforms, who was named, what was cited, and the date it happened. No card, no
-              commitment, and the limits stated on the same page as the findings.
+              Tell us who you sell to, what buyers need to understand and where your current search programme falls short. We will discuss the evidence, priorities and a useful next step.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/free-ai-audit" className="rf-btn rf-btn--primary">
-                Get your free snapshot
+              <Link href="/book" className="rf-btn rf-btn--primary">
+                Book a call
               </Link>
-              <Link href="/contact" className="rf-btn rf-btn--secondary">
-                Ask a question first
+              <Link href="/contact#enquiry" className="rf-btn rf-btn--secondary">
+                Send an enquiry
               </Link>
             </div>
           </div>
@@ -503,9 +496,9 @@ export function SnapshotCta({ question, id }: { question: string; id: string }) 
               style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
             >
               {[
-                ['48 hours', 'From your prompt set to the record.'],
-                ['4 platforms', 'ChatGPT, Perplexity, Gemini, Google AI Overviews.'],
-                ['0 guarantees', 'We do not control these systems and will not pretend to.'],
+                ['Your buyers', 'Start with their questions, requirements and decisions.'],
+                ['Your scope', 'Agree the relevant markets, search surfaces and deliverables.'],
+                ['Your evidence', 'Keep observed visibility separate from enquiries and revenue.'],
               ].map(([k, v]) => (
                 <li
                   key={k}

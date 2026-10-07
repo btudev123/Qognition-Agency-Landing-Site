@@ -1,4 +1,4 @@
-import { BOOKING_LINK } from '../../../data/siteConfig';
+import { appendFunnelContext } from '../../../lib/funnelContext';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -57,18 +57,16 @@ export default async function Page({ params }: { params: Promise<{ market: strin
           <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <Link
-              href="/free-ai-audit"
+              href={appendFunnelContext("/book", { page_id: path, stage: "bofu" })}
               className="inline-flex px-6 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
             >
-              Get Free Market Audit
+              Book a call
             </Link>
             <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={appendFunnelContext("/contact#enquiry", { page_id: path, stage: "bofu" })}
               className="inline-flex px-6 py-3 text-sm font-medium border border-[var(--border)] text-[var(--text)] rounded-lg hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all"
             >
-              Book Strategy Call
+              Send an enquiry
             </a>
           </div>
         </Section>
@@ -95,7 +93,7 @@ export default async function Page({ params }: { params: Promise<{ market: strin
         </Section>
 
         <Section spacing="lg">
-          <Heading level="h2" className="mb-8">Country Growth FAQs</Heading>
+          <Heading level="h2" className="mb-8">Planning your search programme</Heading>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {page.faqs.map((faq) => (
               <div key={faq.question} className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-5">

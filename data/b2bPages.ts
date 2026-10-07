@@ -1,351 +1,456 @@
-import { B2BMoFuPage } from '../types';
-
-const baseFaqs = (topic: string) => [
-  {
-    question: `Who should use this ${topic.toLowerCase()} guide?`,
-    answer:
-      'It is written for founders, CMOs, consultants, professional services firms, SaaS teams, and B2B companies that need qualified pipeline instead of vague awareness.'
-  },
-  {
-    question: 'What should we do first?',
-    answer:
-      'Start with the free audit, fix the biggest website and tracking gaps, then build one focused campaign around a high-intent audience and offer.'
-  },
-  {
-    question: 'Can Qognition implement this?',
-    answer:
-      'Yes. Qognition can own the strategy, landing pages, SEO, paid media, content, HubSpot tracking, and reporting needed to execute the plan.'
-  }
-];
+import type { B2BMoFuPage } from '../types';
 
 export const B2B_MOFU_PAGES: B2BMoFuPage[] = [
   {
-    slug: 'b2b-marketing-strategies',
-    title: 'Best B2B Marketing Strategies for Lead Generation',
-    description:
-      'A practical guide to B2B marketing strategies that create qualified leads through SEO, paid media, content, landing pages, social proof, and CRM follow-up.',
-    h1: 'Best B2B Marketing Strategies for Lead Generation',
-    eyebrow: 'B2B Lead Generation',
-    summary:
-      'The strongest B2B marketing strategies connect a sharp offer, high-intent traffic, proof, conversion pages, and fast follow-up. Traffic alone is not the goal; sales-qualified opportunities are.',
-    sections: [
+    "slug": "b2b-marketing-strategies",
+    "title": "B2B Marketing Strategy for Search and Qualified Enquiries",
+    "description": "Connect buyer research, useful search content and reliable sales follow-up.",
+    "h1": "B2B Marketing Strategy for Search and Qualified Enquiries",
+    "eyebrow": "B2B Lead Generation",
+    "summary": "Begin with a buying problem and the people involved in deciding. AI SEO and GEO support discovery and evaluation; paid campaigns can test demand where scope and measurement are clear. A website journey should end with an appropriate enquiry or a real conversation, not an unexplained traffic target.",
+    "sections": [
       {
-        title: 'Start with a painful buying problem',
-        content:
-          'B2B buyers move when the cost of doing nothing is clear. Your strategy should name the problem, quantify the risk, show proof, and make the next step feel low-friction.'
+        "title": "Define the commercial problem",
+        "content": "Ask sales which problem causes a business to seek outside help, who approves the decision and what makes an enquiry suitable. Separate software demos, industrial RFQs and professional-service consultations rather than treating them as the same lead."
       },
       {
-        title: 'Build acquisition around intent',
-        content:
-          'Use SEO for compounding demand, paid search for immediate tests, LinkedIn for authority, retargeting for trust, and landing pages for specific offers instead of sending every visitor to a generic homepage.'
+        "title": "Build a connected content journey",
+        "content": "Explain the problem in an educational guide. Help readers compare approaches with a playbook or selection guide. Link to a service page that explains scope, responsibilities and how to get in touch."
       },
       {
-        title: 'Connect marketing to pipeline',
-        content:
-          'Every campaign should carry UTMs, CRM source fields, lifecycle stages, and conversion events so you can see which channels create qualified calls and revenue.'
+        "title": "Review discovery and sales together",
+        "content": "Use search data to investigate discovery and CRM records to review enquiries. Track confirmed bookings and sales acceptance separately. Attribution is incomplete when buyers move between AI answers, colleagues, websites and calls."
       }
     ],
-    checklist: ['One clear ICP', 'One primary offer', 'Dedicated landing pages', 'CRM tracking', 'Proof-rich case studies', 'Five-email nurture'],
-    faqs: baseFaqs('B2B marketing strategy'),
-    relatedLinks: [
-      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
-      { label: 'Case Studies', href: '/case-studies' },
-      { label: 'Lead Generation Techniques', href: '/lead-generation-techniques' }
+    "checklist": [
+      "Defined buyer and buying question",
+      "Supported claims and clear ownership",
+      "Useful educational and evaluation content",
+      "Relevant commercial destination",
+      "Confirmed enquiry and booking records",
+      "Consent-aware follow-up"
+    ],
+    "faqs": [
+      {
+        "question": "Where should we start?",
+        "answer": "Identify the buyer question and the point where the current journey breaks down. Review the relevant page and available evidence before deciding the work."
+      },
+      {
+        "question": "How does this connect to sales?",
+        "answer": "Link useful content to the appropriate service page, enquiry form and booking calendar. Preserve the context in the CRM and let sales confirm fit and next steps."
+      },
+      {
+        "question": "Can Qognition help us implement it?",
+        "answer": "Book a call or send an enquiry with your business, audience and current problem. We agree the scope and responsibilities before recommending a program."
+      }
+    ],
+    "relatedLinks": [
+      {
+        "label": "AI SEO & GEO for B2B",
+        "href": "/services/ai-seo"
+      },
+      {
+        "label": "Our approach",
+        "href": "/process"
+      },
+      {
+        "label": "Book a call",
+        "href": "/book"
+      },
+      {
+        "label": "Send an enquiry",
+        "href": "/contact#enquiry"
+      }
     ]
   },
   {
-    slug: 'lead-generation-techniques',
-    title: 'Effective Lead Generation Techniques for B2B Companies',
-    description:
-      'Learn the B2B lead generation techniques Qognition uses to turn search demand, paid traffic, LinkedIn attention, and audit tools into booked calls.',
-    h1: 'Effective Lead Generation Techniques for B2B Companies',
-    eyebrow: 'Lead Generation',
-    summary:
-      'B2B lead generation works when the offer is useful before the sales call. Audits, calculators, benchmark reports, webinars, and case-study downloads reduce friction while capturing intent.',
-    sections: [
+    "slug": "lead-generation-techniques",
+    "title": "B2B Lead Generation: From Buyer Question to Sales Conversation",
+    "description": "Choose useful content and contact paths that match buying intent.",
+    "h1": "B2B Lead Generation: From Buyer Question to Sales Conversation",
+    "eyebrow": "Lead Generation",
+    "summary": "An enquiry is useful when it brings enough context for a relevant response. A download or tool run can indicate curiosity without signalling a buying project. Offer useful information first, then make a call or contact form easy to find for people ready to discuss requirements.",
+    "sections": [
       {
-        title: 'Use low-friction offers',
-        content:
-          'A free SEO audit, AI visibility audit, calculator, or benchmark report is easier to accept than a sales call. It captures real demand while giving the prospect useful insight.'
+        "title": "Make direct contact easy",
+        "content": "Use a clear Book a call action and an accessible enquiry form on commercial pages. Ask for the business need and relevant website rather than making every visitor complete a long qualification questionnaire."
       },
       {
-        title: 'Route leads by intent',
-        content:
-          'Someone requesting an audit should enter a different follow-up path than someone reading a blog post. Use HubSpot stages and source fields to separate research leads from sales-ready buyers.'
+        "title": "Give research visitors a useful next step",
+        "content": "A guide, checklist or clearly scoped review can help a reader assess their situation. Explain what the asset covers and what it does not measure. Keep optional marketing consent separate from delivery of the requested information."
       },
       {
-        title: 'Make proof easy to find',
-        content:
-          'Case studies, before/after metrics, timelines, screenshots, testimonials, and industry-specific examples help a buyer justify the next step internally.'
+        "title": "Preserve context in the handoff",
+        "content": "Save the originating page, service interest and available campaign context with the enquiry. Confirm receipt before showing success. A sales owner reviews fit and agrees the next step; automation does not establish an SQL."
       }
     ],
-    checklist: ['Audit widget above the fold', 'Dedicated offer page', 'Thank-you/report experience', 'Calendly CTA', 'Nurture sequence', 'Sales alert'],
-    faqs: baseFaqs('lead generation'),
-    relatedLinks: [
-      { label: 'Free AI Audit', href: '/free-ai-audit' },
-      { label: 'SEO ROI Calculator', href: '/free-tools/seo-roi-calculator' },
-      { label: 'B2B Email Best Practices', href: '/email-marketing-best-practices' }
+    "checklist": [
+      "Defined buyer and buying question",
+      "Supported claims and clear ownership",
+      "Useful educational and evaluation content",
+      "Relevant commercial destination",
+      "Confirmed enquiry and booking records",
+      "Consent-aware follow-up"
+    ],
+    "faqs": [
+      {
+        "question": "Where should we start?",
+        "answer": "Identify the buyer question and the point where the current journey breaks down. Review the relevant page and available evidence before deciding the work."
+      },
+      {
+        "question": "How does this connect to sales?",
+        "answer": "Link useful content to the appropriate service page, enquiry form and booking calendar. Preserve the context in the CRM and let sales confirm fit and next steps."
+      },
+      {
+        "question": "Can Qognition help us implement it?",
+        "answer": "Book a call or send an enquiry with your business, audience and current problem. We agree the scope and responsibilities before recommending a program."
+      }
+    ],
+    "relatedLinks": [
+      {
+        "label": "AI SEO & GEO for B2B",
+        "href": "/services/ai-seo"
+      },
+      {
+        "label": "Our approach",
+        "href": "/process"
+      },
+      {
+        "label": "Book a call",
+        "href": "/book"
+      },
+      {
+        "label": "Send an enquiry",
+        "href": "/contact#enquiry"
+      }
     ]
   },
   {
-    slug: 'content-marketing-for-b2b',
-    title: 'Content Marketing Strategies for B2B Businesses',
-    description:
-      'How B2B companies should build content around buyer problems, search intent, founder POV, case studies, lead magnets, and internal links.',
-    h1: 'Content Marketing Strategies for B2B Businesses',
-    eyebrow: 'B2B Content Marketing',
-    summary:
-      'B2B content should help buyers make decisions. The best programs mix SEO pages, comparison content, founder POV, case studies, glossary pages, and gated assets tied to sales follow-up.',
-    sections: [
+    "slug": "content-marketing-for-b2b",
+    "title": "B2B Content That Supports Discovery and Evaluation",
+    "description": "Plan educational, evaluation and commercial content around actual buying questions.",
+    "h1": "B2B Content That Supports Discovery and Evaluation",
+    "eyebrow": "B2B Content Marketing",
+    "summary": "Useful B2B content explains a problem, helps the reader compare approaches and shows how to discuss a relevant service. The source material comes from subject expertise, product facts and attributable evidence. Publishing more pages is not a substitute for answering the right question.",
+    "sections": [
       {
-        title: 'Map content to buying stages',
-        content:
-          'Top-of-funnel content earns attention, middle-of-funnel content explains options, and bottom-of-funnel content proves Qognition can solve the problem.'
+        "title": "Start with subject expertise",
+        "content": "Interview the people who deliver the service or build the product. Ask about applications, implementation constraints, tradeoffs and questions buyers repeatedly raise. Distinguish a documented result from an illustrative example."
       },
       {
-        title: 'Use original POV',
-        content:
-          'Generic AI-written articles rarely build authority. Use founder opinions, client patterns, teardown lessons, audits, benchmarks, and clear recommendations.'
+        "title": "Connect the stages",
+        "content": "A problem-led article should link to a relevant evaluation guide. That guide should link to the appropriate commercial page. Shared material is useful when multiple niches genuinely face the same decision; name changes alone do not justify separate pages."
       },
       {
-        title: 'Link every page to action',
-        content:
-          'Each guide should connect to services, case studies, audit tools, glossary definitions, comparison pages, and Calendly so readers never hit a dead end.'
+        "title": "Review and maintain the content",
+        "content": "Give each asset an owner, factual sources and a review trigger. Update product facts, broken links and obsolete guidance. Measure relevant enquiries and sales usefulness alongside discovery rather than counting output alone."
       }
     ],
-    checklist: ['Topic cluster map', 'Industry pages', 'Case-study library', 'Audit CTA', 'Author profile', 'Internal links'],
-    faqs: baseFaqs('B2B content marketing'),
-    relatedLinks: [
-      { label: 'Content Strategy Services', href: '/services/seo/content-strategy' },
-      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
-      { label: 'Blog', href: '/blog' }
+    "checklist": [
+      "Defined buyer and buying question",
+      "Supported claims and clear ownership",
+      "Useful educational and evaluation content",
+      "Relevant commercial destination",
+      "Confirmed enquiry and booking records",
+      "Consent-aware follow-up"
+    ],
+    "faqs": [
+      {
+        "question": "Where should we start?",
+        "answer": "Identify the buyer question and the point where the current journey breaks down. Review the relevant page and available evidence before deciding the work."
+      },
+      {
+        "question": "How does this connect to sales?",
+        "answer": "Link useful content to the appropriate service page, enquiry form and booking calendar. Preserve the context in the CRM and let sales confirm fit and next steps."
+      },
+      {
+        "question": "Can Qognition help us implement it?",
+        "answer": "Book a call or send an enquiry with your business, audience and current problem. We agree the scope and responsibilities before recommending a program."
+      }
+    ],
+    "relatedLinks": [
+      {
+        "label": "AI SEO & GEO for B2B",
+        "href": "/services/ai-seo"
+      },
+      {
+        "label": "Our approach",
+        "href": "/process"
+      },
+      {
+        "label": "Book a call",
+        "href": "/book"
+      },
+      {
+        "label": "Send an enquiry",
+        "href": "/contact#enquiry"
+      }
     ]
   },
   {
-    slug: 'email-marketing-best-practices',
-    title: 'B2B Email Marketing Best Practices',
-    description:
-      'B2B email marketing best practices for audit follow-up, nurture sequences, segmentation, subject lines, CRM routing, and sales handoff.',
-    h1: 'B2B Email Marketing Best Practices',
-    eyebrow: 'Email Nurture',
-    summary:
-      'B2B email works when it follows a real signal. A prospect who requested an audit should receive useful context about their score, not a generic newsletter.'
-    ,
-    sections: [
+    "slug": "email-marketing-best-practices",
+    "title": "B2B Follow-up and Consent-Based Nurture",
+    "description": "Keep requested delivery, optional nurture and sales qualification distinct.",
+    "h1": "B2B Follow-up and Consent-Based Nurture",
+    "eyebrow": "Email Nurture",
+    "summary": "Follow-up should reflect the request a person made. Send the requested information, preserve its context and make it easy to reply. Optional nurture needs appropriate permission and a stop condition when a real conversation starts.",
+    "sections": [
       {
-        title: 'Reference the trigger',
-        content:
-          'The first email should mention the audit type, score, and strongest gap. Specific follow-up feels helpful; generic follow-up feels automated.'
+        "title": "Deliver the requested information",
+        "content": "Confirm what was saved and which team owns the response. Do not call a technical-readiness result a measurement of AI recommendations. Avoid promising a turnaround that the delivery team has not agreed."
       },
       {
-        title: 'Use a five-email sequence',
-        content:
-          'Send the report, explain the biggest issue, show a relevant case study, offer a practical checklist, then invite the prospect to book a strategy call.'
+        "title": "Segment by need and intent",
+        "content": "Use service, sector, content stage and stated objective to select useful follow-up. Keep fit and observed engagement separate. Do not turn every download into an MQL or every booking into an SQL."
       },
       {
-        title: 'Segment by fit',
-        content:
-          'Use company type, audit score, URL, source, and stated need to route leads into sales-ready, nurture, or low-fit paths.'
+        "title": "Stop at the right time",
+        "content": "Stop nurture on reply, booking, qualification, customer status, disqualification or opt-out. Preserve existing contact owners and do-not-disturb settings. Keep first-touch attribution separate from the latest interaction."
       }
     ],
-    checklist: ['Audit report email', 'Problem explainer', 'Relevant case study', 'Checklist/resource', 'Calendly invite', 'CRM stage update'],
-    faqs: baseFaqs('B2B email marketing'),
-    relatedLinks: [
-      { label: 'Lead Generation Techniques', href: '/lead-generation-techniques' },
-      { label: 'HubSpot Lead Capture', href: '/glossary/hubspot-lead-capture' },
-      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
+    "checklist": [
+      "Defined buyer and buying question",
+      "Supported claims and clear ownership",
+      "Useful educational and evaluation content",
+      "Relevant commercial destination",
+      "Confirmed enquiry and booking records",
+      "Consent-aware follow-up"
+    ],
+    "faqs": [
+      {
+        "question": "Where should we start?",
+        "answer": "Identify the buyer question and the point where the current journey breaks down. Review the relevant page and available evidence before deciding the work."
+      },
+      {
+        "question": "How does this connect to sales?",
+        "answer": "Link useful content to the appropriate service page, enquiry form and booking calendar. Preserve the context in the CRM and let sales confirm fit and next steps."
+      },
+      {
+        "question": "Can Qognition help us implement it?",
+        "answer": "Book a call or send an enquiry with your business, audience and current problem. We agree the scope and responsibilities before recommending a program."
+      }
+    ],
+    "relatedLinks": [
+      {
+        "label": "AI SEO & GEO for B2B",
+        "href": "/services/ai-seo"
+      },
+      {
+        "label": "Our approach",
+        "href": "/process"
+      },
+      {
+        "label": "Book a call",
+        "href": "/book"
+      },
+      {
+        "label": "Send an enquiry",
+        "href": "/contact#enquiry"
+      }
     ]
   },
   {
-    slug: 'b2b-social-media-marketing',
-    title: 'B2B Social Media Marketing Strategies',
-    description:
-      'A practical B2B social media strategy for founder-led content, LinkedIn thought leadership, proof assets, short-form video, and lead capture.',
-    h1: 'B2B Social Media Marketing Strategies',
-    eyebrow: 'B2B Social Media',
-    summary:
-      'B2B social media should build trust before the sales call. Founder POV, proof, education, commentary, and lead magnets give buyers a reason to engage.'
-    ,
-    sections: [
+    "slug": "b2b-social-media-marketing",
+    "title": "B2B Social Content That Leads to Useful Conversations",
+    "description": "Connect expert explanations to the resources and services buyers need.",
+    "h1": "B2B Social Content That Leads to Useful Conversations",
+    "eyebrow": "B2B Social Media",
+    "summary": "Select channels from the audience you can reach and the expertise you can consistently publish. LinkedIn can support professional discussion; other platforms may fit particular audiences. Evaluate that fit from observed engagement and enquiry quality rather than a promise that every business needs every channel.",
+    "sections": [
       {
-        title: 'Build around founder authority',
-        content:
-          'Buyers trust people before brands. Founder-led posts, contrarian lessons, teardown threads, and behind-the-scenes proof make the company easier to remember.'
+        "title": "Publish a defensible point of view",
+        "content": "Use a named expert when that person is willing to own the explanation. Share practical decisions, limitations and approved examples. Obtain permission for customer names, quotes and results."
       },
       {
-        title: 'Turn services into content pillars',
-        content:
-          'Use SEO, AI visibility, paid media, web design, branding, and lead generation as recurring pillars with examples, mistakes, frameworks, and client stories.'
+        "title": "Match the destination to the post",
+        "content": "An educational post can link to a guide, an evaluation post to a methodology page and a service discussion to a commercial page. Keep a direct enquiry and booking path available when interest becomes a project."
       },
       {
-        title: 'Send attention to a low-friction offer',
-        content:
-          'Every strong social program needs a capture path. Send readers to a free audit, calculator, case study, benchmark report, or newsletter instead of only asking for a call.'
+        "title": "Measure the conversation",
+        "content": "Record observable referrals and enquiries, then review relevance with sales. Likes and impressions are not pipeline, and a self-reported discovery answer can add context that click attribution misses."
       }
     ],
-    checklist: ['Founder POV', 'Proof posts', 'Educational carousels', 'Short video', 'Audit CTA', 'Weekly reporting'],
-    faqs: baseFaqs('B2B social media'),
-    relatedLinks: [
-      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
-      { label: 'LinkedIn Thought Leadership', href: '/services/smm/linkedin-thought-leadership' },
-      { label: 'Case Studies', href: '/case-studies' }
+    "checklist": [
+      "Defined buyer and buying question",
+      "Supported claims and clear ownership",
+      "Useful educational and evaluation content",
+      "Relevant commercial destination",
+      "Confirmed enquiry and booking records",
+      "Consent-aware follow-up"
+    ],
+    "faqs": [
+      {
+        "question": "Where should we start?",
+        "answer": "Identify the buyer question and the point where the current journey breaks down. Review the relevant page and available evidence before deciding the work."
+      },
+      {
+        "question": "How does this connect to sales?",
+        "answer": "Link useful content to the appropriate service page, enquiry form and booking calendar. Preserve the context in the CRM and let sales confirm fit and next steps."
+      },
+      {
+        "question": "Can Qognition help us implement it?",
+        "answer": "Book a call or send an enquiry with your business, audience and current problem. We agree the scope and responsibilities before recommending a program."
+      }
+    ],
+    "relatedLinks": [
+      {
+        "label": "AI SEO & GEO for B2B",
+        "href": "/services/ai-seo"
+      },
+      {
+        "label": "Our approach",
+        "href": "/process"
+      },
+      {
+        "label": "Book a call",
+        "href": "/book"
+      },
+      {
+        "label": "Send an enquiry",
+        "href": "/contact#enquiry"
+      }
     ]
   },
   {
-    // Pillar page. Consolidates the "openai api seo" cluster, which was ranking
-    // ~6.2 on scattered directory pages with no page actually about the topic.
-    slug: 'openai-api-seo',
-    title: 'OpenAI API for SEO: How to Build Search Workflows That Scale',
-    description:
-      'A practical engineering guide to using the OpenAI API for SEO — content generation, entity extraction, internal linking, schema markup, and clustering — plus the guardrails that keep scaled output indexable.',
-    h1: 'OpenAI API for SEO: Build Search Workflows That Scale',
-    eyebrow: 'AI SEO Engineering',
-    summary:
-      'The OpenAI API is useful for SEO when it does the work humans are bad at repeating: clustering thousands of queries, extracting entities, drafting schema, and auditing internal links. It fails when it is used to mass-produce pages nobody asked for. This guide covers both sides.',
-    sections: [
+    "slug": "openai-api-seo",
+    "title": "OpenAI API for SEO: Build Reviewable Workflows",
+    "description": "Use automation for research and preparation while keeping factual and publication review explicit.",
+    "h1": "OpenAI API for SEO: Build Reviewable Workflows",
+    "eyebrow": "AI SEO Engineering",
+    "summary": "API-assisted workflows can organize queries, extract candidate topics and prepare drafts for review. They should produce inspectable inputs to SEO work. An automated output is not evidence that a page is useful, accurate or ready to publish.",
+    "sections": [
       {
-        title: 'Where the OpenAI API genuinely wins at SEO',
-        content:
-          'Four workloads justify the API cost. Keyword clustering: embeddings group thousands of queries by semantic intent far faster than manual sorting. Entity extraction: pull the people, products, and concepts from a corpus to build topical maps. Schema generation: turn unstructured page content into valid JSON-LD at scale. Internal link auditing: embed every page, then surface the pairs that should be linked but are not. Each produces a reviewable artifact, not a published page.'
+        "title": "Choose an inspectable task",
+        "content": "Start with query grouping, candidate internal links or a content brief grounded in approved source material. Evaluate samples against a human-reviewed reference before expanding the workload."
       },
       {
-        title: 'Models, cost, and the structured-output rule',
-        content:
-          'Use the smallest model that clears the quality bar — cheap models handle classification and extraction; reserve frontier models for reasoning over ambiguous intent. Always request structured JSON output with a strict schema rather than parsing prose. Batch requests where latency does not matter, cache aggressively on stable inputs, and log token spend per workflow so an experiment cannot quietly become a five-figure line item.'
+        "title": "Separate output shape from truth",
+        "content": "A schema can validate structure but cannot prove a claim is true. Validate both the generated format and every factual assertion against source information. Reject unsupported recommendations rather than filling gaps with plausible text."
       },
       {
-        title: 'The guardrail that decides whether this works',
-        content:
-          'Google does not penalize AI-assisted content; it penalizes unhelpful content produced at scale. The distinction is whether a page answers a query a real person typed. Gate every generated page behind three checks: verified search demand, a factual review by someone who knows the subject, and something on the page that exists nowhere else — original data, a real screenshot, a genuine opinion. Pages failing any check should never ship.'
+        "title": "Keep publication controlled",
+        "content": "Map suggestions to existing URLs, preserve useful content and test links and metadata. A reviewer must confirm distinct buyer value before new pages enter a publication manifest."
       },
       {
-        title: 'A reference pipeline',
-        content:
-          'Pull queries from Search Console. Embed and cluster them. Map each cluster to an existing URL or flag it as a gap. For gaps, generate a brief — not a draft — containing intent, entities to cover, questions to answer, and internal links to include. A human writes or heavily edits from that brief. Generated JSON-LD is validated before deploy. The API never writes directly to production.'
+        "title": "Measure cost and errors",
+        "content": "Record task version, model version, usage and review outcomes without logging personal or confidential content unnecessarily. Set budgets and retry limits. Compare the workflow against the work it replaces."
       }
     ],
-    checklist: [
-      'Structured JSON outputs, never prose parsing',
-      'Embeddings for clustering, not generation',
-      'Per-workflow token budget + logging',
-      'Human review gate before publish',
-      'Schema validated pre-deploy',
-      'Search Console feedback loop'
+    "checklist": [
+      "Defined buyer and buying question",
+      "Supported claims and clear ownership",
+      "Useful educational and evaluation content",
+      "Relevant commercial destination",
+      "Confirmed enquiry and booking records",
+      "Consent-aware follow-up"
     ],
-    faqs: [
+    "faqs": [
       {
-        question: 'Will Google penalize content generated with the OpenAI API?',
-        answer:
-          'No — Google has stated that how content is produced matters less than whether it is helpful. What gets penalized is scaled content abuse: publishing large volumes of pages with no original value to manipulate rankings. AI-assisted content that is reviewed, accurate, and genuinely useful ranks normally. The production method is not the risk; the absence of value is.'
+        "question": "Where should we start?",
+        "answer": "Identify the buyer question and the point where the current journey breaks down. Review the relevant page and available evidence before deciding the work."
       },
       {
-        question: 'Which OpenAI model should we use for SEO workflows?',
-        answer:
-          'Match the model to the task. Embedding models handle keyword clustering and internal-link similarity at very low cost. Small chat models are sufficient for classification, entity extraction, and metadata drafting. Reserve the largest reasoning models for genuinely ambiguous work like intent disambiguation or competitive gap analysis. Most teams overspend by defaulting every call to the biggest model.'
+        "question": "How does this connect to sales?",
+        "answer": "Link useful content to the appropriate service page, enquiry form and booking calendar. Preserve the context in the CRM and let sales confirm fit and next steps."
       },
       {
-        question: 'Can the OpenAI API write schema markup reliably?',
-        answer:
-          'Yes, with a strict output schema and a validation step. Request JSON-LD as structured output constrained to the exact Schema.org types you need, then validate the result programmatically before it reaches production. Never trust unvalidated markup — invalid JSON-LD is silently ignored by search engines, so failures are invisible without a check.'
-      },
-      {
-        question: 'How much does an OpenAI-powered SEO workflow cost to run?',
-        answer:
-          'Clustering a few thousand keywords with embeddings typically costs cents, not dollars. Costs escalate when teams use large models for high-volume generation. Log token usage per workflow from day one, set a monthly budget alert, and cache responses for inputs that do not change. Most SEO workloads are embedding-heavy and generation-light, which keeps spend low.'
-      },
-      {
-        question: 'Can Qognition build this pipeline for us?',
-        answer:
-          'Yes. This is the overlap between our Marketing and Automation work — we build the clustering, briefing, schema, and internal-linking pipelines, wire them to Search Console, and keep the human review gate in place. Start with the free AI search audit to see which parts of the pipeline would move your numbers first.'
+        "question": "Can Qognition help us implement it?",
+        "answer": "Book a call or send an enquiry with your business, audience and current problem. We agree the scope and responsibilities before recommending a program."
       }
     ],
-    relatedLinks: [
-      { label: 'AI Search Visibility Guide', href: '/improve-ai-search-visibility' },
-      { label: 'Free AI Audit', href: '/free-ai-audit' },
-      { label: 'AI Search Visibility Service', href: '/services/ai-seo' },
-      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
+    "relatedLinks": [
+      {
+        "label": "AI SEO & GEO for B2B",
+        "href": "/services/ai-seo"
+      },
+      {
+        "label": "Our approach",
+        "href": "/process"
+      },
+      {
+        "label": "Book a call",
+        "href": "/book"
+      },
+      {
+        "label": "Send an enquiry",
+        "href": "/contact#enquiry"
+      }
     ]
   },
   {
-    // Dedicated page for the "improve ... ai search visibility" cluster, which
-    // was ranking ~1.8 against pages not actually about the topic.
-    slug: 'improve-ai-search-visibility',
-    title: 'How to Improve Your AI Search Visibility (ChatGPT, Perplexity, AI Overviews)',
-    description:
-      'A step-by-step guide to getting your brand cited by ChatGPT, Perplexity, Claude, and Google AI Overviews — crawler access, answer-shaped content, entity consistency, and third-party citations.',
-    h1: 'How to Improve Your AI Search Visibility',
-    eyebrow: 'AI Search / AEO / GEO',
-    summary:
-      'AI assistants do not rank pages, they assemble answers from sources they can retrieve and trust. Visibility therefore depends on four things: letting the crawlers in, structuring content so it can be lifted as an answer, keeping your entity consistent everywhere, and being cited on sources the models already weight heavily.',
-    sections: [
+    "slug": "improve-ai-search-visibility",
+    "title": "Improve B2B AI-Search Visibility with Useful, Accessible Content",
+    "description": "Review technical access, buyer questions, evidence and repeatable observations.",
+    "h1": "Improve B2B AI-Search Visibility with Useful, Accessible Content",
+    "eyebrow": "AI Search / AEO / GEO",
+    "summary": "AI SEO and GEO concern how a business can be discovered and represented in AI-assisted research. Start with information a buyer needs to assess an offer. Then review technical access and measure dated answers on relevant questions. No page format or file can guarantee inclusion.",
+    "sections": [
       {
-        title: 'Step 1 — Let the AI crawlers in',
-        content:
-          'Most invisibility is self-inflicted. Check robots.txt for explicit allow rules covering GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, and AppleBot. Blocking Google-Extended removes you from AI Overviews. Equally important: assistants generally do not execute JavaScript, so any text rendered only on the client is invisible to them. Server-render the content you want quoted.'
+        "title": "Separate search access from training permissions",
+        "content": "Googlebot controls crawling for Google Search, including AI Overviews and AI Mode. Google-Extended serves different purposes. OpenAI distinguishes OAI-SearchBot for search from GPTBot for potential model training. Review each provider’s documentation instead of allowing every crawler by default."
       },
       {
-        title: 'Step 2 — Write content shaped like an answer',
-        content:
-          'Retrieval favors passages that stand alone. Lead each section with a direct, complete answer in the first two sentences, then support it. Use question-shaped H2s that mirror how people actually ask. Keep the answer within a single passage rather than spread across the page — a model lifting one chunk should get a coherent, quotable response without needing surrounding context.'
+        "title": "Make answers useful to a buying team",
+        "content": "Explain applications, selection criteria, implementation needs and limitations with supported facts. Keep the key information accessible in page content and link to the source material a reader needs to verify it."
       },
       {
-        title: 'Step 3 — Make your entity unambiguous',
-        content:
-          'Models resolve brands as entities. Your name, description, category, and URL must match across your site schema, LinkedIn, Crunchbase, G2, and every directory you appear in. Conflicting descriptions fragment the entity and reduce confidence. Publish Organization JSON-LD with sameAs links to every profile you control, and keep one canonical one-sentence description used verbatim everywhere.'
+        "title": "Keep business facts consistent",
+        "content": "Review the organization name, services, credentials and relevant external profiles. Use accurate structured data that agrees with visible content. Avoid unsupported affiliation or client claims."
       },
       {
-        title: 'Step 4 — Earn citations where models actually look',
-        content:
-          'Retrieval leans heavily on a narrow set of high-trust sources: Reddit, Wikipedia, YouTube, G2, industry publications, and well-established niche communities. A mention in a relevant Reddit thread or a comparison roundup often influences AI answers more than a link from a low-authority blog. Original data is the strongest lever — publish benchmarks or survey results that others must cite by name.'
-      },
-      {
-        title: 'Step 5 — Measure it, because rankings will not tell you',
-        content:
-          'Traditional rank tracking does not capture AI visibility. Build a prompt set of 30–50 buying questions in your category and test them monthly across ChatGPT, Perplexity, Claude, and AI Overviews. Record whether you are mentioned, how you are described, and which source was cited. That citation source is your roadmap — it tells you exactly which third-party page to influence next.'
+        "title": "Observe before drawing conclusions",
+        "content": "Define the question, platform, language and market. Record the date, response and cited URLs, and repeat checks because outputs vary. A mention, a citation, a referral visit and an enquiry are separate observations."
       }
     ],
-    checklist: [
-      'robots.txt allows GPTBot, ClaudeBot, PerplexityBot, Google-Extended',
-      'Key content server-rendered, not JS-only',
-      'Answer in the first two sentences of each section',
-      'Organization schema with complete sameAs',
-      'One canonical brand description everywhere',
-      'Monthly prompt-set citation tracking'
+    "checklist": [
+      "Defined buyer and buying question",
+      "Supported claims and clear ownership",
+      "Useful educational and evaluation content",
+      "Relevant commercial destination",
+      "Confirmed enquiry and booking records",
+      "Consent-aware follow-up"
     ],
-    faqs: [
+    "faqs": [
       {
-        question: 'What is AI search visibility and how is it different from SEO?',
-        answer:
-          'SEO optimizes for a ranked list of links; AI search visibility optimizes for being included in a generated answer. The mechanics differ — there is no position one, the assistant synthesizes several retrieved sources into one response. Being cited depends on crawler access, passage-level clarity, entity trust, and third-party corroboration rather than purely on backlinks and rankings.'
+        "question": "Where should we start?",
+        "answer": "Identify the buyer question and the point where the current journey breaks down. Review the relevant page and available evidence before deciding the work."
       },
       {
-        question: 'How do I get ChatGPT to mention my brand?',
-        answer:
-          'Three requirements. First, ChatGPT must be able to retrieve your content — allow GPTBot and OAI-SearchBot in robots.txt and server-render your text. Second, your content must contain a clear, self-contained answer to the question being asked. Third, your brand should appear on the third-party sources ChatGPT already trusts for your category, particularly Reddit, established review sites, and industry publications.'
+        "question": "How does this connect to sales?",
+        "answer": "Link useful content to the appropriate service page, enquiry form and booking calendar. Preserve the context in the CRM and let sales confirm fit and next steps."
       },
       {
-        question: 'Does blocking AI crawlers hurt my visibility?',
-        answer:
-          'Yes, directly. Blocking GPTBot removes you from ChatGPT browsing results. Blocking Google-Extended removes you from Google AI Overviews while leaving normal Google Search rankings intact. Many sites blocked these crawlers during the 2023 training-data backlash and never revisited the decision — it is worth auditing robots.txt specifically for this, because the loss is silent.'
-      },
-      {
-        question: 'How long does it take to improve AI search visibility?',
-        answer:
-          'Crawler access and server-rendering fixes can change results within weeks, since retrieval is refreshed frequently. Entity consistency and citation-building take longer — typically one to two quarters — because they depend on third-party sources updating. Teams starting from blocked crawlers usually see the fastest movement, as that single fix removes a hard barrier.'
-      },
-      {
-        question: 'Can Qognition run this for us?',
-        answer:
-          'Yes. Our AI search work covers the full stack: crawler and rendering audit, answer-shaped content restructuring, entity and schema consolidation, citation-source outreach, and monthly prompt-set tracking so you can see movement. The free AI audit shows which of the five steps is currently costing you the most visibility.'
+        "question": "Can Qognition help us implement it?",
+        "answer": "Book a call or send an enquiry with your business, audience and current problem. We agree the scope and responsibilities before recommending a program."
       }
     ],
-    relatedLinks: [
-      { label: 'Free AI Audit', href: '/free-ai-audit' },
-      { label: 'OpenAI API for SEO', href: '/openai-api-seo' },
-      { label: 'AI Search Visibility Report', href: '/free-ai-audit' },
-      { label: 'AI Search Visibility Service', href: '/services/ai-seo' }
+    "relatedLinks": [
+      {
+        "label": "AI SEO & GEO for B2B",
+        "href": "/services/ai-seo"
+      },
+      {
+        "label": "Our approach",
+        "href": "/process"
+      },
+      {
+        "label": "Book a call",
+        "href": "/book"
+      },
+      {
+        "label": "Send an enquiry",
+        "href": "/contact#enquiry"
+      },
+      {
+        "label": "Google: AI features and your website",
+        "href": "https://developers.google.com/search/docs/appearance/ai-features"
+      },
+      {
+        "label": "OpenAI crawler documentation",
+        "href": "https://developers.openai.com/api/docs/bots"
+      }
     ]
   }
 ];
 
-export const getB2BMoFuPage = (slug: string) => B2B_MOFU_PAGES.find((page) => page.slug === slug);
+export const getB2BMoFuPage = (slug: string) => B2B_MOFU_PAGES.find(page => page.slug === slug);

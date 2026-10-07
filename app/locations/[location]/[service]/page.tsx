@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getLocationBySlug, LOCATIONS } from '../../../../data/locations';
 import { SERVICES, LOCATION_MATRIX_SERVICES } from '../../../../data/services';
 import { getLocationMetadata } from '../../../../lib/seo';
-import { breadcrumbSchema, faqSchema } from '../../../../lib/schema';
+import { breadcrumbSchema, faqSchema, orgRef } from '../../../../lib/schema';
 import { LocationServiceView } from '../../ProgrammaticLocationView';
 
 export const dynamicParams = false;
@@ -31,9 +31,9 @@ export default async function Page({ params }: { params: Promise<{ location: str
   const path = `/locations/${location.slug}/${service.id}`;
   const faqs = [
     {
-      question: `Is this ${service.title} page locally indexed for ${location.name}?`,
+      question: `Can ${service.title} support search discovery in ${location.name}?`,
       answer:
-        'Yes. The page is statically rendered with useful content, a canonical URL, metadata, schema, and sitemap inclusion for search discovery.'
+        'We review technical access, useful commercial content and the buyer questions relevant to your market. Search platforms decide which pages to index or show; publication does not guarantee discovery.'
     },
     {
       question: `Do you claim a physical ${location.name} office here?`,
@@ -66,11 +66,7 @@ export default async function Page({ params }: { params: Promise<{ location: str
               '@type': 'Service',
               name: `${service.title} in ${location.name}`,
               description: service.shortDescription,
-              provider: {
-                '@type': 'Organization',
-                name: 'Qognition',
-                url: 'https://www.qognitionagency.com',
-              },
+              provider: orgRef(),
               areaServed: {
                 '@type': location.schemaType,
                 name: location.name,

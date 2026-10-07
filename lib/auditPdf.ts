@@ -1,5 +1,6 @@
 import { AuditOffer } from '../types';
 import { AuditReport } from '../types';
+import { BOOKING_LINK } from '../data/siteConfig';
 
 const escapePdf = (value: string) =>
   value
@@ -116,7 +117,7 @@ export const buildAuditReportPdf = (report: AuditReport, offer: AuditOffer) => {
   add('Next Step', 18, '0 0 0');
   addWrapped('Book a Qognition strategy call to turn this audit into a prioritized growth roadmap with SEO, AI visibility, landing pages, creative, paid media, and CRM follow-up.', 11, '0.15 0.15 0.15');
   y -= 12;
-  add('https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency', 11, '0 0.55 0.5');
+  add(BOOKING_LINK, 11, '0 0.55 0.5');
   y -= 30;
   add('Qognition Agency', 16, '0 0 0');
   add('hello@qognitionagency.com | www.qognitionagency.com', 10, '0.25 0.25 0.25');

@@ -88,12 +88,9 @@ export default async function Page({ params }: { params: Promise<{ term: string 
               </p>
             </div>
             <div>
-              <Heading level="h2" className="mb-4">How Qognition Applies It</Heading>
+              <Heading level="h2" className="mb-4">How to apply the concept</Heading>
               <p className="text-body text-[var(--text-muted)]">
-                In client work, {page.term.toLowerCase()} is translated into pages, technical
-                fixes, dashboards, content briefs, paid media tests, internal links, schema,
-                lead magnets, or conversion experiments depending on the business model and
-                market.
+                For {page.term}, first identify the decision or task it informs. Agree the relevant evidence, implementation owner and measure before choosing a tool or tactic. The application depends on your business model and market.
               </p>
             </div>
             {related.length > 0 && (
@@ -117,6 +114,7 @@ export default async function Page({ params }: { params: Promise<{ term: string 
             )}
           </div>
         </Section>
+        <Section spacing="lg"><Heading level="h2" className="mb-4">Apply this to your search programme</Heading><p className="text-body mb-6">Tell us which buyer questions or acquisition problems you are working on. We can discuss the relevant AI SEO and GEO scope.</p><div className="flex flex-wrap gap-4"><Link className="btn-primary" href="/book">Book a call</Link><Link className="btn-outline" href="/contact#enquiry">Send an enquiry</Link></div></Section>
       </main>
     </>
   );

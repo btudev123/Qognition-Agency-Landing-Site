@@ -1,4 +1,4 @@
-import { BOOKING_LINK } from '../../data/siteConfig';
+import { appendFunnelContext } from '../../lib/funnelContext';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Globe, MapPin, Search, TrendingUp } from 'lucide-react';
 import { INDUSTRIES } from '../../data/industries';
@@ -6,6 +6,7 @@ import { SERVICES } from '../../data/services';
 import { FREE_TOOLS, RESOURCES } from '../../data/seoExpansion';
 import { studiesForTopic, nicheLabel, headlineKpi } from '../../data/case-studies';
 import { Location, Service } from '../../types';
+import { h1For } from '../../lib/seo';
 import Heading from '../../components/ui/Heading';
 import Badge from '../../components/ui/Badge';
 
@@ -16,7 +17,7 @@ export const LocationsIndexView = ({ locations }: { locations: Location[] }) => 
         <Badge className="mb-4">Service Areas</Badge>
         <Heading level="h1" className="mb-4">Locations</Heading>
         <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
-          Revenue-market pages for brands that need local search visibility, paid media efficiency, and conversion-focused web experiences.
+          AI SEO and GEO for B2B companies reaching buyers in specific markets. Explore search, content and conversion work shaped around where your customers operate.
         </p>
       </div>
 
@@ -88,7 +89,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
 
       <div className="mb-14 max-w-4xl">
         <Badge className="mb-4">{location.region}</Badge>
-        <Heading level="h1" className="mb-5">Digital Marketing Agency in {location.name}</Heading>
+        <Heading level="h1" className="mb-5">{h1For(`/locations/${location.slug}`, `AI SEO & GEO for B2B companies in ${location.name}`)}</Heading>
         <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6">
           {location.intro}
         </p>
@@ -97,8 +98,8 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
         {[
           `${location.name} is a priority ${location.type === 'city' ? 'metro' : 'market'} in ${location.region}${location.country && location.country !== location.name ? `, ${location.country}` : ''}. We build demand-generation matched to how its buyers actually search, compare, and choose vendors.`,
-          `Priority segments here: ${location.marketFocus.join(', ')} — plus B2B, professional services, ecommerce, and local services wherever there is real search demand in ${location.name}.`,
-          `Buyers in ${location.name} shortlist providers through search results, review signals, case studies, paid landing pages, and AI answer engines. We engineer visibility and conversion across every one of those touchpoints.`,
+          `Consider the fit with ${location.marketFocus.join(', ')}. We validate your target accounts and buying questions before choosing a local content or campaign scope.`,
+          `Buyers in ${location.name} shortlist providers through search results, review signals, case studies, paid landing pages, and AI answer engines. We prioritise the touchpoints relevant to your buyers and measure the next commercial action.`,
         ].map((item) => (
           <div
             key={item}
@@ -112,10 +113,9 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-14">
         <main className="lg:col-span-8 space-y-14">
           <section>
-            <Heading level="h2" className="mb-5">Local Growth Strategy</Heading>
+            <Heading level="h2" className="mb-5">Search shaped around your market</Heading>
             <p className="text-body text-[var(--text-muted)] mb-6">
-              We build search, ads, content, and conversion systems around how buyers in {location.name} evaluate vendors. Each page is
-              built around clear offers, fast load times, local proof, and measurable conversion paths without implying an office that does not exist.
+              We build search, ads, content, and conversion systems around how buyers in {location.name} evaluate vendors. The work starts with a clear offer, useful local evidence and a route to a qualified conversation. Delivery is remote unless a different arrangement is agreed.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {['Local SEO architecture', 'Paid media testing', 'Conversion tracking'].map((item) => (
@@ -169,10 +169,11 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
           {/* Guarded on emptiness. The heading used to sit outside the map, so a
               day when studiesForTopic returned nothing rendered a bare <h2> over
               an empty grid on all 340 location pages. CLAUDE.md §4: omit the
-              section, do not empty it. */}
+              section, do not empty it. Insurance studies only since 2026-10-07
+              (studiesForTopic enforces it via B2B_PAGE_NICHES). */}
           {studiesForTopic(location.name, 4, { fallback: 'spread' }).length > 0 && (
           <section>
-            <Heading level="h2" className="mb-5">Relevant Case Studies</Heading>
+            <Heading level="h2" className="mb-5">From our client library</Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {studiesForTopic(location.name, 4, { fallback: 'spread' }).map((study) => (
                 <Link
@@ -234,7 +235,7 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
                 ],
                 [
                   `Which industries work best in ${location.name}?`,
-                  `${location.marketFocus.join(', ')} are current priority segments, but we also support B2B, professional services, ecommerce, healthcare, and local services.`,
+                  `We assess fit through your buyer, application and commercial objective. B2B SaaS, industrial, logistics and professional-services teams can discuss a scope suited to the market.`,
                 ],
                 [
                   `What is the fastest channel for ${location.name}?`,
@@ -270,13 +271,12 @@ export const LocationOverviewView = ({ location }: { location: Location }) => (
               ))}
             </div>
             <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={appendFunnelContext("/book", { page_id: `/locations/${location.slug}`, stage: "bofu" })}
               className="block text-center w-full px-5 py-3 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
             >
-              Book Location Strategy
+              Book a call
             </a>
+            <Link href={appendFunnelContext("/contact#enquiry", { page_id: `/locations/${location.slug}`, stage: "bofu" })} className="block text-center text-[var(--accent)]">Send an enquiry</Link>
           </div>
         </aside>
       </div>
@@ -304,7 +304,7 @@ export const LocationServiceView = ({
         <main className="lg:col-span-8">
           <Badge className="mb-4">Location Service Strategy</Badge>
           <Heading level="h1" className="mb-5">
-            {service.title} in {location.name}
+            {h1For(`/locations/${location.slug}/${service.id}`, `${service.title} in ${location.name}`)}
           </Heading>
           <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6 mb-14">
             {service.shortDescription} Qognition adapts {service.title.toLowerCase()} for companies targeting {location.name}, with clear offers,
@@ -359,7 +359,10 @@ export const LocationServiceView = ({
           </section>
 
           <section className="mb-14">
-            <Heading level="h2" className="mb-5">Proof and Planning Assets</Heading>
+            {/* Renamed 2026-10-07: "Proof" claimed sector relevance for a block that
+                draws from the client library (insurance only on B2B pages, see
+                B2B_PAGE_NICHES) and also holds free tools, so the heading names both. */}
+            <Heading level="h2" className="mb-5">Client programmes and planning tools</Heading>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {studiesForTopic(`${service.title} ${location.name}`, 2, { fallback: 'spread' }).map((study) => (
                 <Link
@@ -402,7 +405,7 @@ export const LocationServiceView = ({
                 ],
                 [
                   `Will this support Google discovery?`,
-                  'Yes. The page is statically generated with useful content, metadata, schema, sitemap inclusion, and internal links.',
+                  'We review crawlability, search intent, content quality and conversion paths. Discovery depends on relevance, competition and the search platform; technical access alone does not guarantee a ranking.',
                 ],
                 [
                   `What makes ${service.title} different by location?`,
@@ -410,7 +413,7 @@ export const LocationServiceView = ({
                 ],
                 [
                   `Which industries can use this ${location.name} plan?`,
-                  `${location.marketFocus.join(', ')}, professional services, SaaS, ecommerce, healthcare, and local services can all use this structure.`,
+                  `We discuss fit for B2B firms, including SaaS, industrial and professional-services businesses. Your buyer, delivery footprint and commercial objective determine the plan.`,
                 ],
                 [
                   `How fast can the first leads arrive?`,
@@ -431,7 +434,7 @@ export const LocationServiceView = ({
 
         <aside className="lg:col-span-4">
           <div className="sticky top-28 p-7 border border-[var(--border)] bg-[rgba(var(--accent-rgb),0.04)] rounded-2xl space-y-3">
-            <Heading level="h3">Related Routes</Heading>
+            <Heading level="h3">Explore the approach</Heading>
             <Link
               href={`/services/${service.id}`}
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
@@ -442,16 +445,15 @@ export const LocationServiceView = ({
               href={`/locations/${location.slug}`}
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
             >
-              {location.name} Digital Marketing
+              {location.name} search planning
             </Link>
             <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={appendFunnelContext("/book", { page_id: `/locations/${location.slug}`, stage: "bofu" })}
               className="block text-sm text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
             >
-              Get a Strategy Call
+              Book a call
             </a>
+            <Link href={appendFunnelContext("/contact#enquiry", { page_id: `/locations/${location.slug}`, stage: "bofu" })} className="block text-center text-[var(--accent)]">Send an enquiry</Link>
           </div>
         </aside>
       </div>

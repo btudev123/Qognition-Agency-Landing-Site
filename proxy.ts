@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isPreviewDeployment } from './lib/deploymentMode';
 
 const AGENT_LINK_HEADER = [
   '</.well-known/api-catalog>; rel="api-catalog"',
   '</.well-known/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json"',
   '</docs/api>; rel="service-doc"',
   '</api/health>; rel="status"',
-  '</llm.txt>; rel="alternate"; type="text/plain"'
+  '</llms.txt>; rel="alternate"; type="text/plain"'
 ].join(', ');
 
 const PUBLIC_FILE = /\.(.*)$/;
@@ -25,10 +26,13 @@ export function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = '/agent-markdown';
     url.search = `?path=${encodeURIComponent(pathname + search)}`;
-    return NextResponse.rewrite(url, { request: { headers: requestHeaders } });
+    const rewritten = NextResponse.rewrite(url, { request: { headers: requestHeaders } });
+    if (isPreviewDeployment()) rewritten.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+    return rewritten;
   }
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });
+  if (isPreviewDeployment()) response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
   if (!isStatic && !isApi && !isMarkdownRoute) {
     response.headers.set('Link', AGENT_LINK_HEADER);
   }

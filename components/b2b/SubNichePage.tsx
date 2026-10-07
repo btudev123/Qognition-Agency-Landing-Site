@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { appendFunnelContext } from '../../lib/funnelContext';
 import type { SubIndustryRecord } from '../../lib/b2b/registry';
 import { siblingsOf } from '../../lib/b2b/graph';
 import type { ObservationView } from '../../lib/b2b/observations';
@@ -93,19 +94,19 @@ export default function SubNichePage({ record, observation }: Props) {
 
               {/* Up-link 2 of 2, inside the first 200 words, same anchor text. */}
               <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-                This page sits under{' '}
+                Explore more in{' '}
                 <Link href={hubPath} className="rf-link" style={{ color: 'var(--s-accent)' }}>
                   {vertical.label}
                 </Link>
-                , which covers the rest of the vertical and the same four search surfaces.
+                , including related buyer questions and service approaches.
               </p>
 
               <div className="mt-9 flex flex-col sm:flex-row flex-wrap gap-3">
-                <Link href="/free-ai-audit" className="rf-btn rf-btn--primary">
-                  Get your free snapshot
+                <Link href={appendFunnelContext("/book", { page_id: path, stage: "bofu" })} className="rf-btn rf-btn--primary">
+                  Book a call
                 </Link>
-                <Link href="/pricing" className="rf-btn rf-btn--secondary">
-                  What it costs
+                <Link href={appendFunnelContext("/contact#enquiry", { page_id: path, stage: "bofu" })} className="rf-btn rf-btn--secondary">
+                  Send an enquiry
                 </Link>
               </div>
             </div>

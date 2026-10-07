@@ -27,7 +27,7 @@ const isService = (value: string): value is ServiceKey =>
   (SERVICES as string[]).includes(value);
 
 const describe = (service: ServiceKey, count: number) =>
-  `${count} ${serviceLabel(service)} engagements across HVAC, dental and insurance. Each cites the third-party benchmarks it was measured against, with live source links.`;
+  `${count} ${serviceLabel(service)} client programmes across HVAC, dental and insurance. Targets are labelled as targets until client reporting confirms a result.`;
 
 export async function generateMetadata({
   params,
@@ -82,7 +82,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                   '@type': 'ListItem',
                   position: i + 1,
                   url: `${SITE_URL}/case-studies/${s.id}`,
-                  name: `${s.client} — ${s.headline}`,
+                  name: s.headline,
                 })),
               },
             },
@@ -109,9 +109,9 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               {label} Case Studies
             </Heading>
             <Text className="mb-4">
-              {studies.length} engagements where {label} was part of the scope, across{' '}
-              {byNicheBreakdown.length} sectors. The same service runs differently in each — the
-              breakdown below is why.
+              {studies.length} client programmes where {label} is part of the scope, across{' '}
+              {byNicheBreakdown.length} sectors. The same service runs differently in each, and the
+              breakdown below shows how.
             </Text>
             <Link
               href={SERVICE_SPOKE_HREF[service]}
@@ -133,7 +133,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 >
                   <p className="mb-2 text-meta font-semibold uppercase tracking-wide text-[var(--accent)]">
                     {nicheLabel(niche)} · {nicheStudies.length}{' '}
-                    {nicheStudies.length === 1 ? 'engagement' : 'engagements'}
+                    {nicheStudies.length === 1 ? 'programme' : 'programmes'}
                   </p>
                   <Text>{playbook!.strategy}</Text>
                   <Link
@@ -149,12 +149,12 @@ export default async function Page({ params }: { params: Promise<{ service: stri
 
           <section className="mb-14">
             <Heading level="h2" className="mb-6">
-              The engagements
+              The case studies
             </Heading>
             <StudyGrid
               studies={studies}
-              emptyTitle={`No ${label} engagements published yet`}
-              emptyMessage="Browse the full library for a comparable engagement on another service line."
+              emptyTitle={`No ${label} case studies published yet`}
+              emptyMessage="Browse the full library for a comparable programme on another service line."
             />
           </section>
 

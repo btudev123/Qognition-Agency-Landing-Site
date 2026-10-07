@@ -1,0 +1,407 @@
+{
+  "fox-service-company": {
+    "src": "/images/case-studies/fox-service-company.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A Ballu air conditioner condenser unit mounted on a building exterior",
+    "photographer": "Paolo Rossa",
+    "photographer_url": "https://www.pexels.com/@paolo-rossa-1121474291",
+    "pexels_url": "https://www.pexels.com/photo/ballu-air-conditioner-condenser-unit-on-the-wall-of-the-building-24828656/"
+  },
+  "kings-aire": {
+    "src": "/images/case-studies/kings-aire.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Captured from above, this urban rooftop features satellite dishes, water tanks, and HVAC units",
+    "photographer": "Safwan C K",
+    "photographer_url": "https://www.pexels.com/@safwanck",
+    "pexels_url": "https://www.pexels.com/photo/drone-shot-of-a-roof-top-10963036/"
+  },
+  "northwind-air-conditioning": {
+    "src": "/images/case-studies/northwind-air-conditioning.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of industrial ventilation pipes above a window on a building wall",
+    "photographer": "Fez Brook",
+    "photographer_url": "https://www.pexels.com/@fez-brook-1587707",
+    "pexels_url": "https://www.pexels.com/photo/industrial-ventilation-pipes-on-building-wall-37726072/"
+  },
+  "airco-air-conditioning-heating-plumbing": {
+    "src": "/images/case-studies/airco-air-conditioning-heating-plumbing.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Outdoor air conditioning unit mounted on a residential building exterior",
+    "photographer": "alpha innotec",
+    "photographer_url": "https://www.pexels.com/@alpha-innotec-936418931",
+    "pexels_url": "https://www.pexels.com/photo/air-conditioner-on-outside-wall-20046692/"
+  },
+  "comfort-experts": {
+    "src": "/images/case-studies/comfort-experts.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of large industrial ventilators mounted on an aging building exterior",
+    "photographer": "Mike van Schoonderwalt",
+    "photographer_url": "https://www.pexels.com/@mike-van-schoonderwalt-1884800",
+    "pexels_url": "https://www.pexels.com/photo/massive-ventilators-of-industrial-building-5502720/"
+  },
+  "interstate-air-conditioning-heating": {
+    "src": "/images/case-studies/interstate-air-conditioning-heating.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up view of an industrial plumbing system featuring a pressure gauge and steel pipes",
+    "photographer": "Pavel Danilyuk",
+    "photographer_url": "https://www.pexels.com/@pavel-danilyuk",
+    "pexels_url": "https://www.pexels.com/photo/steel-pipes-with-pressure-gauge-7937300/"
+  },
+  "betlem-residential-heating-air-conditioning": {
+    "src": "/images/case-studies/betlem-residential-heating-air-conditioning.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of rooftop ventilation system on a brick building in New York City",
+    "photographer": "Shabazz Stuart",
+    "photographer_url": "https://www.pexels.com/@shabazz-stuart-465927833",
+    "pexels_url": "https://www.pexels.com/photo/industrial-rooftop-ventilation-equipment-in-new-york-city-39904901/"
+  },
+  "rite-temp-hvac": {
+    "src": "/images/case-studies/rite-temp-hvac.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Red building exterior with multiple windows and air conditioners",
+    "photographer": "Mike van Schoonderwalt",
+    "photographer_url": "https://www.pexels.com/@mike-van-schoonderwalt-1884800",
+    "pexels_url": "https://www.pexels.com/photo/wall-with-windows-and-air-conditioning-5505098/"
+  },
+  "stanley-ruth-company": {
+    "src": "/images/case-studies/stanley-ruth-company.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up view of an air duct labeled 'SUPPLY' in an industrial setting",
+    "photographer": "Jonathan Cooper",
+    "photographer_url": "https://www.pexels.com/@theshuttervision",
+    "pexels_url": "https://www.pexels.com/photo/a-white-metal-air-duct-11538226/"
+  },
+  "american-hvac-corp": {
+    "src": "/images/case-studies/american-hvac-corp.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of a modern digital thermostat mounted on a wall, displaying temperature settings in Celsius",
+    "photographer": "Erik Mclean",
+    "photographer_url": "https://www.pexels.com/@introspectivedsgn",
+    "pexels_url": "https://www.pexels.com/photo/white-thermostat-hanging-on-the-wall-7616651/"
+  },
+  "r-and-r-heating-air-conditioning": {
+    "src": "/images/case-studies/r-and-r-heating-air-conditioning.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Multi-story building facade featuring air conditioning units and windows",
+    "photographer": "Mert Ocak",
+    "photographer_url": "https://www.pexels.com/@mert-ocak-1182809874",
+    "pexels_url": "https://www.pexels.com/photo/facade-of-building-with-multiple-ac-units-37276771/"
+  },
+  "all-seasons-heating-cooling": {
+    "src": "/images/case-studies/all-seasons-heating-cooling.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Black and white image showcasing a modern rooftop with air conditioning and ventilation units by the waterfront",
+    "photographer": "Radik 2707",
+    "photographer_url": "https://www.pexels.com/@radik-2707-170977881",
+    "pexels_url": "https://www.pexels.com/photo/air-conditioning-on-top-of-a-building-13109834/"
+  },
+  "sound-heating-air-conditioning": {
+    "src": "/images/case-studies/sound-heating-air-conditioning.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of a modern metallic ventilation system in an industrial setting",
+    "photographer": "Bingqian Li",
+    "photographer_url": "https://www.pexels.com/@bingqian-li-230971044",
+    "pexels_url": "https://www.pexels.com/photo/modern-industrial-ventilation-system-close-up-32032996/"
+  },
+  "mercurios-heating-air-conditioning": {
+    "src": "/images/case-studies/mercurios-heating-air-conditioning.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A modern heat pump unit installed outdoors next to a contemporary building",
+    "photographer": "alpha innotec",
+    "photographer_url": "https://www.pexels.com/@alpha-innotec-936418931",
+    "pexels_url": "https://www.pexels.com/photo/modern-heat-pump-outside-new-building-38067323/"
+  },
+  "go-green-heating-ac": {
+    "src": "/images/case-studies/go-green-heating-ac.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Black and white photo of industrial fans mounted on a concrete wall in an urban environment",
+    "photographer": "Wolfgang Weiser",
+    "photographer_url": "https://www.pexels.com/@wolfgang-weiser-467045605",
+    "pexels_url": "https://www.pexels.com/photo/fans-on-factory-wall-17875903/"
+  },
+  "suburban-hvac": {
+    "src": "/images/case-studies/suburban-hvac.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Air conditioner units on a city rooftop in Bandung, Indonesia",
+    "photographer": "Mesayu Elida Irawati",
+    "photographer_url": "https://www.pexels.com/@mesayu-elida-irawati-2155088933",
+    "pexels_url": "https://www.pexels.com/photo/modern-air-conditioner-units-on-urban-rooftop-38228166/"
+  },
+  "boston-standard-company": {
+    "src": "/images/case-studies/boston-standard-company.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "High angle view of rooftop HVAC units on a building in Buon Ma Thuot, Vietnam",
+    "photographer": "tu nguyen",
+    "photographer_url": "https://www.pexels.com/@tu-nguyen-477344610",
+    "pexels_url": "https://www.pexels.com/photo/fans-on-roof-19016904/"
+  },
+  "hurley-and-david": {
+    "src": "/images/case-studies/hurley-and-david.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A detailed view of a high-rise building facade filled with air conditioning units",
+    "photographer": "Cristiano Silva",
+    "photographer_url": "https://www.pexels.com/@cristianossilva",
+    "pexels_url": "https://www.pexels.com/photo/facade-of-high-rise-building-with-ac-units-35966712/"
+  },
+  "sinclaire-home-services": {
+    "src": "/images/case-studies/sinclaire-home-services.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Copper plumbing fittings arranged in a row",
+    "photographer": "Nic Wood",
+    "photographer_url": "https://www.pexels.com/@nic-scrollstoppingphotos",
+    "pexels_url": "https://www.pexels.com/photo/copper-pluming-fitting-28169591/"
+  },
+  "the-super-dentists": {
+    "src": "/images/case-studies/the-super-dentists.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Bright and modern dental clinic with advanced equipment and comfortable seating area",
+    "photographer": "Engin Akyurt",
+    "photographer_url": "https://www.pexels.com/@enginakyurt",
+    "pexels_url": "https://www.pexels.com/photo/a-dental-engine-in-a-clinic-4562895/"
+  },
+  "oncall-dental-fresno": {
+    "src": "/images/case-studies/oncall-dental-fresno.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Bright and clean modern dental clinic room with advanced dental equipment",
+    "photographer": "Daniel Frank",
+    "photographer_url": "https://www.pexels.com/@fr3nks",
+    "pexels_url": "https://www.pexels.com/photo/white-dental-equipment-near-wall-305567/"
+  },
+  "sacramento-dentistry-group": {
+    "src": "/images/case-studies/sacramento-dentistry-group.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A detailed view of dental instruments neatly arranged for professional dental care",
+    "photographer": "Pavel Danilyuk",
+    "photographer_url": "https://www.pexels.com/@pavel-danilyuk",
+    "pexels_url": "https://www.pexels.com/photo/dental-instruments-on-a-holder-6812477/"
+  },
+  "midtown-dental-sacramento": {
+    "src": "/images/case-studies/midtown-dental-sacramento.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Detailed view of a dental instrument used in dentistry",
+    "photographer": "kaboompics.com",
+    "photographer_url": "https://www.pexels.com/@karola-g",
+    "pexels_url": "https://www.pexels.com/photo/close-up-of-a-dental-instrument-6629405/"
+  },
+  "crown-dental-bakersfield": {
+    "src": "/images/case-studies/crown-dental-bakersfield.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Monitor displaying dental X-ray images in a clinic setup for diagnostic purposes",
+    "photographer": "cottonbro studio",
+    "photographer_url": "https://www.pexels.com/@cottonbro",
+    "pexels_url": "https://www.pexels.com/photo/an-x-ray-image-of-a-jawbone-in-the-computer-6501862/"
+  },
+  "gateway-dental-miami": {
+    "src": "/images/case-studies/gateway-dental-miami.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A trio of vibrant toothbrushes in a glass on a blue background",
+    "photographer": "Towfiqu barbhuiya",
+    "photographer_url": "https://www.pexels.com/@towfiqu-barbhuiya-3440682",
+    "pexels_url": "https://www.pexels.com/photo/toothbrushes-in-clear-glass-13466251/"
+  },
+  "dentistry-of-orlando": {
+    "src": "/images/case-studies/dentistry-of-orlando.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Dental models with teeth arrangement on a table",
+    "photographer": "cottonbro studio",
+    "photographer_url": "https://www.pexels.com/@cottonbro",
+    "pexels_url": "https://www.pexels.com/photo/close-up-photo-of-dentures-6528787/"
+  },
+  "miami-best-dental": {
+    "src": "/images/case-studies/miami-best-dental.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of dental tools on a clean, sterile metal tray",
+    "photographer": "kaboompics.com",
+    "photographer_url": "https://www.pexels.com/@karola-g",
+    "pexels_url": "https://www.pexels.com/photo/close-up-of-sterile-instruments-on-medical-tray-6627671/"
+  },
+  "dentists-at-midtown-miami": {
+    "src": "/images/case-studies/dentists-at-midtown-miami.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Bright dental lamp under natural lighting in a modern clinic setting",
+    "photographer": "Ivan Babydov",
+    "photographer_url": "https://www.pexels.com/@babydov",
+    "pexels_url": "https://www.pexels.com/photo/white-and-silver-round-lamp-7789656/"
+  },
+  "emerald-coast-family-dentistry": {
+    "src": "/images/case-studies/emerald-coast-family-dentistry.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of dental tools and protective glasses on a sterile table in a dental clinic setting",
+    "photographer": "Polina Zimmerman",
+    "photographer_url": "https://www.pexels.com/@polina-zimmerman",
+    "pexels_url": "https://www.pexels.com/photo/black-framed-safety-glasses-beside-a-mouth-mirror-4687286/"
+  },
+  "jersey-city-dental": {
+    "src": "/images/case-studies/jersey-city-dental.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A bright, modern dental office displaying various dental tools and equipment",
+    "photographer": "Pavel Danilyuk",
+    "photographer_url": "https://www.pexels.com/@pavel-danilyuk",
+    "pexels_url": "https://www.pexels.com/photo/equipment-at-a-dentists-office-6812463/"
+  },
+  "newark-dentist": {
+    "src": "/images/case-studies/newark-dentist.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of advanced dental chair setup with dental instruments in a clinic",
+    "photographer": "cottonbro studio",
+    "photographer_url": "https://www.pexels.com/@cottonbro",
+    "pexels_url": "https://www.pexels.com/photo/close-up-shot-of-a-dental-handpieces-6502543/"
+  },
+  "west-broadway-dental": {
+    "src": "/images/case-studies/west-broadway-dental.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of dental tools including mirror and pick on a gray textured background",
+    "photographer": "Busenur Demirkan",
+    "photographer_url": "https://www.pexels.com/@buselliyy",
+    "pexels_url": "https://www.pexels.com/photo/dental-instruments-on-textured-surface-31786500/"
+  },
+  "north-broad-family-dental": {
+    "src": "/images/case-studies/north-broad-family-dental.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of high-tech dental tools in a clean, bright clinic",
+    "photographer": "Ivan Babydov",
+    "photographer_url": "https://www.pexels.com/@babydov",
+    "pexels_url": "https://www.pexels.com/photo/close-up-of-the-equipment-7789651/"
+  },
+  "rana-dental": {
+    "src": "/images/case-studies/rana-dental.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of a dental X-ray displayed on a monitor in a dental clinic setting",
+    "photographer": "Nadezhda Moryak",
+    "photographer_url": "https://www.pexels.com/@nadezhda-moryak",
+    "pexels_url": "https://www.pexels.com/photo/flat-screen-monitor-with-x-ray-picture-7800665/"
+  },
+  "rivertown-dental-care": {
+    "src": "/images/case-studies/rivertown-dental-care.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Diverse selection of toothbrushes lined up",
+    "photographer": "Anna Shvets",
+    "photographer_url": "https://www.pexels.com/@shvetsa",
+    "pexels_url": "https://www.pexels.com/photo/selection-of-toothbrushes-4045552/"
+  },
+  "marietta-dental-professionals": {
+    "src": "/images/case-studies/marietta-dental-professionals.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Dental jaw model with dental tools on a blue cloth",
+    "photographer": "kaboompics.com",
+    "photographer_url": "https://www.pexels.com/@karola-g",
+    "pexels_url": "https://www.pexels.com/photo/jaw-models-with-teeth-6627715/"
+  },
+  "savannah-dental": {
+    "src": "/images/case-studies/savannah-dental.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Close-up of dental tools wrapped in brown paper on a metal tray",
+    "photographer": "Pavel Danilyuk",
+    "photographer_url": "https://www.pexels.com/@pavel-danilyuk",
+    "pexels_url": "https://www.pexels.com/photo/dental-tools-in-brown-paper-6812522/"
+  },
+  "midtown-dental-care-columbus": {
+    "src": "/images/case-studies/midtown-dental-care-columbus.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "High-angle view of a modern dental chair and equipment setup in a professional clinic",
+    "photographer": "Daniel Frank",
+    "photographer_url": "https://www.pexels.com/@fr3nks",
+    "pexels_url": "https://www.pexels.com/photo/chairs-arranged-on-table-305564/"
+  },
+  "gwinnett-family-dental-care": {
+    "src": "/images/case-studies/gwinnett-family-dental-care.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Detailed close-up image of a toothbrush with vibrant blue toothpaste for dental hygiene",
+    "photographer": "AS Photography",
+    "photographer_url": "https://www.pexels.com/@asphotography",
+    "pexels_url": "https://www.pexels.com/photo/blue-and-white-toothpaste-on-toothbrush-216729/"
+  },
+  "alliance-insurance-group": {
+    "src": "/images/case-studies/alliance-insurance-group.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Contemporary waterfront apartment buildings showcasing modern architecture and vibrant colors",
+    "photographer": "Diana ✨",
+    "photographer_url": "https://www.pexels.com/@didsss",
+    "pexels_url": "https://www.pexels.com/photo/modern-apartment-buildings-9170385/"
+  },
+  "a-citywide-insurance": {
+    "src": "/images/case-studies/a-citywide-insurance.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "An urban skyline at sunset with warm orange hues and silhouetted buildings",
+    "photographer": "Snapwire",
+    "photographer_url": "https://www.pexels.com/@snapwire",
+    "pexels_url": "https://www.pexels.com/photo/photography-of-city-during-sunset-618610/"
+  },
+  "gengler-insurance-agencies": {
+    "src": "/images/case-studies/gengler-insurance-agencies.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A sleek glass skyscraper reflecting the blue sky and clouds",
+    "photographer": "wal_ 172619",
+    "photographer_url": "https://www.pexels.com/@wal_-172619-2156618639",
+    "pexels_url": "https://www.pexels.com/photo/modern-glass-skyscraper-against-blue-sky-37320179/"
+  },
+  "suffolk-insurance-corporation": {
+    "src": "/images/case-studies/suffolk-insurance-corporation.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Bright modern warehouse featuring pallets and storage racks for logistics and inventory management",
+    "photographer": "Tiger Lily",
+    "photographer_url": "https://www.pexels.com/@tiger-lily",
+    "pexels_url": "https://www.pexels.com/photo/wares-in-foils-on-pallets-in-warehouse-4487363/"
+  },
+  "rl-insurance-agency": {
+    "src": "/images/case-studies/rl-insurance-agency.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "A powerful lightning storm illuminates the night sky over a charming town with rooftops and distant hills",
+    "photographer": "Sebastian Balog",
+    "photographer_url": "https://www.pexels.com/@sebastian-balog-3699563",
+    "pexels_url": "https://www.pexels.com/photo/lightning-in-sky-over-town-27196413/"
+  },
+  "dulles-insurance-services": {
+    "src": "/images/case-studies/dulles-insurance-services.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "From above of glowing lamps on contemporary city road junction above greenery and broad river at night",
+    "photographer": "蔡宗翰",
+    "photographer_url": "https://www.pexels.com/@2805051",
+    "pexels_url": "https://www.pexels.com/photo/modern-road-junction-in-outskirts-at-night-4345863/"
+  }
+}

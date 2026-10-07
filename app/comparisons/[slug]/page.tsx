@@ -54,16 +54,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <div className="mt-16 rounded-2xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-8">
             <Heading level="h2" className="mb-5">How to Choose</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-4xl">
-              Pick the partner whose operating model matches your constraint. If you need procurement scale, a large agency can fit.
-              If you need technical SEO, paid search, landing pages, content systems, AI search visibility, and faster implementation,
-              Qognition is designed for that path.
+              Choose around the work you need, the team available and the evidence a supplier can provide. Ask who will implement changes, how content is reviewed and how search observations connect to enquiries. We can discuss where Qognition’s AI SEO and GEO scope fits those requirements.
             </p>
             <Link
-              href="/lead-generation-roadmap"
+              href="/book"
               className="mt-8 inline-flex rounded-lg bg-[var(--accent)] px-6 py-3 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"
             >
-              View Lead Roadmap
+              Book a call
             </Link>
+            <Link href="/contact#enquiry" className="mt-4 block text-[var(--accent)]">Send an enquiry</Link>
           </div>
         </div>
       </main>

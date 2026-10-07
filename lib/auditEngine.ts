@@ -1,5 +1,6 @@
 import { AUDIT_OFFERS, getAuditOfferBySlug } from '../data/auditOffers';
 import { AuditCheck, AuditOffer, AuditReport, AuditType } from '../types';
+import { BOOKING_LINK } from '../data/siteConfig';
 
 /**
  * The audit scoring engine. Extracted from app/api/audit/route.ts so that both
@@ -215,7 +216,7 @@ export const reportEmailHtml = (report: AuditReport) => `
       .map((check) => `<li style="margin:8px 0"><strong>${escapeHtml(check.label)}:</strong> ${escapeHtml(check.status)} - ${escapeHtml(check.detail)}</li>`)
       .join('')}</ul>
     <p style="color:#6E6A60;line-height:1.6">A branded PDF copy is attached for your team.</p>
-    <p style="margin-top:28px"><a href="https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency" style="background:#00C2A8;color:#003F38;padding:12px 18px;text-decoration:none;font-weight:700">Book a strategy call</a></p>
+    <p style="margin-top:28px"><a href="${BOOKING_LINK}" style="background:#00C2A8;color:#003F38;padding:12px 18px;text-decoration:none;font-weight:700">Book a strategy call</a></p>
   </div>
 `;
 

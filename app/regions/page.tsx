@@ -9,7 +9,7 @@ import Badge from '../../components/ui/Badge';
 
 export const metadata: Metadata = {
   title: 'Regions | Qognition',
-  description: 'Qognition delivers digital marketing strategy across the US, UK, UAE, India, Australia, Europe, GCC, and global revenue markets.',
+  description: 'Explore AI SEO and GEO planning for B2B companies reaching buyers across regional markets.',
   alternates: { canonical: '/regions' },
 };
 
@@ -24,7 +24,7 @@ export default function Page() {
               '@context': 'https://schema.org',
               '@type': 'CollectionPage',
               name: 'Qognition Regions',
-              description: 'Qognition delivers digital marketing strategy across global regions.',
+              description: 'Regional planning for B2B AI SEO and GEO.',
               url: 'https://www.qognitionagency.com/regions',
             },
             breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Regions', path: '/regions' }]),
@@ -37,7 +37,7 @@ export default function Page() {
             <Badge className="mb-4">Global Regions</Badge>
             <Heading level="h1" className="mb-4">Regions We Serve</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
-              Strategic hubs and service regions for local SEO, paid media, and digital growth.
+              Find a regional starting point for your AI SEO and GEO programme. The brief should reflect customer language, operating footprint and the evidence buyers need to evaluate your business.
             </p>
           </div>
         </Section>

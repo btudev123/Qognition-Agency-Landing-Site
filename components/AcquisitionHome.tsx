@@ -49,10 +49,10 @@ export default function AcquisitionHome() {
       <Industries />
       <Programme />
       <Evidence />
+      <BookCall />
       <Snapshot />
       <Fit />
       <Faqs />
-      <BookCall />
       <FinalCta />
       <ExitIntentPopup />
     </main>

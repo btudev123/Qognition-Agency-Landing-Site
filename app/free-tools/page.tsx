@@ -46,7 +46,7 @@ export default function Page() {
             <Badge className="mb-4">Free Tools</Badge>
             <Heading level="h1" className="mb-4">SEO and Marketing Calculators</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl">
-              Estimate ROI, budget, traffic, ROAS, and content opportunities before you commit spend or build a campaign.
+              Test planning assumptions for search, paid media and conversion. These calculators model the inputs you provide; their outputs are not forecasts or guarantees. Bring the assumptions to a conversation about your B2B acquisition programme.
             </p>
           </div>
         </Section>

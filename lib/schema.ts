@@ -1,14 +1,35 @@
 import { SITE_URL } from './seo';
-import { HQ_CITY, HQ_REGION, HQ_COUNTRY } from '../data/siteConfig';
+import { HQ_CITY, HQ_REGION, HQ_COUNTRY, CONTACT_EMAIL, PHONE_NUMBER } from '../data/siteConfig';
 import type { SpokeConfig } from './spokes';
 
 const absoluteUrl = (path: string) => `${SITE_URL}${path}`;
+
+/* ONE entity, referenced by @id everywhere (revised 2026-10-06, Nadia).
+ *
+ * The site emitted the organisation as "Qognition" in ~40 nodes and as
+ * "Qognition Agency" in the insights family, with no @id, while /insights/*
+ * already pointed at `${SITE_URL}/#organization`, which resolved to nothing.
+ * "Qognition" alone is also ambiguous with the sibling Qognition Labs.
+ * The legal-style name is "Qognition Agency"; "Qognition" stays as an
+ * alternateName so nothing that matched it before stops matching.
+ *
+ * Standing decision (clients/qognition-agency/context.md): no
+ * subOrganization / parentOrganization edge to Salt Accounting Group, ever.
+ * Rollback: git checkout lib/schema.ts app/layout.tsx. */
+export const ORG_ID = `${SITE_URL}/#organization`;
+export const WEBSITE_ID = `${SITE_URL}/#website`;
+export const ORG_NAME = 'Qognition Agency';
+
+/** Minimal reference for provider / publisher fields. */
+export const orgRef = () => ({ '@type': 'Organization', '@id': ORG_ID, name: ORG_NAME, url: SITE_URL });
 
 export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Qognition',
+    '@id': ORG_ID,
+    name: ORG_NAME,
+    alternateName: ['Qognition'],
     url: SITE_URL,
     logo: `${SITE_URL}/icon-512.png`,
     description:
@@ -21,6 +42,8 @@ export function organizationSchema() {
       'Local SEO',
       'Search Engine Optimization',
       'Entity Optimization',
+      'Pay-Per-Click Advertising',
+      'B2B Marketing',
     ],
     // One address, matching the third-party directory listings. Entity
     // resolution depends on this string being identical everywhere.
@@ -32,26 +55,35 @@ export function organizationSchema() {
     },
     sameAs: [
       'https://www.linkedin.com/company/qognition-tech',
-      'https://twitter.com/qognition_tech',
+      'https://x.com/qognition_tech',
       'https://www.instagram.com/qognition_agency/',
       'https://www.facebook.com/qognitiontech',
       'https://www.youtube.com/@QognitionAgency',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
-      email: 'hello@qognitionagency.com',
+      email: CONTACT_EMAIL,
+      telephone: `+${PHONE_NUMBER}`,
       contactType: 'sales',
+      availableLanguage: 'English',
+      url: `${SITE_URL}/contact`,
     },
   };
 }
 
+/* Google's site-name system reads WebSite.name and alternateName. The domain
+ * is listed because "qognitionagency.com" is a real navigational query
+ * (GSC, 3 months to 2026-10-03) and averaged position 34.2. */
 export function websiteSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Qognition',
+    '@id': WEBSITE_ID,
+    name: ORG_NAME,
+    alternateName: ['Qognition', 'qognitionagency.com'],
     url: SITE_URL,
-
+    inLanguage: 'en',
+    publisher: { '@id': ORG_ID },
   };
 }
 
@@ -60,11 +92,7 @@ export function serviceSchema(spoke: SpokeConfig, path: string) {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: `Qognition ${spoke.label}`,
-    provider: {
-      '@type': 'Organization',
-      name: 'Qognition',
-      url: SITE_URL,
-    },
+    provider: orgRef(),
     description: spoke.description,
     url: `${SITE_URL}${path}`,
     areaServed: 'Worldwide',
@@ -86,7 +114,7 @@ export function serviceCategorySchema(service: {
     serviceType: service.title,
     description: service.shortDescription,
     url: `${SITE_URL}/services/${service.id}`,
-    provider: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
+    provider: orgRef(),
     areaServed: 'Worldwide',
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -107,10 +135,10 @@ export function localBusinessSchema(location: {
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
-    name: `Qognition — Digital Marketing in ${location.name}`,
+    name: `Qognition Agency: B2B search marketing for ${location.name}`,
     url: `${SITE_URL}/locations/${location.slug}`,
     areaServed: { '@type': location.schemaType, name: location.name },
-    provider: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
+    provider: orgRef(),
     email: 'hello@qognitionagency.com',
   };
 }
@@ -170,11 +198,7 @@ export function articleSchema(post: {
       url: post.authorUrl,
     },
     image: post.imageUrl,
-    publisher: {
-      '@type': 'Organization',
-      name: 'Qognition',
-      url: SITE_URL,
-    },
+    publisher: orgRef(),
   };
 }
 
@@ -205,12 +229,8 @@ export function comparisonSchema(competitor: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: `Qognition vs ${competitor.name} — Honest Comparison for Founders`,
+    headline: `Qognition vs ${competitor.name}: an honest comparison`,
     url: `${SITE_URL}/comparisons/${competitor.slug}`,
-    publisher: {
-      '@type': 'Organization',
-      name: 'Qognition',
-      url: SITE_URL,
-    },
+    publisher: orgRef(),
   };
 }

@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: { NEXT_PUBLIC_QOGNITION_PREVIEW: process.env.VERCEL_ENV !== 'production' && (process.env.VERCEL_ENV === 'preview' || process.env.QOGNITION_PREVIEW_MODE === '1') ? '1' : '0' },
   poweredByHeader: false,
   outputFileTracingIncludes: { '/growth/[[...segments]]': ['./data/growth/geography/*.jsonl.gz', './data/growth/geography/manifest.json', './data/growth/geography/global-candidates.json'] },
   images: {
@@ -61,6 +62,18 @@ const nextConfig = {
     ];
     return [
       ...spokeRedirects,
+      // ── One machine-readable self-description ────────────────────────────
+      // /llm.txt was a static file (public/llm.txt) advertised in every page's
+      // Link header until 2026-10-06. It drifted from the site (invented offices,
+      // prices, the retired spokes). The header now names /llms.txt, which
+      // app/llms.txt/route.ts builds from lib/llms.ts, and this sends anything
+      // that cached the old address there. permanent: true is a 308.
+      // Rollback: delete this entry and restore public/llm.txt.
+      { source: '/llm.txt', destination: '/llms.txt', permanent: true },
+      // The privacy notice lives at /legal/privacy. These are the addresses people and
+      // consent tools guess. permanent: true is a 308.
+      { source: '/privacy', destination: '/legal/privacy', permanent: true },
+      { source: '/privacy-policy', destination: '/legal/privacy', permanent: true },
       // ── Recovered ranking asset ──────────────────────────────────────────
       // /glossary/ai-seo-and-sge-strategy-audit was deleted from the glossary
       // data but still holds ~1,497 impressions/quarter at avg position 7.9 for

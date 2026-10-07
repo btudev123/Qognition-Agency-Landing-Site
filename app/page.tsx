@@ -5,9 +5,9 @@ import { metadataFor } from '../lib/seo';
 
 // Title and description come from SEO_OVERRIDES['/'] in lib/seo.ts.
 export const metadata: Metadata = { ...metadataFor({
-  title: 'Qognition | AI-native B2B Growth Agency',
+  title: 'AI SEO & GEO for B2B Companies | Qognition Agency',
   description:
-    'Qognition helps founders grow with AI-native marketing, SEO, web design, paid media, and conversion strategy built to generate qualified pipeline.',
+    'AI SEO and GEO for B2B companies, including SaaS. Connect technical SEO, expert content and authority work to qualified enquiries. Book a call with Qognition.',
   path: '/',
 }), alternates: { canonical: '/', languages: localeHomeAlternates() } };
 

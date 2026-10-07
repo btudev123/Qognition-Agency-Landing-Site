@@ -1,13 +1,13 @@
 import type { LeadPayload } from './validation';
 
-export const QUALIFICATION_VERSION = '2026-09-b2b-v2';
+export const QUALIFICATION_VERSION = '2026-10-b2b-v3';
 
 /** Eligibility for human follow-up, never a sales-accepted lifecycle stage. */
 export function qualifyLead(lead: LeadPayload) {
   const q = lead.qualification;
   const reasons: string[] = [];
   const missing: string[] = [];
-  const highIntent = ['consultation', 'pricing', 'audit'].includes(lead.intent);
+  const highIntent = ['consultation', 'pricing'].includes(lead.intent);
   const b2b = q?.business_model === 'b2b';
   const company = Boolean(lead.contact.company_url);
   /* Bands are tested by EXCLUSION, not by an allowlist.
@@ -44,7 +44,7 @@ export function qualifyLead(lead: LeadPayload) {
   if (b2b) reasons.push('B2B business'); else missing.push('B2B fit');
   if (company) reasons.push('Company website supplied'); else missing.push('Company website');
   if (size || revenue) reasons.push('Company size fits the stated ICP'); else missing.push('Company size or revenue');
-  if (highIntent) reasons.push('Requested a service conversation or audit');
+  if (highIntent) reasons.push('Requested a service conversation');
   if (!highIntent) missing.push('Service-related buying intent');
   return {
     version: QUALIFICATION_VERSION,

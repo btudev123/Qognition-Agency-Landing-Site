@@ -25,7 +25,7 @@ const normalizeCompanyUrl = (value: unknown) => {
 
 export const contactSchema = z.object({
   name: z.string().min(1, 'Name is required').max(120),
-  email: z.string().email('Valid email required').max(254),
+  email: z.string().trim().email('Valid email required').max(254),
   company: z.string().max(200).optional(),
   company_url: z.preprocess(
     normalizeCompanyUrl,
@@ -68,6 +68,7 @@ export const leadSchema = z.object({
     pillar: z.enum(['ai-search', 'demand', 'abm', 'revenue-systems']).optional(),
     service_id: z.string().max(100).optional(),
     industry_id: z.string().max(100).optional(),
+    subindustry_id: z.string().max(100).optional(),
     niche_id: z.string().max(100).optional(),
     subniche_id: z.string().max(100).optional(),
     country_id: z.string().max(100).optional(),
@@ -89,7 +90,10 @@ export const leadSchema = z.object({
     analytics: z.boolean(),
     advertising: z.boolean(),
     policy_version: z.string().min(1).max(50),
-    recorded_at: z.string().datetime(),
+    /** When the visitor made the cookie choice; empty when no choice was made and the region default applied. */
+    recorded_at: z.union([z.string().datetime(), z.literal('')]),
+    /** Optional for older clients. Absent is treated as a region default, never as explicit. */
+    basis: z.enum(['explicit', 'region_default']).optional(),
   }).optional(),
   attribution: z.object({
     first_touch: utmSchema,
@@ -115,6 +119,12 @@ export const leadSchema = z.object({
 });
 
 export type LeadPayload = z.infer<typeof leadSchema>;
+
+/**
+ * Consent evidence the server derives itself (country from x-vercel-ip-country, the Sec-GPC
+ * header). Never part of the client payload, so it is not in the submission digest either.
+ */
+export type ServerConsentEvidence = { basis: 'explicit' | 'region_default' | 'unknown'; country: string | null; gpc: boolean };
 export type ContactPayload = z.infer<typeof contactSchema>;
 export type SpokeId = z.infer<typeof spokeSchema>;
 export type LeadIntent = z.infer<typeof intentSchema>;

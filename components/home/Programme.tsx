@@ -2,57 +2,27 @@ import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
 import { Eyebrow, GhostWord, Shell } from './primitives';
 
-/* Section 5 — What the first 90 days look like. docs/copy/home.md §5.
- *
- * Replaces `Methodology` in the orphaned app/HomePage.tsx. Every visual device
- * survives: the second ghost wordmark, the rail that draws left to right, the
- * four staggered steps each with its ghost numeral behind the phase label.
- *
- * Two things from the old content do not survive.
- *
- * METHOD_DATA's fourth step promised "every quarter your CAC drops". That is an
- * unmeasured outcome claim about someone else's business and CLAUDE.md §4 makes
- * no exception for it being in a design file. The honest note at the end of
- * this section is the replacement, and it is the strongest thing on the page:
- * we say what we do not control.
- *
- * The rail was `rf-page-in` at 1500ms behind a 500ms delay, so the timeline
- * finished drawing two seconds after a reader had already read all four steps.
- * It is now .rf-rail at 320ms with no delay (docs/design/motion.md §4 row 6).
- */
 
 const PHASES = [
   {
-    n: '01',
-    window: 'Weeks 1 to 2',
-    title: 'Baseline',
-    body: 'A crawl of your site, your Search Console and Business Profile data, your listing and review footprint, and a prompt set built from the questions your buyers actually ask. We run that set across ChatGPT, Perplexity, Gemini, Copilot and Google AI Mode and record what came back, with dates.',
-    deliverable:
-      'You get the prompt set as a document. You can add to it, remove from it, and argue with it. It is the measurement instrument for the whole engagement, so it is worth arguing about.',
+    n: '01', window: 'Discovery', title: 'Understand the buying decision',
+    body: 'We learn what you sell, who approves it and which questions put a firm on their shortlist. Then we fix a prompt set and run the first baseline.',
+    deliverable: 'A buyer brief, the prompt set and a dated baseline on the agreed platforms.',
   },
   {
-    n: '02',
-    window: 'Weeks 3 to 6',
-    title: 'Entity and foundations',
-    body: 'Assistants need to be certain who you are before they will recommend you. One consistent description of your firm across your site, your schema, your Business Profile, your listings, your association entries and your team profiles. Where those disagree, we fix the disagreement.',
-    deliverable:
-      'In parallel: technical SEO, site structure, and the pages that answer the specific questions your buyers ask. This is the unglamorous half, and skipping it is why most GEO work produces nothing.',
+    n: '02', window: 'Foundations', title: 'Make your firm easy to read',
+    body: 'We fix what stops search engines and assistants reading you correctly: crawl and indexing problems, unclear service pages and inconsistent company facts.',
+    deliverable: 'A prioritized list of fixes, each with an owner and a date.',
   },
   {
-    n: '03',
-    window: 'Weeks 7 to 12',
-    title: 'The evidence layer',
-    body: 'Getting named in an AI answer usually depends on sources you do not own, so the work moves off your site: association profiles, industry directories, review platforms, trade publications, expert commentary under the names of your actual people, and comparison content a model can retrieve and attribute.',
-    deliverable:
-      'Named people matter more here than the firm does. A model retrieving commentary on contractor liability will find a person who wrote it, not a logo.',
+    n: '03', window: 'Authority', title: 'Support the claims buyers check',
+    body: 'AI answers cite sources beyond your own site. We find the publications, directories and associations your buyers trust, and work on getting them to describe you accurately.',
+    deliverable: 'An authority plan built on real expertise, with every external claim checked.',
   },
   {
-    n: '04',
-    window: 'Ongoing',
-    title: 'Rerun, compare, report',
-    body: 'The prompt set runs again on a fixed schedule. You see the same prompts, the same platforms, a new date, and what changed.',
-    deliverable:
-      'Alongside it: Search Console AI impressions, classic rankings, Maps performance, and the conversions your CRM recorded.',
+    n: '04', window: 'Review', title: 'Compare against the baseline',
+    body: 'We re-run the same prompt set on the agreed schedule. AI answers, rankings and qualified enquiries are reported in separate columns.',
+    deliverable: 'A dated comparison and the next priorities.',
   },
 ];
 
@@ -66,12 +36,12 @@ export default function Programme() {
           <ScrollReveal className="lg:col-span-6">
             <Eyebrow>How the programme works</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 font-semibold">
-              <MaskReveal>What the first 90 days look like.</MaskReveal>
+              <MaskReveal>From buyer questions to sales conversations.</MaskReveal>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-6">
             <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
-              One retainer, one team, a fixed rhythm.
+              One scope and one review rhythm, agreed in writing before work starts.
             </p>
           </ScrollReveal>
         </div>
@@ -142,7 +112,7 @@ export default function Programme() {
         <ScrollReveal stagger={5} className="mt-16 pt-8" style={{ borderTop: '1px solid var(--s-rule)' }}>
           <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--s-text)' }}>
             We do not control ChatGPT, Google or Perplexity, and we will not tell you when you will
-            appear in them. What we commit to is the work, the measurement, and the dated record of
+            appear in them. What we commit to is the work, the measurement and the dated record of
             both.
           </p>
         </ScrollReveal>

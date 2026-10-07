@@ -23,14 +23,15 @@ const B2BMoFuPage = ({ page }: Props) => {
           </div>
           <div className="lg:col-span-5">
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-              <Heading level="h3" className="mb-4">
-                Get Your Free SEO Audit
+              <Heading level="h2" className="mb-4">
+                Discuss your priorities
               </Heading>
+              <Link href="/book" className="mb-6 inline-flex text-[var(--accent)]">Book a call →</Link>
               <LeadForm
                 spoke="marketing"
-                intent="audit"
+                intent="contact"
                 sourcePage={path}
-                ctaLabel="Run Free Audit"
+                ctaLabel="Send enquiry"
               />
             </div>
           </div>
@@ -55,7 +56,7 @@ const B2BMoFuPage = ({ page }: Props) => {
           </div>
           <aside className="lg:col-span-4">
             <div className="sticky top-32 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6">
-              <Heading level="h2">Next Pages</Heading>
+              <Heading level="h2">Continue your research</Heading>
               <div className="mt-6 space-y-3">
                 {page.relatedLinks.map((link) => (
                   <Link

@@ -24,9 +24,12 @@ const STAGE_RULES: { test: (p: string) => boolean; stage: FunnelStage }[] = [
   { test: (p) => p.startsWith('/services') || p.startsWith('/comparisons') || p.startsWith('/case-studies') || p.startsWith('/industries') || p.startsWith('/locations') || p.startsWith('/regions'), stage: 'mofu' },
 ];
 
-export function getFunnelStage(pathname: string): FunnelStage {
+export function getFunnelStage(pathname: string, explicit?: FunnelStage): FunnelStage {
+  if (explicit) return explicit;
   const normalized = pathname.replace(/^\/(de|fr|nl|sv|da|nb|fi|ar|it|zh-Hans)(?=\/|$)/, '') || '/';
-  if (normalized.startsWith('/growth/')) return 'bofu';
+  if (normalized.endsWith('/learn')) return 'tofu';
+  if (normalized.endsWith('/evaluate')) return 'mofu';
+  if (normalized === '/' || /^\/(services|industries|growth)(\/|$)/.test(normalized)) return 'bofu';
   if (normalized.startsWith('/insights/')) return /playbook|measurement|selection|methodology/.test(normalized) ? 'mofu' : 'tofu';
   const match = STAGE_RULES.find((r) => r.test(normalized));
   return match ? match.stage : 'mofu';
@@ -41,28 +44,28 @@ export function getFunnelCTA(stage: FunnelStage, opts?: { service?: string }): F
         stage,
         eyebrow: 'Free resource',
         headline: 'Make your next growth decision clearer.',
-        primary: { label: 'Explore the growth library', href: '/insights' },
-        secondary: { label: 'Request a visibility review', href: '/free-ai-audit' },
+        primary: { label: 'Explore our approach', href: '/process' },
+        secondary: { label: 'Send an enquiry', href: '/contact#enquiry' },
         reassurance: 'Practical guidance for B2B teams',
       };
     case 'bofu':
       return {
         stage,
-        eyebrow: "Let's talk",
-        headline: 'Discuss your growth plan',
-        primary: { label: 'Discuss your growth plan', href: '/book' },
-        secondary: { label: 'Message us on WhatsApp', href: '/contact' },
+        eyebrow: 'Next step',
+        headline: 'Find out where you stand in Google and AI search.',
+        primary: { label: 'Book a call', href: '/book' },
+        secondary: { label: 'Send an enquiry', href: '/contact#enquiry' },
         reassurance: 'Real strategist · No obligation · Scope agreed before work begins',
       };
     case 'mofu':
     default:
       return {
         stage,
-        eyebrow: 'Free audit',
+        eyebrow: 'Your next step',
         headline: service ? `Explore your ${service} opportunity` : 'See where your buyers can find you',
-        primary: { label: service ? `Get my free ${service} audit` : 'Get my free audit', href: '/free-ai-audit' },
-        secondary: { label: 'Discuss your growth plan', href: '/book' },
-        reassurance: 'Human-reviewed · Scope and timing agreed after your request',
+        primary: { label: 'Book a call', href: '/book' },
+        secondary: { label: 'Send an enquiry', href: '/contact#enquiry' },
+        reassurance: 'Tell us who you sell to, where you want to grow and what needs to improve.',
       };
   }
 }

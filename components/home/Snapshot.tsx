@@ -3,30 +3,12 @@ import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
 import { Eyebrow, Shell } from './primitives';
 
-/* Section 7 — Start with the snapshot. docs/copy/home.md §7.
- *
- * The primary conversion surface on the page. Everything else on `/` exists to
- * get a reader here or to the walkthrough (CLAUDE.md §3).
- *
- * "What it is not" renders at the same weight as "what you get" and is not
- * collapsed, greyed or moved below the CTA. It is the section's credibility and
- * it is the reason the snapshot converts at all: a reader who has been told
- * what a thing cannot do believes what they are told it can.
- *
- * No delivery SLA appears here. The orphaned design promised "delivered within
- * 48 hours" and no such commitment is confirmed. A turnaround time goes back on
- * the page when someone will stand behind it, with who owns it.
- */
 
-/* The hero panel already lists what comes back. This section carries the part
-   the hero cannot: how it is produced, and where it stops. Repeating the
-   deliverable list here would be the third time a reader sees it and the second
-   time it says nothing new. */
 const STEPS = [
-  'You tell us the site and the buyers you sell to.',
-  'We build a prompt set from the questions those buyers actually ask.',
-  'We run a sample of it across the assistants and crawl your site for the entity and technical signals that feed those answers.',
-  'You get the prompts, what each platform returned, the date we ran it, and the two or three things we would do first.',
+  'You send your website and the buyers you want to reach.',
+  'A person on our team reviews it and chooses the buyer questions to test.',
+  'We test those questions on the agreed platforms and record each answer with its date and cited sources.',
+  'You get the findings and the first fixes we would make. We confirm timing when we reply.',
 ];
 
 export default function Snapshot() {
@@ -40,22 +22,19 @@ export default function Snapshot() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           <div className="lg:col-span-5">
             <ScrollReveal>
-              <Eyebrow accent>The free snapshot</Eyebrow>
+              <Eyebrow accent>Free AI visibility audit</Eyebrow>
               <h2 className="text-h2 font-sans m-0 mt-4 max-w-[16ch] font-semibold">
-                <MaskReveal>Start with the snapshot.</MaskReveal>
+                <MaskReveal>Want to see the answers first?</MaskReveal>
               </h2>
               <p className="text-body mt-5 m-0 max-w-[56ch]" style={{ color: 'var(--s-text-muted)' }}>
-                It is a small version of the first two weeks of the engagement. We build a prompt
-                set from your buyers’ questions, run a sample of it across the assistants, crawl
-                your site for the technical and entity signals that feed those answers, and send you
-                the result.
+                Send us your website and the buyers you want to reach. A person on our team tests a sample of their questions on the agreed AI platforms and Google, checks your site&apos;s technical readiness, and sends you what they found, with dates. It is free, and there is no obligation to book.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
-                <Link href="/free-ai-audit" className="rf-btn rf-btn--primary">
-                  Get your free snapshot
+                <Link href="/free-ai-audit#request" className="rf-btn rf-btn--primary">
+                  Request your free audit
                 </Link>
                 <Link href="/free-ai-audit#scope" className="rf-btn rf-btn--secondary">
-                  What it covers, and what it does not
+                  What the audit covers
                 </Link>
               </div>
             </ScrollReveal>
@@ -67,7 +46,7 @@ export default function Snapshot() {
                 className="text-h4 font-sans m-0 pb-4 font-semibold"
                 style={{ borderBottom: '1px solid var(--s-rule)' }}
               >
-                How it is produced
+                How it works
               </h3>
               <ol className="list-none p-0 m-0 mt-5 grid gap-4">
                 {STEPS.map((item, i) => (
@@ -90,15 +69,14 @@ export default function Snapshot() {
                 className="text-h4 font-sans m-0 pb-4 font-semibold"
                 style={{ borderBottom: '1px solid var(--s-rule)' }}
               >
-                What it is not
+                Read findings in context
               </h3>
               <p className="text-body mt-5 m-0" style={{ color: 'var(--s-text-muted)' }}>
                 A sample of prompts is a sample. Different prompts, a different day, or a different
                 account can produce a different answer.
               </p>
               <p className="text-body mt-4 m-0" style={{ color: 'var(--s-text-muted)' }}>
-                The snapshot tells you what we observed on one date. It does not tell you your
-                permanent position, and any agency that says otherwise is guessing.
+                Each finding carries its date, method and scope. A clean technical check does not mean AI platforms will name you, and a citation does not mean revenue.
               </p>
             </ScrollReveal>
           </div>

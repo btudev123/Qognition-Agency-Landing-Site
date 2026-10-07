@@ -9,8 +9,8 @@ import Badge from '../../components/ui/Badge';
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: 'Free Marketing Audits and Lead Magnets | Qognition',
-  description: 'Run free SEO, AI, branding, social media, and LLM visibility audits from Qognition.',
+  title: 'B2B AI SEO & GEO Resources | Qognition',
+  description: 'Explore resources to understand AI search visibility, evaluate your current approach and plan the next step for your B2B business.',
   alternates: { canonical: '/resources' },
 };
 
@@ -44,9 +44,9 @@ export default function Page() {
         <Section spacing="lg">
           <div className="max-w-3xl">
             <Badge className="mb-4">Resources</Badge>
-            <Heading level="h1" className="mb-4">Free Audits and Lead Magnets</Heading>
+            <Heading level="h1" className="mb-4">Understand the opportunity. Choose your next step.</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl">
-              Simple, useful audit tools for teams improving SEO, AI visibility, brand trust, social authority, and LLM discovery.
+              Practical starting points for teams exploring AI SEO and GEO. Use the guidance to identify buyer questions, review the evidence on your website and decide what needs closer investigation.
             </p>
           </div>
         </Section>
@@ -64,7 +64,7 @@ export default function Page() {
                   {resource.title}
                 </h2>
                 <p className="text-body text-[var(--text-muted)] mb-6">{resource.description}</p>
-                <span className="text-xs text-[var(--text-muted)]">{resource.readingTime} report</span>
+                <span className="text-xs text-[var(--text-muted)]">Explore resource →</span>
               </Link>
             ))}
           </div>

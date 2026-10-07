@@ -39,6 +39,11 @@ export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 export const WHATSAPP_NUMBER = "12363498449";
 export const WHATSAPP_DISPLAY = "+1 (236) 349-8449";
 export const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
+/* The opening line WhatsApp pre-fills. Generic on purpose: a click handler that
+ * interpolated a company name would be the one place a visitor's identity could
+ * reach a third-party URL, and wa.me logs the full link. */
+export const WHATSAPP_PREFILL = "Hi Qognition, I'd like to talk about AI search, SEO or PPC for my company.";
+export const WHATSAPP_CHAT_LINK = `${WHATSAPP_LINK}?text=${encodeURIComponent(WHATSAPP_PREFILL)}`;
 
 // Same number, click-to-call.
 export const PHONE_NUMBER = WHATSAPP_NUMBER;

@@ -1,43 +1,9 @@
+import Link from 'next/link';
 import CalBooking from '../shared/CalBooking';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
 import { Eyebrow, Shell } from './primitives';
 
-/* Section 11 — Book a call, with the calendar ON the page.
- *
- * ────────────────────────────────────────────────────────────────────────────
- * WHY THIS EXISTS. The homepage had two conversion paths and both ended in a
- * link: "Get your free snapshot" went to /free-ai-audit, "Book a 20-minute
- * walkthrough" went to /contact. A reader who had decided to book still had to
- * load another page, find the widget and wait for it, and every step between
- * intent and a held slot loses people who had already said yes.
- *
- * The LeadConnector widget was already built and already wired (CalBooking,
- * used on /book and /contact). It simply was not on the page where the decision
- * gets made. Operator, 2026-09-29: "where is the band for book 30 min call, add
- * the ghl lead connector there so clients can book calls easily."
- *
- * TWO PATHS, DELIBERATELY, because they are different readers.
- *   The snapshot is for someone who is not ready to talk and wants to see
- *   something first. It stays the primary CTA everywhere else on the page.
- *   This band is for someone who has already decided. It should cost them one
- *   scroll, not one navigation.
- *
- * DURATION. The LeadConnector calendar is the source of truth and it renders
- * "Discovery Call, 30 min", verified in the browser on 2026-09-29. That closed an
- * open question and caught a live contradiction: app/case-studies/[id] offered a
- * "20-minute call" and the hero offered a "20-minute walkthrough" against a
- * 30-minute calendar. Both corrected.
- *
- * The heading here still states no number, deliberately. The widget renders the
- * real duration a few hundred pixels below it, so a number in the copy can only
- * ever drift from the calendar. If the calendar changes, nothing here is wrong.
- *
- * LIGHT SURFACE, deliberately. FinalCta below is dark, and CLAUDE.md §9 says the
- * alternation is the design. It also gives the iframe a white field to render
- * into, which is what the widget is styled for.
- * ────────────────────────────────────────────────────────────────────────────
- */
 export default function BookCall() {
   return (
     <section
@@ -50,18 +16,17 @@ export default function BookCall() {
           <ScrollReveal>
             <Eyebrow accent>Book a call</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 max-w-[18ch] font-semibold">
-              <MaskReveal>Pick a time that works.</MaskReveal>
+              <MaskReveal>30 minutes. Here is what we cover.</MaskReveal>
             </h2>
             <p className="text-body mt-5 m-0 max-w-[48ch]" style={{ color: 'var(--s-text-muted)' }}>
-              A working session, not a pitch. Bring the questions your buyers ask and the firms you
-              lose to, and we will go through what the assistants currently return for them.
+              Bring your website and the buyers you want to reach. It is a working conversation about your situation, not a slide deck.
             </p>
 
             <ul className="list-none p-0 mt-8 grid gap-3">
               {[
-                'We look at your site and your sector before the call, not during it.',
-                'You leave with the prompts we would run, whether or not you hire us.',
-                'If AI search is not your problem right now, we will say so.',
+                'Who you sell to, and the questions your buyers ask before they shortlist.',
+                'What we would check first in Google and AI search, and why.',
+                'Whether we are the right fit. If we are not, we will say so.',
               ].map((line) => (
                 <li key={line} className="flex gap-3 text-meta" style={{ color: 'var(--s-text)' }}>
                   <span
@@ -74,9 +39,13 @@ export default function BookCall() {
               ))}
             </ul>
 
+            {/* No turnaround here until the operator supplies one. Never a guessed N. */}
+            <p className="text-meta mt-6 m-0 max-w-[48ch]" style={{ color: 'var(--s-text)' }}>
+              After the call you get a written scope and fee.
+            </p>
+
             <p className="text-meta mt-8 m-0 max-w-[48ch]" style={{ color: 'var(--s-text-faint)' }}>
-              Would rather see something first? Get the free AI visibility snapshot and book
-              afterwards.
+              Prefer to write? <Link href="/contact#enquiry" className="underline">Send an enquiry</Link> with the challenge you want to solve.
             </p>
           </ScrollReveal>
 

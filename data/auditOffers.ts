@@ -7,13 +7,13 @@ export const AUDIT_OFFERS: AuditOffer[] = [
     title: 'AI Search Visibility Report',
     shortTitle: 'AI Search Visibility Report',
     description:
-      'A human-reviewed look at how visible and citable your brand is across AI search systems, delivered within 48 hours.',
+      'Review technical readiness and request a human assessment of the commercial questions and sources relevant to your business.',
     h1: 'AI Search Visibility Report',
     eyebrow: 'AI Search Visibility Report',
-    cta: 'Request My AI Search Visibility Report',
+    cta: 'Request a review',
     audience: 'Founders and growth teams who want visibility in AI Overviews, ChatGPT-style answers, Gemini, Perplexity, and answer engines',
-    checks: ['Entity clarity', 'Structured data', 'FAQ content', 'Robots access', 'llm.txt', 'Proof assets', 'Service clarity'],
-    outcomes: ['Improve AI answer readiness', 'Clarify brand facts', 'Find blocked AI bots', 'Map missing proof assets'],
+    checks: ['Entity clarity', 'Structured data', 'FAQ content', 'Robots access', 'Proof assets', 'Service clarity'],
+    outcomes: ['Improve AI answer readiness', 'Clarify brand facts', 'Review search access', 'Map missing proof assets'],
     sections: [
       {
         title: 'AI search needs proof',
@@ -23,7 +23,7 @@ export const AUDIT_OFFERS: AuditOffer[] = [
       {
         title: 'What the report looks at',
         content:
-          'We review structured pages, schema, concise answers, clear service language, robots access for major AI/search bots, and machine-readable discovery files.'
+          'We review accessible page content, clear service information, supported claims and search access. Actual AI mentions and citations require a separate, dated observation of an answer.'
       },
       {
         title: 'How Qognition uses it',
@@ -43,7 +43,7 @@ export const AUDIT_OFFERS: AuditOffer[] = [
       },
       {
         question: 'What is the fastest AI visibility win?',
-        answer: 'Usually clear service pages, concise answers, proof-rich case studies, schema, and an accurate llm.txt file.'
+        answer: 'Start with the specific issue supported by the findings. There is no universal shortcut or special file that guarantees AI citations.'
       }
     ]
   }
@@ -54,7 +54,7 @@ export const RESOURCES_FROM_AUDITS: ResourceLeadMagnet[] = AUDIT_OFFERS.map((off
   title: offer.title,
   description: offer.description,
   format: offer.eyebrow,
-  readingTime: '48 hours',
+  readingTime: 'Scope confirmed after enquiry',
   gated: true,
   audience: offer.audience,
   highlights: offer.outcomes,

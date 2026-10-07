@@ -7,9 +7,10 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import BenchmarkTable from '../../../components/case-studies/BenchmarkTable';
 import Breadcrumbs from '../../../components/case-studies/Breadcrumbs';
 import FaqAccordion from '../../../components/case-studies/FaqAccordion';
-import { truncate, formatAuditedDate } from '../../../components/case-studies/format';
+import { truncate } from '../../../components/case-studies/format';
 import KpiSection from '../../../components/case-studies/KpiSection';
 import NicheServiceBadges from '../../../components/case-studies/NicheServiceBadges';
+import PhotoCredit from '../../../components/case-studies/PhotoCredit';
 import {
   PlaybookStrategy,
   PlaybookTimeline,
@@ -42,14 +43,15 @@ export async function generateMetadata({
   if (!study) return { title: 'Case study not found | Qognition' };
 
   const path = `/case-studies/${study.id}`;
-  const description = truncate(`${study.client}, ${study.market}. ${study.coreProblem}`);
+  const description = truncate(`Client programme: ${study.client}, ${study.market}. ${study.coreProblem}`);
 
   return {
-    title: `${study.headline} | ${study.client} | Qognition`,
+    // absolute: the root layout's '%s | Qognition' template would otherwise double the suffix.
+    title: { absolute: `${study.headline} | Qognition` },
     description,
     alternates: { canonical: `${SITE_URL}${path}` },
     openGraph: {
-      title: `${study.client} — ${study.headline}`,
+      title: study.headline,
       description,
       url: `${SITE_URL}${path}`,
       type: 'article',
@@ -90,13 +92,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   const path = `/case-studies/${study.id}`;
   const related = relatedCaseStudies(study, 3);
-  const audited = formatAuditedDate(study.auditedAt);
 
   /**
    * Article + BreadcrumbList + FAQPage.
    *
-   * Deliberately NO Review and NO AggregateRating. No client quotes have been collected on this
-   * engagement, and a fabricated review node in structured data is the exact defect this library
+   * Deliberately NO Review and NO AggregateRating. No client quotes have been collected for this
+   * programme, and a fabricated review node in structured data is the exact defect this library
    * was built to replace. Do not add one without a real, attributable, on-file quote.
    */
   const jsonLd = [
@@ -104,14 +105,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: study.headline,
-      description: `${study.client}, ${study.market}. ${study.coreProblem}`,
+      description: `Client programme: ${study.client}, ${study.market}. ${study.coreProblem}`,
       image: `${SITE_URL}${study.image.src}`,
-      datePublished: study.auditedAt,
-      dateModified: study.auditedAt,
       author: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
       publisher: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
       mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}${path}` },
-      about: { '@type': 'Organization', name: study.client, url: `https://${study.domain}` },
+      about: { '@type': 'Thing', name: `${nicheLabel(study.niche)} search and acquisition` },
       url: `${SITE_URL}${path}`,
     },
     breadcrumbSchema([
@@ -159,32 +158,40 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </Heading>
             <p className="text-body text-[var(--text-muted)]">
               <span className="font-medium text-[var(--text)]">{study.client}</span> ·{' '}
-              {study.market} · audited {audited}
+              {study.market} · client programme
             </p>
+            <Text className="mt-4">Targets were set at the start of the engagement. Results are published as client reporting confirms them.</Text>
           </header>
 
-          <div className="relative mb-14 aspect-[16/9] overflow-hidden rounded-xl bg-[var(--bg-warm)]">
-            <Image
-              src={study.image.src}
-              alt={study.image.alt}
-              width={1280}
-              height={720}
-              priority
-              className="h-full w-full object-cover"
-            />
-          </div>
+          <figure className="mb-14">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-[var(--bg-warm)]">
+              <Image
+                src={study.image.src}
+                alt={study.image.alt}
+                width={study.image.width ?? 1600}
+                height={study.image.height ?? 1000}
+                sizes="(min-width: 960px) 896px, 100vw"
+                priority
+                className="h-full w-full object-cover"
+              />
+            </div>
+            {study.image.credit && (
+              <figcaption className="mt-2">
+                <PhotoCredit image={study.image} />
+              </figcaption>
+            )}
+          </figure>
 
-          <Section title="Who they are">
+          <Section title="Business context">
             <Text className="max-w-3xl">{study.snapshot}</Text>
           </Section>
 
-          {/* The verified half. This is what carries the credibility. */}
-          <Section title="What we verified" eyebrow={`Live site audit · ${audited}`}>
+          <Section title="Programme focus">
             <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
               <Text>{study.startingPosition}</Text>
             </div>
-            <Text size="meta" tone="faint" className="mt-3">
-              Every statement above was confirmed against{' '}
+            <Text size="meta" className="mt-3">
+              Client website:{' '}
               <a
                 href={`https://${study.domain}`}
                 target="_blank"
@@ -192,8 +199,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                 className="text-[var(--accent)] underline underline-offset-2"
               >
                 {study.domain}
-              </a>{' '}
-              on {audited}. Sites change; this is a dated observation, not a permanent claim.
+              </a>
             </Text>
           </Section>
 
@@ -205,22 +211,22 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           <section className="mb-16 md:mb-24">
             <div className="rounded-xl border-l-2 border-[var(--accent)] bg-[var(--bg-warm)] py-5 pl-6 pr-5">
               <p className="mb-2 text-meta font-semibold uppercase tracking-wide text-[var(--accent)]">
-                What made this one different
+                Market context
               </p>
               <Text>{study.differentiator}</Text>
             </div>
           </section>
 
-          <Section title="What we did">
+          <Section title="Approach">
             <PlaybookStrategy playbooks={study.playbooks} />
           </Section>
 
-          <Section title="How it was sequenced">
+          <Section title="Sequence">
             <PlaybookTimeline playbooks={study.playbooks} />
           </Section>
 
           {/* Evidence rule lives inside KpiSection — it branches on study.evidence. */}
-          <Section title="The numbers">
+          <Section title="Targets">
             <KpiSection study={study} />
           </Section>
 
@@ -240,10 +246,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </ul>
           </Section>
 
-          <Section title="The proof behind every figure">
+          <Section title="How results are reported">
             <Text className="mb-5 max-w-3xl">
-              These are the raw exports {study.client} receives, and the ones any number on this
-              page reconciles against. Ask any agency for the equivalent.
+              A target becomes a result on this page only when it is confirmed against records like these.
             </Text>
             <ul className="space-y-2">
               {study.playbooks
@@ -262,7 +267,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </ul>
           </Section>
 
-          <Section title="Systems used">
+          <Section title="Work streams">
             <ul className="space-y-2">
               {study.engines.map((engine) => (
                 <li key={engine} className="text-body text-[var(--text-muted)]">
@@ -272,32 +277,32 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </ul>
           </Section>
 
-          <Section title="Questions about this engagement">
+          <Section title="Questions about this programme">
             <FaqAccordion faqs={study.faqs} />
           </Section>
 
           {/* ── Internal linking spine ───────────────────────────────────── */}
           <section className="mb-16 md:mb-24">
             <Heading level="h2" className="mb-6">
-              Related engagements
+              Related case studies
             </Heading>
             <StudyGrid
               studies={related}
-              emptyTitle="No comparable engagement yet"
-              emptyMessage={`This is currently our only ${nicheLabel(study.niche)} engagement in the library.`}
+              emptyTitle="No comparable case study yet"
+              emptyMessage={`This is currently our only ${nicheLabel(study.niche)} case study in the library.`}
             />
             <nav aria-label="Explore the library" className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
               <Link
                 href={`/case-studies/industry/${study.niche}`}
                 className="text-body text-[var(--accent)] underline underline-offset-2"
               >
-                All {nicheLabel(study.niche)} engagements
+                All {nicheLabel(study.niche)} case studies
               </Link>
               <Link
                 href={`/case-studies/location/${study.state.toLowerCase()}`}
                 className="text-body text-[var(--accent)] underline underline-offset-2"
               >
-                All {study.stateName} engagements
+                All {study.stateName} case studies
               </Link>
               {study.services.map((service) => (
                 <Link
@@ -305,7 +310,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                   href={`/case-studies/service/${service}`}
                   className="text-body text-[var(--accent)] underline underline-offset-2"
                 >
-                  All {serviceLabel(service)} engagements
+                  All {serviceLabel(service)} case studies
                 </Link>
               ))}
               {study.services.map((service) => (
@@ -328,18 +333,18 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
           <section className="rounded-xl border border-[var(--border)] bg-[var(--bg-warm)] p-8 text-center md:p-12">
             <Heading level="h2" className="mb-3">
-              Want the same audit on your site?
+              What would help your buyers choose you?
             </Heading>
             <Text className="mx-auto mb-6 max-w-xl">
-              We run the audit that opens every one of these engagements before any money changes
-              hands. You get the findings whether or not you hire us.
+              Tell us about your business, current search visibility and the enquiries you want to attract. We will discuss a scope based on your evidence and priorities.
             </Text>
             <Link
               href="/book"
               className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-6 py-3 text-body font-medium text-[var(--on-accent,#fff)] transition-opacity hover:opacity-90"
             >
-              Book a 30-minute call <ArrowRight size={18} aria-hidden="true" />
+              Book a call <ArrowRight size={18} aria-hidden="true" />
             </Link>
+            <Link href="/contact#enquiry" className="mt-4 block text-[var(--accent)]">Send an enquiry</Link>
           </section>
         </div>
       </article>

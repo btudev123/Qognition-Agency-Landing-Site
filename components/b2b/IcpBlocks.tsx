@@ -158,12 +158,12 @@ export function QualificationBlock({
   return (
     <Band labelledBy={id}>
       <BandHeading id={id} eyebrow="Who this is for">
-        The people who hire us here, and the size of firm it works for.
+        For teams responsible for search and growth.
       </BandHeading>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-8 mt-9">
         {sub.buyerTitles.length > 0 && (
           <div className="lg:col-span-7">
-            <Label>Titles we work with</Label>
+            <Label>Who shapes the scope</Label>
             <ul
               className="list-none p-0 m-0 mt-4"
               style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
@@ -185,9 +185,9 @@ export function QualificationBlock({
         )}
         {sub.minFirmSize && (
           <div className="lg:col-span-5">
-            <Label>Where the work pays for itself</Label>
+            <Label>What makes a useful engagement</Label>
             <p className="text-body mt-4 m-0" style={{ color: 'var(--s-text)' }}>
-              {sub.minFirmSize}
+              A clear commercial objective, access to subject-matter expertise and a team ready to act on the findings. We discuss scope around your needs.
             </p>
           </div>
         )}
@@ -209,15 +209,14 @@ export function QualificationBlock({
 export function ClientValueBlock({ value, id }: { value: string; id: string }) {
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="What one program is worth">
-        Their contract value, not our return.
+      <BandHeading id={id} eyebrow="A considered purchase">
+        Make the next conversation worth having.
       </BandHeading>
       <p className="text-body mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)' }}>
-        {value}
+        Your programme should reflect the value and complexity of the sale: what buyers need to evaluate, who approves the decision and how an enquiry becomes an opportunity.
       </p>
       <p className="text-meta mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-faint)' }}>
-        That figure is the value of a won program to a firm in this category. It is not a projection
-        of what an engagement with us returns, and nothing on this page multiplies the two.
+        Agree qualification criteria with sales so reporting distinguishes interest, suitable enquiries and accepted opportunities.
       </p>
     </Band>
   );
@@ -250,18 +249,14 @@ export function PromptPanelBlock({
   id: string;
 }) {
   if (panel.prompts.length === 0) return null;
-  const supplied = panel.prompts.filter((p) => p.origin === 'supplied');
-  const composed = panel.prompts.filter((p) => p.origin === 'composed');
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="The prompts we run">
-        Your buyer&rsquo;s questions, not ours.
+      <BandHeading id={id} eyebrow="Questions to investigate">
+        The questions behind a shortlist.
       </BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        Every line below is what a firm in this category is being asked about by its own customers.
-        We run them, record who the assistants named and what they cited, and publish the result with
-        the date. We are never the answer to one of these, and we do not try to rank for them.
+        These example prompts describe questions your customers may ask when researching suppliers. Validate them with sales and search evidence, then agree which platforms and markets to observe. A proposed prompt is not a measured AI answer.
       </p>
 
       <dl className="grid grid-cols-1 gap-y-0 mt-9 m-0" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
@@ -276,7 +271,7 @@ export function PromptPanelBlock({
             </dt>
             <dd className="lg:col-span-4 m-0 flex flex-wrap items-baseline gap-x-4 gap-y-1">
               <span className="font-mono text-meta tracking-[0.14em] uppercase" style={{ color: 'var(--s-text-faint)' }}>
-                {prompt.origin === 'supplied' ? 'Operator supplied' : 'Narrowed by scope'}
+                {prompt.origin === 'supplied' ? 'Planning question' : 'Application-specific question'}
               </span>
               <span className="text-meta" style={{ color: 'var(--s-text-muted)' }}>
                 {prompt.shape === 'vendor' ? 'Shortlist request' : 'How-to question'}
@@ -287,14 +282,7 @@ export function PromptPanelBlock({
       </dl>
 
       <p className="text-meta mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-faint)' }}>
-        <span className="font-mono tabular-nums">{supplied.length}</span> supplied by the operator and{' '}
-        <span className="font-mono tabular-nums">{composed.length}</span> narrowed by the scope terms
-        on this page.{' '}
-        {panel.meetsMinimum
-          ? `That clears the ${minimum} distinct prompts a published panel needs.`
-          : `A published panel needs ${minimum} distinct prompts. The remaining ${
-              minimum - panel.prompts.length
-            } are written by hand before this page can be published, and they are not written yet.`}
+        A useful review records the exact prompt, platform, market, date and sources. Repeated observations help distinguish a pattern from one answer.
       </p>
     </Band>
   );
@@ -329,12 +317,11 @@ export function PaidDemandBlock({
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="The demand already there">
-        What their customers type into Google today.
+      <BandHeading id={id} eyebrow="Paid-search research">
+        Commercial terms to validate.
       </BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        These are the commercial terms a firm in this category competes on, and they are the terms a
-        campaign of theirs buys. They are not our terms and we do not bid on them.
+        These terms are starting points for researching your customers’ searches. Validate intent, relevance and current demand before using them in a campaign. PPC is scoped separately from AI SEO and GEO.
       </p>
       <ul className={`list-none p-0 m-0 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mt-8 ${LATTICE_CELLS}`} style={LATTICE}>
         {keywords.map((keyword) => (
@@ -346,7 +333,7 @@ export function PaidDemandBlock({
         ))}
       </ul>
       <div className="mt-8">
-        <Link href="/ppc" className="rf-btn rf-btn--secondary">
+        <Link href="/services/ppc" className="rf-btn rf-btn--secondary">
           How we run paid search
         </Link>
       </div>
@@ -508,8 +495,8 @@ export function InheritedContextBlock({
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Carried down from the category">
-        {`The buyer and the fit test come from ${parentName}.`}
+      <BandHeading id={id} eyebrow="Planning your engagement">
+        {`A search programme for teams in ${parentName}.`}
       </BandHeading>
       {parentHref && (
         <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
@@ -522,7 +509,7 @@ export function InheritedContextBlock({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-6 mt-8">
         {sub.buyerTitles.length > 0 && (
           <div className="lg:col-span-7">
-            <Label>Titles we work with</Label>
+            <Label>Who shapes the scope</Label>
             <p className="text-body mt-3 m-0" style={{ color: 'var(--s-text)' }}>
               {sub.buyerTitles.join(' · ')}
             </p>
@@ -530,9 +517,9 @@ export function InheritedContextBlock({
         )}
         {sub.minFirmSize && (
           <div className="lg:col-span-5">
-            <Label>Where the work pays for itself</Label>
+            <Label>What makes a useful engagement</Label>
             <p className="text-body mt-3 m-0" style={{ color: 'var(--s-text)' }}>
-              {sub.minFirmSize}
+              A clear commercial objective, access to subject-matter expertise and a team ready to act on the findings. We discuss scope around your needs.
             </p>
           </div>
         )}
@@ -615,11 +602,10 @@ export function CanonicalPointerPage({
     <main className="min-h-screen">
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-24">
         <div className={SHELL}>
-          <Label accent>Covered under another branch</Label>
+          <Label accent>Explore the related approach</Label>
           <h1 className="text-h1 font-sans m-0 mt-4 max-w-[20ch] font-semibold">{name}</h1>
           <p className="text-body mt-8 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-            This buyer appears in two places in our taxonomy and we write about them once. The page
-            with the buyer titles, the observed answers and the evidence is{' '}
+            For the buying questions and service approach relevant to this business, explore{' '}
             {canonicalHref ? (
               <Link href={canonicalHref} className="rf-link" style={{ color: 'var(--s-accent)' }}>
                 {canonicalName}
@@ -707,7 +693,7 @@ export function IcpHero({
                 parent's name from the JSON. Nadia §5.1 rule 1. */}
             {upLink?.href && (
               <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-                Sits under{' '}
+                Explore more in{' '}
                 <Link href={upLink.href} className="rf-link" style={{ color: 'var(--s-accent)' }}>
                   {upLink.name}
                 </Link>
@@ -716,11 +702,11 @@ export function IcpHero({
             )}
 
             <div className="mt-9 flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/free-ai-audit" className="rf-btn rf-btn--primary">
-                Get your free snapshot
+              <Link href="/book" className="rf-btn rf-btn--primary">
+                Book a call
               </Link>
-              <Link href="/pricing" className="rf-btn rf-btn--secondary">
-                What it costs
+              <Link href="/contact#enquiry" className="rf-btn rf-btn--secondary">
+                Send an enquiry
               </Link>
             </div>
           </div>

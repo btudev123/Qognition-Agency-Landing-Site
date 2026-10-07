@@ -10,7 +10,7 @@ export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
   title: 'Multilingual SEO | Qognition',
-  description: 'Arabic, French, Spanish, Mandarin, Portuguese, Russian, and Japanese SEO and digital marketing pages.',
+  description: 'Language-aware AI SEO and GEO planning for B2B search, useful commercial content and clear enquiry paths.',
   alternates: { canonical: '/languages' },
 };
 
@@ -35,9 +35,9 @@ export default function Page() {
         <Section spacing="lg">
           <div className="max-w-3xl">
             <Badge className="mb-4">Multilingual SEO</Badge>
-            <Heading level="h1" className="mb-4">Marketing in Every Priority Language</Heading>
+            <Heading level="h1" className="mb-4">Speak to the buyer’s market</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl">
-              Localized SEO, landing pages, paid media, and lead capture for Arabic, French, Spanish, Mandarin, Portuguese, Russian, and Japanese markets.
+              Good localisation starts with how buyers describe the problem, compare suppliers and make a decision. Agree the target language, specialist terminology and qualified review before publishing translated commercial content.
             </p>
           </div>
         </Section>

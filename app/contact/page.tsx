@@ -2,17 +2,26 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { organizationSchema, breadcrumbSchema } from '../../lib/schema';
 import Heading from '../../components/ui/Heading';
-import AIPlatforms from '../../components/shared/AIPlatforms';
 import LeadForm from '../../components/shared/LeadForm';
-import { WHATSAPP_LINK, WHATSAPP_DISPLAY, BOOKING_LINK } from '../../data/siteConfig';
+import ContactChannelLink from '../../components/shared/ContactChannelLink';
+import { CONTACT_EMAIL, PHONE_DISPLAY } from '../../data/siteConfig';
+import { appendFunnelContext, readFunnelContext } from '../../lib/funnelContext';
+import { resolveLeadLocale } from '../../lib/leadCopy';
 
 export const metadata: Metadata = {
-  title: 'Contact Qognition | Book a Strategy Call',
-  description: 'Ready to scale your business? Book a free strategy call with our growth team or send us a message.',
+  title: 'Contact | AI SEO & GEO for B2B',
+  description: 'Discuss AI SEO and GEO for your B2B business. Send an enquiry about your buyers, markets and search priorities, or book a call.',
   alternates: { canonical: '/contact' },
 };
 
-export default function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const query = await searchParams;
+  const values = new URLSearchParams();
+  for (const [key, value] of Object.entries(query)) if (typeof value === 'string') values.set(key, value);
+  const incoming = readFunnelContext(values);
+  const context = incoming ? { ...incoming, locale: resolveLeadLocale(incoming.locale) } : undefined;
+  // Same shape as Navigation and Footer: carry the visitor's context, or at least where they came from.
+  const bookHref = appendFunnelContext('/book', context ?? { page_id: '/contact' });
   return (
     <>
       <script
@@ -25,79 +34,62 @@ export default function Page() {
         }}
       />
       <main className="min-h-screen pt-32 px-6 md:px-12 max-w-7xl mx-auto pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
-          <div>
-            <Heading level="h1" className="!text-5xl md:!text-7xl mb-8">
-              Let’s build your next <span className="text-[var(--accent)]">growth program</span>.
-            </Heading>
-            <p className="text-body text-[var(--text-muted)] mb-12">
-              Tell us about your buyers, your current program and the commercial problem you want to solve. We will review the fit and agree a useful next step.
-            </p>
+        {/* One form, one link to the calendar. Operator, 2026-10-07: "make just
+            one form or a booking call widget, that's it". The calendar lives on
+            /book only; this page no longer has a #book anchor. */}
+        <div className="max-w-3xl">
+          <Heading level="h1" className="mb-6">
+            Send us an enquiry
+          </Heading>
+          <p className="text-body text-[var(--text-muted)] mb-4">
+            Tell us what you sell, who buys it, and what you want from AI search, SEO or PPC. A person on our team reads every enquiry and replies by email.
+          </p>
+          <p className="text-body">
+            <Link href={bookHref} className="underline underline-offset-4 hover:text-[var(--accent-deep)]">Prefer to talk? Book a call</Link>
+          </p>
 
-            <div className="space-y-8 mb-12">
-              <div>
-                <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">New Business Inquiries</h3>
-                <p className="text-body text-[var(--text-muted)] mb-2">Ready to start your project? Send us a message.</p>
-                <a href="mailto:hello@qognitionagency.com" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors text-lg">
-                  hello@qognitionagency.com
-                </a>
-              </div>
-              <div>
-                <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">WhatsApp</h3>
-                <p className="text-body text-[var(--text-muted)] mb-2">Start a conversation with our team</p>
-                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors text-lg">
-                  {WHATSAPP_DISPLAY}
-                </a>
-              </div>
-              <div>
-                <h3 className="text-h3 text-[var(--text)] mb-2 font-semibold">General Inquiries</h3>
-                <p className="text-body text-[var(--text-muted)] mb-2">Questions about our services? We&apos;re happy to help.</p>
-                <a href="mailto:hello@qognitionagency.com" className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors text-lg">
-                  hello@qognitionagency.com
-                </a>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <Link href="/growth/markets" className="p-6 rounded-xl border border-[var(--border)] hover:border-[var(--accent)]/40 transition-all">
-                <h4 className="text-h4 text-[var(--text)] mb-2 font-semibold">Target markets</h4>
-                <p className="text-body text-[var(--text-muted)]">Programs scoped around your target countries, regions and buyer languages</p>
-                <span className="text-[var(--accent)] text-sm mt-2 inline-block">View all locations &rarr;</span>
-              </Link>
-              <Link href="/growth/industries" className="p-6 rounded-xl border border-[var(--border)] hover:border-[var(--accent)]/40 transition-all">
-                <h4 className="text-h4 text-[var(--text)] mb-2 font-semibold">Industries We Serve</h4>
-                <p className="text-body text-[var(--text-muted)]">Software, industrial businesses, specialist services and other complex B2B sectors</p>
-                <span className="text-[var(--accent)] text-sm mt-2 inline-block">View industries &rarr;</span>
-              </Link>
-            </div>
-
-            <div className="p-8 rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)]">
-              <Heading level="h3" className="mb-4">Skip the email?</Heading>
-              <p className="text-body text-[var(--text-muted)] mb-6">
-                Book a strategy call directly. Pick a time that works for you — no back-and-forth.
-              </p>
-              <a
-                href={BOOKING_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent)] text-white font-semibold transition-opacity hover:opacity-90"
-              >
-                Book a Strategy Call &rarr;
-              </a>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8 md:p-12">
-            <Heading level="h2" className="mb-8">Send a Message</Heading>
+          <section id="enquiry" aria-labelledby="contact-enquiry-heading" className="scroll-mt-28 mt-10 border border-[var(--border-strong)] bg-[var(--card-bg)] p-6 md:p-10">
+            <Heading level="h2" id="contact-enquiry-heading" className="mb-8">Your enquiry</Heading>
             <LeadForm
               spoke="marketing"
               intent="contact"
               sourcePage="/contact"
-              ctaLabel="Send Inquiry"
+              ctaLabel="Send enquiry"
+              qualifyingQuestion="What do you want to change, and who are the buyers you want to reach?"
+              context={context}
             />
-          </div>
+          </section>
+
+          <section aria-labelledby="contact-direct-heading" className="mt-10">
+            <h2 id="contact-direct-heading" className="text-h4 font-semibold text-[var(--text)] mb-4">Other ways to reach us</h2>
+            <dl className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-4">
+              <div className="min-w-0">
+                <dt className="text-meta font-mono uppercase tracking-wider text-[var(--text-muted)] mb-1">Email</dt>
+                <dd className="text-body m-0">
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="break-words underline underline-offset-4 hover:text-[var(--accent-deep)]">
+                    {CONTACT_EMAIL}
+                  </a>
+                </dd>
+              </div>
+              <div className="min-w-0">
+                <dt className="text-meta font-mono uppercase tracking-wider text-[var(--text-muted)] mb-1">Phone</dt>
+                <dd className="text-body m-0">
+                  <ContactChannelLink channel="phone" location="contact_page" aria-label={`Call ${PHONE_DISPLAY}`} className="underline underline-offset-4 hover:text-[var(--accent-deep)]">
+                    {PHONE_DISPLAY}
+                  </ContactChannelLink>
+                </dd>
+              </div>
+              <div className="min-w-0">
+                <dt className="text-meta font-mono uppercase tracking-wider text-[var(--text-muted)] mb-1">WhatsApp</dt>
+                <dd className="text-body m-0">
+                  <ContactChannelLink channel="whatsapp" location="contact_page" className="underline underline-offset-4 hover:text-[var(--accent-deep)]">
+                    Open WhatsApp <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
+                  </ContactChannelLink>
+                </dd>
+              </div>
+            </dl>
+          </section>
         </div>
-        <AIPlatforms compact />
       </main>
     </>
   );

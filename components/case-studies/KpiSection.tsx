@@ -28,11 +28,10 @@ export default function KpiSection({ study }: { study: ResolvedCaseStudy }) {
       <div className="space-y-6">
         <div>
           <p className="text-meta font-semibold uppercase tracking-wide text-[var(--accent)]">
-            Targets this programme was set and measured against
+            Targets, not yet results
           </p>
           <Text className="mt-2 max-w-2xl">
-            These are not reported results. {client}&apos;s own reporting has not yet been reconciled
-            against these rows — see{' '}
+            Targets were set at the start of the engagement. Results are published as {client}&apos;s reporting confirms them. Read{' '}
             <Link
               href="/case-studies/methodology"
               className="text-[var(--accent)] underline underline-offset-2"
@@ -57,7 +56,7 @@ export default function KpiSection({ study }: { study: ResolvedCaseStudy }) {
                   Target
                 </th>
                 <th scope="col" className="px-4 py-3 text-meta font-semibold uppercase tracking-wide text-[var(--ink)]">
-                  Change
+                  Target change
                 </th>
                 <th scope="col" className="px-4 py-3 text-meta font-semibold uppercase tracking-wide text-[var(--ink)]">
                   Scope
@@ -84,7 +83,7 @@ export default function KpiSection({ study }: { study: ResolvedCaseStudy }) {
           </table>
         </div>
 
-        <BenchmarkTable benchmarks={benchmarks} heading="Where these targets come from" />
+        <BenchmarkTable benchmarks={benchmarks} heading="Third-party benchmarks for context" />
       </div>
     );
   }

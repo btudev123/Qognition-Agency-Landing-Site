@@ -22,96 +22,134 @@ export const absoluteUrl = (path = '/') => `${SITE_URL}${path === '/' ? '' : pat
  * Anything not listed here keeps the generated title.
  */
 export const SEO_OVERRIDES: Record<string, { title: string; description: string }> = {
+  /* Priority pages, revised 2026-10-06 by Nadia (search) against the operator's
+   * keyword sheet. Each title keeps the operator's target keyword. Claims the
+   * sheet proposed that have no source in data/case-studies or CLAUDE.md §4
+   * (traffic and CPA percentages, PageSpeed scores, named clients, "best",
+   * "within 48 hours") are NOT here; they are listed as operator decisions in
+   * docs/strategy/2026-10/02-search-sprint.md §3.4. Rollback: git checkout this block. */
   '/': {
-    title: 'AI-native B2B Growth Agency | AI Search, Demand & ABM | Qognition',
-    description: 'Get found. Get shortlisted. Build pipeline. Qognition connects AI search, demand generation, ABM and revenue systems for B2B businesses.'
+    title: 'AI-Native B2B Growth Agency: AI SEO & GEO | Qognition Agency',
+    description:
+      'Qognition Agency is an AI-native growth agency for B2B companies, including SaaS. AI SEO, GEO, SEO and PPC tied to qualified enquiries. Book a call.'
   },
   '/services': {
-    title: 'Digital Marketing Services: SEO, PPC, GEO & Content | Qognition',
+    // No "B2B" before "marketing" in this title: "b2b marketing agency" is one of
+    // the five white-label strings no page targets (CLAUDE.md, 2026-09-29).
+    title: 'Digital Marketing Services: AI SEO, GEO & PPC | Qognition',
     description:
-      "Connect AI search, demand generation, account-based marketing and revenue operations around your B2B buyers. Discuss a tailored growth plan."
+      'Digital marketing services for B2B companies: AI SEO, GEO, SEO and PPC, with content, web and CRO that support them. Scoped to your buyers. Book a call.'
   },
   '/services/seo': {
-    title: 'SEO Services for Enterprise Growth | Qognition Agency',
+    title: 'Enterprise SEO Agency: B2B SEO Services | Qognition',
     description:
-      'Technical SEO, commercial content and authority development for complex B2B buying journeys. Discuss a search program with Qognition.'
+      'SEO services for B2B and enterprise companies: technical SEO, commercial content and authority work, measured against qualified enquiries. Book a call.'
   },
   '/services/ai-seo': {
-    title: 'GEO & AEO Services: Get Cited by ChatGPT & AI Overviews | Qognition',
+    title: 'GEO Services & AI Search Optimization for B2B | Qognition',
     description:
-      "Improve discoverability across Google and AI search through useful content, technical foundations and measured commercial-prompt tracking."
+      'GEO and AI search optimization for B2B: entity work, answer-ready content and dated prompt tracking across ChatGPT, Perplexity, Gemini and AI Overviews.'
   },
   '/services/ppc': {
-    title: 'PPC & Paid Media Management Services | Qognition Agency',
+    title: 'B2B PPC Agency & Paid Media Management | Qognition',
     description:
-      "Build relevant paid campaigns, landing pages and conversion measurement around your priority buyers. Explore paid demand generation with Qognition."
+      'PPC and paid media management for B2B: search and paid social campaigns, landing pages and conversion tracking, judged on qualified enquiries. Book a call.'
   },
   '/services/web-development': {
-    title: 'Web Design & Development Agency | Qognition',
+    title: 'B2B Web Design & Development Agency | Qognition',
     description:
-      "Build accessible B2B websites with clear commercial journeys, search foundations and conversion measurement. Discuss your website with Qognition."
+      'Web design and development for B2B companies: accessible, fast sites with clear buyer journeys, search foundations and conversion tracking. Book a call.'
   },
   '/services/content': {
-    title: 'Content Marketing Services That Drive Organic Growth | Qognition',
+    title: 'B2B Content Marketing Services: SEO & AI Search | Qognition',
     description:
-      "Turn specialist knowledge into commercial pages, useful guides and buyer evidence. Explore B2B content strategy and production with Qognition."
+      'Content marketing services for B2B: commercial pages, expert guides and buyer evidence written to rank in Google and be quoted in AI answers. Book a call.'
   },
   '/services/branding-creative': {
-    title: 'Branding & Creative Agency | Identity & Design | Qognition',
+    title: 'B2B Branding & Creative Agency | Brand Identity | Qognition',
     description:
-      "Brand naming, logo design, visual identity and messaging from Qognition's creative team. Build a brand that looks as sharp as it performs. Book a call."
+      'Branding and creative for B2B companies: naming, visual identity, messaging and sales assets that keep your claims consistent everywhere. Book a call.'
   },
   '/services/cro-analytics': {
-    title: 'CRO & Analytics Agency | Conversion Rate Optimization | Qognition',
+    title: 'Conversion Rate Optimization (CRO) & Analytics | Qognition',
     description:
-      "Find conversion friction and connect website measurement with sales outcomes. Explore landing page optimization, analytics and CRO with Qognition."
+      'Conversion rate optimization and analytics for B2B: find form and page friction, track enquiries and bookings, and tie them to sales outcomes. Book a call.'
   },
   '/industries': {
-    title: 'Industries We Serve: Law, Finance, SaaS & More | Qognition',
+    title: 'B2B Industries We Serve: AI SEO, SEO & PPC | Qognition',
     description:
-      'Qognition delivers industry-specific SEO, GEO and growth marketing for law, finance, consulting, real estate and manufacturing. Explore our sectors.'
+      'AI SEO, GEO, SEO and PPC for B2B firms. Find your sector, from SaaS and IT services to manufacturing, testing labs and professional services.'
   },
   '/case-studies': {
-    title: 'Case Studies: Real Growth Results | Qognition Agency',
+    title: 'Case Studies: Client Programmes | Qognition Agency',
     description:
-      'Explore published work and documented research. Results, scope and evidence are shown only where they can be substantiated.'
+      'Client programmes across HVAC, dental and insurance. Targets are set at the start of each engagement and stay targets until client reporting confirms them.'
   },
+  // /free-seo-audit 308s here (next.config.mjs). One offer, one URL; the title
+  // carries both the operator's "free SEO audit" intent and the AI half.
   '/free-ai-audit': {
-    title: 'AI Search Visibility Report | Qognition',
+    title: 'Free AI Search & SEO Visibility Audit | Qognition',
     description:
-      'A human-reviewed report on how visible and citable your brand is across AI search, delivered within 48 hours.'
+      'Request a free, human-reviewed audit of how your firm appears in Google and AI answers. We confirm scope and timing after we review your request.'
   },
   '/locations/new-york': {
-    title: 'Digital Marketing Agency New York | SEO, PPC, GEO | Qognition',
+    title: 'Digital Marketing Agency New York: SEO, PPC, GEO | Qognition',
     description:
-      'Qognition helps B2B businesses target New York buyers through SEO, AI search, content, paid demand and connected revenue systems.'
+      'Qognition helps B2B companies win New York buyers with AI SEO, GEO, SEO and PPC tied to qualified enquiries. Remote delivery. Book a call or enquire.'
   },
   '/locations/london': {
-    title: 'Digital Marketing Agency London | SEO & AI Search | Qognition',
+    title: 'Digital Marketing Agency London: SEO & AI Search | Qognition',
     description:
-      'Qognition helps London businesses grow with SEO, GEO/AEO, PPC and content marketing built around local buyer demand. Get a free audit today.'
+      'Qognition helps B2B companies win London buyers with AI SEO, GEO, SEO and PPC tied to qualified enquiries. Remote delivery. Book a call or send an enquiry.'
   },
   '/locations/dubai': {
     title: 'Digital Marketing Agency Dubai | SEO, GEO & PPC | Qognition',
     description:
-      'Qognition delivers SEO, AI search optimization and performance marketing for Dubai brands targeting MENA growth. Book a free strategy call now.'
+      'Qognition helps B2B companies selling into Dubai and the UAE with AI SEO, GEO, SEO and PPC. Remote delivery. Book a call or send an enquiry.'
   },
   '/locations/perth': {
-    title: 'Digital Marketing Agency in Perth | SEO, PPC & GEO | Qognition',
+    title: 'Digital Marketing Agency Perth: SEO, PPC & GEO | Qognition',
     description:
-      'Explore a B2B growth program for buyers in Perth, connecting search visibility, specialist content, paid demand and revenue systems.'
+      'Qognition helps B2B companies win Perth buyers with AI SEO, GEO, SEO and PPC tied to qualified enquiries. Remote delivery. Book a call or send an enquiry.'
   },
   '/locations/perth/seo': {
-    title: 'Perth SEO agency | Expert Enterprise & Local SEO Services in Perth',
+    title: 'Perth SEO Agency for B2B: Enterprise & Local SEO | Qognition',
     description:
-      "Help buyers in Perth find and evaluate your business through technical SEO, useful commercial content and measurable conversion paths."
+      'SEO for Perth B2B companies: technical SEO, local SEO, commercial content and authority work, measured against qualified enquiries. Remote delivery.'
   },
   '/locations/perth/ai-seo': {
-    title: 'Qognition: Perth AI SEO & GEO Agency',
+    title: 'AI SEO Perth: GEO & AI Search Agency for B2B | Qognition',
     description:
-      'Get found on ChatGPT, Gemini, Perplexity & Google AI Overviews. Qognition delivers AI SEO, generative engine optimisation & AI visibility for Perth businesses. Book a free audit.'
+      'AI SEO and GEO for Perth B2B companies: how you appear in ChatGPT, Gemini, Perplexity and Google AI Overviews, tracked by prompt and date. Book a call.'
   }
 };
+
+/**
+ * Hand-written H1s for priority pages whose template H1 dropped the target
+ * keyword (the 2026-10-03 service renames, e.g. "B2B Messaging & Creative" on
+ * /services/branding-creative). Keyed by canonical path, consumed only by the
+ * service and location templates through `h1For`. Delete an entry to fall back
+ * to the template H1; nothing else reads this map.
+ */
+export const H1_OVERRIDES: Record<string, string> = {
+  '/services/seo': 'Enterprise and B2B SEO Services',
+  // Carries both the operator's "GEO services" and paid ad group 1A's "AI SEO"
+  // promise (docs/strategy/2026-10/03-paid-and-cro.md §3.4).
+  '/services/ai-seo': 'AI SEO and GEO Services for B2B',
+  '/services/ppc': 'B2B PPC and Paid Media Management',
+  '/services/web-development': 'B2B Web Design and Development',
+  '/services/content': 'B2B Content Marketing Services',
+  '/services/branding-creative': 'B2B Branding and Creative Services',
+  '/services/cro-analytics': 'Conversion Rate Optimization and Analytics',
+  '/locations/new-york': 'Digital marketing agency for B2B companies in New York',
+  '/locations/london': 'Digital marketing agency for B2B companies in London',
+  '/locations/dubai': 'Digital marketing agency for B2B companies in Dubai',
+  '/locations/perth': 'Digital marketing agency for B2B companies in Perth',
+  '/locations/perth/seo': 'SEO agency for Perth B2B companies',
+  '/locations/perth/ai-seo': 'AI SEO and GEO for Perth B2B companies'
+};
+
+export const h1For = (path: string, fallback: string) => H1_OVERRIDES[path] ?? fallback;
 
 export const metadataFor = ({
   title,

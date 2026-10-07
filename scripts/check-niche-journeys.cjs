@@ -1,0 +1,42 @@
+require('./lib/load-typescript.cjs');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const crypto=require('node:crypto');
+const {SUBNICHE_JOURNEYS,journeyCoverage}=require('../lib/nicheJourneys.ts');
+const {findNicheCandidate,previewCandidate}=require('../lib/nicheCandidates.ts');
+const {isPreviewDeployment,liveLeadWritesAllowed}=require('../lib/deploymentMode.ts');
+const {readFunnelContext,appendFunnelContext}=require('../lib/funnelContext.ts');
+const {getFunnelStage,getFunnelCTA}=require('../lib/funnel.ts');
+assert.equal(SUBNICHE_JOURNEYS.length,8823);
+assert.equal(new Set(SUBNICHE_JOURNEYS.map(j=>j.id)).size,8823);
+assert.equal(new Set(SUBNICHE_JOURNEYS.map(j=>j.path)).size,8823);
+for(const j of SUBNICHE_JOURNEYS){
+ const c=findNicheCandidate(j.path.split('/').slice(2));assert.equal(c?.entity.id,j.id);
+ assert.equal(c?.sub?.id,j.subindustryId);assert.equal(c?.niche?.id,j.nicheId);
+ for(const stage of ['tofu','mofu','bofu'])assert.equal(j[stage].stage,stage);
+ for(const stage of ['tofu','mofu']){const u=new URL(j[stage].href,'https://example.test');assert.ok(u.pathname.endsWith(stage==='tofu'?'/learn':'/evaluate'));assert.equal(u.searchParams.get('subniche_id'),j.id);}
+ assert.ok(j.evidence.length);assert.ok(j.problem&&j.commercialOutcome&&j.qualificationQuestion);
+ assert.equal(new URL(j.contactHref,'https://example.test').hash,'#enquiry');
+ assert.equal(new URL(j.bookHref,'https://example.test').pathname,'/book');
+ assert.equal(j.contentComplete,false,'Draft catalogue must not claim editorial completion.');
+ assert.equal(j.published,false,'Shared draft resources prevent claiming complete published journeys.');
+}
+assert.equal(findNicheCandidate(['not-a-sector']),undefined);
+assert.equal(isPreviewDeployment({VERCEL_ENV:'production',QOGNITION_PREVIEW_MODE:'1'}),false);
+assert.equal(isPreviewDeployment({VERCEL_ENV:'preview'}),true);
+assert.equal(liveLeadWritesAllowed({VERCEL_ENV:'preview'}),false);
+assert.equal(liveLeadWritesAllowed({VERCEL_ENV:'production',QOGNITION_LEAD_MODE:'validate'}),false);
+const previous={v:process.env.VERCEL_ENV,p:process.env.QOGNITION_PREVIEW_MODE};
+process.env.VERCEL_ENV='production';process.env.QOGNITION_PREVIEW_MODE='1';
+assert.equal(previewCandidate(SUBNICHE_JOURNEYS[0].path.split('/').slice(2)),undefined);
+for(const [key,value] of [['VERCEL_ENV',previous.v],['QOGNITION_PREVIEW_MODE',previous.p]])value===undefined?delete process.env[key]:process.env[key]=value;
+assert.deepEqual(readFunnelContext(new URLSearchParams('subniche_id=01.01.01.01&email=secret@example.test&stage=sql')),{subniche_id:'01.01.01.01'});
+assert.equal(appendFunnelContext('//evil.example',{stage:'bofu'}),'//evil.example');
+assert.equal(getFunnelStage('/industries/saas-and-software'),'bofu');
+assert.equal(getFunnelStage('/resources/b2b-search/saas-and-software/horizontal-saas/evaluate'),'mofu');
+assert.equal(getFunnelStage('/services/seo','tofu'),'tofu');
+assert.equal(getFunnelCTA('bofu').primary.label,'Book a call');
+assert.equal(getFunnelCTA('bofu').secondary.href,'/contact#enquiry');
+const baseline=JSON.parse(fs.readFileSync('docs/repositioning/preserved-assets-baseline.json','utf8'));
+for(const [path,hash]of Object.entries(baseline))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path)).digest('hex'),hash,`${path} changed despite preservation requirement`);
+console.log(JSON.stringify({pass:true,...journeyCoverage(),preservedAssets:Object.keys(baseline).length},null,2));

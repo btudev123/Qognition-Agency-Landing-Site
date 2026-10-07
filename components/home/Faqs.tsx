@@ -3,45 +3,38 @@ import MaskReveal from '../shared/MaskReveal';
 import { faqSchema } from '../../lib/schema';
 import { Eyebrow, Shell } from './primitives';
 
-/* Section 9 — FAQs. docs/copy/home.md §9.
- *
- * Native <details>/<summary>. No JS, no state, no accordion library. It is
- * keyboard-operable, screen-reader-announced and findable by browser in-page
- * search when closed in every current engine, none of which is true of a
- * div-and-onClick accordion.
- *
- * The answers are exported so lib/schema.ts can emit FAQPage JSON-LD from the
- * same strings the page renders. Two copies of an answer is how a page ends up
- * telling a crawler something different from a reader.
- *
- * The first answer is the most important sentence on the site. "No, and no one
- * can" is the position (CLAUDE.md §4) and it is also the sales argument.
- */
 
+/* Feeds the page and faqSchema() alike: every edit here changes the JSON-LD.
+   The minimum-term question ships only when the operator supplies the term
+   (docs/copy/2026-10/home.md §11, entry 8). */
 export const HOME_FAQS = [
   {
-    q: 'Can you guarantee we appear in ChatGPT?',
-    a: 'No, and no one can. We do not own or control these systems, their retrieval changes without notice, and the same prompt can return different answers on different days. What we commit to is the work, a measurement instrument you can inspect, and a dated record of what changed.',
+    q: 'What is the difference between AI SEO and GEO?',
+    a: 'AI SEO is the work on Google AI Overviews and AI Mode. GEO is the work on assistants: ChatGPT, Perplexity, Gemini, Claude and Copilot. SEO covers Google search results, and local SEO covers Maps, the local pack, Business Profile, reviews and listings. They share foundations, but we measure each one separately.',
   },
   {
-    q: 'How is this different from the SEO we already pay for?',
-    a: 'Classic SEO targets Google’s blue links. That work still matters, and it is inside our retainer, because assistants retrieve from sources that rank. What is new is the entity work and the off-site evidence layer that decides whether a model names you when it assembles an answer. Most SEO retainers do none of that, and most do not measure any AI surface at all.',
+    q: 'Can you guarantee AI recommendations or rankings?',
+    a: 'No. Google and the AI platforms control their own answers. We commit to the agreed work and a dated record of what we observed: the prompt, the platform, the date and the sources cited. A single citation is not a permanent position, and it is not revenue.',
   },
   {
-    q: 'Can you show me results from a firm like mine?',
-    a: 'Usually yes, with one limit we state up front. In the B2B areas closest to most of our buyers, managed IT and cloud, cybersecurity, and B2B SaaS in part, every engagement was delivered white-label under signed NDAs. We can walk you through the scope, the method and what we changed, but we cannot name the client or arrange a reference call on that work. Where we have not worked in your exact vertical we say so, rather than stretching an adjacent case to fit, because the standards vocabulary and the buying committee change between verticals and a case that does not transfer is worse than no case. Either way you get a snapshot of your own situation, with your prompts and your competitors, before you pay anything.',
+    q: 'How do you measure something that changes every time you ask?',
+    a: 'We fix the prompt set and the platforms before the first run, then re-run the same set on the agreed schedule. Each answer is recorded with its date and cited sources, so changes can be compared and checked. AI answers, rankings, referral visits and qualified enquiries are reported in separate columns.',
   },
   {
-    q: 'How long before anything moves?',
-    a: 'The technical and entity work shows up in weeks. The off-site evidence layer, which is the part that drives assistant citations, is slower, and we ask for three months before you judge it. Anyone quoting you a date for an AI citation is making it up.',
+    q: 'Have you worked with firms like mine?',
+    a: 'Ask us on the call and we will answer for your sector specifically. Where we have not worked in your category, we say so. Either way, your free AI visibility audit tests your own buyers\' questions against your own competitors before you commit to anything.',
   },
   {
-    q: 'Do we have to write the content?',
-    a: 'No, we write it. We do need access to your people for roughly an hour a month, because the material that gets retrieved and cited is specific, and specific means it came from someone who does the work. Generic content written without you will not be retrieved.',
+    q: 'What does it cost?',
+    a: 'We don\'t publish prices, because the fee depends on scope: how many buyer questions we track, which platforms and markets, and how many pages and assets we produce. You get a written scope and fee after the call. PPC management is priced separately, as a share of ad spend with a monthly minimum.',
   },
   {
-    q: 'What do you need from us to start?',
-    a: 'Access to Google Search Console, Google Analytics, your Google Business Profile, and the ability to publish changes to your website. Plus one person who can make decisions and one hour a month from your subject-matter people.',
+    q: 'Will this clash with our team or current agency?',
+    a: 'It shouldn\'t. We can work as the specialist layer beside your marketing team, your developers or another agency. The proposal names who owns each task, who approves content and who follows up on enquiries.',
+  },
+  {
+    q: 'Can you run PPC too?',
+    a: 'Yes. We run Google Ads and LinkedIn campaigns for B2B firms, built around the same buyers and pages as the search work. A firm that wants only PPC is a full client. Ad spend is agreed with you and kept separate from our fee.',
   },
 ];
 
@@ -59,7 +52,7 @@ export default function Faqs() {
           <ScrollReveal className="lg:col-span-4">
             <Eyebrow>Before we talk</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 max-w-[14ch] font-semibold">
-              <MaskReveal>Six honest answers.</MaskReveal>
+              <MaskReveal>Before you book a call.</MaskReveal>
             </h2>
           </ScrollReveal>
 

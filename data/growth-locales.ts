@@ -146,3 +146,77 @@ export const LOCALE_EDITORIAL_RECORD = {
   publicationScope: 'Homepage and four complete commercial service pages only',
   nativeCommercialReview: 'Recommended before locally targeted paid promotion',
 } as const;
+
+// Approved positioning update; localized wording requires language review before release.
+const searchPositioning: Record<GrowthLocale, readonly [string,string,string,string]> = {
+  "en": [
+    "AI SEO & GEO for B2B",
+    "Get found. Get shortlisted. Build pipeline.",
+    "Help buyers discover and evaluate your business across Google and AI search. Connect technical SEO, expert content and authority work to qualified enquiries.",
+    "AI SEO and GEO for B2B companies, including SaaS. Book a call or send an enquiry to discuss your search priorities."
+  ],
+  "de": [
+    "AI SEO & GEO für B2B",
+    "Gefunden werden. In die engere Auswahl kommen. Qualifizierte Anfragen gewinnen.",
+    "Helfen Sie Ihren Käufern, Ihr Unternehmen über Google und KI-Suche zu finden und zu beurteilen. Verbinden Sie technisches SEO, Fachinhalte und glaubwürdige Quellen mit qualifizierten Anfragen.",
+    "AI SEO und GEO für B2B-Unternehmen einschließlich SaaS. Buchen Sie ein Gespräch oder senden Sie eine Anfrage."
+  ],
+  "fr": [
+    "AI SEO et GEO pour le B2B",
+    "Soyez trouvé. Entrez dans la sélection. Développez les opportunités.",
+    "Aidez vos acheteurs à découvrir et à évaluer votre entreprise sur Google et dans la recherche par IA. Reliez SEO technique, contenus experts et sources crédibles aux demandes qualifiées.",
+    "AI SEO et GEO pour les entreprises B2B, y compris le SaaS. Réservez un appel ou envoyez une demande."
+  ],
+  "nl": [
+    "AI SEO en GEO voor B2B",
+    "Word gevonden. Kom op de shortlist. Ontwikkel verkoopkansen.",
+    "Help kopers uw bedrijf te vinden en te beoordelen via Google en AI-zoekopdrachten. Verbind technische SEO, deskundige inhoud en betrouwbare bronnen met relevante aanvragen.",
+    "AI SEO en GEO voor B2B-bedrijven, inclusief SaaS. Plan een gesprek of stuur een aanvraag."
+  ],
+  "sv": [
+    "AI SEO och GEO för B2B",
+    "Bli hittad. Bli ett alternativ. Skapa affärsmöjligheter.",
+    "Hjälp köpare att upptäcka och utvärdera ert företag via Google och AI-sökning. Koppla teknisk SEO, expertinnehåll och trovärdiga källor till kvalificerade förfrågningar.",
+    "AI SEO och GEO för B2B-företag, inklusive SaaS. Boka ett samtal eller skicka en förfrågan."
+  ],
+  "da": [
+    "AI SEO og GEO til B2B",
+    "Bliv fundet. Kom i betragtning. Skab salgsmuligheder.",
+    "Hjælp købere med at finde og vurdere din virksomhed via Google og AI-søgning. Forbind teknisk SEO, ekspertindhold og troværdige kilder med kvalificerede henvendelser.",
+    "AI SEO og GEO til B2B-virksomheder, herunder SaaS. Book en samtale eller send en forespørgsel."
+  ],
+  "nb": [
+    "AI SEO og GEO for B2B",
+    "Bli funnet. Bli vurdert. Skap salgsmuligheter.",
+    "Hjelp kjøpere med å finne og vurdere bedriften din gjennom Google og AI-søk. Knytt teknisk SEO, faginnhold og troverdige kilder til kvalifiserte henvendelser.",
+    "AI SEO og GEO for B2B-bedrifter, inkludert SaaS. Bestill en samtale eller send en forespørsel."
+  ],
+  "fi": [
+    "AI SEO ja GEO B2B-yrityksille",
+    "Tule löydetyksi. Pääse vertailuun. Luo myyntimahdollisuuksia.",
+    "Auta ostajia löytämään ja arvioimaan yritystäsi Googlessa ja tekoälyhaussa. Yhdistä tekninen hakukoneoptimointi, asiantuntijasisältö ja luotettavat lähteet laadukkaisiin yhteydenottoihin.",
+    "AI SEO ja GEO B2B-yrityksille, myös SaaS-yrityksille. Varaa keskustelu tai lähetä tiedustelu."
+  ],
+  "ar": [
+    "AI SEO وGEO لشركات B2B",
+    "ساعد المشترين على العثور عليك وتقييم خبرتك والتواصل معك.",
+    "ساعد المشترين على اكتشاف شركتك وتقييمها عبر Google والبحث بالذكاء الاصطناعي. اربط تحسين البحث التقني ومحتوى الخبراء والمصادر الموثوقة باستفسارات مؤهلة.",
+    "خدمات AI SEO وGEO لشركات B2B، بما فيها شركات SaaS. احجز مكالمة أو أرسل استفسارًا لمناقشة أولوياتك."
+  ],
+  "it": [
+    "AI SEO e GEO per il B2B",
+    "Fatti trovare. Entra nella selezione. Crea opportunità commerciali.",
+    "Aiuta gli acquirenti a scoprire e valutare la tua azienda su Google e nella ricerca con IA. Collega SEO tecnica, contenuti specialistici e fonti affidabili a richieste qualificate.",
+    "AI SEO e GEO per aziende B2B, incluso il SaaS. Prenota una chiamata o invia una richiesta."
+  ],
+  "zh-Hans": [
+    "面向 B2B 企业的 AI SEO 与 GEO",
+    "让买家找到你、评估你，并与你联系。",
+    "帮助买家通过 Google 和 AI 搜索发现并评估您的企业。将技术 SEO、专业内容和可信信息来源与有效的业务咨询连接起来。",
+    "为 B2B 企业（包括 SaaS 企业）提供 AI SEO 与 GEO 服务。预约通话或发送咨询，讨论您的搜索增长重点。"
+  ]
+};
+for (const locale of GROWTH_LOCALES) {
+ const [eyebrow,headline,intro,meta]=searchPositioning[locale];
+ Object.assign(GROWTH_DICTIONARIES[locale],{eyebrow,headline,intro,meta});
+}

@@ -1,4 +1,4 @@
-import { BOOKING_LINK } from '../../../../data/siteConfig';
+import { appendFunnelContext } from '../../../../lib/funnelContext';
 import Link from 'next/link';
 import { ArrowRight, BarChart3, CheckCircle, Layers } from 'lucide-react';
 import { Industry, Service } from '../../../../types';
@@ -16,7 +16,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
       <main className="lg:col-span-8">
-        <span className="text-[var(--accent)] font-semibold uppercase tracking-widest mb-4 block text-xs">Service + Industry</span>
+        <span className="text-[var(--accent)] font-semibold uppercase tracking-widest mb-4 block text-xs">Search and acquisition for your buyers</span>
         <Heading level="h1" className="mb-6">{service.title} for {industry.name}</Heading>
         <p className="text-body text-[var(--text-muted)] border-l-2 border-[var(--accent)] pl-6 mb-16">
           {service.shortDescription} For {industry.name}, we tailor strategy around buyer trust, compliance, search demand, and conversion paths.
@@ -24,7 +24,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
 
         <section className="mb-16">
           <Heading level="h2" className="mb-8 flex items-center gap-3">
-            <Layers className="text-[var(--accent)]" /> Industry-Specific Execution
+            <Layers className="text-[var(--accent)]" /> How the work is scoped
           </Heading>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {service.process.map((step, index) => (
@@ -38,7 +38,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
         </section>
 
         <section className="mb-16">
-          <Heading level="h2" className="mb-8">Pain Points We Solve</Heading>
+          <Heading level="h2" className="mb-8">Problems to investigate</Heading>
           <div className="space-y-4">
             {industry.painPoints.map((pain) => (
               <div key={pain} className="flex gap-4 p-5 border border-[var(--border)] bg-[var(--card-bg)] rounded-xl">
@@ -50,7 +50,7 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
         </section>
 
         <section>
-          <Heading level="h2" className="mb-8">Recommended Stack</Heading>
+          <Heading level="h2" className="mb-8">Tools considered for the scope</Heading>
           <div className="flex flex-wrap gap-3">
             {service.techStack.map((item) => (
               <span key={item} className="px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-full text-sm text-[var(--text-muted)]">
@@ -75,13 +75,12 @@ const ServiceIndustryView = ({ service, industry }: { service: Service; industry
             </Link>
           </div>
           <a
-            href={BOOKING_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={appendFunnelContext("/book", { page_id: `/services/${service.id}/industries/${industry.id}`, service_id: service.id, stage: "bofu" })}
             className="flex items-center justify-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-4 hover:brightness-110 transition-all text-sm"
           >
-            Book Strategy Call <ArrowRight size={16} />
+            Book a call <ArrowRight size={16} />
           </a>
+          <Link href={appendFunnelContext("/contact#enquiry", { page_id: `/services/${service.id}/industries/${industry.id}`, service_id: service.id, stage: "bofu" })} className="mt-4 block text-center text-[var(--accent)]">Send an enquiry</Link>
         </div>
       </aside>
     </div>

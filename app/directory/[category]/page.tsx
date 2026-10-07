@@ -76,6 +76,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
             </p>
           </div>
 
+          <p className="text-body text-[var(--text-muted)] mb-8">Compare capabilities against your workflow, implementation resources and data requirements. Confirm current details with the vendor before choosing a tool.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {products.map((product) => (
               <Link
@@ -98,7 +99,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
                   <div>
                     <h3 className="text-h3 text-[var(--text)] font-semibold">{product.name}</h3>
                     <div className="flex items-center gap-1 text-xs text-[var(--accent)]">
-                      <Star size={12} fill="currentColor" /> {product.rating}/5
+                      Explore the profile
                     </div>
                   </div>
                 </div>

@@ -48,11 +48,11 @@ const linesForPath = (path: string) => {
     return [
       `# ${caseStudy.headline}`,
       '',
-      `${caseStudy.client} — ${caseStudy.market} — ${nicheLabel(caseStudy.niche)}`,
+      `${caseStudy.client}, ${caseStudy.market}, ${nicheLabel(caseStudy.niche)}`,
       '',
       caseStudy.snapshot,
       '',
-      `## What we verified (audited ${caseStudy.auditedAt})`,
+      '## Programme focus',
       caseStudy.startingPosition,
       '',
       '## The problem',
@@ -68,7 +68,7 @@ const linesForPath = (path: string) => {
       ),
       '',
       '## Benchmarks cited',
-      ...caseStudy.benchmarks.map((b) => `- ${b.stat} — ${b.measures} (${b.source}, ${b.year}) ${b.url}`),
+      ...caseStudy.benchmarks.map((b) => `- ${b.stat}: ${b.measures} (${b.source}, ${b.year}) ${b.url}`),
       '',
       `Canonical: ${SITE_URL}/case-studies/${caseStudy.id}`
     ];
@@ -88,11 +88,11 @@ const linesForPath = (path: string) => {
     return [
       '# Case Studies',
       '',
-      `${CASE_STUDIES.length} engagements across HVAC, dental and insurance.`,
+      `${CASE_STUDIES.length} client programmes across HVAC, dental and insurance.`,
       '',
       ...CASE_STUDIES.map(
         (study) =>
-          `- [${study.headline}](${SITE_URL}/case-studies/${study.id}) — ${study.client}, ${study.market} (${nicheLabel(study.niche)})`
+          `- [${study.headline}](${SITE_URL}/case-studies/${study.id}): ${study.client}, ${study.market} (${nicheLabel(study.niche)})`
       ),
     ];
   }

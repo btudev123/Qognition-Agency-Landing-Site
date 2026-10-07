@@ -28,8 +28,9 @@ const {
 } = require('../lib/industryPublication.ts');
 const { routesForSitemap, sitemapIndexes } = require('../lib/sitemap.ts');
 const { GLOSSARY_TERMS } = require('../data/seoExpansion.ts');
-const { studiesForTopic, getCaseStudy } = require('../data/case-studies/index.ts');
+const { studiesForTopic, getCaseStudy, B2B_PAGE_NICHES } = require('../data/case-studies/index.ts');
 const { LOCATIONS } = require('../data/locations.ts');
+const { SERVICES, LOCATION_MATRIX_SERVICES } = require('../data/services.ts');
 const fs = require('node:fs');
 
 /* Raise these two numbers only in a commit that also publishes the pages. */
@@ -189,20 +190,40 @@ assert.ok(
  * The mapping is frozen rather than re-derived, for the reason given in
  * lib/industryPublication.ts: a rule derived from the data agrees with the data
  * by construction and gates nothing. Widening a TOPIC_HINTS pattern is the exact
- * edit that caused this, and it must not be possible to make it quietly. */
+ * edit that caused this, and it must not be possible to make it quietly.
+ *
+ * Operator decision 2026-10-07: insurance only on B2B pages. Reviewer: Owen.
+ * HVAC and dental (local consumer services, outside the §2 ICP) render on
+ * /case-studies and its detail pages only. Every hub below therefore resolves to
+ * an insurance study, and the assertions after this map prove that no B2B call
+ * site can return an HVAC or dental record for any input it is actually given. */
 const EXPECTED_INDUSTRY_PROOF = {
-  'law-legal': 'fox-service-company',
-  'accounting-cpa': 'fox-service-company',
+  'law-legal': 'alliance-insurance-group',
+  'accounting-cpa': 'alliance-insurance-group',
   'financial-services': 'alliance-insurance-group',
-  consulting: 'fox-service-company',
-  'real-estate': 'fox-service-company',
-  manufacturing: 'fox-service-company',
-  coaching: 'fox-service-company',
-  'industrial-trade': 'fox-service-company',
-  'care-homes': 'fox-service-company',
-  'elder-care': 'fox-service-company',
-  'waste-management': 'fox-service-company',
+  consulting: 'alliance-insurance-group',
+  'real-estate': 'alliance-insurance-group',
+  manufacturing: 'alliance-insurance-group',
+  coaching: 'alliance-insurance-group',
+  'industrial-trade': 'alliance-insurance-group',
+  'care-homes': 'alliance-insurance-group',
+  'elder-care': 'alliance-insurance-group',
+  'waste-management': 'alliance-insurance-group',
 };
+/* The niche set itself is frozen. Widening B2B_PAGE_NICHES is a reversal of the
+   operator decision above and must be made here, visibly, with a reviewer. */
+assert.deepEqual(
+  [...B2B_PAGE_NICHES], ['insurance'],
+  `B2B_PAGE_NICHES is ${JSON.stringify(B2B_PAGE_NICHES)}. Operator decision 2026-10-07: insurance ` +
+  `only on B2B pages. Changing it needs a new operator decision recorded in this file.`
+);
+for (const id of Object.values(EXPECTED_INDUSTRY_PROOF)) {
+  const study = id && getCaseStudy(id);
+  assert.ok(
+    !study || study.niche === 'insurance',
+    `EXPECTED_INDUSTRY_PROOF names "${id}" (${study && study.niche}). Insurance only on B2B pages.`
+  );
+}
 for (const industry of INDUSTRIES) {
   const [resolved] = studiesForTopic(`${industry.name} ${industry.id}`, 1, { fallback: 'spread' });
   const actual = resolved ? resolved.id : null;
@@ -333,6 +354,59 @@ assert.equal(
   `Location pages assert no vertical, so they opt into the 'spread' fallback and should never be\n` +
   `empty. An empty one means ~4 internal links to /case-studies/* were dropped from a live indexed\n` +
   `page, which is what happened on 2026-09-28 when the fallback was removed without measuring here.`
+);
+
+/* \u2500\u2500 Insurance only on B2B pages \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+ *
+ * Operator decision 2026-10-07: insurance only on B2B pages. Reviewer: Owen.
+ *
+ * Every B2B call site, fed every input it is actually given at build time, must
+ * return insurance records only. The limits match the call sites: hub 3,
+ * sub-industry 3, location 4, location x service 2. A sample would let one
+ * TOPIC_HINTS edit through on the inputs nobody sampled, so this is exhaustive. */
+const B2B_CALLS = [
+  ...INDUSTRIES.map((i) => [`/industries/${i.id}`, `${i.name} ${i.id}`, 3]),
+  ...INDUSTRIES.flatMap((i) =>
+    i.subIndustries.map((s) => [`/industries/${i.id}/${s.slug}`, `${i.name} ${s.name}`, 3])
+  ),
+  ...LOCATIONS.map((l) => [`/locations/${l.slug}`, l.name, 4]),
+  ...LOCATIONS.flatMap((l) =>
+    LOCATION_MATRIX_SERVICES.map((ms) => {
+      const service = SERVICES.find((s) => s.id === ms.id) || ms;
+      return [`/locations/${l.slug}/${ms.id}`, `${service.title} ${l.name}`, 2];
+    })
+  ),
+];
+let b2bCallsChecked = 0;
+for (const [route, topic, limit] of B2B_CALLS) {
+  for (const study of studiesForTopic(topic, limit, { fallback: 'spread' })) {
+    assert.equal(
+      study.niche, 'insurance',
+      `${route} would render "${study.id}" (${study.niche}). Operator decision 2026-10-07: insurance ` +
+      `only on B2B pages. HVAC and dental belong on /case-studies only.`
+    );
+  }
+  b2bCallsChecked += 1;
+}
+
+/* "Proof" claimed sector relevance in the location x service heading, which
+   was the \u00a711 defect in heading form. Read the source with comments stripped,
+   for the reason given above. */
+{
+  const view = locationView.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\s*\}/g, '');
+  const headings = view.match(/<Heading[^>]*>[\s\S]*?<\/Heading>/g) || [];
+  for (const h of headings) {
+    assert.ok(
+      !/\bProof\b/.test(h),
+      `ProgrammaticLocationView.tsx has a heading claiming proof:\n  ${h}\n` +
+      `The client-library block on a B2B page is not sector proof (CLAUDE.md \u00a711).`
+    );
+  }
+}
+
+console.log(
+  `\u2713 insurance only on B2B pages: ${b2bCallsChecked} hub, sub-industry, location and ` +
+  `location x service inputs checked, no HVAC or dental record returned.`
 );
 
 console.log(

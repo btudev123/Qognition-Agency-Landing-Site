@@ -1,0 +1,12 @@
+require('./lib/load-typescript.cjs');
+const fs=require('node:fs');
+const {SUBNICHE_JOURNEYS,journeyCoverage}=require('../lib/nicheJourneys.ts');
+const {sitemapIndexes,getSitemapEntries}=require('../lib/sitemap.ts');
+const dir='docs/repositioning';
+fs.mkdirSync(dir,{recursive:true});
+fs.writeFileSync(`${dir}/niche-funnel-coverage.json`,JSON.stringify({generatedAt:new Date().toISOString(),...journeyCoverage(),note:'Preview drafts are browsable, not substantively reviewed. Full journeys remain unpublished until all three assets pass editorial review.'},null,2)+'\n');
+const q=v=>'"'+String(v??'').replaceAll('"','""')+'"';
+const headings=['subniche_id','industry','subindustry','niche','subniche','tofu_url','mofu_url','bofu_url','contact_url','book_url','mapped','content_complete','preview_ready','candidate_browsable','published','evidence'];
+const rows=SUBNICHE_JOURNEYS.map(j=>[j.id,j.industry,j.subindustry,j.niche,j.name,j.tofu.href,j.mofu.href,j.bofu.href,j.contactHref,j.bookHref,true,j.contentComplete,j.previewReady,j.candidateBrowsable,j.published,j.evidence.join('; ')]);
+fs.writeFileSync(`${dir}/niche-funnel-coverage.csv`,[headings,...rows].map(r=>r.map(q).join(',')).join('\n')+'\n');
+console.log(`Coverage written for ${rows.length} sub-niche journeys.`);

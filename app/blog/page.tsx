@@ -1,4 +1,4 @@
-import { BOOKING_LINK } from '../../data/siteConfig';
+
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getBlogPosts } from '../../lib/sanityContent';
@@ -8,7 +8,7 @@ import Badge from '../../components/ui/Badge';
 
 export const metadata: Metadata = {
   title: 'Blog | Qognition',
-  description: 'Expert insights on AI marketing, SEO strategies, and digital transformation from Qognition. Stay ahead with actionable guides and thought leadership.',
+  description: 'B2B AI SEO and GEO guidance on search visibility, useful content, evidence and the path to qualified enquiries.',
   alternates: { canonical: '/blog' },
 };
 
@@ -27,9 +27,9 @@ export default async function Page() {
       <main className="min-h-screen pt-36 pb-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <header className="mb-16 text-center">
-            <Heading level="h1" className="mb-6">Our Blog</Heading>
+            <Heading level="h1" className="mb-6">B2B search insights</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
-              Expert insights on AI marketing, SEO strategies, and digital transformation to help your business thrive in 2026 and beyond.
+              Practical ideas for making your expertise discoverable and easier to evaluate. Explore AI SEO, GEO, content and measurement through the decisions your buyers make.
             </p>
           </header>
 
@@ -61,13 +61,12 @@ export default async function Page() {
 
           <div className="mt-16 text-center">
             <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/book"
               className="inline-flex rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 text-sm hover:brightness-110 transition-all"
             >
-              Book a Strategy Call
+              Book a call
             </a>
+            <Link href="/contact#enquiry" className="mt-4 block text-[var(--accent)]">Send an enquiry</Link>
           </div>
         </div>
       </main>

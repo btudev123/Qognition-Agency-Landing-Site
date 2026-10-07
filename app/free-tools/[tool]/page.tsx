@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { BOOKING_LINK } from '../../../data/siteConfig';
+
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CalculatorTool from '../../../components/CalculatorTool';
@@ -97,11 +97,11 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
               <Info title="Use Cases" items={page.useCases} />
             </div>
             <div>
-              <Heading level="h2" className="mb-4">Want the full model?</Heading>
+              <Heading level="h2" className="mb-4">Discuss your assumptions</Heading>
               <p className="text-body text-[var(--text-muted)] mb-6">
-                Send the estimate to Qognition and we will review the assumptions with you.
+                Tell us which assumptions you want to check and the commercial decision you are making. The calculator output is a planning aid, not an expected result.
               </p>
-              <LeadForm spoke="marketing" intent="audit" sourcePage={path} ctaLabel="Review My Estimate" />
+              <LeadForm spoke="marketing" intent="contact" sourcePage={path} ctaLabel="Send enquiry" />
             </div>
           </div>
 
@@ -133,7 +133,8 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
                     label: resource.title,
                     href: resource.href || `/${resource.slug}`,
                   })),
-                  { label: 'Book a Strategy Call', href: BOOKING_LINK },
+                  { label: 'Book a call', href: '/book' },
+                  { label: 'Send an enquiry', href: '/contact#enquiry' },
                 ].map((item) => (
                   <Link
                     key={item.href}

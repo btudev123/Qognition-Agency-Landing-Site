@@ -1,4 +1,5 @@
-import { BOOKING_LINK } from '../../../../data/siteConfig';
+import { previewCandidate, previewCandidateMetadata } from '../../../../lib/nicheCandidates';
+import NicheCandidatePage from '../../../../components/b2b/NicheCandidatePage';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -18,7 +19,8 @@ import { getSubIndustryMetadata, metadataFor } from '../../../../lib/seo';
 import { breadcrumbSchema, faqSchema } from '../../../../lib/schema';
 import Heading from '../../../../components/ui/Heading';
 
-export const dynamicParams = false;
+// Unknown routes still fail the resolver. Draft fallback is strictly preview-only.
+export const dynamicParams = true;
 
 /* Gated by lib/industryPublication.ts: an industry row that is not on the
    frozen allowlist generates no params, so its URL 404s rather than rendering a
@@ -80,6 +82,8 @@ export const generateMetadata = async ({
   }
 
   /* Level 2 of the ICP tree, the workhorse level. */
+  const candidateMetadata = previewCandidateMetadata([industry, subIndustry]);
+  if (candidateMetadata) return candidateMetadata;
   const icp = icpMetadata([industry, subIndustry]);
   if (icp) return icp;
 
@@ -91,6 +95,8 @@ export default async function Page({ params }: { params: Promise<{ industry: str
   const record = resolveSubIndustry(industrySlug, subIndustrySlug);
 
   if (!record) {
+    const candidate = previewCandidate([industrySlug, subIndustrySlug]);
+    if (candidate) return <NicheCandidatePage candidate={candidate} />;
     const icp = resolveIcp([industrySlug, subIndustrySlug]);
     if (!icp || icp.level !== 'sub-industry') notFound();
     const canonical = icp.canonicalPath ? resolveIcp(icp.canonicalPath) : undefined;
@@ -275,7 +281,8 @@ function LegacySubIndustryPage({
             <div className="sticky top-28 rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-8">
               {/* Guarded. The heading sat outside the map, so the 59 of 66
                   sub-pages with no matching study rendered a bare "Related
-                  Proof" over nothing. §4 says omit the section. */}
+                  Proof" over nothing. §4 says omit the section. Insurance studies
+                  only since 2026-10-07 (B2B_PAGE_NICHES in data/case-studies). */}
               {studiesForTopic(`${industry.name} ${subIndustry.name}`, 3, { fallback: 'spread' }).length > 0 && (
                 <Heading level="h2" className="mb-5">From our client library</Heading>
               )}
@@ -301,7 +308,7 @@ function LegacySubIndustryPage({
                 </Link>
               </div>
               <a
-                href={BOOKING_LINK}
+                href="/book"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-8 block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"

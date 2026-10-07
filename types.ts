@@ -24,7 +24,9 @@ export interface ExpertQuote {
 
 export interface DeepDiveSection {
     title: string;
-    content: string; // Markdown-like string or long text
+    content: string; // Plain text. Rendered as-is; markdown links do not render.
+    /** Optional in-body link, rendered as "See {label}." after the content. */
+    link?: { label: string; href: string };
 }
 
 export interface MarketData {
@@ -180,7 +182,7 @@ export interface Tool {
   fullDescription: string;
   pricing: 'Free' | 'Freemium' | 'Paid' | 'Enterprise' | 'Open Source';
   websiteUrl: string;
-  rating: number;
+  rating?: number;
   tags: string[];
   agencyVerdict: string;
   relatedServiceId?: string;

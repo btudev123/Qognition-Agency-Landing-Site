@@ -11,7 +11,7 @@ export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
   title: 'Global Markets | Qognition',
-  description: 'Country-specific SEO, paid media, AI search visibility, and lead generation pages for global market expansion.',
+  description: 'AI SEO and GEO planning for B2B companies entering or expanding in international markets.',
   alternates: { canonical: '/global' },
 };
 
@@ -36,9 +36,9 @@ export default function Page() {
         <Section spacing="lg">
           <div className="max-w-3xl">
             <Badge className="mb-4">Global Markets</Badge>
-            <Heading level="h1" className="mb-4">Country-Specific Digital Growth</Heading>
+            <Heading level="h1" className="mb-4">Reach B2B buyers in your next market</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl">
-              Qognition builds market-entry and market-expansion campaigns for companies entering new countries, expanding out of China, and localizing SEO, paid media, landing pages, and CRM tracking.
+              Plan search visibility around the market where your buyers operate. We discuss language, applications, competitor evidence and local requirements before agreeing content, technical SEO or supporting paid media.
             </p>
           </div>
         </Section>

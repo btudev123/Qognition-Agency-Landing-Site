@@ -38,7 +38,7 @@ export default function Page() {
             <Badge className="mb-4">Growth Stack</Badge>
             <Heading level="h1" className="mb-4">Tools Directory</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl">
-              Browse useful software and AI product profiles for SEO, PPC, content, social media, web development, and automation.
+              Explore tools that may support search research, content, measurement and acquisition. Start with the workflow you need to improve, then verify the current capabilities and terms with the vendor.
             </p>
           </div>
         </Section>

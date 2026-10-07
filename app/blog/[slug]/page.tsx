@@ -1,4 +1,4 @@
-import { BOOKING_LINK } from '../../../data/siteConfig';
+import { appendFunnelContext } from '../../../lib/funnelContext';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -123,16 +123,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               Ready to implement these strategies?
             </Heading>
             <p className="text-body mb-6 text-[var(--text-muted)]">
-              Let Qognition help you leverage AI marketing and SEO to grow your business.
+              Discuss how these ideas apply to your buyers, your website and the evidence your team can provide. We will help you identify a useful next step.
             </p>
             <a
-              href={BOOKING_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={appendFunnelContext("/book", { page_id: `/blog/${post.id}`, stage: "tofu" })}
               className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] text-[var(--accent-deep)] font-medium px-6 py-3 hover:brightness-110 transition-all text-sm"
             >
-              Get Started Today <ArrowRight size={16} />
+              Book a call <ArrowRight size={16} />
             </a>
+            <Link href={appendFunnelContext("/contact#enquiry", { page_id: `/blog/${post.id}`, stage: "tofu" })} className="mt-4 block text-[var(--accent)]">Send an enquiry</Link>
           </div>
 
           <FunnelCTA stage="tofu" className="mt-16" />

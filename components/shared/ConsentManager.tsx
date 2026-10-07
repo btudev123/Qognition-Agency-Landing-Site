@@ -2,17 +2,19 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import { CONSENT_EVENT, CONSENT_STORAGE_KEY, consentWasWithdrawn, readConsent, refreshConsentFromStorage, saveConsent, type ConsentPreferences } from '../../lib/consent';
+import { CONSENT_EVENT, CONSENT_STORAGE_KEY, consentWasWithdrawn, effectiveConsent, openConsentSettings, readConsent, refreshConsentFromStorage, saveConsent, type ConsentPreferences } from '../../lib/consent';
 
-function usePreferences() {
-  const [preferences, setPreferences] = useState<ConsentPreferences | null>(null);
+/** The consent in effect, or null until after mount. Server render and the first client render
+ * both see null, so nothing gated on it can reach the HTML or run before hydration. */
+export function useEffectiveConsent() {
+  const [consent, setConsent] = useState<ConsentPreferences | null>(null);
   const previous = useRef<ConsentPreferences | null>(null);
   useEffect(() => {
-    const update = () => { const next = readConsent(); previous.current = next; setPreferences(next); };
+    const update = () => { const next = effectiveConsent(); previous.current = next; setConsent(next); };
     const storageUpdate = (event: StorageEvent) => {
       if (event.key !== null && event.key !== CONSENT_STORAGE_KEY) return;
       refreshConsentFromStorage();
-      if (consentWasWithdrawn(previous.current, readConsent())) window.location.reload();
+      if (consentWasWithdrawn(previous.current, effectiveConsent())) window.location.reload();
       update();
     };
     update();
@@ -20,14 +22,15 @@ function usePreferences() {
     window.addEventListener('storage', storageUpdate);
     return () => { window.removeEventListener(CONSENT_EVENT, update); window.removeEventListener('storage', storageUpdate); };
   }, []);
-  return preferences;
+  return consent;
 }
 
-/** Wrap tracking scripts at their source; do not render them before consent. */
+/** Wrap tracking scripts at their source. Renders nothing on the server or before mount, then
+ * only when the category is granted: by a stored explicit choice, or by the region default on
+ * <html data-consent-default> when there is no choice. */
 export function ConsentScripts({ category, children }: { category: 'analytics' | 'advertising'; children: ReactNode }) {
-  const preferences = usePreferences();
-  // Opt-out model: render unless the visitor has explicitly rejected the category.
-  return preferences?.[category] === false ? null : <>{children}</>;
+  const consent = useEffectiveConsent();
+  return consent?.[category] === true ? <>{children}</> : null;
 }
 
 const copy: Record<string, string[]> = {
@@ -46,21 +49,26 @@ const copy: Record<string, string[]> = {
 
 export default function ConsentManager() {
   const pathname = usePathname();
-  const preferences = usePreferences();
   const [open, setOpen] = useState(false);
   const [locale, setLocale] = useState('en');
-  const [analytics, setAnalytics] = useState(true);
-  const [advertising, setAdvertising] = useState(true);
+  // Unticked until mount. Then the boxes show what is in effect: the stored choice, else the
+  // region default. Opt-in regions therefore open unticked; opt-out regions open ticked.
+  const [analytics, setAnalytics] = useState(false);
+  const [advertising, setAdvertising] = useState(false);
   useEffect(() => {
+    const sync = () => { const current = effectiveConsent(); setAnalytics(current.analytics); setAdvertising(current.advertising); };
+    sync();
     setOpen(!readConsent());
-    const show = () => { const saved = readConsent(); setAnalytics(saved?.analytics ?? true); setAdvertising(saved?.advertising ?? true); setOpen(true); };
+    const show = () => { sync(); setOpen(true); };
     window.addEventListener('qognition:consent-settings', show);
     return () => window.removeEventListener('qognition:consent-settings', show);
   }, []);
   useEffect(() => { const segment = pathname?.split('/')[1] || 'en'; setLocale(copy[segment] ? segment : 'en'); }, [pathname]);
   const c = copy[locale] || copy.en;
   const choose = (a: boolean, b: boolean) => { saveConsent(a, b); setOpen(false); };
-  if (!open) return <button type="button" onClick={() => { setAnalytics(preferences?.analytics || false); setAdvertising(preferences?.advertising || false); setOpen(true); }} className="fixed bottom-3 left-3 z-40 rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-xs">{c[7]}</button>;
+  // Below lg the StickyCTA bar (h-14) is fixed to the bottom edge, so the reopen control sits
+  // spacing.3 above it plus the safe-area inset, the same lift FloatingWhatsApp uses on the right.
+  if (!open) return <button type="button" onClick={openConsentSettings} className="fixed bottom-[calc(theme(spacing.14)+theme(spacing.3)+env(safe-area-inset-bottom,0px))] left-3 z-40 rounded-full border border-[var(--border)] bg-[var(--bg)] px-3 py-2 text-xs lg:bottom-3">{c[7]}</button>;
   return <section role="dialog" aria-modal="false" aria-labelledby="consent-title" dir={locale === 'ar' ? 'rtl' : undefined} className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-3xl rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 shadow-2xl" style={{ color: 'var(--text)', background: 'var(--bg, #f8f7f4)' }}>
     <h2 id="consent-title" className="text-h3 font-semibold">{c[0]}</h2>
     <p className="text-meta mt-2 mb-4">{c[1]}</p>
