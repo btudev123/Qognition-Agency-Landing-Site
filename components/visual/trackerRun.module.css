@@ -1,0 +1,237 @@
+/* The homepage tracker run (ADR-0006 §11). Every colour is an --s-* role, so the
+ * screen works on a light band and under [data-theme="dark"] without branching.
+ * Durations use the motion tokens in docs/design/motion.md with their values as
+ * fallbacks (app/tokens.css is not imported yet). Nothing animates longer than
+ * --dur-slow, and every animation is presentation over text that is already in
+ * the DOM and already resolved (§11.4.2). */
+
+/* ── Region: all 21 rows share one grid cell, so the region is as tall as the
+ *    tallest row at every width and switching rows never shifts the page.
+ *    Inactive rows keep the `hidden` attribute (no accessibility tree, no find
+ *    in page) but stay in layout as invisible boxes. */
+.region {
+  display: grid;
+  position: relative;
+}
+.region > [data-run-row] {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.region > [data-run-row][hidden] {
+  display: block;
+  visibility: hidden;
+}
+
+/* ── Breadcrumb and prompt: reserved lines so the platform list sits at the
+ *    same height for nearly every row. */
+.crumb {
+  min-height: 2lh;
+  overflow-wrap: anywhere;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  border-collapse: collapse;
+}
+.contents { display: contents; }
+
+.prompt {
+  grid-row: 1;
+  grid-column: 1 / -1;
+  min-height: calc(3lh + 1rem);
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--s-rule);
+  color: var(--s-text);
+  overflow-wrap: anywhere;
+}
+.prompt::before {
+  content: '>';
+  margin-right: 0.5rem;
+  font-family: ui-monospace, 'SF Mono', monospace;
+  color: var(--s-accent);
+}
+
+.platform,
+.cell {
+  border-top: 1px solid var(--s-rule-hairline);
+}
+.platform { grid-column: 1; }
+.cell {
+  grid-column: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+}
+
+/* Word plus dot, never the dot alone (WCAG 1.4.1). */
+.dotNamed,
+.dotAbsent {
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+}
+.dotNamed { background: var(--s-accent-graphic); }
+.dotAbsent { box-shadow: inset 0 0 0 1px var(--s-rule-strong); }
+
+/* ── Presentation phases, set on the active row by the player.
+ *    type: the prompt reveals; cells and sources rest at low opacity, never empty.
+ *    play: a scan line sweeps each cell in turn and the cell settles to full. */
+.region [data-run-phase='type'] [data-run-cell],
+.region [data-run-phase='type'] [data-run-sources] {
+  opacity: 0.25;
+}
+
+.region [data-run-phase='play'] [data-run-cell] {
+  animation: settle var(--dur-base, 200ms) var(--ease-standard, cubic-bezier(0.2, 0, 0, 1)) both;
+  animation-delay: calc(var(--i) * 260ms + var(--dur-slow, 320ms));
+}
+.region [data-run-phase='play'] [data-run-cell]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--s-accent-graphic);
+  transform-origin: left center;
+  animation: sweep var(--dur-slow, 320ms) linear both;
+  animation-delay: calc(var(--i) * 260ms);
+}
+.region [data-run-phase='play'] [data-run-sources] {
+  animation: settle var(--dur-base, 200ms) var(--ease-standard, cubic-bezier(0.2, 0, 0, 1)) both;
+  animation-delay: calc(5 * 260ms + var(--dur-slow, 320ms));
+}
+
+@keyframes settle {
+  from { opacity: 0.25; }
+  to { opacity: 1; }
+}
+@keyframes sweep {
+  0% { transform: scaleX(0); opacity: 1; }
+  80% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+/* The typing reveal. The prompt text is whole in the DOM; the not-yet-typed tail
+ * is painted transparent through the CSS Custom Highlight API. Where that API is
+ * missing the player skips the reveal and the prompt shows in full. */
+.region ::highlight(scriblr-run-untyped) {
+  color: transparent;
+}
+.caret {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  background: var(--s-accent-graphic);
+  pointer-events: none;
+}
+
+.sources { min-height: 1lh; }
+
+/* Narrow panels: the long breadcrumbs, prompts and source tags wrap further, so
+ * reserve those lines too. Measured 2026-10-07: at 320px the rows ranged 352 to
+ * 428px tall before this, which left a dead band under the short ones. */
+@media (max-width: 639px) {
+  .crumb { min-height: 3lh; }
+  .sources { min-height: calc(2lh + 0.5rem); }
+}
+@media (max-width: 359px) {
+  .prompt { min-height: calc(4lh + 1rem); }
+}
+
+/* ── Controls. 44px targets below 640px (touch); 32px from 640, which clears
+ *    WCAG 2.5.8's 24px minimum with the 4px gap between them. */
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--s-rule);
+  background: var(--s-surface-1);
+  color: var(--s-text);
+  transition: border-color var(--dur-fast, 140ms) ease, background-color var(--dur-fast, 140ms) ease;
+}
+@media (min-width: 640px) {
+  .control {
+    height: 2rem;
+    min-width: 2rem;
+  }
+}
+/* Pause and Play are different widths; a fixed width keeps Previous and Next
+ *  still when the label swaps. */
+.toggle { min-width: 5rem; }
+/* Under reduced motion nothing auto-advances, so there is nothing to pause.
+ * Here rather than as a Tailwind variant: this module loads after the utilities
+ * and its display would win. */
+@media (prefers-reduced-motion: reduce) {
+  .toggle { display: none; }
+}
+.control:hover {
+  border-color: var(--s-rule-strong);
+  background: var(--s-surface-3);
+}
+
+/* Progress rail. Every segment is a button of at least 24x24px (WCAG 2.5.8).
+ * Narrow: seven columns, so 21 industries make three even rows. Wide enough for
+ * all of them on one line at 24px (21 x 24 + 20 x 1px gaps + 32px padding =
+ * 556px of player): one row. The 556 assumes 21 rows; --segments carries the
+ * real count. Height depends only on the width, never on the active row, so the
+ * rail cannot shift the page. The current segment is taller and teal, so state
+ * is carried by size as well as colour. --s-rule-strong keeps the others at 3:1
+ * against the field (SC 1.4.11). */
+.player { container-type: inline-size; }
+.rail {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+@container (min-width: 556px) {
+  .rail {
+    grid-template-columns: repeat(var(--segments, 21), minmax(0, 1fr));
+    gap: 1px;
+  }
+}
+.segment {
+  position: relative;
+  min-width: 0;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.segment::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: var(--s-rule-strong);
+  transition: background-color var(--dur-fast, 140ms) ease;
+}
+.segment:hover::before { background: var(--s-text-muted); }
+.segment[aria-current='true']::before {
+  height: 4px;
+  background: var(--s-accent-graphic);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .region [data-run-phase] [data-run-cell],
+  .region [data-run-phase] [data-run-sources] {
+    opacity: 1;
+    animation: none;
+  }
+  .region [data-run-phase] [data-run-cell]::after { content: none; }
+}

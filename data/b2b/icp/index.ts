@@ -296,6 +296,17 @@ export const icpIndustrySlugById = (id: string): string | undefined =>
   ICP_INDUSTRIES.find((i) => i.id === id)?.slug;
 
 /**
+ * A sub-industry's name by its dotted id ('05.07'), or undefined. A narrow
+ * accessor in the sense of ADR-0008 §5.2 item 3: it returns one string and
+ * nothing that can walk the tree. The homepage tracker run (ADR-0006 §11)
+ * renders its breadcrumb from it, so the name has no second copy.
+ */
+export const icpSubIndustryName = (id: string): string | undefined => {
+  const industry = ICP_INDUSTRIES.find((i) => id.startsWith(`${i.id}.`));
+  return industry?.sub_industries.find((s) => s.id === id)?.name;
+};
+
+/**
  * The 21 industries, flattened for the `/industries` entry-point section.
  *
  * WHY THIS EXISTS RATHER THAN `ICP_INDUSTRIES.map(...)` AT THE CALL SITE.

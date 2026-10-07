@@ -1,20 +1,19 @@
-import { ENGINES } from '../../lib/b2b/observations';
-import { PRODUCT_SCREENS, type PromptPanelScreen } from '../../data/product-screens';
+import { PRODUCT_SCREENS, RUN_PLATFORMS, type PromptPanelScreen } from '../../data/product-screens';
 import { PROMPT_STATUS } from './labels';
 import ScreenContext from './ScreenContext';
 
-/* Resolves its tracker tab, so the panel can only ever show the hero's fixed set. */
+/* Resolves its rows from the tracker run by industry id, so the panel can only
+ * ever show prompts the hero also shows (ADR-0006 §11.2). No Domain term: the
+ * run tracks "Your firm", which has none. */
 export default function PromptPanelView({ screen }: { screen: PromptPanelScreen }) {
-  const tab = PRODUCT_SCREENS['scriblr-visibility-tracker'].tabs.find((t) => t.sector === screen.sector);
-  if (!tab) return null;
+  const run = PRODUCT_SCREENS['scriblr-tracker-run'];
+  const rows = screen.industryIds
+    .map((id) => run.rows.find((row) => row.industryId === id))
+    .filter((row) => row !== undefined);
+  if (rows.length === 0) return null;
   return (
     <div className="px-4 pt-4">
-      <ScreenContext
-        items={[
-          ['Tracked brand', tab.brand],
-          ['Domain', tab.domain],
-        ]}
-      />
+      <ScreenContext items={[['Tracked brand', run.trackedBrand]]} />
       <table className="mt-4 w-full border-collapse text-left text-meta">
         <thead>
           <tr style={{ borderBottom: '1px solid var(--s-rule)' }}>
@@ -31,16 +30,16 @@ export default function PromptPanelView({ screen }: { screen: PromptPanelScreen 
           </tr>
         </thead>
         <tbody>
-          {tab.rows.map((row) => (
-            <tr key={row.prompt} style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
+          {rows.map((row) => (
+            <tr key={row.industryId} style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
               <th scope="row" className="w-[46%] py-3 pr-3 align-top font-normal" style={{ color: 'var(--s-text)' }}>
                 {row.prompt}
               </th>
               <td className="py-3 pr-3 align-top">
                 <span className="flex flex-wrap gap-1.5">
-                  {ENGINES.map((engine) => (
-                    <span key={engine} className="px-1.5" style={{ border: '1px solid var(--s-rule)', color: 'var(--s-text-muted)' }}>
-                      {engine}
+                  {RUN_PLATFORMS.map((platform) => (
+                    <span key={platform} className="px-1.5" style={{ border: '1px solid var(--s-rule)', color: 'var(--s-text-muted)' }}>
+                      {platform}
                     </span>
                   ))}
                 </span>

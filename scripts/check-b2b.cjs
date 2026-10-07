@@ -566,14 +566,13 @@ if (spineCollisions.length) {
   );
 }
 
-/* ── 12. PRODUCT SCREENS. ADR-0006 §6 (second amendment, 2026-10-07). ─────────
+/* ── 12. PRODUCT SCREENS. ADR-0006 §6, with §11.6 (third amendment, 2026-10-07). ─
  *
  * Illustrative product screens must not be able to pass for client data. The
  * type system catches most of it at `tsc`; these are the things it cannot. */
 {
-  const { PRODUCT_SCREENS, TRACKER_SECTORS } = require('../data/product-screens/index.ts');
+  const { PRODUCT_SCREENS, RUN_PLATFORMS } = require('../data/product-screens/index.ts');
   const { SAMPLE_BRANDS } = require('../data/product-screens/sample-entities.ts');
-  const brands = new Set(SAMPLE_BRANDS);
   const screens = Object.entries(PRODUCT_SCREENS);
   const DOMAIN_LIKE = /\b[\w-]+\.(com|io|ai|co|net|org|app|uk|de)\b/;
   /* Case-sensitive and whole-word, so the verbs "thrive" and "spiral" in a prompt
@@ -592,53 +591,83 @@ if (spineCollisions.length) {
     assert.equal(screen.provenance, 'illustrative', `product screen ${key}: provenance must be 'illustrative' (ADR-0006 R3).`);
     assert.equal(screen.id, key, `product screen registry key ${key} holds a screen whose id is ${screen.id}.`);
   }
+  assert.ok(!SAMPLE_BRANDS.includes('Your firm'), '"Your firm" may not be added to SAMPLE_BRANDS (ADR-0006 §11.3).');
 
-  // 2. Tabs.
-  const tracker = PRODUCT_SCREENS['scriblr-visibility-tracker'];
-  assert.deepEqual(
-    tracker.tabs.map((t) => t.sector), [...TRACKER_SECTORS],
-    'the visibility tracker must hold exactly one tab per TRACKER_SECTORS entry, in that order.'
-  );
-  for (const tab of tracker.tabs) {
-    assert.ok(brands.has(tab.brand), `tracker tab ${tab.sector}: brand "${tab.brand}" is not in SAMPLE_BRANDS (ADR-0006 R2).`);
-    assert.ok(/\.example$/.test(tab.domain), `tracker tab ${tab.sector}: domain ${tab.domain} is not an RFC 2606 .example domain.`);
-  }
-  const panel = PRODUCT_SCREENS['scriblr-prompt-panel'];
-  assert.ok(TRACKER_SECTORS.includes(panel.sector), `prompt panel sector "${panel.sector}" is not a tracker sector.`);
-
-  // 3. Rows.
-  /* The type says every Engine is a column; the transpiling loader does not
-     type-check, so the gate checks the shape too (Anton, 2026-10-07). */
+  // 2. The tracker run (§11.6 a to j). The taxonomy is read with fs, never imported by a component.
+  const taxonomy = JSON.parse(fs.readFileSync('data/b2b/icp/icp-taxonomy.json', 'utf8'));
+  const run = PRODUCT_SCREENS['scriblr-tracker-run'];
   const { ENGINES } = require('../lib/b2b/observations.ts');
   const MENTION_STATES = new Set(['cited', 'mentioned', 'absent']);
-  for (const tab of tracker.tabs) {
-    assert.ok(tab.rows.length > 0, `tracker tab ${tab.sector} has no rows.`);
-    for (const row of tab.rows) {
-      const where = `tracker ${tab.sector} row "${row.prompt}"`;
-      assert.deepEqual(Object.keys(row.states), [...ENGINES], `${where}: states must have exactly one entry per ENGINES member, in ENGINES order.`);
-      for (const [engine, state] of Object.entries(row.states)) {
-        assert.ok(MENTION_STATES.has(state), `${where}: ${engine} is "${state}", not cited, mentioned or absent.`);
-      }
-      assert.equal(new Set(row.sourcesCited).size, row.sourcesCited.length, `${where}: sourcesCited has a duplicate.`);
-      const states = Object.values(row.states);
-      assert.ok(
-        !row.sourcesCited.includes('own-site') || states.some((s) => s !== 'absent'),
-        `${where}: 'own-site' is cited on a row where no platform named the brand. An answer cannot cite the brand's domain without naming it.`
-      );
-      assert.ok(states.includes('absent'), `${where}: every platform named the brand. Never an all-named row (Ruth, 2026-10-07).`);
-    }
+
+  // g. RUN_PLATFORMS is ENGINES plus exactly Claude.
+  assert.deepEqual(
+    [...RUN_PLATFORMS].sort(), [...ENGINES, 'Claude'].sort(),
+    'RUN_PLATFORMS must be ENGINES plus exactly Claude (ADR-0006 §11.2).'
+  );
+  // h. "Your firm", and no brand or domain on the run.
+  assert.equal(run.trackedBrand, 'Your firm', 'the run tracks "Your firm" (ADR-0006 §11.3).');
+  assert.ok(!('brand' in run) && !('domain' in run), 'the run may not carry a brand or domain key (ADR-0006 §11.6.h).');
+  // a. One row per taxonomy industry, in taxonomy order. The count comes from the taxonomy.
+  assert.deepEqual(
+    run.rows.map((r) => r.industryId), taxonomy.industries.map((i) => i.id),
+    'the run must hold one row per taxonomy industry, in taxonomy order (ADR-0006 §11.6.a).'
+  );
+  const namedSets = new Set();
+  for (const row of run.rows) {
+    const where = `tracker run row ${row.industryId}`;
+    // b. Verbatim prompt from that sub-industry, exact ===.
+    const industry = taxonomy.industries.find((i) => i.id === row.industryId);
+    const sub = industry && industry.sub_industries.find((s) => s.id === row.subIndustryId);
+    assert.ok(sub, `${where}: sub-industry ${row.subIndustryId} is not under industry ${row.industryId}.`);
+    assert.ok(
+      sub.ai_prompts.includes(row.prompt),
+      `${where}: "${row.prompt}" is not, verbatim, one of ${row.subIndustryId}'s ai_prompts.`
+    );
+    // c, d. No placeholder, no capitalised word (a likely brand or place). Acronyms pass.
+    assert.ok(!/\[[^\]]*\]/.test(row.prompt), `${where}: the prompt holds a [placeholder].`);
+    const cap = row.prompt.match(/\b[A-Z][a-z]\w*/);
+    assert.ok(!cap, `${where}: "${cap && cap[0]}" is a capitalised word, a likely brand or place. Pick another prompt.`);
+    // e. States: keys in RUN_PLATFORMS order, valid, never all named and never all absent.
+    assert.deepEqual(Object.keys(row.states), [...RUN_PLATFORMS], `${where}: states must follow RUN_PLATFORMS, in order.`);
+    const states = Object.values(row.states);
+    for (const state of states) assert.ok(MENTION_STATES.has(state), `${where}: "${state}" is not a MentionState.`);
+    assert.ok(states.includes('absent'), `${where}: every platform named the firm. Never an all-named row.`);
+    assert.ok(states.some((s) => s !== 'absent'), `${where}: no platform named the firm. Never an all-absent row (§11.3).`);
+    // Not in §11.6: rows do not repeat a pattern, so the run cannot look templated.
+    const key = states.map((s) => (s === 'absent' ? '-' : 'N')).join('');
+    assert.ok(!namedSets.has(key), `${where}: names the firm on the same platforms as an earlier row (${key}).`);
+    namedSets.add(key);
+    // f. One to three sources, no duplicates, own site exactly when something is cited.
+    assert.ok(row.sourcesCited.length >= 1 && row.sourcesCited.length <= 3, `${where}: sourcesCited needs one to three tags.`);
+    assert.equal(new Set(row.sourcesCited).size, row.sourcesCited.length, `${where}: sourcesCited has a duplicate.`);
+    assert.equal(
+      row.sourcesCited.includes('own-site'), states.includes('cited'),
+      `${where}: 'own-site' must appear exactly when some state is 'cited' (ADR-0006 §11.6.f).`
+    );
+  }
+  // i. The panel points at run rows.
+  const panel = PRODUCT_SCREENS['scriblr-prompt-panel'];
+  assert.ok(panel.industryIds.length >= 1 && panel.industryIds.length <= 3, 'the prompt panel shows one to three run rows.');
+  assert.equal(new Set(panel.industryIds).size, panel.industryIds.length, 'the prompt panel repeats an industry id.');
+  for (const id of panel.industryIds) {
+    assert.ok(run.rows.some((r) => r.industryId === id), `prompt panel industry ${id} is not a run row.`);
   }
 
   // 4 and 5. Walk every value: no real names or domains, no numbers.
-  /* R6 for strings. Digits are allowed only inside a `prompt`, where they are
-     part of the buyer's question ("ISO 9001", "SOC 2"). Everywhere else (tab
-     labels, brands, domains, sources) a percent sign or a digit not preceded
-     by a letter fails: "64%", "3", "3x" and "1st" fail, "B2B" passes. The same
-     pattern runs on the served page in scripts/lib/served-screens.mjs. */
+  /* R6 for strings. Digits are allowed only inside a prompt, where they are part
+     of the buyer's question ("ISO 9001", "24/7 SOC"), and in the taxonomy ids,
+     which are never rendered (§11.6.j). Everywhere else a percent sign or a digit
+     not preceded by a letter fails: "64%", "3", "3x" and "1st" fail, "B2B" passes.
+     The same pattern runs on the served page in scripts/lib/served-screens.mjs. */
   const FIGURE = /%|(?<![A-Za-z])\d/;
+  const ID_KEYS = new Set(['industryId', 'subIndustryId', 'industryIds']);
   const walk = (node, where, key) => {
     if (typeof node === 'number') assert.fail(`${where}: a number in screen data (${node}). ADR-0006 R6 allows none.`);
     if (typeof node === 'string') {
+      if (ID_KEYS.has(key)) {
+        assert.ok(/^\d{2}(\.\d{2})?$/.test(node), `${where}: "${node}" is not a taxonomy id.`);
+        return;
+      }
       assert.ok(!DOMAIN_LIKE.test(node), `${where}: domain-like token in "${node}". Sample domains end in .example.`);
       const hit = node.match(denyRe);
       assert.ok(!hit, `${where}: "${hit && hit[0]}" is a real or banned name, in "${node}".`);
@@ -656,31 +685,57 @@ if (spineCollisions.length) {
     assert.ok(!/[0-9%]/.test(screen.caption), `${key}: the caption contains a digit or %, which reads as a result.`);
   }
 
-  // 6. Server-only components, and no timers in the tab state.
+  // 6. Server-only screen components. The player is the one exception, and it is constrained (§11.6.k).
   const SCREEN_DIR = 'components/product-screens';
+  const stripComments = (src) => src.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ');
   const CLIENT_OR_TIME = /['"]use client['"]|\buseState\b|\buseEffect\b|\buseReducer\b|\bsetTimeout\b|\bsetInterval\b|\brequestAnimationFrame\b/;
   const literalDomain = /['"`][^'"`\n]*\b[\w-]+\.(com|io|ai|co|net|org|app|uk|de)\b[^'"`\n]*['"`]/i;
   for (const file of walkTsx(SCREEN_DIR)) {
-    const code = fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/^\s*\/\/.*$/gm, ' ');
+    const code = stripComments(fs.readFileSync(file, 'utf8'));
     assert.ok(!CLIENT_OR_TIME.test(code), `${file}: client or time-based code under ${SCREEN_DIR}. ADR-0006 R4: nothing here holds state.`);
     assert.ok(!literalDomain.test(code), `${file}: a domain-like string literal. Screen text comes from data/product-screens.`);
   }
-  /* SectorTabs holds the active index and nothing else. It needs no effect and
-     no observer: an effect or an observer is how a tab advances without the
-     user, timer or not (an IntersectionObserver auto-advance passed the old
-     timer-only check). Comments are stripped so this note cannot trip it. */
-  const tabsSrc = fs
-    .readFileSync('components/visual/SectorTabs.tsx', 'utf8')
-    .replace(/\/\*[\s\S]*?\*\//g, ' ')
-    .replace(/^\s*\/\/.*$/gm, ' ');
-  const TAB_MOTION =
-    /\b(setTimeout|setInterval|requestAnimationFrame|requestIdleCallback|useEffect|useLayoutEffect|useInsertionEffect|IntersectionObserver|ResizeObserver|MutationObserver)\b/;
-  const tabHit = tabsSrc.match(TAB_MOTION);
+  const PLAYER = 'components/visual/TrackerRunPlayer.tsx';
+  const TIMER = /\b(setTimeout|setInterval|requestAnimationFrame)\b/;
+  for (const file of walkTsx('components')) {
+    if (file === PLAYER) continue;
+    const code = stripComments(fs.readFileSync(file, 'utf8'));
+    /* Only the run's neighbours are held to this: the rest of components/ predates
+       §11 and is not a product screen. Anything that imports the player or the
+       registry is. */
+    if (!/TrackerRunPlayer|data\/product-screens/.test(code)) continue;
+    assert.ok(!TIMER.test(code), `${file} uses a timer next to a product screen. Only ${PLAYER} may (ADR-0006 §11.6.k).`);
+  }
+  const playerSrc = fs.readFileSync(PLAYER, 'utf8');
+  const playerCode = stripComments(playerSrc);
+  assert.ok(playerSrc.includes('prefers-reduced-motion'), `${PLAYER} must honour prefers-reduced-motion (§11.4.3).`);
+  const playerImports = [...playerCode.matchAll(/\bfrom\s+['"]([^'"]+)['"]/g)].map((m) => m[1]);
+  for (const spec of playerImports) {
+    assert.ok(!/(^|\/)(data|lib)\//.test(spec), `${PLAYER} imports ${spec}. It takes rows as children and imports nothing from data/ or lib/.`);
+    assert.ok(!/framer-motion|(^|\/)motion(\/|$)|lucide/.test(spec), `${PLAYER} imports ${spec}. No animation library and no icon set in the hero bundle.`);
+  }
+  assert.ok(!/\bprops\.(rows|screen|data)\b|\{\s*(rows|screen|data)\s*[,}]/.test(playerCode.split('export default function')[1].split(')')[0]),
+    `${PLAYER} takes data props. It receives the server-rendered rows as children only (§11.4.7).`);
+  /* Owen, review FIX 2026-10-08 (WAI-ARIA APG carousel): the one live region is "off"
+     while the run rotates by itself and "polite" whenever the user is in control. So the
+     source may bind it to a value, but only to the two-member 'off' | 'polite' union, and
+     the served HTML (paused until the client knows, scripts/lib/served-screens.mjs) still
+     carries "polite". A third value, or dropping aria-atomic, fails here. */
+  const liveBound = /aria-live=\{liveMode\}/.test(playerCode) && /liveMode:\s*'off'\s*\|\s*'polite'/.test(playerCode);
   assert.ok(
-    !tabHit,
-    `components/visual/SectorTabs.tsx uses ${tabHit && tabHit[0]}. Tabs change only when the user selects one ` +
-    '(ADR-0006 R4: no timers, effects or observers, no auto-rotation).'
+    (/aria-live="polite"/.test(playerCode) || liveBound) && /aria-atomic="true"/.test(playerCode),
+    `${PLAYER} must hold the one atomic live region, "polite" or bound to an 'off' | 'polite' liveMode.`
   );
+  for (const word of ['Live', 'Scanning', 'Checking', 'Loading', 'Real-time']) {
+    for (const file of [PLAYER, ...walkTsx(SCREEN_DIR), 'components/visual/trackerRun.module.css']) {
+      const code = stripComments(fs.readFileSync(file, 'utf8'));
+      const strings = [...code.matchAll(/(['"`])((?:(?!\1)[^\\\n]|\\.)*)\1|>([^<>{}]+)</g)].map((m) => m[2] ?? m[3] ?? '');
+      assert.ok(
+        !strings.some((s) => new RegExp(`\\b${word}\\b`, 'i').test(s)),
+        `${file} has the word "${word}" in a string. The run never claims to be live or in progress (ADR-0006 §11.4.2).`
+      );
+    }
+  }
 
   // 7. The badge cannot be dropped.
   const BADGE_TAIL = 'product interface. Sample data, not client results.';
@@ -708,9 +763,9 @@ if (spineCollisions.length) {
   const missingIcon = icpIndustryCards().filter((c) => !INDUSTRY_ICON[c.slug]).map((c) => c.slug);
   assert.deepEqual(missingIcon, [], `data/b2b/icp/industryVisuals.ts has no INDUSTRY_ICON for: ${missingIcon.join(', ')}`);
 
-  const rows = tracker.tabs.reduce((n, t) => n + t.rows.length, 0);
   console.log(
-    `✓ product screens: ${screens.length} screens illustrative, ${tracker.tabs.length} tracker tabs, ${rows} rows, ` +
-    `no numbers, no real names, badge in one file. ${icpIndustryCards().length} industries have an icon.`
+    `✓ product screens: ${screens.length} screens illustrative, tracker run ${run.rows.length} rows ` +
+    `(one per taxonomy industry, prompts verbatim), no numbers, no real names, badge in one file. ` +
+    `${icpIndustryCards().length} industries have an icon.`
   );
 }

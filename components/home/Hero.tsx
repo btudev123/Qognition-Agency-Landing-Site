@@ -19,11 +19,11 @@ export default function Hero() {
       }}
     >
       <Shell>
-        {/* THE TRACKER IS RENDERED ONCE.
+        {/* THE TRACKER RUN IS RENDERED ONCE.
             The panel used to be rendered twice, once inside the left column for
             mobile DOM order and once in the right column for desktop. It holds
-            interactive tabs, so a second copy would duplicate the DOM, the tab
-            state and the hydration for a layout concern. Explicit grid placement
+            the run player, so a second copy would duplicate the DOM, the timers,
+            the live region and the hydration for a layout concern. Explicit grid placement
             gets the same two orders out of one instance:
 
               mobile   1 col, natural DOM order: A badge/H1/CTAs, B tracker, C chips
@@ -108,12 +108,12 @@ export default function Hero() {
           </div>
           </div>
 
-          {/* B, the tracker (ADR-0006, brief §3.1). order-2 sits it between the
+          {/* B, the tracker run (ADR-0006 §11). order-2 sits it between the
               CTAs and the platform row on mobile; from lg it is the second grid
               column. The field, border and panel shadow come from the screenField class
               because ProductScreen renders frame="none". */}
           <div className={`order-2 min-w-0 w-full lg:justify-self-end lg:max-w-[560px] ${v.screenField}`}>
-            <ProductScreen screen={PRODUCT_SCREENS['scriblr-visibility-tracker']} frame="none" />
+            <ProductScreen screen={PRODUCT_SCREENS['scriblr-tracker-run']} frame="none" />
           </div>
         </div>
       </Shell>

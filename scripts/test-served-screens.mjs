@@ -129,11 +129,15 @@ test('screen chrome outside any figure fails (a screen rendered without ProductS
 test('the real allowlist holds the registry, the labels, the engines and the chrome', () => {
   const strings = productScreenStrings();
   for (const s of [
-    'Ondrell Software', 'pellman-it.example', 'Compare 3PLs offering EDI integration with our ERP', 'B2B SaaS',
+    'Your firm', 'best AP automation software that integrates with a mid-market ERP', 'SaaS & Software',
+    'Finance, Spend & Procurement SaaS', 'Claude', 'Pause', 'Play', 'Previous', 'Next', 'Show', 'Tracking', '▸',
     'Named', 'Not named', 'Own site', 'Sources cited:', 'Fixed', 'Sample run', 'Google AI Overviews', 'Scriblr',
-    'AI visibility tracker', 'Illustrative', 'product interface. Sample data, not client results.',
+    'Prompt run', 'Illustrative', 'product interface. Sample data, not client results.',
   ]) assert.ok(strings.has(s), `allowlist is missing "${s}"`);
   assert.ok(![...strings].some((s) => /%/.test(s)), 'the allowlist itself contains a percentage');
+  for (const banned of ['Live', 'Scanning', 'Checking', 'Loading', 'Real-time', 'AI visibility tracker']) {
+    assert.ok(![...strings].some((s) => new RegExp(`\\b${banned}\\b`).test(s)), `the allowlist contains "${banned}" (ADR-0006 §11.4.2)`);
+  }
 });
 
 /* Anton's review, 2026-10-07. */
@@ -179,7 +183,69 @@ test('every registry brand, domain and prompt must be rendered inside a screen',
   assert.equal(typeof served.productScreenContract, 'function', 'productScreenContract is not exported');
   const c = served.productScreenContract();
   assert.equal(c.expected, 2);
-  assert.ok(c.required.includes('pellman-it.example') && c.required.includes('Compare 3PLs offering EDI integration with our ERP'));
+  assert.ok(c.required.includes('Your firm') && c.required.includes('best AP automation software that integrates with a mid-market ERP'));
+  assert.ok(!c.required.includes('pellman-it.example'), 'the retired tracker brands left `required` (§11.6)');
+  assert.deepEqual(c.run, { rows: 21, platforms: 5 });
+});
+
+/* ADR-0006 §11: the tracker run, served half. A two-row fixture shaped like TrackerRunView + TrackerRunPlayer. */
+const RUN_ALLOWED = new Set([...ALLOWED, 'Prompt run', 'Tracking', 'Your firm', 'Sample run', 'Pause', 'Play', 'Show',
+  'Industry one', 'Industry two', 'Sub one', 'Sub two', '▸', ':', '.', 'Prompt',
+  'which labs run ISO 17025 calibration', 'best broker for a 200-truck fleet']);
+const runRow = (i, { hidden = i > 0, phase = '', cell = 'Named', live = '', prompt } = {}) =>
+  `<div data-run-row=""${hidden ? ' hidden=""' : ''}${phase ? ` data-run-phase="${phase}"` : ''}>` +
+  `<p><span id="r-${i}">Industry ${i ? 'two' : 'one'}</span> <span aria-hidden="true">▸</span> <span>Sub ${i ? 'two' : 'one'}</span></p>` +
+  `<table role="table"><thead role="rowgroup"><tr role="row"><th scope="col" class="sr-only">Prompt</th><th scope="col">ChatGPT</th></tr></thead>` +
+  `<tbody role="rowgroup"><tr role="row"><th role="rowheader" scope="row"><span data-run-prompt="">${prompt ?? (i ? 'best broker for a 200-truck fleet' : 'which labs run ISO 17025 calibration')}</span></th>` +
+  `<td role="cell" data-run-cell=""><span aria-hidden="true"></span>${cell}</td></tr></tbody></table>` +
+  `<p data-run-sources=""><span>Sources cited:</span><span>Own site</span></p>` +
+  `<p data-run-summary="" hidden=""><span>Industry ${i ? 'two' : 'one'}</span>. <span>ChatGPT</span>: <span>Named</span>. </p></div>`;
+const runFigure = ({ rows = [runRow(0), runRow(1)], nav = '01 / 02', pauseAfter = false, live = '', badgeInRegion = false } = {}) => {
+  const pause = '<button type="button"><svg aria-hidden="true"></svg>Pause</button>';
+  const region = `<div data-run-region="">${badgeInRegion ? BADGE : ''}${rows.join('')}<span aria-hidden="true" hidden=""></span></div>`;
+  return `<figure data-provenance="illustrative"><div><span>Scriblr</span><span>Prompt run</span></div>` +
+    `<div class="px-4 pt-3">${badgeInRegion ? '' : BADGE}</div>` +
+    `<p><span>Tracking</span> <span>Your firm</span><span>Sample run</span></p>` +
+    `<div>${pauseAfter ? '' : pause}<span data-screen-nav="">${nav}</span></div>${region}${pauseAfter ? pause : ''}` +
+    `<div role="group" aria-label="Industries"><button aria-labelledby="show r-0" aria-current="true"></button><button aria-labelledby="show r-1"></button></div>` +
+    `<span id="show" hidden="">Show</span><p aria-live="polite" aria-atomic="true" class="sr-only">${live}</p>` +
+    `<figcaption>Every answer is stored with its prompt, platform, date and cited sources.</figcaption></figure>`;
+};
+const runCheck = (fig) => checkProductScreens(page(fig), { allowed: RUN_ALLOWED, run: { rows: 2, platforms: 1 } });
+
+test('run: a resolved two-row run is clean, digits in its prompts and the position counter allowed', () => {
+  assert.deepEqual(runCheck(runFigure()).errors, []);
+});
+test('run: the live region with text in the served HTML fails', () => {
+  hasError(runCheck(runFigure({ live: 'Industry one. ChatGPT: Named.' })), /live region has text/);
+});
+test('run: a Pause button after the run region fails', () => {
+  hasError(runCheck(runFigure({ pauseAfter: true })), /Pause button comes after/);
+});
+test('run: two visible rows, or a later row visible, fails', () => {
+  hasError(runCheck(runFigure({ rows: [runRow(0), runRow(1, { hidden: false })] })), /2 run rows are visible/);
+  hasError(runCheck(runFigure({ rows: [runRow(0, { hidden: true }), runRow(1, { hidden: false })] })), /not the first/);
+});
+test('run: a cell with interim text fails (no "Checking", no empty cell)', () => {
+  hasError(runCheck(runFigure({ rows: [runRow(0, { cell: 'Checking' }), runRow(1)] })), /state cell reading "Checking"/);
+  hasError(runCheck(runFigure({ rows: [runRow(0, { cell: '' }), runRow(1)] })), /state cell reading ""/);
+});
+test('run: a row served mid-animation fails', () => {
+  hasError(runCheck(runFigure({ rows: [runRow(0, { phase: 'type' }), runRow(1)] })), /mid-animation/);
+});
+test('run: the wrong number of rows fails', () => {
+  hasError(runCheck(runFigure({ rows: [runRow(0)] })), /1 \[data-run-row\] rendered, the run holds 2/);
+});
+test('run: the badge inside the run region fails', () => {
+  hasError(runCheck(runFigure({ badgeInRegion: true })), /badge sits inside/);
+});
+test('run: a counter that is not a run position fails, and a figure in disguise does not pass as one', () => {
+  hasError(runCheck(runFigure({ nav: '41%' })), /not a run position/);
+  hasError(runCheck(runFigure({ nav: '03 / 02' })), /not a run position/);
+  hasError(runCheck(runFigure({ nav: '01 / 21' })), /not a run position/);
+});
+test('run: a missing run fails when the contract expects one', () => {
+  hasError(checkProductScreens(page(panel()), { allowed: RUN_ALLOWED, run: { rows: 2, platforms: 1 } }), /0 figure\(s\) hold a \[data-run-region\]/);
 });
 
 if (failures) {
