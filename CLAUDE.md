@@ -1,3 +1,40 @@
+# Current implementation authority — 2026-10-03
+
+The user approved a sitewide copy and funnel update in the dev checkout. These decisions supersede contradictory historical instructions below:
+- Keep the existing Qognition logo, colours, typography and design. Rewrite messaging for B2B AI SEO/GEO, including SaaS.
+- No public agency prices, price ranges or tiers; retain /pricing with tailored-scope content.
+- Primary conversion is Book a call; secondary is Send an enquiry. The existing GHL calendar remains.
+- Cover all 8,823 sub-niche IDs with substantive TOFU/MOFU/BOFU journeys. Generated mappings are not completed reviewed content.
+- Qualified regional expansion is authorized; empty permutations are not publication-ready.
+- Existing URLs and uncommitted drafts remain preserved. Candidate preview routes never imply production sign-off.
+- GHL persistence must precede lead success. No production writes or nurture from preview tests.
+  **Amended by the operator 2026-10-06:**
+  - When GHL is unconfigured or erroring, `/api/lead` sends the Resend notification to hello@ synchronously, and reports success only if Resend accepts it.
+  - `LEAD_EMAIL_FALLBACK=off` restores strict GHL-first.
+  - The Upstash ledger is optional. It adds exactly-once email and CAPI on retries, and GHL capture works without it.
+- **Consent model, operator 2026-10-06:** split by region.
+  - Opt-out (tracking on by default) for the US, Canada, Australia, UAE and Singapore.
+  - Opt-in for the EEA, UK, Switzerland, China and India, plus any unknown region.
+  - Google Consent Mode v2 mirrors each visitor's choice.
+- **Operator decisions, 2026-10-07:**
+  - **Case studies.** The case studies in `data/case-studies` are real client programmes, not illustrative scenarios. Pages may say so, and the "illustrative planning scenario" labels come off.
+    - Each KPI stays labelled a target until its `actual` is filled from client reporting. `caseStudyEvidence()` is unchanged.
+    - HVAC and dental are still consumer sectors and never appear as B2B proof.
+    - Case-study images come from Pexels (key in `.env.local`, never committed). Use places, equipment and abstract scenes, never people in offices (§9).
+  - **The free offer** is named **"Free AI visibility audit"** everywhere. It is free, with no turnaround promise: "We confirm timing when we reply."
+  - **Conversion pages carry one element each.** /book is the calendar only and /contact is the form only.
+  - **The ROI calculator** (`HeroRoiCalculator`) is deleted.
+  - **B2B pages show insurance case studies only.** HVAC and dental stay on /case-studies.
+  - **Visual upgrade within the same brand is approved.** The logo, teal palette, Geist and the light/dark rhythm stay.
+    - Pages may cut copy and add icons, SVG diagrams, illustrative product screens (ADR-0006 rules), Pexels industry photos and AI-generated abstract imagery.
+    - This supersedes §9's "keep it exactly" for layout and visuals, not for brand assets.
+    - Lead form and booking behaviour do not change.
+  - **Work happens on `main`, committed locally.** Nothing is pushed until production is approved.
+- Deploy a preview for review. Do not publish or promote to production before explicit approval.
+- Canonical taxonomy: data/b2b/icp/icp-taxonomy.json. Existing industry briefs: docs/icp-industries/. Preserve IDs and source contents.
+
+Historical context follows. Do not restore superseded pricing, audit-first or layout instructions.
+
 # Qognition Agency — Project Bible
 
 > **qognitionagency.com**. A B2B AI search visibility agency. We get established B2B firms found when
@@ -13,7 +50,7 @@ referring to spokes, they are dead. Do not rebuild them.
 ## 1. What we sell
 
 **Offer:** AI search visibility for B2B firms. GEO, AI SEO, AEO, entity optimisation, citation
-tracking and prompt monitoring, delivered as one retainer.
+tracking and prompt monitoring, delivered as one retainer or one layer at a time (operator, 2026-10-07).
 
 **Wedge:** evidence quality, not vertical occupancy.
 
@@ -95,9 +132,10 @@ programme documentation. We have the partner's release, not the source.]` Until 
 no page may describe paid placement in an assistant as a service we offer. Marcus owns the
 commercial question; this note exists so nobody writes "assistants have no ads" on a page.
 
-All four are in every retainer and are never sold separately. Technical SEO, on-page, off-page and
-authority work are in the box too. Tiers differ by **scope only**: locations covered, prompts
-tracked, assets produced.
+**Superseded by the operator on 2026-10-07: a client can start with any one layer.**
+- AI SEO, GEO, SEO, local SEO or PPC can each be bought alone, and layers are added as scope grows. Technical SEO, on-page, off-page and authority work sit inside whichever layer they serve.
+- Scope differs by locations covered, prompts tracked and assets produced.
+- The old rule ("All four are in every retainer and are never sold separately") is retired. Do not restore it.
 
 **B2B PPC is a real service we run for these clients, not a footnote.** Operator, 2026-09-28: "they
 are our customers, we run ppc ads and do seo, ai seo, geo for them." It sits alongside the four
@@ -162,7 +200,7 @@ That sentence is the gate, and it is the whole gate. Read it literally before na
 | Business model | B2B. Not B2C, not B2B2C where the buyer is a consumer |
 | Need | AI SEO, SEO or PPC. **Any one of the three qualifies.** Not all three |
 | Retainer | **$3,000 to $20,000 per month.** Never show, mention or build a plan below $3,000 |
-| Markets | USA > Canada > Australia > UK > Netherlands > Germany > Sweden > Denmark > Norway > Finland > Switzerland > UAE, plus Singapore and Ireland. USD only |
+| Markets | USA > Canada > Australia > UK > Netherlands > Germany > Sweden > Denmark > Norway > Finland > Switzerland > UAE, plus Singapore, Ireland, China and India (China and India added by the operator, 2026-10-06). USD only. Markets are served, never offices |
 | Go-to-market taxonomy | **`data/b2b/icp/icp-taxonomy.json`**, operator-locked v2.0.0. 21 industries, 341 sub-industries, 2,376 niches, 8,823 sub-niches |
 
 **The taxonomy is a route to market, not a qualifier.** This is the distinction that matters and it
@@ -382,11 +420,11 @@ consolidated. See §7 before touching any of them.
 | `data/growth/taxonomy.ts` | Sector → niche → subniche entity spine |
 | `components/growth/GrowthPage.tsx` | Discriminated switch on `page.kind`. New page types are a new kind plus a branch, never a new route |
 | `lib/auditEngine.ts` | Crawl + scoring for the snapshot. `normalizeTargetUrl` is the SSRF guard, keep it |
-| `lib/leadDelivery.ts` | Resend delivery. Email is the durable record |
-| `lib/leadCrm.ts` | GoHighLevel, optional side-channel |
+| `lib/leadDelivery.ts` | Resend delivery. Post-capture notification, and the synchronous fallback record when GHL is down or unconfigured (operator, 2026-10-06) |
+| `lib/leadCrm.ts` | GoHighLevel. Primary acceptance boundary when configured; Upstash ledger optional |
 | `lib/leadQualification.ts` | MQL scoring. Constrains how short the form can be |
 | `lib/analytics.ts` | `track()` → dataLayer + gtag + Meta with shared dedup `eventID`; UTM attribution |
-| `lib/consent.ts` | Opt-out model, defaults to allow |
+| `lib/consent.ts` | Regional defaults via `consentDefaultFor()` (opt-out US/CA/AU/AE/SG, opt-in elsewhere), GPC honoured for advertising |
 
 ---
 

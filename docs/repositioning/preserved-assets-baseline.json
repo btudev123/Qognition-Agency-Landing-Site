@@ -1,0 +1,10 @@
+{
+  "app/globals.css": "8c69fdb52bf636625d39e4d35b825fd4e2c6026880a5bdf81284acde8b6a874a",
+  "app/growth.css": "dc6b1a21c70d625c9ad2266f7c9ee0a706cf84242a3559ce11167c0afcce127b",
+  "components/brand/Logo.tsx": "ce6e9cdef10e08d771b5916ed298a7c2677ee1382bd990795d926648cefdb5d8",
+  "data/b2b/icp/icp-taxonomy.json": "6d6fe91701e04f505d2d6bf91c8a9c8950a597f0ce8d8a2493c21bcf9dc1207c",
+  "docs/copy/home-v4.md": "0b532d01b0e05e5db9d669306c3407cb5326ccf9a1f694fe1238f11bae7e7b38",
+  "public/brand/mark-two-tone-light.svg": "c7e9d825197076e9d95962020f8cd9c8ff071682b702261487b89e87ecf194fc",
+  "public/brand/mark.svg": "b5c072dc3cbf8590e70bc226f5839d9dae2c52b22ba51de4676fef57cd6e9dd6",
+  "public/brand/mark-two-tone-dark.svg": "c9e48d5098d01a17e08f61e84297e233f3816031be8f35f5af4c627cad47a0f1"
+}

@@ -1,37 +1,32 @@
-# Positioning & ICP rules — qognitionagency.com
+# Positioning and ICP rules — approved implementation update
 
-Locked v2.0 · 29 Sep 2026. Claude Code can read everything in `docs/icp/` but cannot edit it. To change the ICP, edit these files by hand and bump `version` in `docs/icp/icp-taxonomy.json`.
+Version 2.1 · 3 October 2026. This document records the current user-approved copy and funnel decisions. The source taxonomy remains unchanged at v2.0.0.
 
-## What the site sells
-- Qognition is an **AI SEO / GEO and PPC agency for high-ticket B2B firms**.
-- AI SEO / GEO means getting the client cited and recommended in ChatGPT, Gemini, Perplexity and Google AI Overviews. PPC means paid search that brings in qualified B2B pipeline.
-- The client is a B2B firm that can pay **$3,000–$20,000 per month** on a retainer and stays for years.
-- In-house engines that can be named as proof: LinkersPro (authority and link acquisition), Scriblr (AI citation and GEO tracking), M.A.R.S. (lead routing, outreach and booking attribution).
+## Positioning
+Qognition Agency provides AI SEO and GEO for B2B companies, including SaaS, with relevant supporting SEO, content, authority, paid media and conversion services. Describe controllable work and observed results; do not guarantee recommendations, rankings or pipeline.
 
-## Hard rules
-1. **Only the 21 industries in INDEX.md.** No page, copy, example, FAQ, schema or case-study framing for an industry, sub-industry, niche or sub-niche that is not in `docs/icp/icp-taxonomy.json`.
-2. **The buyer is always the B2B firm.** "Restaurant tech" is the software company, never a restaurant. "Home services franchisors" is the franchisor recruiting franchisees, never a homeowner.
-3. **Pricing starts at $3,000/month.** Published range is $3,000–$20,000/month. Never show, mention or build a plan below $3,000.
-4. **No consumer targeting.** No residential services, personal-injury or family law, consumer clinics, DTC brands or retail stores as clients.
-5. **Local/city pages are legacy.** Don't add new city or local-business programmatic pages. Don't expand the existing ones, and don't delete, redirect or noindex them without explicit sign-off (ranking risk).
-6. **Slugs and IDs come from `icp-taxonomy.json`.** Never invent or rename them. Follow the repo's existing routes; if there is no industry route yet, ask before creating one.
-7. **Overlaps:** build under the canonical ID listed at the bottom of INDEX.md; the duplicate only links to it.
-8. **Build order:** priority-A niches first. Lead each page with its `fit`: AI SEO → citation and comparison angle; PPC → paid-search angle; Both → both.
-9. **Before writing about an industry, read `docs/icp/industries/<NN-slug>.md`** and use its buyer titles, client value, AI prompts and PPC keywords.
-10. **Never fabricate.** No invented client names, logos, results, metrics, testimonials, reviews or case studies. Leave a clearly marked TODO and ask.
-11. **Voice:** plain, specific, written like a senior B2B marketer talking to a CMO. Banned: unlock, elevate, leverage, seamless, cutting-edge, game-changer, revolutionize, supercharge, "in today's fast-paced world".
-12. **Conflicts:** if a request conflicts with this file (a new industry, a sub-$3k plan, a consumer vertical), stop and ask before doing anything.
-13. Never remove the two import lines from CLAUDE.md.
+## Public presentation
+- Retain the existing logo, colours, typography and visual design.
+- Do not show agency prices, price ranges or tiers. Retain /pricing for tailored scope and a conversation.
+- Main action: Book a call. Secondary: Send an enquiry. Use the existing LeadConnector/GHL calendar.
+- Audits remain supporting offers; no unverified turnaround promises.
+- Explain the client's buying decision and applications rather than exposing internal taxonomy counts, priority bands or revenue floors.
+- Describe LinkersPro, Scriblr and M.A.R.S only through verified capabilities. Installed agent roles do not prove production CRM automation.
 
-## Markets (priority order)
-USA > Canada > Australia > UK > Netherlands > Germany > Sweden > Denmark > Norway > Finland > Switzerland > UAE, plus Singapore and Ireland. Prices in USD.
+## Taxonomy and content
+Use data/b2b/icp/icp-taxonomy.json and the existing docs/icp-industries/ briefs. Preserve all 21 industries, 341 sub-industries, 2,376 niches and 8,823 sub-niche IDs, including SaaS. Map every leaf to TOFU, MOFU and BOFU assets and contact/booking. Shared assets require real relevance. Mapping and preview rendering are not editorial completion.
 
-## Field definitions
-- **Priority A** — their client contracts ≥ $50k/yr or projects ≥ $100k, firms commonly $10M+ revenue; $5k–$20k/mo is realistic.
-- **Priority B** — solid fit, $3k–$8k/mo typical.
-- **Priority C** — fits, but thinner budgets, low search demand or long cycles; opportunistic only.
-- **Fit** — `AI SEO` (research-led buying, high-value prompts), `PPC` (clear commercial search demand), `Both`.
-- **Affordability floor** — ~$3M+ revenue for $3k/mo, $10M+ for ~$8k/mo, $25M+ for $15–20k/mo.
+Equal display names are not automatically duplicate entities. The five niche overlaps do not automatically canonicalize or discard their children. Source IDs and slugs remain unchanged.
 
-## Counts (v2.0)
-21 industries · 341 sub-industries · 2,376 niches · 8,823 sub-niches (2,371 unique niches). The original brief's 15 industries, 114 sub-industries, 280 niches and 6 sub-niches are all kept.
+Every standalone page needs distinct buyer value and reviewed content. Qualified regional expansion is authorized, including the agreed priority markets; naming a city alone is insufficient. Retain current URLs and review indexing exceptions individually.
+
+## Evidence and proof
+No invented clients, offices, certifications, results, AI answers or partnership claims. Existing pages are classified as verified client work, attributed research or illustrative scenarios. Consumer legacy work does not become B2B experience through a copy change. Missing evidence is omitted, not filled with fictional claims.
+
+## Leads and publication
+GHL contact and enquiry persistence precede success; notifications are downstream. TOFU/MOFU/BOFU are content stages, not automatic MQL/SQL transitions. SQL requires sales acceptance. Optional nurture requires consent and stops on engagement, qualification or suppression.
+
+Non-production previews cannot write to production CRM or calendars. Candidate routes are noindex and separate from the publication allowlist. Provide the user a verified preview before any production release; do not fabricate publication approval.
+
+## Markets
+USA, Canada, Australia, UK, Netherlands, Germany, Sweden, Denmark, Norway, Finland, Switzerland, UAE, Singapore and Ireland. Maintain the agreed Austria, China and India coverage and qualified additional-market candidates without asserting offices or guaranteed demand.
