@@ -101,14 +101,6 @@ a:focus-visible > .tint::before { opacity: 0.35; }
   }
 }
 
-/* Photo credit on a dark band. PhotoCredit's own colour is a light-page token
-   that does not remap, so it is overridden by specificity rather than by a
-   competing utility whose order in the stylesheet is not guaranteed. */
-.credit p,
-.credit a { color: var(--s-text-faint); }
-.credit a:hover,
-.credit a:focus-visible { color: var(--s-text); }
-
 /* A card whose only link is stretched over it shows the hover state on
    keyboard focus too. */
 .stretch:focus-within {

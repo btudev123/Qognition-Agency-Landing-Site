@@ -1,6 +1,16 @@
 import Link from 'next/link';
-import PhotoCredit from '../case-studies/PhotoCredit';
-import { serviceLabel, type ResolvedCaseStudy } from '../../data/case-studies';
+import {
+  B2B_CARD_STAGES,
+  B2B_SERVICE_LABEL,
+  FUNNEL_STAGE_LABEL,
+  b2bMarket,
+  formatCount,
+  formatWindow,
+  isB2BCaseStudy,
+  serviceLabel,
+  type AnyCaseStudy,
+  type ResolvedB2BCaseStudy,
+} from '../../data/case-studies';
 import TintedImage from './TintedImage';
 import v from './visual.module.css';
 
@@ -18,7 +28,9 @@ import v from './visual.module.css';
 const joinServices = (labels: readonly string[]) =>
   labels.length <= 1 ? labels.join('') : `${labels.slice(0, -1).join(', ')} and ${labels[labels.length - 1]}`;
 
-export default function ProgrammeCard({ study }: { study: ResolvedCaseStudy }) {
+export default function ProgrammeCard({ study }: { study: AnyCaseStudy }) {
+  if (isB2BCaseStudy(study)) return <B2BProgrammeCard study={study} />;
+
   return (
     <li className={`${v.latticeCell} ${v.stretch} rf-card relative flex flex-col`}>
       <TintedImage src={study.image.src} alt="" sizes="(min-width: 1024px) 33vw, 100vw" className="aspect-[16/10]" />
@@ -38,9 +50,55 @@ export default function ProgrammeCard({ study }: { study: ResolvedCaseStudy }) {
         <p className="text-meta m-0 mt-4 pt-4" style={{ color: 'var(--s-text-muted)', borderTop: '1px solid var(--s-rule-hairline)' }}>
           KPI targets set at the start. Results pending client reporting.
         </p>
-        {/* z-10 lifts the credit above the stretched link so its own links take the click. */}
-        <div className={`${v.credit} relative z-10 mt-auto pt-3`}>
-          <PhotoCredit image={study.image} className="m-0" />
+      </div>
+    </li>
+  );
+}
+
+/* The B2B branch (operator, 2026-10-07: four named B2B programmes with reported
+ * results). Unlike the insurance card above, these figures are results, so the
+ * card shows two of them: qualified leads and sales opportunities. Never more
+ * (MARS brief: no wall of numbers on `/`). The dates and the source sit directly
+ * under the figures so neither can be read without the other.
+ *
+ * No photograph: none is approved for these four, and a stock image would be
+ * decoration. Every colour is an --s-* role, so the card is correct on the dark
+ * band it is built for and on a light one. */
+function B2BProgrammeCard({ study }: { study: ResolvedB2BCaseStudy }) {
+  return (
+    <li className={`${v.latticeCell} ${v.stretch} rf-card relative flex flex-col`}>
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <p className="rf-card-label text-meta m-0 font-mono uppercase tracking-[0.14em]">B2B client programme</p>
+        <h3 className="text-h4 font-sans m-0 mt-3 font-semibold break-words">
+          <Link href={`/case-studies/${study.id}`} className="after:absolute after:inset-0">
+            {study.client}
+          </Link>
+        </h3>
+        <p className="text-meta m-0 mt-1" style={{ color: 'var(--s-text-muted)' }}>
+          {study.sector}, {b2bMarket(study)}
+        </p>
+        <p className="text-meta m-0 mt-1" style={{ color: 'var(--s-text)' }}>
+          {/* A dot list, not joinServices: two labels already contain "and". */}
+          {study.services.slice(0, 3).map((s) => B2B_SERVICE_LABEL[s].label).join(' · ')}
+        </p>
+        <div className="mt-auto pt-4">
+          <div className="pt-4" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
+            <dl className="m-0 grid grid-cols-2 gap-4">
+              {B2B_CARD_STAGES.map((stage) => (
+                <div key={stage} className="min-w-0">
+                  <dt className="text-meta" style={{ color: 'var(--s-text-muted)' }}>
+                    {FUNNEL_STAGE_LABEL[stage].label}
+                  </dt>
+                  <dd className="text-h3 m-0 font-semibold tabular-nums" style={{ color: 'var(--s-accent)' }}>
+                    {formatCount(study.results[stage])}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="text-meta m-0 mt-3" style={{ color: 'var(--s-text-muted)' }}>
+              {formatWindow(study)}. {study.source}
+            </p>
+          </div>
         </div>
       </div>
     </li>

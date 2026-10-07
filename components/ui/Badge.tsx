@@ -9,7 +9,10 @@ interface BadgeProps {
 export default function Badge({ children, variant = 'accent', className = '' }: BadgeProps) {
   const base =
     variant === 'accent'
-      ? 'bg-[var(--accent-light)] text-[var(--accent)]'
+      ? /* --s-accent is --accent-deep #0F766E on a light band and remaps to teal-400 under
+           data-theme="dark", where a fixed --accent-deep falls to about 2.9:1. --accent
+           (#14B8A6) was 2.49:1 on light and is graphics-only (CLAUDE.md §9). */
+        'bg-[var(--accent-light)] text-[var(--s-accent)]'
       : 'bg-[var(--ink)]/5 text-[var(--text-muted)]';
 
   return (

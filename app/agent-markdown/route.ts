@@ -1,10 +1,22 @@
 import { AUDIT_OFFERS } from '../../data/auditOffers';
 import { B2B_MOFU_PAGES } from '../../data/b2bPages';
-import { CASE_STUDIES, nicheLabel } from '../../data/case-studies';
+import {
+  B2B_CASE_STUDIES,
+  B2B_SERVICE_LABEL,
+  CASE_STUDIES,
+  FUNNEL_STAGES,
+  FUNNEL_STAGE_LABEL,
+  b2bMarket,
+  formatCount,
+  formatWindow,
+  nicheLabel,
+} from '../../data/case-studies';
 import { BLOG_POSTS } from '../../data/blog';
 import { SERVICES } from '../../data/services';
 import { RESOURCES, FREE_TOOLS } from '../../data/seoExpansion';
-import { SITE_URL } from '../../lib/seo';
+import { SITE_URL, h1For } from '../../lib/seo';
+import { servicePageFor } from '../../data/servicePages';
+import { getServiceSubPage } from '../../data/seoExpansion';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,6 +55,39 @@ const linesForPath = (path: string) => {
   }
 
   const caseStudyMatch = cleanPath.match(/^\/case-studies\/([^/]+)$/);
+  const b2bStudy = caseStudyMatch ? B2B_CASE_STUDIES.find((study) => study.id === caseStudyMatch[1]) : undefined;
+  if (b2bStudy) {
+    return [
+      `# ${b2bStudy.headline}`,
+      '',
+      `${b2bStudy.client}, ${b2bMarket(b2bStudy)}, ${b2bStudy.sector}. B2B client programme.`,
+      '',
+      b2bStudy.engagement,
+      '',
+      '## Who they sell to',
+      b2bStudy.sellsTo,
+      '',
+      '## The problem',
+      b2bStudy.problem,
+      '',
+      '## What we did',
+      ...b2bStudy.whatWeDid.map((item) => `- ${item}`),
+      '',
+      `## Results, ${formatWindow(b2bStudy)}`,
+      b2bStudy.source,
+      ...FUNNEL_STAGES.map(
+        (stage) => `- ${FUNNEL_STAGE_LABEL[stage].label}: ${formatCount(b2bStudy.results[stage])} (${FUNNEL_STAGE_LABEL[stage].meaning})`
+      ),
+      ...(b2bStudy.paidMedia
+        ? ['', `### ${b2bStudy.paidMedia.channel}, same dates`, ...b2bStudy.paidMedia.figures.map((f) => `- ${f.label}: ${f.value}${f.note ? ` (${f.note})` : ''}`)]
+        : []),
+      '',
+      '## Services used',
+      ...b2bStudy.services.map((s) => `- ${B2B_SERVICE_LABEL[s].label}: ${B2B_SERVICE_LABEL[s].meaning}`),
+      '',
+      `Canonical: ${SITE_URL}/case-studies/${b2bStudy.id}`
+    ];
+  }
   const caseStudy = caseStudyMatch ? CASE_STUDIES.find((study) => study.id === caseStudyMatch[1]) : undefined;
   if (caseStudy) {
     return [
@@ -81,14 +126,21 @@ const linesForPath = (path: string) => {
   }
 
   if (cleanPath === '/resources') {
-    return ['# Free Audits and Lead Magnets', '', ...RESOURCES.map((resource) => `- [${resource.title}](${SITE_URL}${resource.href || `/${resource.slug}`}) - ${resource.description}`)];
+    return ['# Free audits and resources', '', ...RESOURCES.map((resource) => `- [${resource.title}](${SITE_URL}${resource.href || `/${resource.slug}`}) - ${resource.description}`)];
   }
 
   if (cleanPath === '/case-studies') {
     return [
       '# Case Studies',
       '',
-      `${CASE_STUDIES.length} client programmes across HVAC, dental and insurance.`,
+      '## B2B client programmes, with dated results confirmed by client reporting',
+      '',
+      ...B2B_CASE_STUDIES.map(
+        (study) =>
+          `- [${study.headline}](${SITE_URL}/case-studies/${study.id}): ${study.client}, ${b2bMarket(study)} (${formatWindow(study)})`
+      ),
+      '',
+      `## ${CASE_STUDIES.length} client programmes across HVAC, dental and insurance (KPIs are targets until client reporting confirms them)`,
       '',
       ...CASE_STUDIES.map(
         (study) =>
@@ -101,6 +153,45 @@ const linesForPath = (path: string) => {
     return ['# Free Tools', '', ...FREE_TOOLS.map((tool) => `- [${tool.title}](${SITE_URL}/free-tools/${tool.slug}) - ${tool.description}`)];
   }
 
+  /* The five plain-English service pages (data/servicePages.ts). Same strings as the
+     visible page and the FAQ JSON-LD, so a reader and an agent see the same claims. */
+  const servicePage = servicePageFor(cleanPath);
+  if (servicePage) {
+    const [, , serviceId, subSlug] = cleanPath.split('/');
+    const service = SERVICES.find((item) => item.id === serviceId);
+    const h1 = subSlug
+      ? getServiceSubPage(serviceId, subSlug)?.h1 ?? service?.title ?? cleanPath
+      : h1For(cleanPath, service?.title ?? cleanPath);
+    const { monthly } = servicePage;
+    return [
+      `# ${h1}`,
+      '',
+      servicePage.eyebrow,
+      '',
+      servicePage.promise,
+      ...(servicePage.promiseNote ? ['', servicePage.promiseNote] : []),
+      '',
+      `Canonical: ${SITE_URL}${cleanPath}`,
+      '',
+      '## What you get',
+      ...servicePage.whatYouGet.map((item) => `- ${item.title}: ${item.body}`),
+      '',
+      '## What you see each month',
+      ...(monthly.intro ? [monthly.intro, ''] : []),
+      ...monthly.items.map((item) => `- ${item}`),
+      ...(monthly.note ? ['', monthly.note] : []),
+      ...(monthly.auditLink
+        ? ['', `Want to see your answers first? [Request a free AI visibility audit](${SITE_URL}/free-ai-audit).`]
+        : []),
+      '',
+      '## Questions buyers ask us',
+      ...servicePage.faqs.flatMap((faq) => ['', `### ${faq.question}`, faq.answer]),
+      '',
+      `Book a call: ${SITE_URL}/book`,
+      `Send an enquiry: ${SITE_URL}/contact#enquiry`
+    ];
+  }
+
   if (cleanPath === '/services') {
     return ['# Qognition Services', '', ...SERVICES.map((service) => `- [${service.title}](${SITE_URL}/services/${service.id}) - ${service.shortDescription}`)];
   }
@@ -108,12 +199,12 @@ const linesForPath = (path: string) => {
   return [
     '# Qognition Agency',
     '',
-    'Qognition is an AI growth marketing partner for qualified leads, SEO, AI search visibility, PPC, social media, web design, branding, creative, and measurable revenue systems.',
+    'Qognition Agency is a B2B AI search visibility agency. It runs AI SEO, GEO, SEO, local SEO and B2B PPC for established B2B companies, including SaaS.',
     '',
     `Canonical: ${SITE_URL}${cleanPath === '/' ? '' : cleanPath}`,
     '',
     '## Important Links',
-    `- [AI Search Visibility Report](${SITE_URL}/free-ai-audit)`,
+    `- [Free AI visibility audit](${SITE_URL}/free-ai-audit)`,
     `- [Case Studies](${SITE_URL}/case-studies)`,
     `- [Services](${SITE_URL}/services)`,
     `- [Resources](${SITE_URL}/resources)`

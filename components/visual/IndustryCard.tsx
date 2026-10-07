@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { ArrowUpRight, type LucideIcon } from 'lucide-react';
-import PhotoCredit from '../case-studies/PhotoCredit';
 import type { IndustryImage } from '../../data/b2b/icp/industryVisuals';
 import IconTile from './IconTile';
 import TintedImage from './TintedImage';
@@ -49,9 +48,6 @@ export function FeaturedIndustryCard({
         <p className="text-meta m-0 mt-1 max-w-[44ch]" style={{ color: 'var(--s-text-muted)' }}>
           {buyer}
         </p>
-        <div className={`${v.credit} mt-3`}>
-          <PhotoCredit image={image} className="m-0" />
-        </div>
       </div>
     </li>
   );

@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import Breadcrumbs from '../../components/case-studies/Breadcrumbs';
+import CaseStudyCard from '../../components/case-studies/CaseStudyCard';
 import IndexFilters from '../../components/case-studies/IndexFilters';
 import Heading from '../../components/ui/Heading';
 import Text from '../../components/ui/Text';
 import {
+  B2B_CASE_STUDIES,
   CASE_STUDIES,
   LIBRARY_STATS,
   NICHES,
@@ -17,7 +19,7 @@ import {
 import { breadcrumbSchema } from '../../lib/schema';
 import { SITE_URL, metadataFor } from '../../lib/seo';
 
-const description = `${LIBRARY_STATS.total} client programmes across HVAC, dental and insurance. Targets set at the start of each engagement are labelled as targets until client reporting confirms a result.`;
+const description = `${B2B_CASE_STUDIES.length} named B2B client programmes with dated results confirmed by client reporting, and ${LIBRARY_STATS.total} programmes across HVAC, dental and insurance with targets labelled until client reporting confirms them.`;
 
 // Title and description come from SEO_OVERRIDES['/case-studies'] in lib/seo.ts.
 // The hard-coded 'Case Studies | Qognition' here doubled the layout's
@@ -35,8 +37,8 @@ export default function Page() {
       about: { '@type': 'Organization', name: 'Qognition', url: SITE_URL },
       mainEntity: {
         '@type': 'ItemList',
-        numberOfItems: CASE_STUDIES.length,
-        itemListElement: CASE_STUDIES.map((study, i) => ({
+        numberOfItems: B2B_CASE_STUDIES.length + CASE_STUDIES.length,
+        itemListElement: [...B2B_CASE_STUDIES, ...CASE_STUDIES].map((study, i) => ({
           '@type': 'ListItem',
           position: i + 1,
           url: `${SITE_URL}/case-studies/${study.id}`,
@@ -65,6 +67,36 @@ export default function Page() {
             <Heading level="h1" className="mb-6">
               Case Studies
             </Heading>
+            <Text>
+              B2B client programmes with dated results, then our programmes for local service businesses and commercial insurance.
+            </Text>
+          </header>
+
+          {/* ── Named B2B programmes (operator, 2026-10-07) ─────────────────
+              Grouped first: they carry reported results. 1 / 2 / 4 columns
+              (4 from xl, where a card is wide enough for its headline), so
+              the four cards fill every row at every width. */}
+          {B2B_CASE_STUDIES.length > 0 && (
+            <section aria-labelledby="b2b-programmes" className="mb-20">
+              <Heading level="h2" id="b2b-programmes" className="mb-4">
+                B2B client programmes
+              </Heading>
+              <Text className="mb-8 max-w-3xl">
+                {B2B_CASE_STUDIES.length} programmes for B2B firms selling to senior buyers. Each one shows qualified leads, meetings and sales opportunities for a stated date range, confirmed by each client's own reporting.
+              </Text>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                {B2B_CASE_STUDIES.map((study) => (
+                  <CaseStudyCard key={study.id} study={study} />
+                ))}
+              </div>
+            </section>
+          )}
+
+          <section aria-labelledby="client-library">
+          <div className="mb-14 max-w-3xl">
+            <Heading level="h2" id="client-library" className="mb-6">
+              Local service and insurance programmes
+            </Heading>
             <Text className="mb-4">
               {LIBRARY_STATS.total} client programmes across{' '}
               {LIBRARY_STATS.byNiche.map((n) => `${n.label} (${n.count})`).join(', ')}, in{' '}
@@ -85,13 +117,13 @@ export default function Page() {
               .
             </Text>
             <Text>
-              These programmes are for local service businesses and commercial insurance. Read them for how we plan and measure, not as evidence of work in your sector. For your own sector,{' '}
+              These programmes are for local service businesses and commercial insurance. Unless you work in one of those sectors, read them for how we plan and measure, not as evidence of work in yours. For your own sector,{' '}
               <Link href="/free-ai-audit" className="text-[var(--accent-deep)] underline underline-offset-2">
                 request a free AI visibility audit
               </Link>
               .
             </Text>
-          </header>
+          </div>
 
           {/* ── Hub navigation: the internal-link spine ───────────────────── */}
           <nav aria-label="Browse case studies" className="mb-14 space-y-4">
@@ -140,6 +172,7 @@ export default function Page() {
           </nav>
 
           <IndexFilters studies={CASE_STUDIES} />
+          </section>
         </div>
       </main>
     </>

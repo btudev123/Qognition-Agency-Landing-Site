@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { CalendarDays, Layers, Link2, Quote } from 'lucide-react';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
-import { byNiche } from '../../data/case-studies';
+import { B2B_CASE_STUDIES, B2B_PROOF_LINE, byNiche } from '../../data/case-studies';
 import IconTile from '../visual/IconTile';
 import ProgrammeCard from '../visual/ProgrammeCard';
 import { Eyebrow, Shell } from './primitives';
@@ -17,11 +17,14 @@ const METHOD = [
   { icon: Link2, label: 'The cited sources' },
 ];
 
-/* Insurance only on a B2B surface (operator, 2026-10-07): HVAC and dental are
-   consumer sectors and never render as B2B proof. Deterministic: the first
-   three insurance records in library order. No KPI figures (Ruth, 2026-10-07):
-   see components/visual/ProgrammeCard.tsx. */
+/* B2B proof on `/` (operator, 2026-10-07): the four named B2B programmes lead,
+   because they carry reported results; insurance follows. HVAC and dental are
+   consumer sectors and never render here. Deterministic: library order.
+   B2B cards show two result figures each, with dates and source; insurance
+   cards show no KPI figures (Ruth, 2026-10-07), because those are targets.
+   See components/visual/ProgrammeCard.tsx for both branches. */
 export default function Evidence() {
+  const results = B2B_CASE_STUDIES;
   const programmes = byNiche('insurance').slice(0, 3);
 
   return (
@@ -59,9 +62,25 @@ export default function Evidence() {
           </p>
         </ScrollReveal>
 
+        {/* 1 / 2 / 4 columns for the four B2B cards and 1 / 3 for the three
+            insurance cards, so every row is full at every width. The group
+            labels are eyebrows, not headings: each card's client name is the
+            h3, and a heading per group would nest h3 under h3. */}
+        {results.length > 0 && (
+          <ScrollReveal stagger={3} className="mt-10">
+            <Eyebrow>B2B client results</Eyebrow>
+            <ul className={`${v.lattice} list-none p-0 m-0 mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`}>
+              {results.map((study) => (
+                <ProgrammeCard key={study.id} study={study} />
+              ))}
+            </ul>
+          </ScrollReveal>
+        )}
+
         {programmes.length > 0 && (
           <ScrollReveal stagger={3} className="mt-10">
-            <ul className={`${v.lattice} list-none p-0 m-0 grid grid-cols-1 md:grid-cols-3`}>
+            <Eyebrow>Insurance programmes</Eyebrow>
+            <ul className={`${v.lattice} list-none p-0 m-0 mt-5 grid grid-cols-1 md:grid-cols-3`}>
               {programmes.map((study) => (
                 <ProgrammeCard key={study.id} study={study} />
               ))}
@@ -72,10 +91,10 @@ export default function Evidence() {
         <ScrollReveal stagger={4} className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 lg:items-start">
           <div className="lg:col-span-7">
             <p className="text-meta m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-              Every KPI is labelled as a target until client reporting fills in the result.
+              {B2B_PROOF_LINE}
             </p>
             <p className="text-meta m-0 mt-2 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-              These programmes are for insurance businesses. Outside insurance, read them for the method, not as proof of work in your sector.
+              Insurance KPIs stay labelled as targets until client reporting fills in the result. If you are not in insurance, read the insurance programmes for the method, not as proof of work in your sector.
             </p>
           </div>
           <div className="lg:col-span-5 flex flex-col sm:flex-row flex-wrap gap-3 lg:justify-end">

@@ -1,4 +1,5 @@
 import { getBenchmarks } from './benchmarks';
+import { B2B_RECORDS, b2bEvidence, type ResolvedB2BCaseStudy } from './b2b';
 import CASE_STUDY_IMAGES from './images.json';
 import { DENTAL_CASE_STUDIES } from './dental';
 import { HVAC_CASE_STUDIES } from './hvac';
@@ -17,8 +18,28 @@ import {
 } from './types';
 
 export * from './types';
+export * from './b2b';
 export { BENCHMARKS, ALL_BENCHMARKS, getBenchmarks, type Benchmark } from './benchmarks';
 export { PLAYBOOKS, getPlaybook, getPlaybooks } from './playbooks';
+
+/**
+ * The four named B2B programmes (operator, 2026-10-07). A separate list from CASE_STUDIES on
+ * purpose: see the header of ./b2b.ts. They share the /case-studies/<id> URL space, so the
+ * detail route and the sitemap read both lists; nothing else that reads CASE_STUDIES changes.
+ */
+export const B2B_CASE_STUDIES: ResolvedB2BCaseStudy[] = B2B_RECORDS.map((study) => ({
+  ...study,
+  evidence: b2bEvidence(study),
+}));
+
+export const getB2BCaseStudy = (id: string): ResolvedB2BCaseStudy | undefined =>
+  B2B_CASE_STUDIES.find((s) => s.id === id);
+
+/** Either kind of published study. Narrow with isB2BCaseStudy(). */
+export type AnyCaseStudy = ResolvedCaseStudy | ResolvedB2BCaseStudy;
+
+export const isB2BCaseStudy = (study: AnyCaseStudy): study is ResolvedB2BCaseStudy =>
+  'kind' in study && study.kind === 'b2b';
 
 /** Every record, including held ones. Use for reconciliation, never for rendering. */
 export const ALL_CASE_STUDIES: CaseStudy[] = [
@@ -153,7 +174,14 @@ export const relatedCaseStudies = (study: ResolvedCaseStudy, limit = 3): Resolve
 export const nicheLabel = (n: Niche) => NICHE_LABEL[n];
 export const serviceLabel = (s: ServiceKey) => SERVICE_LABEL[s];
 
-/** Library-level counts, for hub copy. Derived — never hardcode these in a component. */
+/**
+ * Library-level counts, for hub copy. Derived — never hardcode these in a component.
+ *
+ * Scope: the 45 local and insurance programmes in CASE_STUDIES only. The /case-studies filter
+ * counts, the niche and service links and the state count read this, and none of those apply to
+ * the four named B2B programmes, so it deliberately does NOT include them. For a count of
+ * everything published, read PUBLISHED_STATS below.
+ */
 export const LIBRARY_STATS = {
   total: CASE_STUDIES.length,
   byNiche: NICHES.map((n) => ({ niche: n, label: NICHE_LABEL[n], count: byNiche(n).length })),
@@ -164,6 +192,23 @@ export const LIBRARY_STATS = {
   })),
   states: STATES.length,
   verified: CASE_STUDIES.filter((s) => s.evidence === 'verified').length,
+};
+
+/**
+ * Counts across everything published under /case-studies: the 45 plus the four named B2B
+ * programmes (CLAUDE.md, operator 2026-10-07: "Published programme count: 49").
+ *
+ * `confirmed` uses each record type's own evidence grade, which both mean "confirmed against the
+ * client's own reporting for a stated period" (/case-studies/methodology; operator 2026-10-08 for
+ * the four). Derived, so it moves when an `actual` is filled or a record is added.
+ */
+export const PUBLISHED_STATS = {
+  total: CASE_STUDIES.length + B2B_CASE_STUDIES.length,
+  confirmed:
+    CASE_STUDIES.filter((s) => s.evidence === 'verified').length +
+    B2B_CASE_STUDIES.filter((s) => s.evidence === 'verified').length,
+  b2b: B2B_CASE_STUDIES.length,
+  library: CASE_STUDIES.length,
 };
 
 /**
@@ -218,8 +263,15 @@ const TOPIC_HINTS: { niche: Niche; patterns: RegExp }[] = [
  * Every caller of studiesForTopic is a B2B surface (industry hubs, sub-industry pages, location
  * and location x service pages), so the restriction lives here rather than at each call site:
  * a new caller cannot forget it. scripts/check-industry-gate.cjs asserts the output.
+ *
+ * Raised 2026-10-07 to ['b2b', 'insurance'], operator decision "White-label B2B case studies,
+ * named": the four named B2B programmes may appear as B2B proof next to insurance. HVAC and
+ * dental still never do. 'b2b' is not a `Niche`: the four are a separate record type and never
+ * pass through studiesForTopic, so this function's output is unchanged (insurance only). They
+ * reach B2B pages only through b2bStudiesForPath() below, which resolves explicit ids per page.
  */
-export const B2B_PAGE_NICHES: readonly Niche[] = ['insurance'];
+export type LibrarySector = Niche | 'b2b';
+export const B2B_PAGE_NICHES: readonly LibrarySector[] = ['b2b', 'insurance'];
 const isB2BPageNiche = (n: Niche) => B2B_PAGE_NICHES.includes(n);
 
 export const studiesForTopic = (
@@ -269,6 +321,51 @@ export const studiesForTopic = (
     }
   }
   return spread;
+};
+
+/**
+ * Which named B2B programmes render as proof on which B2B industry page, by explicit id.
+ *
+ * Explicit rather than keyword-matched, per docs/seo/b2b-niche-architecture.md rule 6 ("a proof
+ * block must resolve to an explicit case-study id rather than a fuzzy match") and the 2026-09-28
+ * history in studiesForTopic above, where one widened pattern put an HVAC contractor on eight
+ * industry hubs. A page appears here only when the client's own sector is the page's sector:
+ *
+ *   cybersecurity, managed security and security services   Falcon Security, Sophos, Brixio
+ *   cloud consulting                                         Brixio
+ *   cybersecurity software                                   Sophos
+ *   B2B software and HR software                             Talentera (and Sophos at sector level)
+ *
+ * Every path is a published, indexable /growth industry page. None of the 11 /industries hubs
+ * or their 66 sub-pages is in one of these sectors (law, accounting, financial services,
+ * consulting, real estate, manufacturing, coaching, industrial trade, care homes, elder care,
+ * waste), so none carries an entry. scripts/check-industry-gate.cjs freezes this map: adding a
+ * page is a visible edit there, with a reviewer.
+ */
+export const B2B_PROOF_BY_PATH: Readonly<Record<string, readonly string[]>> = {
+  '/growth/industries/cybersecurity': ['falcon-security', 'sophos', 'brixio'],
+  '/growth/industries/cybersecurity/managed-security': ['sophos', 'falcon-security'],
+  '/growth/industries/cybersecurity/managed-security/mdr': ['sophos'],
+  '/growth/industries/cybersecurity/security-specialists': ['falcon-security', 'brixio'],
+  '/growth/industries/professional-services/cybersecurity-consulting': ['falcon-security', 'brixio'],
+  '/growth/industries/professional-services/cloud-consulting': ['brixio'],
+  '/growth/industries/b2b-software': ['talentera', 'sophos'],
+  '/growth/industries/b2b-software/cybersecurity-software': ['sophos'],
+  '/growth/industries/b2b-software/hr-payroll-workforce': ['talentera'],
+  '/growth/industries/b2b-software/hr-payroll-workforce/hr-software': ['talentera'],
+};
+
+/**
+ * Named B2B programmes for one B2B page path. Empty when the page has no entry, and empty for
+ * every page if 'b2b' is ever removed from B2B_PAGE_NICHES, so that constant stays the single
+ * switch for what a B2B surface may render. Callers omit the section on empty (§4).
+ */
+export const b2bStudiesForPath = (path: string, limit = 3): ResolvedB2BCaseStudy[] => {
+  if (!B2B_PAGE_NICHES.includes('b2b')) return [];
+  return (B2B_PROOF_BY_PATH[path] ?? [])
+    .map((id) => getB2BCaseStudy(id))
+    .filter((s): s is ResolvedB2BCaseStudy => Boolean(s))
+    .slice(0, limit);
 };
 
 /** The largest-magnitude KPI on a study. While `actual` is empty it is a target, and callers must label it so. */

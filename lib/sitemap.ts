@@ -16,7 +16,7 @@ import { COMPARISONS, FREE_TOOLS, GLOSSARY_TERMS, RESOURCES, SERVICE_SUB_PAGES }
 import { SERVICES, LOCATION_MATRIX_SERVICES } from '../data/services';
 // `SERVICES` collides with the marketing services above — these are the three case-study
 // service keys ('ai-seo' | 'ppc' | 'social'), not the site's service pages.
-import { CASE_STUDIES, NICHES, SERVICES as CASE_STUDY_SERVICES, STATES } from '../data/case-studies';
+import { B2B_CASE_STUDIES, CASE_STUDIES, NICHES, SERVICES as CASE_STUDY_SERVICES, STATES } from '../data/case-studies';
 import { TOOL_CATEGORIES } from '../constants';
 import { SITE_URL } from './seo';
 
@@ -267,6 +267,14 @@ export const caseStudyRoutes = (): SitemapEntry[] => [
     path: `/case-studies/location/${state.code.toLowerCase()}`,
     priority: 0.74,
     changefreq: 'monthly' as const,
+  })),
+  /* The four named B2B programmes (operator, 2026-10-07). No image fields: they have no image.
+     +4 entries; scripts/check-industry-gate.cjs carries the new total. */
+  ...B2B_CASE_STUDIES.map((study) => ({
+    path: `/case-studies/${study.id}`,
+    priority: 0.82,
+    changefreq: 'monthly' as const,
+    title: study.headline,
   })),
   ...CASE_STUDIES.map((study) => ({
     path: `/case-studies/${study.id}`,

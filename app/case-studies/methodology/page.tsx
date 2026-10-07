@@ -6,7 +6,7 @@ import Breadcrumbs from '../../../components/case-studies/Breadcrumbs';
 import FaqAccordion from '../../../components/case-studies/FaqAccordion';
 import Heading from '../../../components/ui/Heading';
 import Text from '../../../components/ui/Text';
-import { ALL_BENCHMARKS, LIBRARY_STATS, type Faq } from '../../../data/case-studies';
+import { ALL_BENCHMARKS, LIBRARY_STATS, PUBLISHED_STATS, type Faq } from '../../../data/case-studies';
 import { breadcrumbSchema } from '../../../lib/schema';
 import { SITE_URL } from '../../../lib/seo';
 
@@ -25,8 +25,8 @@ const FAQS: Faq[] = [
   { question: 'Are these real client programmes?', answer: 'Yes. Every case study in the library is a Qognition client programme. Targets were set at the start of each engagement, and results are published as client reporting confirms them.' },
   { question: 'Where do the benchmark numbers come from?', answer: 'Benchmark rows identify a third-party source and publication year. They describe that source’s sample and method. They are context for discussion, not forecasts for a particular company.' },
   { question: 'What is the difference between a target and a result?', answer: 'A target is the outcome a programme was set up to reach, agreed at the start of the engagement. A result is what the client’s own reporting shows for a defined period. We label them differently and never print one in the other’s place.' },
-  { question: 'Why do the case studies show targets rather than results?', answer: 'A figure is published as a result only after it has been confirmed against the client’s own reporting. Until then it stays labelled as a target.' },
-  { question: 'Can I inspect the underlying evidence?', answer: 'Every benchmark links to its public source. Client reporting belongs to the client and is not published. When a result is published, it names its measurement method, period and attribution limits.' },
+  { question: 'Why do some case studies show targets rather than results?', answer: 'A figure is published as a result only after it has been confirmed against the client’s own reporting. Until then it stays labelled as a target.' },
+  { question: 'Can I inspect the underlying evidence?', answer: 'Every benchmark links to its public source. Client reporting belongs to the client and is not published. When a result is published, it states the period it covers and that the client’s own reporting confirmed it.' },
   { question: 'Do you guarantee these outcomes?', answer: 'No. Outcomes depend on the business, competition, implementation and third-party platforms. We agree a scope and measurement approach before work begins.' },
 ];
 
@@ -78,7 +78,7 @@ export default function Page() {
               Three kinds of information, clearly separated
             </Heading>
             <Text className="mb-4">
-              <strong className="text-[var(--text)]">Client programmes</strong> set out the client’s market, the problem the programme addresses, the work and the targets agreed at the start of the engagement.
+              <strong className="text-[var(--text)]">Client programmes</strong> set out the client’s market, the problem the programme addresses, the work, and either the targets agreed at the start of the engagement or the results confirmed since.
             </Text>
             <Text className="mb-4">
               <strong className="text-[var(--text)]">Attributed research</strong> links to a named third-party source. Its dates, sample and scope matter: a category benchmark does not predict a particular firm’s outcome.
@@ -93,13 +93,13 @@ export default function Page() {
               Where the numbers come from
             </Heading>
             <Text className="mb-4">
-              A number with no denominator is decoration. Every benchmark we cite names its source,
+              Every benchmark we cite names its source,
               its year, and what it actually measured, including sample size where the source
               states one. All {ALL_BENCHMARKS.length} of them are below, with live links.
             </Text>
             <Text>
               We do not publish our own aggregate statistics as though they were industry research,
-              and we do not emit review or rating markup we have not earned.
+              and we do not show review stars or ratings we have not earned.
             </Text>
           </section>
 
@@ -108,7 +108,7 @@ export default function Page() {
               How a target becomes a result
             </Heading>
             <Text className="mb-4">
-              Each programme names the records its results are reported from: search data, dated AI observations, campaign exports and CRM outcomes. Access, reporting responsibilities and attribution limits are agreed for each engagement.
+              Results come from the client’s own records: search data, dated AI answers, ad campaign reports and sales records. Who has access, who reports what, and what each result can and cannot be credited to are agreed for each engagement.
             </Text>
             <Text>
               A figure moves from target to result only when it has been confirmed against those records.
@@ -121,16 +121,18 @@ export default function Page() {
             </Heading>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {[
-                { label: 'Client programmes', value: LIBRARY_STATS.total },
-                { label: 'States', value: LIBRARY_STATS.states },
+                /* Programmes and confirmed span both record types (PUBLISHED_STATS). The
+                   state count is the local and insurance library only, so it says so. */
+                { label: 'Client programmes', value: PUBLISHED_STATS.total },
+                { label: 'Confirmed by client reporting', value: PUBLISHED_STATS.confirmed },
                 { label: 'Benchmarks cited', value: ALL_BENCHMARKS.length },
-                { label: 'Confirmed by client reporting', value: LIBRARY_STATS.verified },
+                { label: 'US states, local and insurance', value: LIBRARY_STATS.states },
               ].map((stat) => (
                 <div
                   key={stat.label}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5"
                 >
-                  <Heading level="h3" className="text-[var(--accent)]">
+                  <Heading level="h3" className="text-[var(--accent-deep)]">
                     {stat.value}
                   </Heading>
                   <Text size="meta" className="mt-1">
@@ -140,7 +142,7 @@ export default function Page() {
               ))}
             </div>
             <Text size="meta" tone="faint" className="mt-4">
-              A programme counts as confirmed when every KPI on it has been checked against the client’s own reporting. The rest show targets, labelled as targets. This number moves as reporting cycles complete.
+              A programme counts as confirmed when its figures have been checked against the client’s own reporting for a stated period. The rest show targets, labelled as targets. This number moves as reporting cycles complete.
             </Text>
           </section>
 
@@ -161,15 +163,15 @@ export default function Page() {
           <nav aria-label="Back to the library" className="flex flex-wrap gap-x-6 gap-y-3">
             <Link
               href="/case-studies"
-              className="text-body text-[var(--accent)] underline underline-offset-2"
+              className="text-body text-[var(--accent-deep)] underline underline-offset-2"
             >
-              All {LIBRARY_STATS.total} case studies
+              All {PUBLISHED_STATS.total} case studies
             </Link>
             {LIBRARY_STATS.byNiche.map((n) => (
               <Link
                 key={n.niche}
                 href={`/case-studies/industry/${n.niche}`}
-                className="text-body text-[var(--accent)] underline underline-offset-2"
+                className="text-body text-[var(--accent-deep)] underline underline-offset-2"
               >
                 {n.label} ({n.count})
               </Link>

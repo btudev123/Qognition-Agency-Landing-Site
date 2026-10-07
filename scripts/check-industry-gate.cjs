@@ -28,7 +28,21 @@ const {
 } = require('../lib/industryPublication.ts');
 const { routesForSitemap, sitemapIndexes } = require('../lib/sitemap.ts');
 const { GLOSSARY_TERMS } = require('../data/seoExpansion.ts');
-const { studiesForTopic, getCaseStudy, B2B_PAGE_NICHES } = require('../data/case-studies/index.ts');
+const {
+  studiesForTopic,
+  getCaseStudy,
+  B2B_PAGE_NICHES,
+  ALL_CASE_STUDIES,
+  B2B_CASE_STUDIES,
+  B2B_PROOF_BY_PATH,
+  b2bStudiesForPath,
+  getB2BCaseStudy,
+  FUNNEL_STAGES,
+  B2B_RESULT_SOURCE,
+  B2B_PROOF_LINE,
+  PUBLISHED_STATS,
+  CASE_STUDIES,
+} = require('../data/case-studies/index.ts');
 const { LOCATIONS } = require('../data/locations.ts');
 const { SERVICES, LOCATION_MATRIX_SERVICES } = require('../data/services.ts');
 const fs = require('node:fs');
@@ -78,10 +92,14 @@ const entries = sitemapIndexes.flatMap((g) => routesForSitemap(g));
 /* 4422 -> 4430 on 2026-09-29. ICP wave 1 published eight TIC pages, and eight is
    the whole of the change: 4422 legacy rows untouched, plus one industry, two
    sub-industries, three niches and two sub-niches. If this number moves by
-   anything other than the size of a declared wave, something published itself. */
+   anything other than the size of a declared wave, something published itself.
+   4430 -> 4434 on 2026-10-07: the four named B2B case studies
+   (/case-studies/falcon-security, /brixio, /talentera, /sophos), operator
+   decision "White-label B2B case studies, named". Four is the whole change;
+   the B2B block at the end of this file asserts exactly those four paths. */
 assert.equal(
-  entries.length, 4430,
-  `Sitemap is ${entries.length} entries, expected 4430. The industry gate must not change ` +
+  entries.length, 4434,
+  `Sitemap is ${entries.length} entries, expected 4434. The industry gate must not change ` +
   `the published URL set; if a wave deliberately added pages, update this number with it.`
 );
 
@@ -211,12 +229,22 @@ const EXPECTED_INDUSTRY_PROOF = {
   'waste-management': 'alliance-insurance-group',
 };
 /* The niche set itself is frozen. Widening B2B_PAGE_NICHES is a reversal of the
-   operator decision above and must be made here, visibly, with a reviewer. */
+   operator decision above and must be made here, visibly, with a reviewer.
+   Raised 2026-10-07 from ['insurance'] to ['b2b', 'insurance']: operator decision
+   "White-label B2B case studies, named" (CLAUDE.md authority block): the four
+   named B2B programmes may appear as B2B proof next to insurance; HVAC and
+   dental still never do. Reviewer to be named by Owen at review. */
 assert.deepEqual(
-  [...B2B_PAGE_NICHES], ['insurance'],
-  `B2B_PAGE_NICHES is ${JSON.stringify(B2B_PAGE_NICHES)}. Operator decision 2026-10-07: insurance ` +
-  `only on B2B pages. Changing it needs a new operator decision recorded in this file.`
+  [...B2B_PAGE_NICHES], ['b2b', 'insurance'],
+  `B2B_PAGE_NICHES is ${JSON.stringify(B2B_PAGE_NICHES)}. Operator decisions 2026-10-07: named B2B ` +
+  `programmes and insurance only on B2B pages. Changing it needs a new operator decision recorded in this file.`
 );
+for (const banned of ['hvac', 'dental']) {
+  assert.ok(
+    !B2B_PAGE_NICHES.includes(banned),
+    `B2B_PAGE_NICHES includes "${banned}". HVAC and dental are consumer sectors and never B2B proof.`
+  );
+}
 for (const id of Object.values(EXPECTED_INDUSTRY_PROOF)) {
   const study = id && getCaseStudy(id);
   assert.ok(
@@ -403,6 +431,127 @@ for (const [route, topic, limit] of B2B_CALLS) {
     );
   }
 }
+
+/* \u2500\u2500 Named B2B programmes (operator, 2026-10-07) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+ *
+ * Four records in a separate type (data/case-studies/b2b.ts). They never pass
+ * through studiesForTopic, so every assertion above is unchanged; they reach a
+ * B2B page only through b2bStudiesForPath and the explicit B2B_PROOF_BY_PATH
+ * map. Both the record set and the map are frozen here. */
+const EXPECTED_B2B_IDS = ['falcon-security', 'brixio', 'talentera', 'sophos'];
+assert.deepEqual(
+  B2B_CASE_STUDIES.map((s) => s.id), EXPECTED_B2B_IDS,
+  `The named B2B record set changed. Adding or removing a named client needs the operator's ` +
+  `written-permission decision recorded in CLAUDE.md and this list updated in the same commit.`
+);
+{
+  const legacyIds = new Set(ALL_CASE_STUDIES.map((s) => s.id));
+  for (const study of B2B_CASE_STUDIES) {
+    assert.ok(!legacyIds.has(study.id), `B2B case study id "${study.id}" collides with a library record.`);
+    assert.ok(!['industry', 'location', 'service', 'methodology'].includes(study.id), `"${study.id}" shadows a /case-studies route.`);
+    assert.equal(study.kind, 'b2b');
+    assert.equal(study.evidence, 'verified', `${study.id} should grade as reported results.`);
+    for (const stage of FUNNEL_STAGES) {
+      assert.ok(Number.isInteger(study.results[stage]), `${study.id} is missing a count for ${stage}.`);
+    }
+    assert.ok(study.window.start, `${study.id} must state its reporting window.`);
+    /* Operator 2026-10-08: each client confirmed the figures from its own reporting. The page
+       says so in these words and no others. */
+    assert.equal(
+      study.source, B2B_RESULT_SOURCE,
+      `${study.id} source line is "${study.source}". It must be B2B_RESULT_SOURCE: confirmed by the client's own reporting.`
+    );
+    assert.ok(
+      entries.some((e) => e.path === `/case-studies/${study.id}`),
+      `/case-studies/${study.id} is not in the sitemap.`
+    );
+    /* The operator kept these off the site (source labels them illustrative or a model). A
+       dollar figure other than Talentera's stated media spend and cost per lead, or any
+       percentage, is the pipeline value or a conversion rate leaking in. */
+    const copy = JSON.stringify(study);
+    assert.ok(!/%/.test(copy), `${study.id} carries a percentage. Conversion rates and growth stay off the site.`);
+    for (const m of copy.match(/US\$[\d,]+/g) || []) {
+      assert.ok(['US$20,000', 'US$345'].includes(m), `${study.id} carries "${m}". Pipeline and deal values stay off the site.`);
+    }
+    assert.ok(!/white-?label|\bNDA\b|illustrative/i.test(copy), `${study.id} says white-label, NDA or illustrative.`);
+  }
+}
+const EXPECTED_B2B_PROOF = {
+  '/growth/industries/cybersecurity': ['falcon-security', 'sophos', 'brixio'],
+  '/growth/industries/cybersecurity/managed-security': ['sophos', 'falcon-security'],
+  '/growth/industries/cybersecurity/managed-security/mdr': ['sophos'],
+  '/growth/industries/cybersecurity/security-specialists': ['falcon-security', 'brixio'],
+  '/growth/industries/professional-services/cybersecurity-consulting': ['falcon-security', 'brixio'],
+  '/growth/industries/professional-services/cloud-consulting': ['brixio'],
+  '/growth/industries/b2b-software': ['talentera', 'sophos'],
+  '/growth/industries/b2b-software/cybersecurity-software': ['sophos'],
+  '/growth/industries/b2b-software/hr-payroll-workforce': ['talentera'],
+  '/growth/industries/b2b-software/hr-payroll-workforce/hr-software': ['talentera'],
+};
+assert.deepEqual(
+  JSON.parse(JSON.stringify(B2B_PROOF_BY_PATH)), EXPECTED_B2B_PROOF,
+  `B2B_PROOF_BY_PATH changed. A named B2B programme may render only on a page in the client's own ` +
+  `sector (CLAUDE.md \u00a711). Add a page here by path, in the same commit, with a reviewer.`
+);
+const { getGrowthPage } = require('../lib/growth/publication.ts');
+let b2bProofPages = 0;
+for (const [path, ids] of Object.entries(B2B_PROOF_BY_PATH)) {
+  const page = getGrowthPage(path);
+  assert.ok(page && page.publication && page.publication.status === 'published', `${path} is not a published page.`);
+  assert.ok(['sector', 'niche'].includes(page.kind), `${path} is a ${page.kind} page; the block renders on sector and niche pages only.`);
+  for (const id of ids) {
+    const study = getB2BCaseStudy(id);
+    assert.ok(study && study.kind === 'b2b', `${path} names "${id}", which is not a named B2B record.`);
+  }
+  const rendered = b2bStudiesForPath(path);
+  assert.deepEqual(rendered.map((s) => s.id), ids.slice(0, 3), `${path} renders ${rendered.map((s) => s.id)}.`);
+  b2bProofPages += 1;
+}
+/* No /industries hub, sub-page or location page is in one of these sectors, so none may render
+   one. A fuzzy fallback here would be the 2026-09-28 defect again. */
+for (const [route] of B2B_CALLS) {
+  assert.equal(b2bStudiesForPath(route).length, 0, `${route} would render a named B2B programme.`);
+}
+{
+  const growthView = fs.readFileSync('components/growth/GrowthPage.tsx', 'utf8');
+  assert.ok(/b2bStudiesForPath\(path\)/.test(growthView), 'GrowthPage no longer renders the named B2B block.');
+}
+
+/* The source wording, sitewide. Until 2026-10-08 these figures were labelled "Reported by
+   Qognition from campaign tracking". The clients have since confirmed them from their own
+   reporting, so the old line now understates the evidence AND contradicts the new one on the
+   same domain. Any rendered file still carrying it fails here, comments stripped. */
+assert.match(B2B_RESULT_SOURCE, /^Confirmed by the client's own reporting/);
+assert.match(B2B_PROOF_LINE, /confirmed by each client's own reporting/);
+{
+  const { execSync } = require('node:child_process');
+  const files = execSync('grep -rlI "campaign tracking" app components lib data || true', { encoding: 'utf8' })
+    .trim().split('\n').filter((f) => /\.(tsx?|mjs|cjs|js)$/.test(f));
+  const stale = files.filter((f) => {
+    const view = fs.readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    return /reported by Qognition from campaign tracking/i.test(view);
+  });
+  assert.deepEqual(
+    stale, [],
+    `These files still render "reported by Qognition from campaign tracking" as the source of the B2B ` +
+    `figures:\n  ${stale.join('\n  ')}\nOperator 2026-10-08: the figures are confirmed by each client's own ` +
+    `reporting. Use B2B_RESULT_SOURCE or B2B_PROOF_LINE from data/case-studies instead of a copy.`
+  );
+}
+/* Published counts (CLAUDE.md: "Published programme count: 49"). PUBLISHED_STATS is derived;
+   these pin what it derives to, so a record added or graded differently is a visible edit. */
+assert.equal(PUBLISHED_STATS.total, CASE_STUDIES.length + B2B_CASE_STUDIES.length);
+assert.equal(PUBLISHED_STATS.total, 49, `Published case studies: ${PUBLISHED_STATS.total}, expected 49.`);
+assert.equal(
+  PUBLISHED_STATS.confirmed, 4,
+  `Confirmed by client reporting: ${PUBLISHED_STATS.confirmed}, expected 4 (the named B2B programmes). If an ` +
+  `insurance actual was filled from client reporting, raise this in the same commit.`
+);
+
+console.log(
+  `\u2713 named B2B programmes: ${B2B_CASE_STUDIES.length} records, in the sitemap, on ${b2bProofPages} ` +
+  `matched B2B industry pages and on none of ${B2B_CALLS.length} /industries and /locations inputs.`
+);
 
 console.log(
   `\u2713 insurance only on B2B pages: ${b2bCallsChecked} hub, sub-industry, location and ` +

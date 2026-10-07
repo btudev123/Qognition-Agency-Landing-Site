@@ -4,13 +4,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
-import BenchmarkTable from '../../../components/case-studies/BenchmarkTable';
+import B2BCaseStudyView from '../../../components/case-studies/B2BCaseStudyView';
 import Breadcrumbs from '../../../components/case-studies/Breadcrumbs';
 import FaqAccordion from '../../../components/case-studies/FaqAccordion';
 import { truncate } from '../../../components/case-studies/format';
 import KpiSection from '../../../components/case-studies/KpiSection';
 import NicheServiceBadges from '../../../components/case-studies/NicheServiceBadges';
-import PhotoCredit from '../../../components/case-studies/PhotoCredit';
 import {
   PlaybookStrategy,
   PlaybookTimeline,
@@ -19,7 +18,9 @@ import StudyGrid from '../../../components/case-studies/StudyGrid';
 import Heading from '../../../components/ui/Heading';
 import Text from '../../../components/ui/Text';
 import {
+  B2B_CASE_STUDIES,
   CASE_STUDIES,
+  getB2BCaseStudy,
   getCaseStudy,
   nicheLabel,
   relatedCaseStudies,
@@ -31,7 +32,10 @@ import { SITE_URL } from '../../../lib/seo';
 
 export const dynamicParams = false;
 
-export const generateStaticParams = () => CASE_STUDIES.map((study) => ({ id: study.id }));
+/* The 45 and the four named B2B programmes share this URL space. Ids are unique across both
+   lists; scripts/check-industry-gate.cjs asserts it. */
+export const generateStaticParams = () =>
+  [...B2B_CASE_STUDIES, ...CASE_STUDIES].map((study) => ({ id: study.id }));
 
 export async function generateMetadata({
   params,
@@ -39,6 +43,17 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
+  const b2b = getB2BCaseStudy(id);
+  if (b2b) {
+    const path = `/case-studies/${b2b.id}`;
+    const description = truncate(b2b.summary);
+    return {
+      title: { absolute: `${b2b.headline} | Qognition` },
+      description,
+      alternates: { canonical: `${SITE_URL}${path}` },
+      openGraph: { title: b2b.headline, description, url: `${SITE_URL}${path}`, type: 'article' },
+    };
+  }
   const study = getCaseStudy(id);
   if (!study) return { title: 'Case study not found | Qognition' };
 
@@ -87,6 +102,8 @@ function Section({
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const b2b = getB2BCaseStudy(id);
+  if (b2b) return <B2BCaseStudyView study={b2b} />;
   const study = getCaseStudy(id);
   if (!study) notFound();
 
@@ -175,11 +192,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                 className="h-full w-full object-cover"
               />
             </div>
-            {study.image.credit && (
-              <figcaption className="mt-2">
-                <PhotoCredit image={study.image} />
-              </figcaption>
-            )}
           </figure>
 
           <Section title="Business context">
