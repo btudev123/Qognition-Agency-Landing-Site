@@ -23,13 +23,30 @@ The user approved a sitewide copy and funnel update in the dev checkout. These d
     - Case-study images come from Pexels (key in `.env.local`, never committed). Use places, equipment and abstract scenes, never people in offices (§9).
   - **The free offer** is named **"Free AI visibility audit"** everywhere. It is free, with no turnaround promise: "We confirm timing when we reply."
   - **Conversion pages carry one element each.** /book is the calendar only and /contact is the form only.
+    - Exception, operator 2026-10-08: /contact also lists the five offices below the form, as information rather than a second conversion.
   - **The ROI calculator** (`HeroRoiCalculator`) is deleted.
-  - **B2B pages show insurance case studies only.** HVAC and dental stay on /case-studies.
+  - **B2B pages show B2B and insurance case studies only** (amended later the same day, see the named B2B bullet below). HVAC and dental stay on /case-studies.
+  - **Published programme count: 49.** 45 local and insurance (5 more held, not published) plus the 4 named B2B.
   - **Visual upgrade within the same brand is approved.** The logo, teal palette, Geist and the light/dark rhythm stay.
     - Pages may cut copy and add icons, SVG diagrams, illustrative product screens (ADR-0006 rules), Pexels industry photos and AI-generated abstract imagery.
     - This supersedes §9's "keep it exactly" for layout and visuals, not for brand assets.
     - Lead form and booking behaviour do not change.
   - **Work happens on `main`, committed locally.** Nothing is pushed until production is approved.
+  - **White-label B2B case studies, named.** Falcon Security, Brixio, Talentera and Sophos are published by name. The operator states they hold written permission and that the funnel figures are real results. This supersedes §2's "unnameable" and the blocklist on this record.
+    - Pipeline dollar values and organic-session growth stay off the site: the source document itself calls the deal values "illustrative" and the session series a "model". They go on when real deal values and analytics exports arrive.
+    - The operator states each client has confirmed the figures from its own reporting. They therefore meet the methodology page's definition of a reported result, and pages say "confirmed by client reporting".
+    - The operator re-confirmed on 2026-10-08 after reading the source lines that call the figures "estimated" or arithmetic outputs (Talentera clicks and forms, Sophos 2,400 contacts). Every figure publishes as built. The operator holds the clients' reporting.
+    - These four may appear as B2B proof next to insurance on B2B pages. HVAC and dental still never do.
+  - **Hero tracker run** (ADR-0006 §11). The hero cycles through all 21 industries with a verbatim taxonomy prompt each, tracking "Your firm". The operator chose it over a chat-style AI answer, so ADR-0006 R1 stands.
+    - It is the one exception to §9's "no auto-rotating sliders". It needs a Pause button, pauses on hover and focus, and does not auto-advance under reduced motion.
+    - The operator confirms Scriblr tracks Claude in production, so the run has five columns: ChatGPT, Perplexity, Gemini, Claude and Google AI Overviews.
+  - **Homepage approved** (hero animation still in build). Service and industry pages are next: they read thin.
+  - **Plain English everywhere.** No technical jargon. Every message must be clear to a CEO or marketing lead on first read.
+  - **No Pexels credit lines** on the site.
+  - **Offices, operator 2026-10-08.** Qognition has offices in Toronto, New York, Dubai, Sydney and Gurugram (Gurgaon). There is no headquarters, so the site names none. Show city and country only, never street addresses.
+    - This supersedes the Gurugram-only HQ answer of 2026-09-28 and §4's "countries served are never presented as physical offices" for these five cities only.
+    - Every other market is served remotely, and no other city may be presented as an office.
+  - **Service facts, operator 2026-10-07.** Monthly reporting is standard on every retainer. We run Microsoft Advertising for clients. Clients own their ad accounts. We do not run TikTok, Amazon or streaming-TV ads: they are not listed or offered, though their old URLs stay live.
 - Deploy a preview for review. Do not publish or promote to production before explicit approval.
 - Canonical taxonomy: data/b2b/icp/icp-taxonomy.json. Existing industry briefs: docs/icp-industries/. Preserve IDs and source contents.
 
