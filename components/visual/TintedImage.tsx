@@ -12,6 +12,7 @@ export default function TintedImage({
   alt,
   sizes,
   overlay = false,
+  priority = false,
   className = '',
 }: {
   src: string;
@@ -19,11 +20,21 @@ export default function TintedImage({
   sizes: string;
   /** Copy sits on the photo from 768px: add the scrim. */
   overlay?: boolean;
+  /** Above the fold: load eagerly at high priority instead of lazily. */
+  priority?: boolean;
   className?: string;
 }) {
   return (
     <div className={`${v.tint}${overlay ? ` ${v.overlay}` : ''} ${className}`.trim()}>
-      <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" loading="lazy" />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        className="object-cover"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : undefined}
+      />
     </div>
   );
 }

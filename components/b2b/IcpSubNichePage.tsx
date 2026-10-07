@@ -1,8 +1,7 @@
 import type { IcpRecord } from '../../lib/b2b/icpRegistry';
 import { icpBreadcrumb, icpPanelExclusions, icpSiblings } from '../../lib/b2b/icpRegistry';
-import { panelFor, MIN_DISTINCT_PROMPTS } from '../../lib/b2b/promptPanel';
+import { panelFor } from '../../lib/b2b/promptPanel';
 import type { ObservationView } from '../../lib/b2b/observations';
-import ObservationBlock from './ObservationBlock';
 import DraftNotice from './DraftNotice';
 import {
   BuyersBlock,
@@ -11,16 +10,16 @@ import {
   AxesBlock,
   WhyLostBlock,
   ServiceLinksBlock,
-  SiblingsBlock,
-  ProofBlock,
   FaqsBlock,
   SnapshotCta,
 } from './blocks';
 import {
   CanonicalPointerPage,
   IcpHero,
-  InheritedContextBlock,
-  PromptPanelBlock,
+  IcpProofBlock,
+  PaidDemandBlock,
+  QuestionsBlock,
+  RelatedPagesBlock,
 } from './IcpBlocks';
 
 /* LEVEL 4 — the sub-niche. 8,823 of them, and this is the honest one.
@@ -60,6 +59,15 @@ import {
  * ────────────────────────────────────────────────────────────────────────────
  */
 
+/* PLAIN-ENGLISH TEMPLATE, 2026-10 (docs/copy/2026-10/plain-english-templates.md §9).
+ * Section order, all four levels: hero; the questions your buyers ask AI (dark); why firms
+ * like yours get left out; who your buyers are; [axes and vocabulary where the body has
+ * them]; pick the layer you need (dark); facts; what your buyers type into Google; client
+ * programmes (dark); questions buyers ask us; closing CTA (dark); related pages. A level
+ * omits the slots it has no data for (§9.4). Cut: the operator note, the qualification,
+ * client-value and inherited-context blocks, and the hero's repeat of the comparison axes
+ * (§9.3). `buyer_titles` moved into the hero as one "Written for" line. */
+
 interface Props {
   readonly record: Extract<IcpRecord, { level: 'sub-niche' }>;
   readonly observation: ObservationView;
@@ -87,7 +95,6 @@ export default function IcpSubNichePage({
   const key = `${industry.slug}-${sub.slug}-${niche.slug}-${subNiche.slug}`;
   const trail = icpBreadcrumb(record);
   const parent = trail[trail.length - 1];
-  const siblings = icpSiblings(record);
   const panel = panelFor(record.href, { exclude: icpPanelExclusions(record) });
 
   return (
@@ -101,22 +108,22 @@ export default function IcpSubNichePage({
         opener={body.opener}
         trail={trail}
         upLink={{ name: niche.name, href: parent?.href }}
+        writtenFor={sub.buyerTitles}
+        industrySlug={industry.slug}
+        industryName={industry.name}
         draft={state === 'draft'}
       />
 
-      <ObservationBlock view={observation} nicheLabel={subNiche.name} idPrefix={key} />
-      {panel && <PromptPanelBlock panel={panel} minimum={MIN_DISTINCT_PROMPTS} id={`${key}-panel`} />}
+      <QuestionsBlock
+        prompts={panel?.prompts.map((p) => p.prompt) ?? []}
+        whatWeCheckFor={body.whatWeCheckFor}
+        observation={observation}
+        nicheLabel={subNiche.name}
+        id={`${key}-questions`}
+      />
 
       <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} />
       <BuyersBlock buyers={body.buyers} id={`${key}-buyers`} />
-
-      <InheritedContextBlock
-        parentName={sub.name}
-        parentHref={trail[1]?.href}
-        sub={sub}
-        id={`${key}-inherited`}
-      />
-
       {body.kind === 'sub-niche' && (
         <>
           <AxesBlock axes={body.comparisonAxes} id={`${key}-axes`} />
@@ -124,16 +131,20 @@ export default function IcpSubNichePage({
         </>
       )}
 
-      <FactsBlock facts={body.facts} id={`${key}-facts`} />
-
       <ServiceLinksBlock id={`${key}-services`} />
-      <SiblingsBlock
-        siblings={siblings.map((s) => ({ id: s.id, label: s.name, href: s.href }))}
-        id={`${key}-siblings`}
-      />
-      <ProofBlock proof={body.proof} id={`${key}-proof`} />
+      <FactsBlock facts={body.facts} id={`${key}-facts`} />
+      <PaidDemandBlock keywords={sub.ppcKeywords} id={`${key}-paid`} />
+      <IcpProofBlock proof={body.proof} id={`${key}-proof`} />
       <FaqsBlock faqs={body.faqs} id={`${key}-faqs`} />
       <SnapshotCta question={body.snapshotQuestion} id={`${key}-cta`} />
+      <RelatedPagesBlock
+        children={[]}
+        siblings={icpSiblings(record)}
+        /* Levels 3 and 4 never rendered cross-tree pointers; the link set is unchanged. */
+        cross={[]}
+        industrySlug={industry.slug}
+        id={`${key}-related`}
+      />
     </main>
   );
 }

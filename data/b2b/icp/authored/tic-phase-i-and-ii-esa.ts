@@ -27,7 +27,7 @@ export const TIC_PHASE_I_AND_II_ESA: IcpBody = {
   buyerQuestion: 'Every firm describes the same report. Why would an assistant pick ours?',
 
   metaDescription:
-    'The report is defined by a standard, so what separates firms is everything around it. We run your buyers’ prompts on four platforms and publish who got named.',
+    'The report is defined by a standard, so what separates firms is everything around it. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'The deliverable is defined by a standard, so no firm wins this work by describing it. What ' +
@@ -207,9 +207,9 @@ export const TIC_PHASE_I_AND_II_ESA: IcpBody = {
     {
       question: 'Would this compete with the portfolio content we already publish?',
       answer:
-        'Only if it repeats it. The first pass is an audit of what already exists against the ' +
-        'questions your buyers actually ask, and the usual finding is that a firm has written five ' +
-        'pages around one question and none around four others. Where an existing page is the right ' +
+        'Only if it repeats it. The first pass checks what already exists against the questions ' +
+        'your buyers actually ask, to find questions with several pages competing for them and ' +
+        'questions with none. Where an existing page is the right ' +
         'answer we improve it rather than write a rival to it. Two pages competing for one question ' +
         'is a problem we would be creating, not solving.',
     },
@@ -225,10 +225,10 @@ export const TIC_PHASE_I_AND_II_ESA: IcpBody = {
     {
       question: 'What do we get before we commit to anything?',
       answer:
-        'A free snapshot: a prompt panel run against four platforms, the answers recorded with the ' +
-        'date, and a note of which firms were named and which pages were cited. No card and no ' +
-        'commitment. The limits of it are stated on the same page as the findings, because a single ' +
-        'run is a reading and not a trend, and anyone presenting one as a trend is selling you the ' +
+        'A free AI visibility audit: we test your buyers’ questions on AI platforms, record each ' +
+        'answer with its date, and note which firms were named and which pages were cited. There is ' +
+        'no obligation. The limits are stated on the same page as the findings, because a single ' +
+        'run is a reading on one day and not a trend, and anyone presenting one as a trend is selling you the ' +
         'wrong thing.',
     },
   ],
@@ -275,9 +275,9 @@ export const TIC_PHASE_I_AND_II_ESA: IcpBody = {
   proof: {
     kind: 'none',
     statement:
-      'Qognition has published no client programme in this niche. Our named library is 45 programmes ' +
-      'in HVAC contracting, dental practices and commercial insurance, and none of it is proof for ' +
-      'assessment work. We would rather have this sentence on the page than let a reader infer a ' +
+      'Qognition has published no client programme in this niche. Our named case studies are in ' +
+      'other sectors, and none of them is proof for assessment work. We would rather have this ' +
+      'sentence on the page than let a reader infer a ' +
       'history from the fact that the page exists.',
   },
 

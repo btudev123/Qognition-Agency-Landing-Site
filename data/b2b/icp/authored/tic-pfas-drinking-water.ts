@@ -40,7 +40,7 @@ export const TIC_PFAS_DRINKING_WATER: IcpBody = {
   buyerQuestion: 'Why is our name absent when a water system asks who can carry its monitoring to the deadline?',
 
   metaDescription:
-    'This work is bought against a compliance date under an open federal proposal. We run your buyers’ prompts on four platforms and publish who got named.',
+    'This work is bought against a compliance date under an open federal proposal. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'Drinking-water PFAS work is bought against a date. A public water system is planning to a ' +
@@ -207,8 +207,7 @@ export const TIC_PFAS_DRINKING_WATER: IcpBody = {
         'in force today, the proposals that are open and unresolved, and the certifications you hold ' +
         'with each agency that reads a report. Each one sourced, each one carrying the date it was ' +
         'checked, and each one written so a reader can re-check it without calling you. That page is ' +
-        'the answer to the question being asked, and at the time of writing we could not find a ' +
-        'laboratory publishing it.',
+        'the answer to the question being asked.',
     },
     {
       question: 'Is it not risky to publish a page about a rule that might be withdrawn?',
@@ -224,9 +223,8 @@ export const TIC_PFAS_DRINKING_WATER: IcpBody = {
       answer:
         'We do not know for your accounts and will not claim we do. What we can say is that the ' +
         'question has the shape assistants are used for: it is research-led, it spans a statute and a ' +
-        'calendar, and answering it properly means reading several sources. The panel exists to ' +
-        'settle the question with evidence rather than with an assumption, and the first run is free ' +
-        'because the assumption is the thing worth testing.',
+        'calendar, and answering it properly means reading several sources. Our free AI visibility ' +
+        'audit exists to test that with evidence rather than assume it.',
     },
     {
       question: 'How is this page different from the one above it?',
@@ -242,10 +240,9 @@ export const TIC_PFAS_DRINKING_WATER: IcpBody = {
   proof: {
     kind: 'none',
     statement:
-      'We have not done this work for a laboratory serving public water systems. The 45 client ' +
-      'programmes in our published library are HVAC contracting, dental practices and commercial ' +
-      'insurance, and the four business-to-business engagements behind them are under NDA in ' +
-      'unrelated sectors. The page exists because the argument is checkable, not because the history is.',
+      'We have not done this work for a laboratory serving public water systems. Our published ' +
+      'client results are named and dated, and none of them comes from a laboratory. The page ' +
+      'exists because the argument is checkable, not because the history is.',
   },
 
   snapshotQuestion:

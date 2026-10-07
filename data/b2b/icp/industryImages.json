@@ -25,5 +25,14 @@
     "photographer": "Werner Pfennig",
     "photographer_url": "https://www.pexels.com/@werner-pfennig",
     "pexels_url": "https://www.pexels.com/photo/modern-conference-room-6949365/"
+  },
+  "environmental-engineering-and-testing": {
+    "src": "/images/industries/environmental-engineering-and-testing.jpg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "High-tech laboratory equipment with multiple vials in a scientific research facility",
+    "photographer": "Yuri Shkoda",
+    "photographer_url": "https://www.pexels.com/@yurashkoda",
+    "pexels_url": "https://www.pexels.com/photo/vials-in-a-chromatograph-10514991/"
   }
 }

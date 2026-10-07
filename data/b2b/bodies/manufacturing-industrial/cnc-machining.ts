@@ -225,7 +225,7 @@ export const CNC_MACHINING: SubNicheBody = {
       question: 'Our work comes from referrals and repeat customers. Why does this matter?',
       answer:
         'Because the referral still checks. The introduction gets your name into an engineer’s ' +
-        'hands, and what happens next is a search, increasingly one that starts with an assistant. ' +
+        'hands, and what happens next is a search, which for many engineers now starts with an assistant. ' +
         'The 2026 State of Marketing to Engineers report, published by GlobalSpec, TREW Marketing ' +
         'and Elektor International Media and accessed on 28 September 2026, records technical ' +
         'buyers completing 62% of the journey before contacting a vendor. The publisher does not state the sample size. ' +
@@ -242,22 +242,23 @@ export const CNC_MACHINING: SubNicheBody = {
         'registration is itself the publishable signal.',
     },
     {
-      question: 'How many prompts do you run, and how often?',
+      question: 'Which questions do you test, and how often?',
       answer:
-        'We agree a panel with you rather than picking for you, typically eight to twenty prompts ' +
-        'spanning process, certification, material and region, and we run it across ChatGPT, ' +
-        'Perplexity, Gemini and Google AI Overviews. Re-runs are scheduled, and the whole history ' +
-        'stays on this one page rather than being split across a page per month. Every row stores ' +
-        'the raw answer so it can be re-derived rather than believed.',
+        'We agree the set with you rather than picking it for you, covering process, ' +
+        'certification, material and region, and test it on the AI platforms that matter for your ' +
+        'market, such as ChatGPT, Perplexity, Gemini and Google AI Overviews. Re-runs follow a ' +
+        'schedule we agree, and every run is kept, so you see the full history rather than only the ' +
+        'latest month. Each line stores the original answer so you can check it rather than take ' +
+        'it on trust.',
     },
     {
       question: 'What does the first 90 days look like?',
       answer:
-        'A first observation run against your agreed panel, an entity pass so your company name, ' +
-        'description and address are identical everywhere they appear, and the qualification facts ' +
-        'moved out of PDFs into readable pages. Then a second run on the same panel. The second run ' +
-        'is the point: one run is a snapshot and two runs on the same prompts are the beginning of ' +
-        'a measurement.',
+        'A first test of the questions agreed with you; a clean-up so your company name, ' +
+        'description and address are identical everywhere they appear; and the qualification facts ' +
+        'moved out of PDFs into readable pages. Then a second test on the same questions. The second ' +
+        'run is the point: one run is a reading on one day, and two runs on the same questions are ' +
+        'the beginning of a measurement.',
     },
     {
       question: 'Will you promise we appear in ChatGPT?',
@@ -271,9 +272,9 @@ export const CNC_MACHINING: SubNicheBody = {
   proof: {
     kind: 'none',
     statement:
-      'No Qognition client has been published in CNC machining or precision engineering. Our ' +
-      'delivered work is in managed IT and cloud, cybersecurity, and B2B SaaS in part, all ' +
-      'white-label under NDA. This page is capability and method, and says so rather than implying ' +
+      'No Qognition client has been published in CNC machining or precision engineering. Our named ' +
+      'B2B results are in cybersecurity, cloud and recruitment software. This page is capability and ' +
+      'method, and says so rather than implying ' +
       'a track record it does not have.',
   },
 

@@ -28,13 +28,13 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
   /* 149 characters. Leads with the mechanism, not the service name, because
      the reader scanning a SERP already knows what an agency is. */
   metaDescription:
-    'Assistants name directories, not manufacturers. We run your buyers\u2019 prompts on four platforms and publish who got named, with the date.',
+    'Assistants name directories, not manufacturers. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'Manufacturing and industrial firms lose the AI answer at specification, not at quote. ' +
     'A design engineer builds a shortlist from an assistant, then sends the RFQ to the names it ' +
-    'gave. This page sets out who those buyers are, what they filter on, and what we observed ' +
-    'when we ran their prompts.',
+    'gave. This page sets out who those buyers are, what they filter on, and what we record ' +
+    'when we test their questions.',
 
   buyers: [
     {
@@ -146,49 +146,49 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
         'of US clickstream data from a 200 million user panel covering October 2024 to February ' +
         '2026, published on 7 April 2026, and found over 30% of all ChatGPT referral traffic goes ' +
         'to ten domains, with online services, software, media and education receiving the most. ' +
-        'Industrial ' +
-        'domains are not in that shape of distribution. In manufacturing, AI search is a ' +
-        'shortlist-formation channel, not a traffic channel. What matters is whether your name ' +
-        'appears in the two or three suggestions the assistant offers, because that decides which ' +
-        'sites the engineer then visits through Google. A manufacturer measuring this by AI referral ' +
+        'Industrial sites are not among them. In manufacturing, AI search decides who makes the ' +
+        'shortlist; it does not send much traffic. What matters is whether your name appears in the ' +
+        'two or three suggestions the assistant offers, because those are the firms the engineer ' +
+        'then looks up in Google. A manufacturer measuring this by AI referral ' +
         'sessions will conclude it does not matter, and will be wrong.',
     },
     {
       question: 'How do you measure something that does not send traffic?',
       answer:
-        'On a fixed prompt panel. We agree a set of prompts your buyers plausibly type, run them ' +
-        'across ChatGPT, Perplexity, Gemini and Google AI Overviews on a schedule, and record which ' +
-        'firms were named and which URLs were cited on each date. The raw answers are stored, so ' +
-        'every row re-derives rather than being taken on trust. That is the observation block on ' +
-        'this page and on every sub-niche page under it.',
+        'With a fixed set of buyer questions. We agree the questions your buyers are likely to ask, ' +
+        'test them on AI platforms such as ChatGPT, Perplexity, Gemini and Google AI Overviews on a ' +
+        'schedule, and record which firms were named and which pages were cited on each date. The ' +
+        'original answers are stored, so you can check any line yourself. The observation section ' +
+        'on this page shows those results once a run has been made.',
     },
     {
       question: 'Have you worked with manufacturers before?',
       answer:
-        'Not in a published engagement. Our delivered work is in managed IT and cloud, ' +
-        'cybersecurity, and B2B SaaS in part, all white-label under NDA, which is why no client is ' +
-        'named anywhere on this site. We are telling you that rather than implying a history, ' +
-        'because the alternative is a claim we cannot evidence. What is transferable is the method: ' +
-        'the prompt panel, the citation analysis and the entity work do not change with the vertical, ' +
-        'and the standards vocabulary on these pages is sourced and dated so you can check it.',
+        'Not in a published engagement. Our named B2B client results are in cybersecurity, cloud and ' +
+        'recruitment software, with dates, on our case studies page. None is a manufacturer, and we ' +
+        'are telling you that rather than implying a history, ' +
+        'because the alternative is a claim we cannot evidence. What carries across is the method: ' +
+        'testing a fixed set of buyer questions, recording which sources each answer cites, and ' +
+        'making your firm’s details consistent everywhere it appears. The standards named on ' +
+        'these pages are sourced and dated so you can check them.',
     },
     {
       question: 'Is this SEO or is it something else?',
       answer:
-        'Both, and they are not sold apart. Search, local search, AI Overviews and the assistants ' +
-        'are four different surfaces, and the work that earns a citation in an assistant is largely ' +
-        'the work that earns a position in Google, done against a different retrieval model. Every ' +
-        'retainer covers all four. Paid media sits alongside them and is priced separately, because ' +
+        'Both, and you can start with either. Google search, Google Maps and the local pack, Google ' +
+        'AI Overviews, and AI assistants such as ChatGPT are four different surfaces. Much of the ' +
+        'work that gets a firm named by an assistant also helps it rank in Google. A retainer can ' +
+        'cover one layer or all four. Paid media sits alongside them and is priced separately, because ' +
         'it is priced against ad spend rather than against scope.',
     },
     {
       question: 'What would you actually change on our site?',
       answer:
-        'The first pass is almost never content volume. It is making the qualification facts ' +
-        'machine-readable: certificate scope as text rather than a scanned PDF, tolerance and ' +
-        'material capability as stated ranges and grades rather than adjectives, quantity bands ' +
-        'named, and the entity (one company name, one description, one address) consistent ' +
-        'everywhere it appears. Most industrial sites have the facts. They have them in a brochure ' +
+        'The first pass is almost never content volume. It is putting the qualification facts ' +
+        'where software can read them: certificate scope as text rather than a scanned PDF, ' +
+        'tolerance and material capability as stated ranges and grades rather than adjectives, ' +
+        'quantity bands named, and one company name, one description and one address used ' +
+        'everywhere the firm appears. Most industrial sites have the facts. They have them in a brochure ' +
         'download that nothing can read.',
     },
     {
@@ -198,7 +198,7 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
         'between runs, and a firm promising you placement in one is either misunderstanding the ' +
         'mechanism or misrepresenting it. What we commit to is the measurement: a dated, ' +
         'reproducible record of what was said on each platform on each run, and the work that ' +
-        'makes your firm easier to retrieve and cite.',
+        'makes your firm easier for AI assistants to find and cite.',
     },
   ],
 
@@ -207,7 +207,7 @@ export const MANUFACTURING_INDUSTRIAL_HUB: HubBody = {
     statement:
       'No Qognition client has been published in manufacturing. We have not run this work for a ' +
       'named manufacturer, and a page existing for a vertical is not evidence of experience in it. ' +
-      'What we can show you is the method, and the first observation run on your own prompt set.',
+      'What we can show you is the method, and the first dated test of your own buyers’ questions.',
   },
 
   snapshotQuestion:

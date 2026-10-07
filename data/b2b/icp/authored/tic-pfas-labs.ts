@@ -29,7 +29,7 @@ export const TIC_PFAS_LABS: IcpBody = {
   buyerQuestion: 'Why does an assistant name a competitor whose analyte list is shorter than ours?',
 
   metaDescription:
-    'This work spans two statutes and one scope document. We run your buyers’ prompts across four platforms and publish which firms got named, with the date.',
+    'This work spans two statutes and one scope document. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'PFAS work is two regulatory programmes wearing one name. Drinking water sits under one statute ' +
@@ -198,7 +198,7 @@ export const TIC_PFAS_LABS: IcpBody = {
     'a drinking-water monitoring schedule and a buyer asking which laboratory can report a permit ' +
     'condition are asking about two different programmes, two different certifications and two ' +
     'different sets of compounds. Almost every laboratory site answers both with one heading and a ' +
-    'capability paragraph. A retrieval system given one heading for two questions returns the source ' +
+    'capability paragraph. An AI assistant given one heading for two questions returns the source ' +
     'that separated them, which is the regulator, so the regulator gets cited and the laboratory does not.',
 
   faqs: [
@@ -206,9 +206,9 @@ export const TIC_PFAS_LABS: IcpBody = {
       question: 'The federal position is still moving. Should we wait until it settles?',
       answer:
         'The movement is the demand. A proposal that is on the table and not finalised means every ' +
-        'utility, consultant and permittee has to plan against two futures at once, and planning ' +
-        'against two futures is a research task that runs through an assistant before it runs through ' +
-        'a phone call. A laboratory that publishes what is proposed, what is in force and what is ' +
+        'utility, consultant and permittee has to plan against two futures at once, and that means ' +
+        'research. Whether your buyers do that research in an AI assistant is what a first test ' +
+        'shows. A laboratory that publishes what is proposed, what is in force and what is ' +
         'unchanged, with dates against each, is answering the question that is actually being typed. ' +
         'Waiting means publishing into the same field once it is crowded.',
     },
@@ -225,19 +225,20 @@ export const TIC_PFAS_LABS: IcpBody = {
       question: 'Our competitors publish bigger numbers than we do. Does that not win the answer?',
       answer:
         'Not reliably, and it is the wrong thing to compete on. A compound count with no scope behind ' +
-        'it is a marketing claim, and the buyers on this page read the scope. What earns the citation ' +
-        'is the specific pairing: this compound, in this matrix, under this method, recognised by ' +
+        'it is a marketing claim, and the buyers on this page read the scope. What gives an assistant ' +
+        'something specific to cite is the pairing: this compound, in this matrix, under this method, recognised by ' +
         'this body. That is harder to write and much harder for a competitor to copy, because they ' +
         'would have to hold the accreditation to say it.',
     },
     {
       question: 'Does the same work help us in Google as well as in the assistants?',
       answer:
-        'Largely yes, and we do not sell them apart. The pages that answer a statute-specific ' +
-        'question in plain text are the pages that rank for the long-tail version of it, and the ' +
-        'entity work that makes a firm resolvable to one name helps in both. Where they differ is ' +
-        'measurement: ranking is tracked on positions, citation is tracked on a prompt panel, and we ' +
-        'report them separately rather than averaging them into one score.',
+        'Largely yes, and you can buy either on its own or both together. A page that answers a ' +
+        'statute-specific question in plain text is also the kind of page that ranks in Google for ' +
+        'the detailed version of that question, and keeping your firm’s name and details consistent ' +
+        'everywhere helps in both. Where they differ is measurement: Google rankings are tracked by ' +
+        'position, AI answers by testing a fixed set of buyer questions, and we report them ' +
+        'separately rather than averaging them into one score.',
     },
   ],
 
@@ -266,10 +267,10 @@ export const TIC_PFAS_LABS: IcpBody = {
   proof: {
     kind: 'none',
     statement:
-      'Qognition has run no published programme for a laboratory doing this work. Our named record is ' +
-      '45 client programmes in HVAC contracting, dental practices and commercial insurance, none of ' +
-      'which is relevant evidence here. What is on offer is a first dated run against your own ' +
-      'prompt set, and the argument that nobody else in this category publishes one.',
+      'Qognition has run no published programme for a laboratory doing this work. Our case studies ' +
+      'name their clients, and none of them is relevant evidence here. What is on offer is a first ' +
+      'dated test of your own buyers’ questions. A search we ran on 29 September 2026 for ' +
+      'AI-search agencies aimed at this sector found no specialist and no ranked list.',
   },
 
   snapshotQuestion:

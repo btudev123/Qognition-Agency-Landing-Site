@@ -36,7 +36,7 @@ export const TIC_HUB: IcpBody = {
   buyerQuestion: 'Why do assistants name the accreditation registry instead of our firm?',
 
   metaDescription:
-    'Buyers here filter on scope of accreditation before price. We run your buyers’ prompts across four platforms and publish who got named, and on what date.',
+    'Buyers here filter on scope of accreditation before price. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'Testing, inspection and certification firms lose the AI answer at qualification, not at quote. ' +
@@ -144,30 +144,29 @@ export const TIC_HUB: IcpBody = {
     {
       question: 'Have you run this work for a laboratory or an inspection body?',
       answer:
-        'No. Our named record is 45 client programmes in HVAC contracting, dental practices and ' +
-        'commercial insurance, and our four business-to-business engagements are white label under ' +
-        'signed NDAs in managed IT and cloud, cybersecurity and software. None of them is a ' +
+        'No. We publish named client results with dates on our case studies page, and the B2B ones ' +
+        'are in cybersecurity, cloud and recruitment software. None of them is a ' +
         'laboratory, an inspection body or a certification body. A page existing for a vertical is ' +
         'not evidence of experience in it, so we say that here rather than let the page imply ' +
-        'otherwise. What carries across is the method: the prompt panel, the citation analysis and ' +
-        'the entity work do not change with the vertical, and every standard named on these pages ' +
-        'carries its publisher and the date we read it so you can check the work before you check us.',
+        'otherwise. What carries across is the method: a fixed set of buyer questions, a record of ' +
+        'which sources each answer cites, and your firm’s details made consistent everywhere it ' +
+        'appears. Every standard named on these pages carries its publisher and the date we read it, ' +
+        'so you can check the work before you check us.',
     },
     {
       question: 'Can you guarantee an assistant will name us?',
       answer:
-        'No, and nobody can. These are third-party systems we do not control, their answers move ' +
-        'between runs, and a firm promising placement inside one is either misunderstanding the ' +
-        'mechanism or misrepresenting it. What we commit to is the measurement: a dated, reproducible ' +
-        'record of what each platform returned on each run, stored so that every row can be ' +
-        're-derived rather than taken on trust, and the work that makes a firm easier to retrieve ' +
-        'and easier to cite.',
+        'No, and nobody can. These are third-party systems we do not control, and their answers ' +
+        'change from one run to the next. A firm promising you a place in those answers is promising ' +
+        'something it cannot deliver. What we commit to is the measurement: a dated record of what ' +
+        'each platform said on each run, with the original answer stored so you can check any line ' +
+        'of it, and the work that makes your firm easier for AI assistants to find and cite.',
     },
     {
       question: 'What is the first thing you would change on our site?',
       answer:
-        'Almost never the volume of content. The first pass is making the qualification record ' +
-        'machine readable: the scope of accreditation as text rather than a scanned certificate, ' +
+        'Almost never the volume of content. The first pass is putting the qualification record ' +
+        'where software can read it: the scope of accreditation as text rather than a scanned certificate, ' +
         'methods and matrices named individually rather than folded into a service category, the ' +
         'accrediting body and the certificate number in the same block as the capability they cover, ' +
         'and one company name, one description and one address everywhere the firm appears. Most ' +
@@ -176,18 +175,18 @@ export const TIC_HUB: IcpBody = {
     {
       question: 'Which search surfaces does a retainer cover?',
       answer:
-        'Four, and they are not sold apart. Google results, the local pack, Google AI Overviews and ' +
-        'the assistants are different surfaces with different retrieval, and the work that earns a ' +
-        'citation in one is largely the work that earns a position in another, done against a ' +
-        'different model. Paid search sits alongside them and is priced separately, against ad spend ' +
+        'Any one of four, or all of them, and you can start with the one you need. Google search ' +
+        'results, Google Maps and the local pack, Google AI Overviews, and AI assistants such as ' +
+        'ChatGPT are separate surfaces, and we report each one separately. Much of the work that ' +
+        'gets a firm cited by an assistant also helps it rank in Google. Paid search sits alongside them and is priced separately, against ad spend ' +
         'rather than against scope, so it is quoted on its own line rather than folded into the retainer.',
     },
     {
       question: 'What does this cost?',
       answer:
-        'Retainers run from three thousand to twenty thousand US dollars a month and are priced by ' +
-        'scope: how many prompts are tracked, how many locations and branches are covered, how much ' +
-        'is produced each month. The variable that moves the number most in this vertical is how many ' +
+        'We scope every retainer to the firm and quote it after a call. The price depends on ' +
+        'how many buyer questions we track, how many locations and branches we cover, and how ' +
+        'much we produce each month. The variable that moves the number most in this vertical is how many ' +
         'accredited scopes, methods and matrices have to be published as text and then kept current ' +
         'as the registry changes.',
     },
@@ -196,9 +195,9 @@ export const TIC_HUB: IcpBody = {
   proof: {
     kind: 'none',
     statement:
-      'No Qognition client has been published in testing, inspection or certification. Our named ' +
-      'library is 45 programmes in HVAC contracting, dental practices and commercial insurance, and ' +
-      'none of those is proof for a laboratory or an inspection body. We would rather write that ' +
+      'No Qognition client has been published in testing, inspection or certification. Our case ' +
+      'studies name the client and date the result, and none of those clients is a laboratory or an ' +
+      'inspection body. We would rather write that ' +
       'sentence than let a page in this vertical stand in for a history it does not have.',
   },
 

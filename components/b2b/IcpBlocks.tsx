@@ -1,7 +1,18 @@
 import Link from 'next/link';
+import { Fragment } from 'react';
+import { ArrowUpRight, Building2 } from 'lucide-react';
 import { Band, BandHeading, Label, SHELL } from './blocks';
-import type { IcpCrossLink, IcpLink, IcpRecord, IcpSubIndustryView } from '../../lib/b2b/icpRegistry';
-import type { PromptPanel } from '../../lib/b2b/promptPanel';
+import { ObservationStatus } from './ObservationBlock';
+import type { IcpCrossLink, IcpLink, IcpRecord } from '../../lib/b2b/icpRegistry';
+import type { ObservationView } from '../../lib/b2b/observations';
+import type { ClientProof } from '../../data/b2b/types';
+import { INDUSTRY_ICON, industryDisplayName, industryImage } from '../../data/b2b/icp/industryVisuals';
+import { byNiche, getB2BCaseStudy, getCaseStudy, type AnyCaseStudy } from '../../data/case-studies';
+import { PROOF_LINE_B2B, PROOF_LINE_INSURANCE } from '../../data/servicePages';
+import IconTile from '../visual/IconTile';
+import ProgrammeCard from '../visual/ProgrammeCard';
+import TintedImage from '../visual/TintedImage';
+import v from '../visual/visual.module.css';
 
 /* THE BLOCKS THE FOUR-LEVEL FAMILY NEEDS AND THE SPINE FAMILY DOES NOT.
  *
@@ -104,190 +115,6 @@ export function IcpBreadcrumb({ trail }: { trail: readonly IcpLink[] }) {
   );
 }
 
-/* ── Level 1. The operator's note, which is all level 1 has of its own. ───── */
-
-/**
- * 21 authored strings, one per industry, genuinely different from each other,
- * so the lead argument is unique by construction (Theo §3.1).
- *
- * It is the operator's commercial read and never a fact, so it renders with no
- * figure beside it and no source line under it. A `note` that arrives carrying a
- * number is a claims defect, not a copy defect, and `scripts/check-icp.cjs`
- * fails the build on one.
- */
-export function OperatorNoteBlock({ note, id }: { note: string; id: string }) {
-  return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Why this sector buys">
-        What one won program is worth here.
-      </BandHeading>
-      <p
-        className="text-body mt-6 m-0 max-w-[68ch] pl-6"
-        style={{ color: 'var(--s-text-muted)', borderLeft: '2px solid var(--s-accent-graphic)' }}
-      >
-        {note}
-      </p>
-    </Band>
-  );
-}
-
-/* ── Level 2. The six operator fields, in three blocks that keep them apart. ─ */
-
-/**
- * OUR buyer and the firm-size floor. `buyer_titles` verbatim, so the reader sees
- * their own job on the page.
- *
- * `buyer_titles` is NOT `body.buyers[]`. Theo §2 is the post-mortem: `buyers[]`
- * is the CLIENT's buyer, the person whose searches we observe, and wiring the
- * operator's titles into it produces a page telling a marketing director that a
- * marketing director researches certificate scope. Wrong, obviously wrong to the
- * reader, and wrong 341 times before anyone notices. Two blocks, two audiences,
- * and neither borrows from the other.
- *
- * `min_firm_size` is a fit statement, never a disqualifier sentence.
- */
-export function QualificationBlock({
-  sub,
-  id,
-}: {
-  sub: IcpSubIndustryView;
-  id: string;
-}) {
-  if (sub.buyerTitles.length === 0 && !sub.minFirmSize) return null;
-
-  return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Who this is for">
-        For teams responsible for search and growth.
-      </BandHeading>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-8 mt-9">
-        {sub.buyerTitles.length > 0 && (
-          <div className="lg:col-span-7">
-            <Label>Who shapes the scope</Label>
-            <ul
-              className="list-none p-0 m-0 mt-4"
-              style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
-            >
-              {sub.buyerTitles.map((title) => (
-                <li
-                  key={title}
-                  className="py-3 text-body"
-                  style={{
-                    color: 'var(--s-text)',
-                    borderBottom: '1px solid var(--s-rule-hairline)',
-                  }}
-                >
-                  {title}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {sub.minFirmSize && (
-          <div className="lg:col-span-5">
-            <Label>What makes a useful engagement</Label>
-            <p className="text-body mt-4 m-0" style={{ color: 'var(--s-text)' }}>
-              A clear commercial objective, access to subject-matter expertise and a team ready to act on the findings. We discuss scope around your needs.
-            </p>
-          </div>
-        )}
-      </div>
-    </Band>
-  );
-}
-
-/**
- * What one won program is worth TO THE CLIENT.
- *
- * ITS OWN BLOCK, AND THAT IS THE POINT. `client_value` beside our retainer band
- * reads as a promised return, which is a CLAUDE.md §4 claims breach one
- * paragraph wide. So this block carries no price of ours, no percentage, no
- * multiple and no arithmetic joining the two numbers, and the pricing link is
- * elsewhere on the page. Write what one program is worth to them. Never write
- * what we would return.
- */
-export function ClientValueBlock({ value, id }: { value: string; id: string }) {
-  return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="A considered purchase">
-        Make the next conversation worth having.
-      </BandHeading>
-      <p className="text-body mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)' }}>
-        Your programme should reflect the value and complexity of the sale: what buyers need to evaluate, who approves the decision and how an enquiry becomes an opportunity.
-      </p>
-      <p className="text-meta mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-faint)' }}>
-        Agree qualification criteria with sales so reporting distinguishes interest, suitable enquiries and accepted opportunities.
-      </p>
-    </Band>
-  );
-}
-
-/* ── The prompt panel. Family B, labelled as Family B. ────────────────────── */
-
-/**
- * The prompts we run, and where each one came from.
- *
- * Every string here is the CLIENT'S buyer asking, which is why the block says so
- * twice: in the standing line and in the per-row origin. A composed row is the
- * operator's supplied prompt narrowed by the operator's own sub-niche name, via
- * `lib/b2b/promptPanel.ts`, which owns the joiner and can reverse it. Nothing in
- * this component builds a prompt string.
- *
- * `meetsMinimum: false` RENDERS AS A GAP, NOT AS A SILENCE. Nadia's §8.2
- * assertion 3 wants eight distinct prompts per published page and the operator
- * supplied two per sub-industry; the shortfall is authored by someone who knows
- * the niche. A page that hid the shortfall would be claiming a panel it does not
- * have, and a reader comparing us on exactly this should see the real number.
- */
-export function PromptPanelBlock({
-  panel,
-  minimum,
-  id,
-}: {
-  panel: PromptPanel;
-  minimum: number;
-  id: string;
-}) {
-  if (panel.prompts.length === 0) return null;
-
-  return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Questions to investigate">
-        The questions behind a shortlist.
-      </BandHeading>
-      <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        These example prompts describe questions your customers may ask when researching suppliers. Validate them with sales and search evidence, then agree which platforms and markets to observe. A proposed prompt is not a measured AI answer.
-      </p>
-
-      <dl className="grid grid-cols-1 gap-y-0 mt-9 m-0" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
-        {panel.prompts.map((prompt) => (
-          <div
-            key={prompt.prompt}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-2 py-4"
-            style={{ borderBottom: '1px solid var(--s-rule-hairline)' }}
-          >
-            <dt className="lg:col-span-8 text-body m-0" style={{ color: 'var(--s-text)', overflowWrap: 'anywhere' }}>
-              {prompt.prompt}
-            </dt>
-            <dd className="lg:col-span-4 m-0 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-              <span className="font-mono text-meta tracking-[0.14em] uppercase" style={{ color: 'var(--s-text-faint)' }}>
-                {prompt.origin === 'supplied' ? 'Planning question' : 'Application-specific question'}
-              </span>
-              <span className="text-meta" style={{ color: 'var(--s-text-muted)' }}>
-                {prompt.shape === 'vendor' ? 'Shortlist request' : 'How-to question'}
-              </span>
-            </dd>
-          </div>
-        ))}
-      </dl>
-
-      <p className="text-meta mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-faint)' }}>
-        A useful review records the exact prompt, platform, market, date and sources. Repeated observations help distinguish a pattern from one answer.
-      </p>
-    </Band>
-  );
-}
-
 /* ── The client's paid demand. Also Family B, and the same trap one field over. ─ */
 
 /**
@@ -317,100 +144,272 @@ export function PaidDemandBlock({
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Paid-search research">
-        Commercial terms to validate.
-      </BandHeading>
+      <BandHeading id={id}>What your buyers type into Google</BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        These terms are starting points for researching your customers’ searches. Validate intent, relevance and current demand before using them in a campaign. PPC is scoped separately from AI SEO and GEO.
+        Searches like these can come from people ready to buy. We check how often they&apos;re searched, and
+        whether they fit, before we use any of them in a campaign.
       </p>
-      <ul className={`list-none p-0 m-0 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mt-8 ${LATTICE_CELLS}`} style={LATTICE}>
+      <ul className="list-none p-0 m-0 mt-8 flex flex-wrap gap-2">
         {keywords.map((keyword) => (
-          <li key={keyword} className="p-5">
-            <span className="font-mono text-body block" style={{ color: 'var(--s-text)', overflowWrap: 'anywhere' }}>
-              {keyword}
-            </span>
+          <li
+            key={keyword}
+            className="font-mono text-meta px-3 py-2 max-w-full"
+            style={{ color: 'var(--s-text)', border: '1px solid var(--s-rule-strong)', overflowWrap: 'anywhere' }}
+          >
+            {keyword}
           </li>
         ))}
       </ul>
-      <div className="mt-8">
-        <Link href="/services/ppc" className="rf-btn rf-btn--secondary">
-          How we run paid search
+      <p className="text-body mt-8 m-0">
+        <Link href="/services/ppc" className="rf-link" style={{ color: 'var(--s-accent)' }}>
+          How we run B2B PPC
         </Link>
+      </p>
+    </Band>
+  );
+}
+
+/* ── The questions your buyers ask AI. Family B, one dark band. ────────────── */
+
+/**
+ * The merged section 2 of the plain-English template (copy §9.2, §9.3): the prompt panel,
+ * the authored "what we check for" sentence and the observation record, in one band.
+ *
+ * The prompts are the CLIENT's buyer asking, and the band says so in its intro and in the
+ * one label over the list. The four per-row classification labels are gone: they were our
+ * internal sorting, not something a reader needs. Nothing here builds a prompt string;
+ * `lib/b2b/promptPanel.ts` owns that.
+ *
+ * `[vendor]` in a prompt renders as a chip reading "a named vendor". The taxonomy string
+ * is not edited, so the JSON and the panel stay equal.
+ *
+ * Raw `geo_angle` never renders here (F4). The sentence is `whatWeCheckFor`, authored per
+ * page; absent means the line is omitted rather than filled with operator shorthand.
+ */
+function PromptText({ prompt }: { prompt: string }) {
+  const parts = prompt.split(/\[vendor\]/i);
+  return (
+    <>
+      {parts.map((part, i) => (
+        <Fragment key={i}>
+          {part}
+          {i < parts.length - 1 && (
+            <span
+              className="inline-block px-1.5 mx-0.5 text-meta font-mono"
+              style={{ border: '1px solid var(--s-rule-strong)', color: 'var(--s-accent)' }}
+            >
+              a named vendor
+            </span>
+          )}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+export function QuestionsBlock({
+  prompts,
+  whatWeCheckFor,
+  observation,
+  nicheLabel,
+  id,
+}: {
+  prompts: readonly string[];
+  whatWeCheckFor?: string;
+  observation: ObservationView;
+  nicheLabel: string;
+  id: string;
+}) {
+  return (
+    <Band labelledBy={id} dark>
+      <BandHeading id={id}>The questions your buyers ask AI</BandHeading>
+      <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
+        These are questions your buyers might type into an AI tool. They are your buyers&apos; words, not
+        ours. We agree the final list with your sales team before we test anything.
+      </p>
+
+      {prompts.length > 0 && (
+        <div className="mt-8">
+          <Label>Your buyers&apos; words, not ours</Label>
+          <ol className="list-none p-0 m-0 mt-4" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
+            {prompts.map((prompt) => (
+              <li
+                key={prompt}
+                className="text-body py-3 pl-6"
+                style={{
+                  color: 'var(--s-text)',
+                  borderBottom: '1px solid var(--s-rule-hairline)',
+                  borderLeft: '2px solid var(--s-accent-graphic)',
+                  overflowWrap: 'anywhere',
+                }}
+              >
+                <PromptText prompt={prompt} />
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {whatWeCheckFor && (
+        <div className="mt-10">
+          <h3 className="text-h4 font-sans m-0 font-semibold">What we check for</h3>
+          <p className="text-body mt-3 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
+            {whatWeCheckFor}
+          </p>
+        </div>
+      )}
+
+      <div className="mt-10">
+        <Label>What AI tools said</Label>
+        <div className="mt-4">
+          <ObservationStatus view={observation} nicheLabel={nicheLabel} idPrefix={id} />
+        </div>
       </div>
     </Band>
   );
 }
 
-/* ── The GEO angle. What we look for when the panel runs. ─────────────────── */
+/* ── Proof. Placement rule, copy §9.2 section 8 and §2.2. ─────────────────── */
 
 /**
- * `geo_angle` frames the observation. It describes the opportunity in the
- * CLIENT'S market, so it may never be an H1, a title, a meta description or a
- * target query, and it renders here under a heading that makes it a statement of
- * method rather than a claim about the reader.
+ * A named record only when a person put its id on this page's body (`proof.kind ===
+ * 'case-study'`), never inferred from a template. Then the first three insurance records
+ * tagged `ai-seo`. HVAC and dental never render here, whatever the id says: a consumer
+ * record named on a B2B body is dropped rather than shown (CLAUDE.md §2, operator
+ * 2026-10-07). Each caveat line renders only under a group that rendered.
+ *
+ * The old `kind: 'none'` statement no longer renders. The insurance caveat line says the
+ * same thing in one sentence (copy §9.3).
  */
-export function GeoAngleBlock({ angle, id }: { angle: string; id: string }) {
+export function IcpProofBlock({ proof, id }: { proof: ClientProof; id: string }) {
+  const named = proof.kind === 'case-study' ? proof.caseStudyId : undefined;
+  const b2b = named ? [getB2BCaseStudy(named)].filter((s) => s !== undefined) : [];
+  const namedInsurance = named ? getCaseStudy(named) : undefined;
+  const insurance: AnyCaseStudy[] = [
+    ...(namedInsurance && namedInsurance.niche === 'insurance' ? [namedInsurance] : []),
+    ...byNiche('insurance').filter((s) => s.services.includes('ai-seo') && s.id !== named),
+  ].slice(0, 3);
+  const cols = (n: number) => (n >= 3 ? 'md:grid-cols-3' : n === 2 ? 'md:grid-cols-2 lg:w-2/3' : 'md:w-1/2 lg:w-1/3');
+
   return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="What we look for">
-        The shape of the answer we are checking against.
-      </BandHeading>
-      <p
-        className="text-body mt-6 m-0 max-w-[68ch] pl-6"
-        style={{ color: 'var(--s-text-muted)', borderLeft: '2px solid var(--s-accent-graphic)' }}
-      >
-        {angle}
-      </p>
+    <Band labelledBy={id} dark>
+      <BandHeading id={id}>Client programmes</BandHeading>
+
+      {/* Ruth, template verdict FIX: one fixed sentence on every kind:'none' page. The
+          authored `statement` fields never render here. */}
+      {proof.kind === 'none' && (
+        <p className="text-body mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)' }}>
+          We have not published a client programme in this sector. The insurance programmes below show how we run
+          the work. They are not experience in your field.
+        </p>
+      )}
+
+      {b2b.length > 0 && (
+        <div className="mt-10">
+          <span className="rf-eyebrow">B2B client results</span>
+          <ul className={`${v.lattice} list-none p-0 m-0 mt-5 grid grid-cols-1 ${cols(b2b.length)}`}>
+            {b2b.map((study) => (
+              <ProgrammeCard key={study.id} study={study} />
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {insurance.length > 0 && (
+        <div className="mt-10">
+          <span className="rf-eyebrow">Insurance programmes</span>
+          <ul className={`${v.lattice} list-none p-0 m-0 mt-5 grid grid-cols-1 ${cols(insurance.length)}`}>
+            {insurance.map((study) => (
+              <ProgrammeCard key={study.id} study={study} />
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 lg:items-start">
+        <div className="lg:col-span-7">
+          {b2b.length > 0 && (
+            <p className="text-meta m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
+              {PROOF_LINE_B2B}
+            </p>
+          )}
+          {insurance.length > 0 && (
+            <p className="text-meta m-0 mt-2 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
+              {PROOF_LINE_INSURANCE}
+            </p>
+          )}
+        </div>
+        <div className="lg:col-span-5 flex flex-col sm:flex-row flex-wrap gap-3 lg:justify-end">
+          <Link href="/case-studies/methodology" className="rf-btn rf-btn--secondary">
+            How we handle evidence
+          </Link>
+          <Link href="/case-studies" className="rf-btn rf-btn--secondary">
+            Client programmes
+          </Link>
+        </div>
+      </div>
     </Band>
   );
 }
 
-/* ── Children. PUBLISHED ONLY. Omitted entirely when none. ────────────────── */
+/* ── Related pages. Children, siblings and cross-tree pointers, one list. ──── */
 
 /**
- * The down-links, and the orphan-prevention mechanism.
+ * Copy §9.3: three link blocks with three headings for one job become one list, names
+ * only. PUBLISHED ONLY, exactly as before: children and siblings arrive from the registry
+ * already filtered to published entities, and a cross-tree pointer with no href is dropped
+ * (Nadia C6). Uncapped, because this list is what stops a child being an orphan
+ * (ADR-0008 §7.2). The block omits itself when nothing resolves.
  *
- * PUBLISHED ONLY, AND THE BLOCK DISAPPEARS WHEN THERE ARE NONE. That is Nadia's
- * C6, which ADR-0008 §7.2 left open and which is decided here: an unpublished
- * entity does not appear at all. Not as a link, not as plain text, not as a
- * greyed row. A sub-industry page listing 10 niches of which 3 are published is
- * a directory stub with a page on top, and it is the exact shape `/locations/*`
- * had at 0.13 clicks per page per quarter.
- *
- * This is the one place the ICP family deliberately diverges from
- * `ChildrenBlock` in `blocks.tsx`, which lists unrouted spine entities under a
- * "no page yet" label. That was defensible at 13 children. At a measured maximum
- * of 21 sub-industries, 10 niches and 10 sub-niches it is not, and at 11,561
- * entities it is a directory generator.
- *
- * UNCAPPED, per ADR-0008 §7.2: this block is what stops a child being an orphan,
- * and capping it silently orphans the overflow. The measured maximum branching
- * factor anywhere in the tree is 21, so uncapped costs nothing and the mesh
- * cannot form.
+ * Each card carries its industry's icon, so a pointer into another branch reads as one
+ * at a glance.
  */
-export function IcpChildrenBlock({
-  children: entries,
-  heading,
+export function RelatedPagesBlock({
+  children: childLinks,
+  siblings,
+  cross,
+  industrySlug,
   id,
 }: {
   children: readonly IcpLink[];
-  heading: string;
+  siblings: readonly IcpLink[];
+  cross: readonly IcpCrossLink[];
+  industrySlug: string;
   id: string;
 }) {
+  const seen = new Set<string>();
+  const entries = [
+    ...childLinks.map((l) => ({ name: l.name, href: l.href, slug: industrySlug })),
+    ...siblings.map((l) => ({ name: l.name, href: l.href, slug: industrySlug })),
+    ...cross.map((l) => ({ name: l.name, href: l.href, slug: l.path[0] ?? industrySlug })),
+  ].filter((e): e is { name: string; href: string; slug: string } => {
+    if (!e.href || seen.has(e.href)) return false;
+    seen.add(e.href);
+    return true;
+  });
   if (entries.length === 0) return null;
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Inside this category">
-        {heading}
-      </BandHeading>
-      <div className={`grid grid-cols-1 md:grid-cols-2 mt-9 ${LATTICE_CELLS}`} style={LATTICE}>
+      <BandHeading id={id}>Related pages</BandHeading>
+      <ul
+        className="list-none p-0 m-0 mt-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 [&>*]:border-t [&>*]:border-l [&>*]:border-[var(--s-rule-hairline)]"
+        style={{ borderRight: '1px solid var(--s-rule-hairline)', borderBottom: '1px solid var(--s-rule-hairline)' }}
+      >
         {entries.map((entry) => (
-          <Link key={entry.id} href={entry.href!} className="rf-hoverable rf-cell block p-6">
-            <h3 className="text-h3 font-sans m-0 font-semibold">{entry.name}</h3>
-          </Link>
+          <li key={entry.href}>
+            <Link href={entry.href} className="rf-card rf-hoverable relative flex h-full items-center gap-4 p-5 pr-12">
+              <IconTile icon={INDUSTRY_ICON[entry.slug] ?? Building2} size={24} />
+              <span className="text-body font-semibold min-w-0" style={{ overflowWrap: 'anywhere' }}>
+                {entry.name}
+              </span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--s-accent)' }} aria-hidden="true">
+                <ArrowUpRight className="rf-arrow" size={20} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />
+              </span>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </Band>
   );
 }
@@ -447,8 +446,8 @@ export function CoverageGridBlock({
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Scope inside this niche">
-        What buyers mean when they name a narrower job.
+      <BandHeading id={id} eyebrow="Inside this niche">
+        The narrower jobs buyers ask for by name.
       </BandHeading>
       <div className={`grid grid-cols-1 md:grid-cols-2 mt-9 ${LATTICE_CELLS}`} style={LATTICE}>
         {rows.map((row) => (
@@ -462,116 +461,6 @@ export function CoverageGridBlock({
           </article>
         ))}
       </div>
-    </Band>
-  );
-}
-
-/* ── Inherited context. What a deep page takes from its parent, said out loud. ─ */
-
-/**
- * Levels 3 and 4 inherit their buyer, their firm-size floor and their paid
- * demand from the sub-industry above, because the operator attached those fields
- * there and nowhere else.
- *
- * Rendering them silently would make a niche page look like it had six fields of
- * its own. Rendering them under a heading that names the parent and links to it
- * is both honest and the second of Nadia's two required up-links. A page that
- * cannot say what is its own has nothing of its own, and the correct response to
- * that is a shorter page, not a louder one.
- */
-export function InheritedContextBlock({
-  parentName,
-  parentHref,
-  sub,
-  id,
-}: {
-  parentName: string;
-  parentHref?: string;
-  sub: IcpSubIndustryView;
-  id: string;
-}) {
-  const hasAnything = sub.buyerTitles.length > 0 || Boolean(sub.minFirmSize);
-  if (!hasAnything) return null;
-
-  return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Planning your engagement">
-        {`A search programme for teams in ${parentName}.`}
-      </BandHeading>
-      {parentHref && (
-        <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-          <Link href={parentHref} className="rf-link" style={{ color: 'var(--s-accent)' }}>
-            {parentName}
-          </Link>{' '}
-          covers the rest of this category.
-        </p>
-      )}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-6 mt-8">
-        {sub.buyerTitles.length > 0 && (
-          <div className="lg:col-span-7">
-            <Label>Who shapes the scope</Label>
-            <p className="text-body mt-3 m-0" style={{ color: 'var(--s-text)' }}>
-              {sub.buyerTitles.join(' · ')}
-            </p>
-          </div>
-        )}
-        {sub.minFirmSize && (
-          <div className="lg:col-span-5">
-            <Label>What makes a useful engagement</Label>
-            <p className="text-body mt-3 m-0" style={{ color: 'var(--s-text)' }}>
-              A clear commercial objective, access to subject-matter expertise and a team ready to act on the findings. We discuss scope around your needs.
-            </p>
-          </div>
-        )}
-      </div>
-    </Band>
-  );
-}
-
-/* ── Cross-tree pointers. 18 budgeted, 11 resolvable, and it says which. ──── */
-
-/**
- * The only out-of-tree links in the whole system, and every one of them was
- * written down by the operator.
- *
- * ADR-0008 §7.3 budgets 18: the 5 declared `overlaps` and the 13 `dedupe_log`
- * rows. 11 resolve against the locked v2.0.0 file. The other 7 dedupe rows name
- * a niche that does not exist in the industry the row says it was kept in, and
- * `lib/b2b/icpRegistry.ts` refuses to guess which one was meant. So this block
- * renders what resolves and the gate names what does not.
- *
- * There is no similarity join here and there is not going to be one. No
- * `buyer_titles` overlap, no shared-standard join, no computed relatedness: they
- * are a similarity set with extra steps, and the first time somebody widens the
- * threshold to improve interlinking the mesh is back.
- */
-export function CrossTreeBlock({ links, id }: { links: readonly IcpCrossLink[]; id: string }) {
-  const resolvable = links.filter((link) => link.href);
-  if (resolvable.length === 0) return null;
-
-  return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Covered elsewhere">
-        The same buyer, under another branch.
-      </BandHeading>
-      <ul className="list-none p-0 m-0 mt-8" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
-        {resolvable.map((link) => (
-          <li
-            key={link.path.join('/')}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-2 py-5"
-            style={{ borderBottom: '1px solid var(--s-rule-hairline)' }}
-          >
-            <div className="lg:col-span-5">
-              <Link href={link.href!} className="rf-link text-body font-semibold" style={{ color: 'var(--s-accent)' }}>
-                {link.name}
-              </Link>
-            </div>
-            <p className="lg:col-span-7 text-body m-0" style={{ color: 'var(--s-text-muted)' }}>
-              {link.reason}
-            </p>
-          </li>
-        ))}
-      </ul>
     </Band>
   );
 }
@@ -602,10 +491,10 @@ export function CanonicalPointerPage({
     <main className="min-h-screen">
       <section className="pt-32 sm:pt-40 pb-16 sm:pb-24">
         <div className={SHELL}>
-          <Label accent>Explore the related approach</Label>
+          <Label accent>Covered on another page</Label>
           <h1 className="text-h1 font-sans m-0 mt-4 max-w-[20ch] font-semibold">{name}</h1>
           <p className="text-body mt-8 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-            For the buying questions and service approach relevant to this business, explore{' '}
+            We cover this kind of firm, its buyers and their questions on our page for{' '}
             {canonicalHref ? (
               <Link href={canonicalHref} className="rf-link" style={{ color: 'var(--s-accent)' }}>
                 {canonicalName}
@@ -653,7 +542,9 @@ export function IcpHero({
   opener,
   trail,
   upLink,
-  aside,
+  writtenFor,
+  industrySlug,
+  industryName,
   draft,
 }: {
   eyebrow: string;
@@ -662,29 +553,38 @@ export function IcpHero({
   opener: string;
   trail: readonly IcpLink[];
   upLink?: { readonly name: string; readonly href?: string };
-  aside?: React.ReactNode;
+  /** `buyer_titles`, verbatim. OUR buyer, so it sits in the hero (copy §9.3), never in the
+   *  client-buyer block. Absent at level 1, which has no `buyer_titles`. */
+  writtenFor?: readonly string[];
+  /** Picks the industry photo, or the industry icon where no photo is approved. */
+  industrySlug: string;
+  /** The level-1 name, shown beside the icon when there is no photo. */
+  industryName: string;
   draft: boolean;
 }) {
+  const image = industryImage(industrySlug);
+  const Icon = INDUSTRY_ICON[industrySlug] ?? Building2;
+
   return (
-    <section className={`${draft ? 'pt-10' : 'pt-32 sm:pt-40'} pb-14 sm:pb-18`}>
+    <section data-theme="light" className={`${draft ? 'pt-10' : 'pt-32 sm:pt-40'} pb-14 sm:pb-16`}>
       <div className={SHELL}>
         <IcpBreadcrumb trail={trail} />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-10">
-          <div className={aside ? 'lg:col-span-7' : 'lg:col-span-9'}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-10 lg:items-center">
+          <div className="lg:col-span-7 min-w-0">
             <Label accent>{eyebrow}</Label>
             {/* NEVER lowercase a taxonomy label. `.toLowerCase()` shipped on the
                 spine templates first and rendered "cnc machining", destroying
                 the acronym; across this taxonomy it would also produce "saas and
                 software", "it services" and "aog aircraft parts". Sentence flow
                 is not worth mangling an entity name a model is meant to match. */}
-            <h1 className="text-h1 font-sans m-0 mt-4 max-w-[18ch] font-semibold">
+            <h1 className="text-h1 font-sans m-0 mt-4 max-w-[18ch] font-semibold" style={{ overflowWrap: 'anywhere' }}>
               AI search visibility for {name}.
             </h1>
 
             {/* Question, then answer, in that order and within 60 words.
                 Extraction depends on the answer being self-contained and not
                 referring back to the H1 with a pronoun. */}
-            <h2 className="text-h3 font-sans mt-10 mb-3 max-w-[40ch] font-semibold">{buyerQuestion}</h2>
+            <h2 className="text-h3 font-sans mt-8 mb-3 max-w-[40ch] font-semibold">{buyerQuestion}</h2>
             <p className="text-body m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
               {opener}
             </p>
@@ -701,7 +601,16 @@ export function IcpHero({
               </p>
             )}
 
-            <div className="mt-9 flex flex-col sm:flex-row flex-wrap gap-3">
+            {writtenFor && writtenFor.length > 0 && (
+              <p className="text-meta mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
+                <span className="font-mono uppercase tracking-[0.14em]" style={{ color: 'var(--s-text-faint)' }}>
+                  Written for:
+                </span>{' '}
+                <span style={{ color: 'var(--s-text)' }}>{writtenFor.join(' · ')}</span>
+              </p>
+            )}
+
+            <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
               <Link href="/book" className="rf-btn rf-btn--primary">
                 Book a call
               </Link>
@@ -711,23 +620,34 @@ export function IcpHero({
             </div>
           </div>
 
-          {aside && <aside className="lg:col-span-5">{aside}</aside>}
+          {/* The industry, as a picture. A local Pexels photo under the teal tint where one
+              is approved (data/b2b/icp/industryImages.json), beside the copy and never behind
+              it, because this is a light band (brief §1.4). It only sets the scene, so
+              alt="" (Ruth, 2026-10-07). Otherwise the industry's icon. */}
+          <div className="lg:col-span-5 min-w-0">
+            {image ? (
+              <TintedImage
+                src={image.src}
+                alt=""
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                priority
+                className="aspect-[16/10] w-full"
+              />
+            ) : (
+              <div
+                className={`${v.screenField} flex items-center gap-4 p-6`}
+                aria-hidden="true"
+              >
+                <IconTile icon={Icon} size={32} />
+                <span className="font-mono text-meta uppercase tracking-[0.14em]" style={{ color: 'var(--s-text-muted)' }}>
+                  {industryDisplayName(industryName)}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-/** The hero aside. One column below sm, because two columns wrapped unevenly at 360. */
-export function HeroPanel({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div
-      className="p-6"
-      style={{ background: 'var(--s-surface-2)', border: '1px solid var(--s-rule-hairline)' }}
-    >
-      <Label>{label}</Label>
-      {children}
-    </div>
   );
 }
 

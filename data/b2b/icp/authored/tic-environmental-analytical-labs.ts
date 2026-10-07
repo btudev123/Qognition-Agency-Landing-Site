@@ -35,7 +35,7 @@ export const TIC_ENVIRONMENTAL_ANALYTICAL_LABS: IcpBody = {
   buyerQuestion: 'Why is our name missing from the two or three a consultant calls first?',
 
   metaDescription:
-    'State recognition, reporting limits and deliverable format decide this work. We run your buyers’ prompts on four platforms and publish the answers, dated.',
+    'State recognition, reporting limits and deliverable format decide this work. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'Analytical work is awarded on whether the result will stand up, not on whether the laboratory ' +
@@ -225,9 +225,9 @@ export const TIC_ENVIRONMENTAL_ANALYTICAL_LABS: IcpBody = {
     {
       question: 'Is publishing our state recognitions really worth the effort?',
       answer:
-        'It is the single change with the clearest mechanism behind it. The question a buyer asks ' +
-        'names a method, a matrix and a state, and a page that answers that question in those three ' +
-        'terms is retrievable while a map graphic is not. It is also the version of the work that ' +
+        'It is the change with the clearest reason behind it. The question a buyer asks names a ' +
+        'method, a matrix and a state, and a page that answers in those three terms gives an ' +
+        'assistant something to quote, while a map graphic does not. It is also the version of the work that ' +
         'survives an audit, because you are publishing what the accreditation body already says ' +
         'rather than a marketing summary of it. We would do that before anything else, and we would ' +
         'not write a blog post first.',
@@ -239,13 +239,13 @@ export const TIC_ENVIRONMENTAL_ANALYTICAL_LABS: IcpBody = {
         'published scope that has gone stale is worse than no published scope: it is a claim your own ' +
         'accreditation body contradicts, and a buyer who catches it will assume everything else on ' +
         'the site is the same age. We build the scope pages so a field can be removed without ' +
-        'touching anything else, and the review cadence goes in the retainer rather than in a document.',
+        'touching anything else, and the review schedule goes in the retainer rather than in a document.',
     },
     {
-      question: 'Do you subcontract the technical writing?',
+      question: 'Who checks the technical writing?',
       answer:
-        'No. Drafts are written in-house and reviewed by a named person on your side who reads scope ' +
-        'documents for a living. Nothing in this niche is publishable on the strength of a writer ' +
+        'A named person on your side who reads scope documents for a living, before anything is ' +
+        'published. Nothing in this niche is publishable on the strength of a writer ' +
         'being careful, because the errors that matter are the ones that look fine to a careful ' +
         'writer: a matrix that does not belong to a method, a limit quoted without the basis, a ' +
         'programme named as though it were national.',
@@ -253,9 +253,9 @@ export const TIC_ENVIRONMENTAL_ANALYTICAL_LABS: IcpBody = {
     {
       question: 'What happens if the first run shows we are already being named?',
       answer:
-        'Then we say so, and the work changes shape rather than the report changing wording. A firm ' +
-        'that is already named for its strongest method usually is not named for the next two, and ' +
-        'the panel tells you which those are. We would rather find that at the start than defend a ' +
+        'Then we say so, and the work changes shape rather than the report changing wording. Being ' +
+        'named for your strongest method does not mean you are named for the others, and the run ' +
+        'shows which ones you are missing. We would rather find that at the start than defend a ' +
         'programme that was solving a problem you did not have.',
     },
   ],
@@ -296,9 +296,9 @@ export const TIC_ENVIRONMENTAL_ANALYTICAL_LABS: IcpBody = {
   proof: {
     kind: 'none',
     statement:
-      'No published Qognition engagement covers an analytical laboratory. The 45 named programmes are ' +
-      'HVAC contracting, dental practices and commercial insurance, and none of them is evidence for ' +
-      'this niche. The method is transferable and the record is not, and those are different sentences.',
+      'No published Qognition engagement covers an analytical laboratory. Our named client results ' +
+      'come from other sectors, and none of them is evidence for this niche. The method is ' +
+      'transferable and the record is not, and those are different sentences.',
   },
 
   snapshotQuestion:

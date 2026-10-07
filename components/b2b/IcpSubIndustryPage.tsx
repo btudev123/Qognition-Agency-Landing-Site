@@ -7,9 +7,8 @@ import {
   icpPanelExclusions,
   icpSiblings,
 } from '../../lib/b2b/icpRegistry';
-import { panelFor, MIN_DISTINCT_PROMPTS } from '../../lib/b2b/promptPanel';
+import { panelFor } from '../../lib/b2b/promptPanel';
 import type { ObservationView } from '../../lib/b2b/observations';
-import ObservationBlock from './ObservationBlock';
 import DraftNotice from './DraftNotice';
 import {
   BuyersBlock,
@@ -18,22 +17,16 @@ import {
   AxesBlock,
   WhyLostBlock,
   ServiceLinksBlock,
-  SiblingsBlock,
-  ProofBlock,
   FaqsBlock,
   SnapshotCta,
 } from './blocks';
 import {
-  ClientValueBlock,
-  CrossTreeBlock,
   CanonicalPointerPage,
-  GeoAngleBlock,
-  HeroPanel,
-  IcpChildrenBlock,
   IcpHero,
+  IcpProofBlock,
   PaidDemandBlock,
-  PromptPanelBlock,
-  QualificationBlock,
+  QuestionsBlock,
+  RelatedPagesBlock,
 } from './IcpBlocks';
 
 /* LEVEL 2 — the sub-industry. 341 of them, and the workhorse.
@@ -66,6 +59,15 @@ import {
  * ────────────────────────────────────────────────────────────────────────────
  */
 
+/* PLAIN-ENGLISH TEMPLATE, 2026-10 (docs/copy/2026-10/plain-english-templates.md §9).
+ * Section order, all four levels: hero; the questions your buyers ask AI (dark); why firms
+ * like yours get left out; who your buyers are; [axes and vocabulary where the body has
+ * them]; pick the layer you need (dark); facts; what your buyers type into Google; client
+ * programmes (dark); questions buyers ask us; closing CTA (dark); related pages. A level
+ * omits the slots it has no data for (§9.4). Cut: the operator note, the qualification,
+ * client-value and inherited-context blocks, and the hero's repeat of the comparison axes
+ * (§9.3). `buyer_titles` moved into the hero as one "Written for" line. */
+
 interface Props {
   readonly record: Extract<IcpRecord, { level: 'sub-industry' }>;
   readonly observation: ObservationView;
@@ -92,18 +94,18 @@ export default function IcpSubIndustryPage({
   const { industry, sub, body, state } = record;
   const key = `${industry.slug}-${sub.slug}`;
   const trail = icpBreadcrumb(record);
-  const children = icpChildren(record);
-  const siblings = icpSiblings(record);
   const panel = panelFor(record.href, { exclude: icpPanelExclusions(record) });
   const fit = icpLeadingFit(record);
 
-  /* The two argument blocks, ordered by fit and never labelled with it. */
-  const citation = (
-    <>
-      <ObservationBlock view={observation} nicheLabel={sub.name} idPrefix={key} />
-      {sub.geoAngle && <GeoAngleBlock angle={sub.geoAngle} id={`${key}-geo`} />}
-      {panel && <PromptPanelBlock panel={panel} minimum={MIN_DISTINCT_PROMPTS} id={`${key}-panel`} />}
-    </>
+  /* Rule 8 orders these two and nothing else. The classification is never rendered. */
+  const questions = (
+    <QuestionsBlock
+      prompts={panel?.prompts.map((p) => p.prompt) ?? []}
+      whatWeCheckFor={body.whatWeCheckFor}
+      observation={observation}
+      nicheLabel={sub.name}
+      id={`${key}-questions`}
+    />
   );
   const paid = <PaidDemandBlock keywords={sub.ppcKeywords} id={`${key}-paid`} />;
 
@@ -118,78 +120,40 @@ export default function IcpSubIndustryPage({
         opener={body.opener}
         trail={trail}
         upLink={{ name: industry.name, href: trail[0]?.href }}
+        writtenFor={sub.buyerTitles}
+        industrySlug={industry.slug}
+        industryName={industry.name}
         draft={state === 'draft'}
-        aside={
-          body.kind === 'sub-niche' ? (
-            <HeroPanel label="What a buyer filters on here">
-              <ul className="list-none p-0 m-0 mt-4">
-                {body.comparisonAxes.map((axis) => (
-                  <li
-                    key={axis.axis}
-                    className="py-2.5"
-                    style={{ borderBottom: '1px solid var(--s-rule-hairline)' }}
-                  >
-                    <span className="text-body" style={{ color: 'var(--s-text)' }}>
-                      {axis.axis}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              {sub.minFirmSize && (
-                <>
-                  <p className="text-meta mt-5 mb-1 m-0" style={{ color: 'var(--s-text-faint)' }}>
-                    Where the work pays for itself
-                  </p>
-                  <p className="text-meta m-0" style={{ color: 'var(--s-text-muted)' }}>
-                    {sub.minFirmSize}
-                  </p>
-                </>
-              )}
-            </HeroPanel>
-          ) : undefined
-        }
       />
 
-      {fit === 'PPC' ? (
-        <>
-          {paid}
-          {citation}
-        </>
-      ) : (
-        <>
-          {citation}
-          {paid}
-        </>
-      )}
+      {fit === 'PPC' && paid}
+      {questions}
 
       <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} />
       <BuyersBlock buyers={body.buyers} id={`${key}-buyers`} />
-      <QualificationBlock sub={sub} id={`${key}-qualify`} />
-      {sub.clientValue && <ClientValueBlock value={sub.clientValue} id={`${key}-value`} />}
-
+      {/* Kept at this level although copy §9.4 lists them for levels 3 and 4: the body
+          kind here is `sub-niche`, §9.3 keeps them "at sub-niche level", and they are
+          the client's own vocabulary, the most specific copy on the page. Carried up. */}
       {body.kind === 'sub-niche' && (
         <>
           <AxesBlock axes={body.comparisonAxes} id={`${key}-axes`} />
           <VocabularyBlock terms={body.vocabulary} id={`${key}-vocab`} />
         </>
       )}
-      <FactsBlock facts={body.facts} id={`${key}-facts`} />
 
-      <IcpChildrenBlock
-        children={children}
-        heading={`${children.length} kinds of firm we have written for inside ${sub.name}.`}
-        id={`${key}-children`}
-      />
-
-      <CrossTreeBlock links={icpCrossLinks(record)} id={`${key}-cross`} />
       <ServiceLinksBlock id={`${key}-services`} />
-      <SiblingsBlock
-        siblings={siblings.map((s) => ({ id: s.id, label: s.name, href: s.href }))}
-        id={`${key}-siblings`}
-      />
-      <ProofBlock proof={body.proof} id={`${key}-proof`} />
+      <FactsBlock facts={body.facts} id={`${key}-facts`} />
+      {fit !== 'PPC' && paid}
+      <IcpProofBlock proof={body.proof} id={`${key}-proof`} />
       <FaqsBlock faqs={body.faqs} id={`${key}-faqs`} />
       <SnapshotCta question={body.snapshotQuestion} id={`${key}-cta`} />
+      <RelatedPagesBlock
+        children={icpChildren(record)}
+        siblings={icpSiblings(record)}
+        cross={icpCrossLinks(record)}
+        industrySlug={industry.slug}
+        id={`${key}-related`}
+      />
     </main>
   );
 }

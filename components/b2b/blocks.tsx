@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { MapPin, MessageSquareText, ScanSearch, Search, UserRound, type LucideIcon } from 'lucide-react';
+import IconTile from '../visual/IconTile';
+import DiagramBlindSpot from '../visual/DiagramBlindSpot';
 import type {
   BuyerRole,
   ClientProof,
@@ -87,11 +90,13 @@ export function Band({
   );
 }
 
-export function BandHeading({ id, eyebrow, children }: { id: string; eyebrow: string; children: ReactNode }) {
+/* `eyebrow` is optional. The plain-English template (docs/copy/2026-10/plain-english-templates.md
+   §1.6) collapses most eyebrow-and-heading pairs into one plain heading. */
+export function BandHeading({ id, eyebrow, children }: { id: string; eyebrow?: string; children: ReactNode }) {
   return (
     <>
-      <Label>{eyebrow}</Label>
-      <h2 id={id} className="text-h2 font-sans m-0 mt-3 max-w-[26ch] font-semibold">
+      {eyebrow && <Label>{eyebrow}</Label>}
+      <h2 id={id} className={`text-h2 font-sans m-0 ${eyebrow ? 'mt-3' : ''} max-w-[26ch] font-semibold`}>
         {children}
       </h2>
     </>
@@ -103,22 +108,19 @@ export function BandHeading({ id, eyebrow, children }: { id: string; eyebrow: st
 export function BuyersBlock({ buyers, id }: { buyers: readonly BuyerRole[]; id: string }) {
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Who is actually searching">
-        Understand the people behind the decision.
-      </BandHeading>
-      <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        Your prospective customers need evidence that fits their role in the buying decision. Your internal marketing and commercial owners help us decide what to publish, review and measure.
-      </p>
+      <BandHeading id={id}>Who your buyers are</BandHeading>
+      {/* The CLIENT's buyers, never `buyer_titles` (that is our buyer, in the hero). One
+          role glyph per card marks each card as a person rather than a topic. */}
       <div className={`grid grid-cols-1 md:grid-cols-2 mt-9 ${LATTICE_CELLS}`} style={LATTICE}>
-        {buyers.map((b, i) => (
-          <article key={b.title} className="p-6">
-            <span className="font-mono text-meta tabular-nums" style={{ color: 'var(--s-text-faint)' }}>
-              {String(i + 1).padStart(2, '0')} / {String(buyers.length).padStart(2, '0')}
-            </span>
-            <h3 className="text-h3 font-sans mt-3 mb-2 font-semibold">{b.title}</h3>
+        {buyers.map((b) => (
+          <article key={b.title} className="p-6 flex gap-5">
+            <IconTile icon={UserRound} size={24} />
+            <div className="min-w-0">
+            <h3 className="text-h3 font-sans m-0 mb-2 font-semibold">{b.title}</h3>
             <p className="text-body m-0 max-w-[58ch]" style={{ color: 'var(--s-text-muted)' }}>
               {b.researches}
             </p>
+            </div>
           </article>
         ))}
       </div>
@@ -131,14 +133,9 @@ export function BuyersBlock({ buyers, id }: { buyers: readonly BuyerRole[]; id: 
 export function FactsBlock({ facts, id }: { facts: readonly Fact[]; id: string }) {
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="What is true, and where it came from">
-        Dated facts, each with the source it came from.
-      </BandHeading>
+      <BandHeading id={id}>Facts we checked, with sources</BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        Every claim below links to the publisher we read it at, with the date we read it and whether
-        we reached the primary source or a secondary restating it. Where we could not verify an
-        edition year or a deadline, the page says the standard and omits the number rather than
-        guessing at it.
+        Each fact links to where we read it, with the date.
       </p>
       {/* Single column, so this is a rule-separated list rather than a lattice:
           each row draws its own top rule and the container closes the bottom.
@@ -163,7 +160,7 @@ export function FactsBlock({ facts, id }: { facts: readonly Fact[]; id: string }
             </div>
             <div className="lg:col-span-5">
               <Label>
-                {f.source.confidence === 'observed' ? 'Primary read' : 'Reported by a secondary'}
+                {f.source.confidence === 'observed' ? 'Read at the source' : 'Read in a secondary report'}
               </Label>
               <p className="text-meta mt-2 mb-1" style={{ color: 'var(--s-text-muted)' }}>
                 {f.source.publisher}
@@ -193,13 +190,12 @@ export function FactsBlock({ facts, id }: { facts: readonly Fact[]; id: string }
 export function VocabularyBlock({ terms, id }: { terms: readonly VocabularyTerm[]; id: string }) {
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="The vocabulary a buyer filters on">
-        Get one of these wrong and an engineer stops reading.
+      <BandHeading id={id} eyebrow="Your buyers' vocabulary">
+        The terms your buyers check, and who issues them.
       </BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        A wrong standard name is a competence signal to a human and a different entity to a model.
-        Each term below is listed with the body that issues it and what it actually gates, because
-        &ldquo;we are certified&rdquo; answers none of the questions a buyer has.
+        Buyers filter suppliers on these terms. Each one is listed with the body that issues it and
+        what it covers. A page that only says &ldquo;we are certified&rdquo; answers none of their questions.
       </p>
       <dl className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-9 m-0 ${LATTICE_CELLS}`} style={LATTICE}>
         {terms.map((t) => (
@@ -227,9 +223,7 @@ export function VocabularyBlock({ terms, id }: { terms: readonly VocabularyTerm[
 export function AxesBlock({ axes, id }: { axes: readonly ComparisonAxis[]; id: string }) {
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="What they compare you on">
-        Five axes, and none of them is &ldquo;quality&rdquo;.
-      </BandHeading>
+      <BandHeading id={id}>What buyers compare you on</BandHeading>
       <ol className="list-none p-0 m-0 mt-9" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
         {axes.map((a, i) => (
           <li
@@ -254,17 +248,26 @@ export function AxesBlock({ axes, id }: { axes: readonly ComparisonAxis[]; id: s
 /* ── Why the answer is lost. One failure mechanism, not a list of tips. ───── */
 
 export function WhyLostBlock({ text, id }: { text: string; id: string }) {
+  /* One mechanism in the authored words, beside the buyer-journey diagram from `/`
+     (brief §2.3). The 12-column split starts at xl for the reason BuyingProblem.tsx gives:
+     at 1024 a 7-column cell is under the 648px floor that keeps the diagram's labels at
+     13px. Below xl the diagram follows the text, and below 768 it is the vertical variant. */
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Why the answer goes elsewhere">
-        The mechanism, not the symptom.
-      </BandHeading>
-      <p
-        className="text-body mt-6 m-0 max-w-[68ch] pl-6"
-        style={{ color: 'var(--s-text-muted)', borderLeft: '2px solid var(--s-accent-graphic)' }}
-      >
-        {text}
-      </p>
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-16 gap-y-10 xl:items-center">
+        <div className="xl:col-span-5">
+          <BandHeading id={id}>Why firms like yours get left out</BandHeading>
+          <p
+            className="text-body mt-6 m-0 max-w-[68ch] pl-6"
+            style={{ color: 'var(--s-text-muted)', borderLeft: '2px solid var(--s-accent-graphic)' }}
+          >
+            {text}
+          </p>
+        </div>
+        <div className="xl:col-span-7 min-w-0">
+          <DiagramBlindSpot idPrefix={`${id}-journey`} />
+        </div>
+      </div>
     </Band>
   );
 }
@@ -285,11 +288,11 @@ export function ChildrenBlock({
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Inside this vertical">
-        Explore specialist businesses in {verticalLabel}.
+      <BandHeading id={id} eyebrow="Inside this industry">
+        Specialist pages in {verticalLabel}.
       </BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        Each specialist business has different applications, requirements and buying questions. Explore the relevant approach, or tell us about your business so we can discuss the right scope.
+        Each kind of firm has its own buyers and buying questions. If yours is not listed, send an enquiry and tell us what you sell.
       </p>
 
       {linked.length > 0 && (
@@ -297,14 +300,10 @@ export function ChildrenBlock({
           {linked.map((c) => (
             <Link key={c.id} href={c.href!} className="rf-hoverable rf-cell block p-6">
               <span className="rf-cell-meta font-mono text-meta tracking-[0.14em] uppercase">
-                Explore the approach
+                Read the page
               </span>
               <h3 className="text-h3 font-sans mt-3 mb-2 font-semibold">{c.label}</h3>
-              {c.geoAngle && (
-                <p className="text-meta m-0" style={{ color: 'var(--s-text-muted)' }}>
-                  {c.geoAngle}
-                </p>
-              )}
+              {/* Raw `geoAngle` never renders: operator shorthand, and some carry em dashes (F4). */}
             </Link>
           ))}
         </div>
@@ -350,9 +349,7 @@ export function SiblingsBlock({ siblings, id }: { siblings: readonly ChildEntry[
 
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Nearby">
-        Other niches in this vertical.
-      </BandHeading>
+      <BandHeading id={id}>Related pages</BandHeading>
       <ul className={`list-none p-0 m-0 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 mt-8 ${LATTICE_CELLS}`} style={LATTICE}>
         {siblings.map((s) => (
           <li key={s.id}>
@@ -368,23 +365,30 @@ export function SiblingsBlock({ siblings, id }: { siblings: readonly ChildEntry[
 
 /* ── The four layers, one fixed block, same order everywhere. ─────────────── */
 
+/* The homepage FourLayers icons, by layer label. */
+const LAYER_ICON: Record<string, LucideIcon> = {
+  SEO: Search,
+  'Local SEO': MapPin,
+  'AI SEO': ScanSearch,
+  GEO: MessageSquareText,
+};
+
 export function ServiceLinksBlock({ id }: { id: string }) {
   return (
-    <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="The four surfaces">
-        Connect AI visibility with the search foundations.
-      </BandHeading>
+    <Band labelledBy={id} dark>
+      <BandHeading id={id}>Pick the layer you need</BandHeading>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        Agree which search surfaces matter to your buyers and what evidence supports the work. PPC can support acquisition through a separately agreed scope.
+        Start with one layer or several. PPC is scoped separately.
       </p>
       <ul className={`list-none p-0 m-0 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 mt-8 ${LATTICE_CELLS}`} style={LATTICE}>
         {SERVICE_LINKS.map((s) => (
           <li key={s.href}>
-            <Link href={s.href} className="rf-hoverable rf-cell block p-5 h-full">
-              <span className="rf-cell-meta font-mono text-meta tracking-[0.14em] uppercase">
-                {s.label}
+            <Link href={s.href} className="rf-card rf-hoverable flex h-full gap-4 p-5">
+              <IconTile icon={LAYER_ICON[s.label] ?? Search} size={24} />
+              <span className="min-w-0">
+                <span className="rf-card-label font-mono text-meta tracking-[0.14em] uppercase block">{s.label}</span>
+                <span className="text-body block mt-2">{s.surface}</span>
               </span>
-              <span className="text-body block mt-2">{s.surface}</span>
             </Link>
           </li>
         ))}
@@ -411,7 +415,11 @@ export function ProofBlock({ proof, id }: { proof: ClientProof; id: string }) {
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link href="/case-studies/methodology" className="rf-btn rf-btn--secondary">
-              How we evidence a result
+              How we handle evidence
+            </Link>
+            {/* The proof statements name the case-studies page; this is the link to it. */}
+            <Link href="/case-studies" className="rf-btn rf-btn--secondary">
+              Client programmes
             </Link>
           </div>
         </>
@@ -431,9 +439,7 @@ export function ProofBlock({ proof, id }: { proof: ClientProof; id: string }) {
 export function FaqsBlock({ faqs, id }: { faqs: readonly Faq[]; id: string }) {
   return (
     <Band labelledBy={id}>
-      <BandHeading id={id} eyebrow="Asked on calls">
-        The questions that actually come up.
-      </BandHeading>
+      <BandHeading id={id}>Questions buyers ask us</BandHeading>
       {/* <details> rather than a JS accordion: it opens without JavaScript, it is
           keyboard operable for free, and the answer text is in the served HTML
           so it is extractable whether or not anything runs. */}
@@ -472,51 +478,21 @@ export function SnapshotCta({ question, id }: { question: string; id: string }) 
       style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
     >
       <div className={SHELL}>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-8">
-          <div className="lg:col-span-7">
-            <Label>Start here</Label>
-            <h2 id={id} className="text-h2 font-sans m-0 mt-3 max-w-[22ch] font-semibold">
-              {question}
-            </h2>
-            <p className="text-body mt-5 m-0 max-w-[58ch]" style={{ color: 'var(--s-text-muted)' }}>
-              Tell us who you sell to, what buyers need to understand and where your current search programme falls short. We will discuss the evidence, priorities and a useful next step.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
-              <Link href="/book" className="rf-btn rf-btn--primary">
-                Book a call
-              </Link>
-              <Link href="/contact#enquiry" className="rf-btn rf-btn--secondary">
-                Send an enquiry
-              </Link>
-            </div>
-          </div>
-          <div className="lg:col-span-5">
-            <ul
-              className="list-none p-0 m-0"
-              style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
-            >
-              {[
-                ['Your buyers', 'Start with their questions, requirements and decisions.'],
-                ['Your scope', 'Agree the relevant markets, search surfaces and deliverables.'],
-                ['Your evidence', 'Keep observed visibility separate from enquiries and revenue.'],
-              ].map(([k, v]) => (
-                <li
-                  key={k}
-                  className="flex gap-5 py-4"
-                  style={{ borderBottom: '1px solid var(--s-rule-hairline)' }}
-                >
-                  <span
-                    className="font-mono tabular-nums flex-shrink-0 text-body font-semibold"
-                    style={{ color: 'var(--s-accent)', minWidth: '6.5rem' }}
-                  >
-                    {k}
-                  </span>
-                  <span className="text-meta" style={{ color: 'var(--s-text-muted)' }}>
-                    {v}
-                  </span>
-                </li>
-              ))}
-            </ul>
+        <div className="max-w-[60rem]">
+          <Label>Next step</Label>
+          <h2 id={id} className="text-h2 font-sans m-0 mt-3 max-w-[26ch] font-semibold">
+            {question}
+          </h2>
+          <p className="text-body mt-5 m-0 max-w-[58ch]" style={{ color: 'var(--s-text-muted)' }}>
+            Book a call and we&apos;ll show you what we&apos;d test first. Or send an enquiry if you prefer.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
+            <Link href="/book" className="rf-btn rf-btn--primary">
+              Book a call
+            </Link>
+            <Link href="/contact#enquiry" className="rf-btn rf-btn--secondary">
+              Send an enquiry
+            </Link>
           </div>
         </div>
       </div>

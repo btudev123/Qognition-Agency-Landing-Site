@@ -27,13 +27,13 @@ export const TIC_ENVIRONMENTAL_TESTING_LABS: IcpBody = {
   buyerQuestion: 'Why does an assistant name the state certification list instead of our laboratory?',
 
   metaDescription:
-    'Consultants pick a laboratory on registered scope and data package, not price. We run your buyers’ prompts on four platforms and publish what came back.',
+    'Consultants pick a laboratory on registered scope and data package, not price. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'A laboratory is selected on what its accreditation actually lists, then on whether the data ' +
     'package loads. Both live in documents most laboratories publish as scanned certificates or not ' +
     'at all. This page sets out the roles that read them, the four things they compare on, and what ' +
-    'our panel for this category will record.',
+    'our tests for this category will record.',
 
   buyers: [
     {
@@ -219,24 +219,24 @@ export const TIC_ENVIRONMENTAL_TESTING_LABS: IcpBody = {
 
   faqs: [
     {
-      question: 'How do you measure something that does not send us sessions?',
+      question: 'How do you measure something that does not send us visitors?',
       answer:
-        'On a fixed panel. We agree a set of prompts your clients plausibly type, run them across ' +
-        'ChatGPT, Perplexity, Gemini and Google AI Overviews on a schedule, and record which firms ' +
-        'were named and which URLs were cited on each date. The raw answers are stored, so every row ' +
-        'in the table re-derives instead of being taken on trust. In this category the win is a ' +
-        'shortlist position rather than a session, and a laboratory measuring it by referral traffic ' +
-        'will conclude it does not matter and be wrong.',
+        'With a fixed set of questions. We agree with you the questions your clients are likely to ' +
+        'ask, run them on AI platforms such as ChatGPT, Perplexity, Gemini and Google AI Overviews on ' +
+        'a schedule, and record which firms were named and which pages were cited on each date. The ' +
+        'original answers are stored, so you can check any line of the record yourself. In this ' +
+        'category the win is a place on the shortlist rather than a website visit, and a laboratory ' +
+        'measuring it by referral traffic will conclude it does not matter and be wrong.',
     },
     {
       question: 'Our scope is already public on the accreditation body’s site. Is that not enough?',
       answer:
         'It is enough for a person who already knows your name and goes looking. It is not enough for ' +
-        'a retrieval system choosing between providers, because that entry is indexed as the ' +
+        'an AI assistant choosing between providers, because that entry is indexed as the ' +
         'accreditation body’s page rather than as yours, and it carries no turnaround, no ' +
         'deliverable format and no record of who has accepted the work. Republishing your own scope ' +
         'as text on your own domain, with the accrediting body and certificate number beside each ' +
-        'capability, is the change that moves this category most. It is a publishing task before it ' +
+        'capability, is the first change we would make. It is a publishing task before it ' +
         'is a marketing one.',
     },
     {
@@ -245,8 +245,8 @@ export const TIC_ENVIRONMENTAL_TESTING_LABS: IcpBody = {
         'They would, unchecked, which is why the sign-off sits with somebody who reads scope ' +
         'documents for a living rather than with us. Every page in this vertical goes to a named ' +
         'technical reviewer on your side before it is published, and that review is in the schedule ' +
-        'rather than offered as a courtesy. The alternative is finding out at month three that a ' +
-        'matrix was described wrongly on forty pages, which costs more to unwind than it cost to write.',
+        'rather than offered as a courtesy. The alternative is finding out months later that a ' +
+        'matrix was described wrongly across many pages, which costs more to unwind than it cost to write.',
     },
     {
       question: 'Do you run paid search as well?',
@@ -261,20 +261,18 @@ export const TIC_ENVIRONMENTAL_TESTING_LABS: IcpBody = {
       question: 'How quickly does anything move?',
       answer:
         'We will not put a number on it for your firm before the first run, because that number would ' +
-        'be a forecast dressed as evidence. What is safe to say about the mechanism is that scope and ' +
-        'entity publishing changes what is retrievable within a crawl cycle, and whether it changes ' +
-        'what an assistant returns is exactly what the panel exists to record, on a date, against a ' +
-        'prompt set that does not move between runs.',
+        'be a forecast dressed as evidence. Publishing your scope as text makes it available to ' +
+        'search engines the next time they visit the page. Whether that changes what an assistant ' +
+        'says is exactly what the repeated runs record, on a date, using the same questions each time.',
     },
   ],
 
   proof: {
     kind: 'none',
     statement:
-      'We have not run this work for an environmental laboratory. Our 45 published client programmes ' +
-      'are HVAC contracting, dental practices and commercial insurance, and our four business-to-business ' +
-      'engagements are under NDA in managed IT and cloud, cybersecurity and software. None of them is ' +
-      'a laboratory. The first evidence specific to your firm is the first panel run on your own prompts.',
+      'We have not run this work for an environmental laboratory. We publish named client results ' +
+      'with dates, and none of those clients is a laboratory. The first evidence specific to your ' +
+      'firm is the first dated test of your own buyers’ questions.',
   },
 
   snapshotQuestion:

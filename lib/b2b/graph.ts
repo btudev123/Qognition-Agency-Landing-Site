@@ -22,10 +22,10 @@ import { resolveIndustry, resolveSubIndustry } from './registry';
 
 /** The four layer pages, one fixed block, same order everywhere. Nadia §5.1 rule 5. */
 export const SERVICE_LINKS: readonly { readonly href: string; readonly label: string; readonly surface: string }[] = [
-  { href: '/seo', label: 'SEO', surface: 'Google search results' },
-  { href: '/local-seo', label: 'Local SEO', surface: 'Maps, local pack, Business Profile' },
-  { href: '/ai-seo', label: 'AI SEO', surface: 'Google AI Overviews and AI Mode' },
-  { href: '/geo', label: 'GEO', surface: 'ChatGPT, Perplexity, Gemini, Claude, Copilot' },
+  { href: '/services/seo', label: 'SEO', surface: 'Google search results' },
+  { href: '/services/seo/local-seo', label: 'Local SEO', surface: 'Google Maps, local pack, Bing Places, Business Profile, reviews, listings' },
+  { href: '/services/ai-seo', label: 'AI SEO', surface: 'Google AI Overviews and AI Mode' },
+  { href: '/services/ai-seo/generative-engine-optimization', label: 'GEO', surface: 'ChatGPT, Perplexity, Gemini, Claude, Copilot' },
 ];
 
 export interface ChildEntry {

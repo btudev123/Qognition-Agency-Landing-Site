@@ -162,6 +162,13 @@ interface BodyCommon {
   readonly proof: ClientProof;
   /** The niche-specific qualifying question on the snapshot CTA. Nadia §4.1 block 9. */
   readonly snapshotQuestion: string;
+  /**
+   * One authored sentence: what we check AI answers for, rewritten from the sub-industry's
+   * `geo_angle` (docs/copy/2026-10/plain-english-templates.md §9.2, section 2). Optional, and
+   * absent means the line is omitted: raw `geo_angle` never renders, because it is operator
+   * shorthand and 11 of the strings carry em dashes (flag F4).
+   */
+  readonly whatWeCheckFor?: string;
 }
 
 /** Type A. The meta-vertical hub. */

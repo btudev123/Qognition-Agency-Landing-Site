@@ -26,7 +26,7 @@ export const TIC_TRANSACTION_DUE_DILIGENCE: IcpBody = {
   buyerQuestion: 'Why does an assistant name the three largest firms and never ours?',
 
   metaDescription:
-    'Acceptability decides this work and almost nobody publishes it. We run your buyers’ prompts across four platforms and publish who got named, with the date.',
+    'Acceptability decides this work and almost nobody publishes it. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'Transaction diligence is bought on whether the report will be accepted, not on whether it is ' +
@@ -205,8 +205,7 @@ export const TIC_TRANSACTION_DUE_DILIGENCE: IcpBody = {
         'No, it changes the unit. Institution names are usually confidential and the acceptance ' +
         'pattern is not: programme types, jurisdictions, report counts by year, the standards cited, ' +
         'the reliance structures offered. That is a publishable, checkable description of an ' +
-        'acceptance record without naming a single client, and it is far more than anybody in this ' +
-        'market currently publishes. If even that is restricted, we would rather say so on the page ' +
+        'acceptance record without naming a single client. If even that is restricted, we would rather say so on the page ' +
         'than write around it.',
     },
     {
@@ -219,32 +218,31 @@ export const TIC_TRANSACTION_DUE_DILIGENCE: IcpBody = {
         'run rather than sell the one we were hired for.',
     },
     {
-      question: 'Our competitors publish large numbers. Why do you not?',
+      question: 'Our competitors publish large numbers. How are yours different?',
       answer:
-        'Because the numbers in this category almost never carry a client, a method or a date, and a ' +
-        'reader who works in diligence recognises that immediately. We publish 45 named client ' +
-        'programmes across three sectors, and we say plainly that the targets in them are targets ' +
-        'rather than reported results, because no reporting export has closed that gap yet. A buyer ' +
+        'The numbers in this category rarely carry a client, a method or a date, and a reader who ' +
+        'works in diligence recognises that immediately. Our case studies print the client ' +
+        'name and the reporting window beside every result, and a figure that is still a target is ' +
+        'labelled a target. A buyer ' +
         'whose profession is reading unsupported claims is the last audience to try it on.',
     },
     {
       question: 'What does the first month look like?',
       answer:
-        'A prompt panel agreed with you and run across four platforms, an entity audit covering every ' +
-        'place your firm is described online, and a pass over the pages that describe what a report ' +
-        'is written to and who may rely on it. The output is a dated record of what the assistants ' +
-        'returned and a list of changes ordered by what they would move. No forecast, because we ' +
-        'would be forecasting a system we do not control.',
+        'We agree a set of buyer questions with you and test them on AI platforms, check every place ' +
+        'your firm is described online so the name and details match, and review the pages that say ' +
+        'what a report is written to and who may rely on it. The output is a dated record of what the ' +
+        'assistants said and a list of changes in priority order. No forecast, because we would be ' +
+        'forecasting systems we do not control.',
     },
   ],
 
   proof: {
     kind: 'none',
     statement:
-      'We have not run a programme for a diligence provider. Our 45 published client programmes are ' +
-      'HVAC contracting, dental practices and commercial insurance, and the four business-to-business ' +
-      'engagements behind those are under NDA in managed IT and cloud, cybersecurity and software. ' +
-      'This page is an argument and a method, and it is not a track record in this sub-industry.',
+      'We have not run a programme for a diligence provider. Our published case studies name the ' +
+      'client and date the result, and none of them is in diligence. This page is an argument and a ' +
+      'method, not a track record in this sub-industry.',
   },
 
   snapshotQuestion:

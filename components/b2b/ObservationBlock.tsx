@@ -60,6 +60,19 @@ function Label({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** The state body alone, for a template that places it inside its own section (the ICP
+ *  "questions your buyers ask AI" band). Same five states, same rules. */
+export function ObservationStatus({ view, nicheLabel, idPrefix }: Props) {
+  return (
+    <>
+      {view.status === 'loading' && <LoadingState />}
+      {view.status === 'unobserved' && <UnobservedState nicheLabel={nicheLabel} />}
+      {view.status === 'error' && <ErrorState reason={view.reason} />}
+      {view.status === 'observed' && <ObservedState view={view} idPrefix={idPrefix} />}
+    </>
+  );
+}
+
 export default function ObservationBlock({ view, nicheLabel, idPrefix }: Props) {
   const headingId = `${idPrefix}-observation`;
 
@@ -73,21 +86,17 @@ export default function ObservationBlock({ view, nicheLabel, idPrefix }: Props) 
       style={{ borderTop: '1px solid var(--s-rule-hairline)' }}
     >
       <div className={SHELL}>
-        <Label>Observed AI answers</Label>
-        <h2 id={headingId} className="text-h2 font-sans m-0 mt-3 max-w-[24ch] font-semibold">
-          What the assistants actually said.
+        <h2 id={headingId} className="text-h2 font-sans m-0 max-w-[24ch] font-semibold">
+          What AI tools said
         </h2>
         <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-          These are your buyer&rsquo;s prompts, not ours. We run them, record which firms were named
-          and which URLs were cited, and publish the platform, the prompt set and the date. A sample
-          on a date is not a permanent position, and this block never claims to be one.
+          These are your buyers&rsquo; questions, not ours. We test them on AI tools and record who
+          was named, the sources each answer linked to, and the date. An answer on one date is not a
+          permanent position.
         </p>
 
         <div className="mt-8">
-          {view.status === 'loading' && <LoadingState />}
-          {view.status === 'unobserved' && <UnobservedState nicheLabel={nicheLabel} />}
-          {view.status === 'error' && <ErrorState reason={view.reason} />}
-          {view.status === 'observed' && <ObservedState view={view} idPrefix={idPrefix} />}
+          <ObservationStatus view={view} nicheLabel={nicheLabel} idPrefix={idPrefix} />
         </div>
       </div>
     </section>
@@ -107,7 +116,7 @@ function LoadingState() {
       style={{ background: 'var(--s-surface-1)', border: '1px solid var(--s-rule-hairline)' }}
     >
       <p className="text-meta m-0" style={{ color: 'var(--s-text-faint)' }}>
-        Loading the observation record.
+        Loading the test record.
       </p>
       <div className="mt-5 grid gap-2.5" aria-hidden="true">
         {[92, 78, 85, 64, 71].map((w, i) => (
@@ -124,60 +133,24 @@ function LoadingState() {
 
 /* ── unobserved. The default, and the one that carries the honesty. ─────────── */
 function UnobservedState({ nicheLabel }: { nicheLabel: string }) {
+  /* docs/copy/2026-10/plain-english-templates.md §9.2, section 2, unobserved state. Cut
+     from about 130 words to about 50: what will appear, and why nothing appears yet. */
   return (
     <div
       className="p-6 sm:p-8"
       style={{ background: 'var(--s-surface-1)', border: '1px solid var(--s-rule-strong)' }}
     >
-      <Label>No run recorded</Label>
+      <Label>Not tested yet</Label>
       <h3 className="text-h3 font-sans m-0 mt-3 max-w-[34ch] font-semibold">
-        We have not run a prompt set for {nicheLabel} yet.
+        We haven&apos;t tested these questions for {nicheLabel} yet.
       </h3>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        There is nothing here because nothing has been measured here. We could fill this space with
-        an example table and grey it out, and you would have no way of telling it from a real one.
-        So the space stays empty until a run exists, and when it does it will carry the prompts, the
-        platforms, the firms named, the URLs cited and the date it was run.
+        When we do, this space will show each question, each AI tool, who was named, the sources and
+        the date. Until then it stays empty, because a sample table would look like a result.
       </p>
-
-      <ol
-        className="list-none p-0 m-0 mt-7 grid gap-px sm:grid-cols-3"
-        style={{ background: 'var(--s-rule-hairline)' }}
-      >
-        {[
-          {
-            n: '01',
-            t: 'You name the prompts',
-            d: 'Eight to twenty questions your buyers plausibly type. Yours, not a stock list.',
-          },
-          {
-            n: '02',
-            t: 'We run them, dated',
-            d: 'ChatGPT, Perplexity, Gemini and Google AI Overviews. Raw answers stored so each row re-derives.',
-          },
-          {
-            n: '03',
-            t: 'The record is published here',
-            d: 'On this URL, with prior runs kept beside the latest rather than split across new pages.',
-          },
-        ].map((s) => (
-          <li key={s.n} className="p-5" style={{ background: 'var(--s-surface-1)' }}>
-            <span className="font-mono text-meta tabular-nums" style={{ color: 'var(--s-accent)' }}>
-              {s.n}
-            </span>
-            <p className="text-body font-semibold mt-2 mb-1" style={{ color: 'var(--s-text)' }}>
-              {s.t}
-            </p>
-            <p className="text-meta m-0" style={{ color: 'var(--s-text-muted)' }}>
-              {s.d}
-            </p>
-          </li>
-        ))}
-      </ol>
-
       <div className="mt-7">
         <a href="/free-ai-audit" className="rf-btn rf-btn--primary">
-          Get the first run on your prompts
+          Request a free AI visibility audit
         </a>
       </div>
     </div>
@@ -194,15 +167,14 @@ function ErrorState({ reason }: { reason: string }) {
     >
       <Label>Record unavailable</Label>
       <h3 className="text-h3 font-sans m-0 mt-3 max-w-[34ch] font-semibold">
-        The observation record did not load.
+        The test record did not load.
       </h3>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        This is a fault at our end, not a result. It does not mean a run is missing and it does not
-        mean anything about who was named. What we know: <span className="font-mono">{reason}</span>
+        This is a fault at our end, not a result. It says nothing about who was named. Detail:{' '}
+        <span className="font-mono">{reason}</span>
       </p>
       <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
-        Reloading usually clears it. If it does not, the run behind this page still exists and we
-        will send you the record directly.
+        Reloading usually clears it. If it does not, ask us and we will send you the record.
       </p>
       <div className="mt-6 flex flex-wrap gap-3">
         <a href="/contact" className="rf-btn rf-btn--secondary">
@@ -235,10 +207,10 @@ function ObservedState({
         style={{ background: 'var(--s-rule-hairline)' }}
       >
         {[
-          { k: 'Prompts', v: String(prompts.length) },
-          { k: 'Platforms', v: String(engines.length) },
-          { k: 'Rows recorded', v: String(run.rows.length) },
-          { k: 'Last run', v: run.lastRunAt },
+          { k: 'Questions', v: String(prompts.length) },
+          { k: 'AI tools', v: String(engines.length) },
+          { k: 'Answers recorded', v: String(run.rows.length) },
+          { k: 'Last tested', v: run.lastRunAt },
         ].map((s) => (
           /* `justify-between` in a stretch-height grid cell is what keeps the
              four figures on one baseline. Without it, "Rows recorded" wraps to
@@ -275,12 +247,12 @@ function ObservedState({
       >
         <table className="w-full border-collapse" style={{ minWidth: '54rem' }}>
           <caption id={captionId} className="text-meta text-left px-5 pt-4 pb-3" style={{ color: 'var(--s-text-muted)' }}>
-            Every row is one prompt on one platform on one date, from {run.firstRunAt} to{' '}
-            {run.lastRunAt}. Scroll sideways for the cited URLs.
+            Each row is one question on one AI tool on one date, from {run.firstRunAt} to{' '}
+            {run.lastRunAt}. Scroll sideways for the sources each answer linked to.
           </caption>
           <thead>
             <tr>
-              {['Prompt', 'Platform', 'Firms named', 'URLs cited', 'Run'].map((h) => (
+              {['Question', 'AI tool', 'Firms named', 'Sources linked', 'Tested'].map((h) => (
                 <th
                   key={h}
                   scope="col"
@@ -363,7 +335,7 @@ function Row({ row }: { row: ObservedRow }) {
       </td>
       <td className="px-5 py-4 text-meta" style={{ ...cell, maxWidth: '24rem', overflowWrap: 'anywhere' }}>
         {row.urlsCited.length === 0 ? (
-          <span style={{ color: 'var(--s-text-faint)' }}>No URL cited</span>
+          <span style={{ color: 'var(--s-text-faint)' }}>No source linked</span>
         ) : (
           <ul className="list-none p-0 m-0 grid gap-1">
             {row.urlsCited.map((u, i) => (

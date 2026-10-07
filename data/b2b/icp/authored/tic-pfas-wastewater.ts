@@ -28,7 +28,7 @@ export const TIC_PFAS_WASTEWATER: IcpBody = {
   buyerQuestion: 'Our accreditation covers all eight matrices. Why does no answer say so?',
 
   metaDescription:
-    'A method proposed for the approved table is not a required method. We run your buyers’ prompts on four platforms and publish which firms got named.',
+    'A method proposed for the approved table is not a required method. We test what AI assistants tell your buyers, and date every answer.',
 
   opener:
     'Non-potable PFAS work turns on two things a laboratory page rarely states. Which of the ' +
@@ -194,16 +194,17 @@ export const TIC_PFAS_WASTEWATER: IcpBody = {
       answer:
         'It is already public. The accreditation body publishes the scope, and any competitor who ' +
         'wants it has it. What is not public is the same information on your own domain, in text, ' +
-        'next to the turnaround and the deliverable format, which is the combination a buyer and a ' +
-        'retrieval system both need. The only firm disadvantaged by publishing a scope is one whose ' +
+        'next to the turnaround and the deliverable format, which is the combination a buyer and an ' +
+        'AI assistant both need. The only firm disadvantaged by publishing a scope is one whose ' +
         'scope is thinner than its marketing.',
     },
     {
       question: 'Do we have to correct the status of the method in public?',
       answer:
-        'You do not have to, and it is the strongest single page you could write. The correction is ' +
-        'sourced to the regulator, it is checkable on the day it is read, and it is useful to the ' +
-        'person reading it rather than to you. That combination is what gets quoted, and it is the ' +
+        'You do not have to, and it is one of the most useful pages you could write. The correction ' +
+        'is sourced to the regulator, it is checkable on the day it is read, and it is useful to the ' +
+        'person reading it rather than to you. That combination gives an assistant a reason to quote ' +
+        'it, and it is the ' +
         'opposite of the pattern in this category, where the loudest pages carry figures with no ' +
         'source behind them.',
     },
@@ -213,7 +214,7 @@ export const TIC_PFAS_WASTEWATER: IcpBody = {
         'A named technical reviewer on your side, with a review date on the page itself. A page that ' +
         'states a regulatory status has a shelf life measured in rulemaking cycles, and the failure ' +
         'mode is not being wrong on the day it ships, it is being right on that day and unattended ' +
-        'eighteen months later. We build the review cadence into the retainer for exactly this reason.',
+        'eighteen months later. We put the review date into the retainer for exactly this reason.',
     },
     {
       question: 'How does this differ from the drinking-water page under the same niche?',
@@ -221,18 +222,17 @@ export const TIC_PFAS_WASTEWATER: IcpBody = {
         'Different statute, different buyer and a different failure. That page is about a compliance ' +
         'calendar under an open federal proposal and is read by a public water system. This one is ' +
         'about a method status and a matrix list and is read by dischargers, treatment works and the ' +
-        'people who write their permits. Neither set of facts appears on the other page, which is the ' +
-        'test a scope has to pass here before it gets a URL rather than a section.',
+        'people who write their permits. Neither set of facts appears on the other page, and that is ' +
+        'why each has a page of its own rather than a section on the other.',
     },
   ],
 
   proof: {
     kind: 'none',
     statement:
-      'No published Qognition engagement covers this work. Our named library is 45 client programmes ' +
-      'in HVAC contracting, dental practices and commercial insurance, and our four business-to-business ' +
-      'engagements are under NDA in managed IT and cloud, cybersecurity and software. None of them ' +
-      'is a laboratory, and this page does not pretend the existence of a page is a substitute.',
+      'No published Qognition engagement covers this work. Our case studies name their clients and ' +
+      'date their results, and none of those clients is a laboratory. A page existing for this work ' +
+      'is not a track record, and we do not present it as one.',
   },
 
   snapshotQuestion:
