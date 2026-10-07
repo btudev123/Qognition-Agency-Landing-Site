@@ -1,0 +1,305 @@
+/* Flow diagrams for the service pages (docs/copy/2026-10/plain-english-templates.md §4 to §8).
+ *
+ * HTML, not SVG. The labels on these four diagrams run to 34 characters ("A page that makes
+ * the same promise"), and an SVG label cannot wrap: at the 13px mono floor it either
+ * overflows its box at 320px or forces a second hand-drawn variant per diagram. Boxes of
+ * real text wrap, so one drawing serves every width, and an ordered list reads as the flow
+ * to a screen reader without a <title>/<desc> pair.
+ *
+ * The roles are the ones brief §1.2 gives the SVG diagrams, unchanged: node fill
+ * --s-surface-1, 1px --s-rule-strong stroke, 1.5px --s-accent-graphic flow lines,
+ * --s-accent for the emphasised node and arrowheads, a dashed --s-accent-graphic stroke for
+ * what sits outside the reader's control, mono uppercase --s-text-muted labels at 13px.
+ * Every value is an --s-* role, so each diagram is correct on a light band and under
+ * [data-theme="dark"] without branching.
+ *
+ * Layout responds to the diagram's own width (container queries), not the viewport: the
+ * same diagram sits full width on a phone and in a 470px hero column at 1024. No motion. */
+
+.figure {
+  container-type: inline-size;
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+}
+
+.caption {
+  display: block;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--s-text-faint);
+}
+
+/* ── Nodes ─────────────────────────────────────────────────────────────── */
+
+.node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 10px 12px;
+  background: var(--s-surface-1);
+  border: 1px solid var(--s-rule-strong);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--s-text-muted);
+  overflow-wrap: anywhere;
+}
+.emphasis {
+  border: 1.5px solid var(--s-accent);
+  color: var(--s-accent);
+}
+/* Outside the reader's control. Same meaning as the dashed shortlist slot on `/`. */
+.dashed {
+  border: 1.5px dashed var(--s-accent-graphic);
+}
+
+/* ── Connectors ───────────────────────────────────────────────────────── */
+
+/* A down arrow between two stacked blocks. */
+.down {
+  position: relative;
+  height: 28px;
+}
+.down::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 6px;
+  border-left: 1.5px solid var(--s-accent-graphic);
+  transform: translateX(-50%);
+}
+.down::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--s-accent);
+}
+
+/* ── Chain: a list of nodes, each one arrowed from the one before. ─────── */
+
+.chain {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.chain > li + li::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -29px;
+  height: 22px;
+  border-left: 1.5px solid var(--s-accent-graphic);
+  transform: translateX(-50%);
+}
+.chain > li + li::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--s-accent);
+}
+
+/* Horizontal from 560px of diagram width. */
+@container (min-width: 560px) {
+  .chainWide {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    column-gap: 28px;
+    row-gap: 0;
+  }
+  .chainWide > li + li::before {
+    left: -29px;
+    top: 50%;
+    height: 0;
+    width: 22px;
+    border-left: 0;
+    border-top: 1.5px solid var(--s-accent-graphic);
+    transform: translateY(-50%);
+  }
+  .chainWide > li + li::after {
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid var(--s-accent);
+    border-right: 0;
+  }
+}
+
+/* ── Loop: a vertical chain whose last step returns to the first. ──────── */
+
+.loop {
+  position: relative;
+  padding-right: 32px;
+}
+/* The return path: out of the last node's right edge, up the gutter, back into the first
+   node with an arrowhead. Ends sit at half the node's minimum height, which is its centre
+   on one line and on its right edge when a label wraps. */
+.loop::after {
+  content: '';
+  position: absolute;
+  top: 26px;
+  bottom: 26px;
+  right: 8px;
+  width: 24px;
+  border: 1.5px solid var(--s-accent-graphic);
+  border-left: 0;
+  pointer-events: none;
+}
+.loopHead {
+  position: absolute;
+  top: 26px;
+  right: 32px;
+  transform: translate(0, -50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 7px solid var(--s-accent);
+}
+
+/* ── Fan: several blocks merging into one, or one splitting to several. ── */
+
+.grid4 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.grid4 > li { position: relative; }
+@container (min-width: 520px) {
+  .grid4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  /* Stubs from each node toward the shared line, which sits 14px away. */
+  .stubsBelow > li::after,
+  .stubsAbove > li::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    height: 14px;
+    border-left: 1.5px solid var(--s-accent-graphic);
+    transform: translateX(-50%);
+  }
+  .stubsBelow > li::after { top: 100%; }
+  .stubsAbove > li::after { bottom: 100%; }
+  /* The shared line runs between the first and last column centres:
+     (width - 3 gaps) / 8 in from each side. */
+  .bar {
+    height: 14px;
+    margin: 0 calc((100% - 36px) / 8);
+  }
+  .barBelow { border-bottom: 1.5px solid var(--s-accent-graphic); }
+  .barAbove { border-top: 1.5px solid var(--s-accent-graphic); }
+  /* Splitting to several: the stem meets the shared line with no head, and the line
+     carries on into each card. Below 520px there is no shared line, so the stem keeps
+     its head and points at the stacked cards. */
+  .stem { height: 22px; }
+  .stem::before { bottom: 0; }
+  .stem::after { display: none; }
+}
+@container (max-width: 519.98px) {
+  .bar { display: none; }
+}
+
+/* ── Report frame: three labelled, empty columns. ──────────────────────── */
+
+.report {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--s-rule-hairline);
+  border-left: 1px solid var(--s-rule-hairline);
+}
+.report > li {
+  border-right: 1px solid var(--s-rule-hairline);
+  border-bottom: 1px solid var(--s-rule-hairline);
+  background: var(--s-surface-1);
+  min-width: 0;
+}
+.reportHead {
+  display: block;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--s-rule);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--s-text-muted);
+  overflow-wrap: anywhere;
+}
+/* Empty on purpose: no positions, no figures, no sample results. */
+.reportBody {
+  display: block;
+  height: 44px;
+  margin: 8px 10px;
+  border: 1px dashed var(--s-rule);
+}
+
+/* ── Listing card (local SEO). ─────────────────────────────────────────── */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  height: 100%;
+  padding: 10px 12px;
+  background: var(--s-surface-1);
+  border: 1px solid var(--s-rule-strong);
+  border-radius: var(--radius);
+  min-width: 0;
+}
+.cardTitle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--s-text-muted);
+  overflow-wrap: anywhere;
+}
+.cardName {
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--s-text);
+  overflow-wrap: anywhere;
+}
+.cardFields {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--s-accent);
+  overflow-wrap: anywhere;
+}

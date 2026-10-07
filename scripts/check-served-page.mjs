@@ -59,6 +59,11 @@ import { checkProductScreens, productScreenContract } from './lib/served-screens
 const BUDGET_BYTES = 40 * 1024;
 const ROUTE = '/';
 const CONTROL_ROUTE = '/legal/terms';
+/* Other pages that render a product screen, and how many each must render. The run
+   renders on /services/ai-seo too (docs/copy/2026-10/plain-english-templates.md §5), so
+   the served-HTML half of ADR-0006 has to see it there as well (Owen, 2026-10-08).
+   Add a route here whenever a page gains a ProductScreen. */
+const SCREEN_ROUTES = [{ route: '/services/ai-seo', expected: 1 }];
 const PORT = process.env.BUDGET_PORT || 3987;
 const ROOT = process.cwd();
 const reportOnly = process.argv.includes('--report');
@@ -204,6 +209,22 @@ try {
     console.log(
       `✓ product screens: ${screens.figures} on ${ROUTE}, ${screens.badges} visible badge(s), no figures, every string from the screen data.`
     );
+  }
+  for (const { route, expected } of SCREEN_ROUTES) {
+    const html = await page(route);
+    const result = checkProductScreens(html, { ...productScreenContract(), expected });
+    if (result.figures === 0) {
+      console.error(`✗ product screens: ${route} renders no figure[data-provenance], and it is listed in SCREEN_ROUTES.`);
+      screensOk = false;
+    } else if (result.errors.length) {
+      console.error(`✗ product screens on ${route}:`);
+      for (const e of result.errors) console.error(`  ${e}`);
+      screensOk = false;
+    } else {
+      console.log(
+        `✓ product screens: ${result.figures} on ${route}, ${result.badges} visible badge(s), no figures, every string from the screen data.`
+      );
+    }
   }
   const correctnessOk = hiddenContentOk && screensOk;
 

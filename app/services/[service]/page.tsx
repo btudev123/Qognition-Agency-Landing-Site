@@ -7,10 +7,13 @@ import { ArrowLeft, ArrowRight, BarChart, CheckCircle, CheckCircle2, Layers, Quo
 import { SERVICE_SUB_PAGES } from '../../../data/seoExpansion';
 import { INDUSTRIES } from '../../../data/industries';
 import { SERVICES } from '../../../data/services';
-import { SERVICE_PROMISES } from '../../../data/servicePromises';
+import { PROMISE_CHIPS } from '../../../data/servicePromises';
+import { servicePageFor } from '../../../data/servicePages';
+import ServiceLanding from '../../../components/services/ServiceLanding';
 import { getServiceMetadata, h1For } from '../../../lib/seo';
 import { breadcrumbSchema, faqSchema, serviceCategorySchema } from '../../../lib/schema';
 import Heading from '../../../components/ui/Heading';
+import IconTile from '../../../components/visual/IconTile';
 import CrossLinks from '../../../components/shared/CrossLinks';
 import FunnelCTA from '../../../components/shared/FunnelCTA';
 
@@ -23,17 +26,6 @@ export const generateMetadata = async ({ params }: { params: Promise<{ service: 
   return getServiceMetadata(service);
 };
 
-/* The four layers, verbatim from CLAUDE.md §1. Rendered only on /services/ai-seo,
-   directly under the answer-first block (docs/copy/2026-10/services-ai-seo.md,
-   Nadia §4.1). Same strings as components/home/FourLayers.tsx; change both or
-   neither. */
-const LAYER_DEFINITIONS = [
-  { layer: 'SEO', surface: 'Google search results' },
-  { layer: 'Local SEO', surface: 'Google Maps, local pack, Bing Places, Business Profile, reviews, listings' },
-  { layer: 'AI SEO', surface: 'Google AI Overviews and AI Mode' },
-  { layer: 'GEO', surface: 'ChatGPT, Perplexity, Gemini, Claude, Copilot' },
-] as const;
-
 const subServiceSlug = (sub: { name: string; slug?: string }) =>
   sub.slug || sub.name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -43,6 +35,40 @@ export default async function Page({ params }: { params: Promise<{ service: stri
   if (!service) notFound();
 
   const path = `/services/${service.id}`;
+  const h1 = h1For(path, service.title.replace('Web Development', 'Web Design'));
+
+  /* The five plain-English pages (data/servicePages.ts). Same metadata, H1, URL and
+     canonical as before; the body is the new layout and the FAQ JSON-LD is built from
+     the same strings the page renders. */
+  const landing = servicePageFor(path);
+  if (landing) {
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              serviceCategorySchema(service),
+              faqSchema(landing.faqs.map((f) => ({ question: f.question, answer: f.answer }))),
+              breadcrumbSchema([
+                { name: 'Home', path: '/' },
+                { name: 'Services', path: '/services' },
+                { name: service.title, path },
+              ]),
+            ]),
+          }}
+        />
+        <ServiceLanding
+          path={path}
+          h1={h1}
+          content={landing}
+          serviceTitle={service.title}
+          trail={[{ name: 'Services', href: '/services' }]}
+        />
+      </>
+    );
+  }
+
   const serviceSubPages = SERVICE_SUB_PAGES.filter((page) => page.serviceId === service.id);
   const relatedIndustries = INDUSTRIES.filter((industry) =>
     service.relatedIndustries.some((name) => industry.name.toLowerCase().includes(name.toLowerCase().split(' ')[0]))
@@ -90,32 +116,11 @@ export default async function Page({ params }: { params: Promise<{ service: stri
             </div>
             <header className="mb-12">
               <Heading level="h1" className="mb-8">
-                {h1For(path, service.title.replace('Web Development', 'Web Design'))}
+                {h1}
               </Heading>
               <p className="text-body text-[var(--text-muted)] mb-8 border-l-2 border-[var(--accent)] pl-6">
                 {service.fullDescription}
               </p>
-              {service.id === 'ai-seo' && (
-                <div className="mb-8 overflow-x-auto">
-                  <table className="w-full border-collapse text-left">
-                    <caption className="sr-only">The four search layers and the surface each one covers</caption>
-                    <thead>
-                      <tr className="border-b border-[var(--border-strong)]">
-                        <th scope="col" className="font-mono text-meta tracking-[0.14em] uppercase font-normal py-3 pr-6 text-[var(--text-muted)]">Layer</th>
-                        <th scope="col" className="font-mono text-meta tracking-[0.14em] uppercase font-normal py-3 text-[var(--text-muted)]">Surface</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {LAYER_DEFINITIONS.map((row) => (
-                        <tr key={row.layer} className="border-b border-[var(--border)]">
-                          <th scope="row" className="text-body font-semibold py-3 pr-6 align-top whitespace-nowrap text-[var(--text)]">{row.layer}</th>
-                          <td className="text-body py-3 align-top text-[var(--text-muted)]">{row.surface}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
               {/* First CTA above the fold. The aside stacks after the article on
                   mobile (docs/copy/2026-10/services-template.md). */}
               <div className="mb-12 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -132,16 +137,17 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               <AIPlatforms compact />
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
-              {SERVICE_PROMISES.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-5 text-sm leading-relaxed text-[var(--text-muted)]"
-                >
-                  {item}
-                </div>
+            <ul
+              className="list-none p-0 m-0 mb-16 grid grid-cols-1 md:grid-cols-3 [&>*]:border-t [&>*]:border-l [&>*]:border-[var(--s-rule-hairline)]"
+              style={{ borderRight: '1px solid var(--s-rule-hairline)', borderBottom: '1px solid var(--s-rule-hairline)' }}
+            >
+              {PROMISE_CHIPS.map((chip) => (
+                <li key={chip.label} className="flex items-center gap-4 p-4">
+                  <IconTile icon={chip.icon} size={24} />
+                  <span className="text-h4 font-sans font-medium min-w-0">{chip.label}</span>
+                </li>
               ))}
-            </div>
+            </ul>
 
             {service.expertQuote && (
               <section className="my-16 p-8 md:p-10 border border-[var(--border)] bg-[var(--card-bg)] rounded-2xl relative overflow-hidden">
@@ -151,7 +157,10 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                     &ldquo;{service.expertQuote.quote}&rdquo;
                   </p>
                   <footer className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[var(--accent)] rounded-full flex items-center justify-center font-bold text-[var(--accent-deep)]">
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center font-bold"
+                      style={{ background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-fg)' }}
+                    >
                       {service.expertQuote.author.charAt(0)}
                     </div>
                     <div>
@@ -328,11 +337,11 @@ export default async function Page({ params }: { params: Promise<{ service: stri
               </p>
               <a
                 href={appendFunnelContext("/book", { page_id: path, service_id: service.id, stage: "bofu" })}
-                className="block text-center rounded-lg bg-[var(--accent)] px-6 py-4 text-sm font-medium text-[var(--accent-deep)] hover:brightness-110 transition-all"
+                className="rf-btn rf-btn--primary w-full"
               >
                 Book a call
               </a>
-              <Link href={appendFunnelContext("/contact#enquiry", { page_id: path, service_id: service.id, stage: "bofu" })} className="mt-4 block text-center text-[var(--accent)]">Send an enquiry</Link>
+              <Link href={appendFunnelContext("/contact#enquiry", { page_id: path, service_id: service.id, stage: "bofu" })} className="rf-btn rf-btn--secondary w-full mt-3">Send an enquiry</Link>
             </div>
           </aside>
         </div>

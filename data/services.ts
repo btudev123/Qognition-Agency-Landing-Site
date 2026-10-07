@@ -1394,3 +1394,21 @@ export const SERVICES: Service[] = [
 
 export const LOCATION_MATRIX_SERVICE_IDS = ['seo', 'smm', 'ai-seo', 'web-development', 'branding-creative', 'ppc'] as const;
 export const LOCATION_MATRIX_SERVICES = SERVICES.filter((service) => (LOCATION_MATRIX_SERVICE_IDS as readonly string[]).includes(service.id));
+
+/* Sub-services we do not run for clients (operator, 2026-10-08: no TikTok, Amazon or
+   streaming-TV ads). Their pages stay live and their rows stay in SERVICES so the URLs
+   keep resolving, but nothing advertises them: they are kept out of the /services/ppc
+   list, the schema.org OfferCatalog and any llms or agent-markdown service list. Keyed
+   `<serviceId>/<slug>`. */
+export const NOT_OFFERED_SUB_SERVICES: ReadonlySet<string> = new Set([
+  'ppc/tiktok-ads',
+  'ppc/amazon-ads',
+  'ppc/ctv-ads',
+]);
+
+const subServiceSlugOf = (sub: { name: string; slug?: string }) =>
+  sub.slug || sub.name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+/** The sub-services a service may advertise: every row except the ones we do not offer. */
+export const offeredSubServices = <T extends { name: string; slug?: string }>(serviceId: string, subs: readonly T[]): T[] =>
+  subs.filter((sub) => !NOT_OFFERED_SUB_SERVICES.has(`${serviceId}/${subServiceSlugOf(sub)}`));

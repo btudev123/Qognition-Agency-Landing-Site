@@ -55,7 +55,8 @@ export function getFunnelCTA(stage: FunnelStage, opts?: { service?: string }): F
         headline: 'Find out where you stand in Google and AI search.',
         primary: { label: 'Book a call', href: '/book' },
         secondary: { label: 'Send an enquiry', href: '/contact#enquiry' },
-        reassurance: 'Real strategist · No obligation · Scope agreed before work begins',
+        // docs/copy/2026-10/plain-english-templates.md §2.2. No duration: the calendar shows the real one.
+        reassurance: 'No obligation · Scope agreed in writing before work starts',
       };
     case 'mofu':
     default:

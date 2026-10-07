@@ -4,7 +4,10 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { SERVICE_SUB_PAGES, getServiceSubPage } from '../../../../data/seoExpansion';
 import { SERVICES } from '../../../../data/services';
-import { SERVICE_PROMISES } from '../../../../data/servicePromises';
+import { PROMISE_CHIPS } from '../../../../data/servicePromises';
+import { servicePageFor } from '../../../../data/servicePages';
+import ServiceLanding from '../../../../components/services/ServiceLanding';
+import IconTile from '../../../../components/visual/IconTile';
 import { breadcrumbSchema, faqSchema } from '../../../../lib/schema';
 import Heading from '../../../../components/ui/Heading';
 import Badge from '../../../../components/ui/Badge';
@@ -36,6 +39,50 @@ export default async function Page({ params }: { params: Promise<{ service: stri
   if (!page || !parent) notFound();
 
   const path = `/services/${page.serviceId}/${page.slug}`;
+
+  /* Local SEO and GEO take the plain-English layout (data/servicePages.ts). Title, meta,
+     canonical and H1 are unchanged: they still come from data/seoExpansion.ts. */
+  const landing = servicePageFor(path);
+  if (landing) {
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                '@context': 'https://schema.org',
+                '@type': 'Service',
+                name: page.title,
+                description: page.description,
+                provider: { '@type': 'Organization', name: 'Qognition', url: 'https://www.qognitionagency.com' },
+                serviceType: page.title,
+                url: `https://www.qognitionagency.com${path}`,
+              },
+              faqSchema(landing.faqs.map((f) => ({ question: f.question, answer: f.answer }))),
+              breadcrumbSchema([
+                { name: 'Home', path: '/' },
+                { name: 'Services', path: '/services' },
+                { name: parent.title, path: `/services/${parent.id}` },
+                { name: page.title, path },
+              ]),
+            ]),
+          }}
+        />
+        <ServiceLanding
+          path={path}
+          h1={page.h1}
+          content={landing}
+          serviceTitle={page.title}
+          trail={[
+            { name: 'Services', href: '/services' },
+            { name: parent.title, href: `/services/${parent.id}` },
+          ]}
+        />
+      </>
+    );
+  }
+
   const siblingPages = SERVICE_SUB_PAGES.filter(
     (item) => item.serviceId === page.serviceId && item.slug !== page.slug
   ).slice(0, 6);
@@ -77,16 +124,17 @@ export default async function Page({ params }: { params: Promise<{ service: stri
           <p className="text-body text-[var(--text-muted)] max-w-4xl">{page.intro}</p>
 
           <div className="mt-8 flex flex-wrap gap-4"><Link className="btn-primary" href={appendFunnelContext("/book", { page_id: path, service_id: service, stage: "bofu" })}>Book a call</Link><Link className="btn-outline" href={appendFunnelContext("/contact#enquiry", { page_id: path, service_id: service, stage: "bofu" })}>Send an enquiry</Link></div>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {SERVICE_PROMISES.map((item) => (
-              <div
-                key={item}
-                className="rounded-xl border border-[var(--accent)]/20 bg-[rgba(var(--accent-rgb),0.04)] p-5 text-sm leading-relaxed text-[var(--text-muted)]"
-              >
-                {item}
-              </div>
+          <ul
+            className="list-none p-0 m-0 mt-12 grid grid-cols-1 md:grid-cols-3 [&>*]:border-t [&>*]:border-l [&>*]:border-[var(--s-rule-hairline)]"
+            style={{ borderRight: '1px solid var(--s-rule-hairline)', borderBottom: '1px solid var(--s-rule-hairline)' }}
+          >
+            {PROMISE_CHIPS.map((chip) => (
+              <li key={chip.label} className="flex items-center gap-4 p-4">
+                <IconTile icon={chip.icon} size={24} />
+                <span className="text-h4 font-sans font-medium min-w-0">{chip.label}</span>
+              </li>
             ))}
-          </div>
+          </ul>
 
           <div className="mt-20 grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-4">
