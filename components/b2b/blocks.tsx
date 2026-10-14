@@ -247,7 +247,21 @@ export function AxesBlock({ axes, id }: { axes: readonly ComparisonAxis[]; id: s
 
 /* ── Why the answer is lost. One failure mechanism, not a list of tips. ───── */
 
-export function WhyLostBlock({ text, id }: { text: string; id: string }) {
+export function WhyLostBlock({
+  text,
+  id,
+  name,
+  hasQuestion = false,
+}: {
+  text: string;
+  id: string;
+  /** The page's own entity name, verbatim. Present on the taxonomy templates, where it
+   *  renders the lead-in (docs/copy/2026-10/ai-search-is-winning.md §4.2). */
+  name?: string;
+  /** True when the page shows a buyer question to ask an AI tool, so "the question
+   *  above" in the close line points at something. */
+  hasQuestion?: boolean;
+}) {
   /* One mechanism in the authored words, beside the buyer-journey diagram from `/`
      (brief §2.3). The 12-column split starts at xl for the reason BuyingProblem.tsx gives:
      at 1024 a 7-column cell is under the 648px floor that keeps the diagram's labels at
@@ -256,13 +270,25 @@ export function WhyLostBlock({ text, id }: { text: string; id: string }) {
     <Band labelledBy={id}>
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-x-16 gap-y-10 xl:items-center">
         <div className="xl:col-span-5">
-          <BandHeading id={id}>Why firms like yours get left out</BandHeading>
+          <BandHeading id={id}>Why the answer names someone else</BandHeading>
+          {name && (
+            <p className="text-body mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)' }}>
+              An AI answer draws on pages, and on mentions on other sites, that match the buyer&apos;s
+              question. In {name}, this is one place the match can break:
+            </p>
+          )}
           <p
-            className="text-body mt-6 m-0 max-w-[68ch] pl-6"
+            className={`text-body ${name ? 'mt-4' : 'mt-6'} m-0 max-w-[68ch] pl-6`}
             style={{ color: 'var(--s-text-muted)', borderLeft: '2px solid var(--s-accent-graphic)' }}
           >
             {text}
           </p>
+          {name && hasQuestion && (
+            <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)' }}>
+              Check it yourself. Ask the question above and see who is named. Then ask what the answer
+              would need to find on your site to name you.
+            </p>
+          )}
         </div>
         <div className="xl:col-span-7 min-w-0">
           <DiagramBlindSpot idPrefix={`${id}-journey`} />
@@ -484,7 +510,7 @@ export function SnapshotCta({ question, id }: { question: string; id: string }) 
             {question}
           </h2>
           <p className="text-body mt-5 m-0 max-w-[58ch]" style={{ color: 'var(--s-text-muted)' }}>
-            Book a call and we&apos;ll show you what we&apos;d test first. Or send an enquiry if you prefer.
+            Book a call and we&apos;ll show you which questions we would test first, and on which platforms. Or send an enquiry if you prefer.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
             <Link href="/book" className="rf-btn rf-btn--primary">

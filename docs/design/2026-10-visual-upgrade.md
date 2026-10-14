@@ -144,6 +144,8 @@ that has them. Export as JPG at quality 80, **≤ 300KB**. Decorative: `alt=""`,
 
 ### 1.6 The Illustrative badge (product screens)
 
+> **Superseded by ADR-0006 §12 (operator, 2026-10-08).** The badge and its banner are removed from every product screen; this section is kept as history only.
+
 The `ProductScreen` component renders the badge, never the data, using the exact ADR-0006 R3 string:
 
 > **Illustrative** product interface. Sample data, not client results.
@@ -472,7 +474,7 @@ on `/` is about flat, since `HeroSnapshotPanel` is deleted.
 | Zone | Content |
 |---|---|
 | Title bar | "Scriblr" (mono, `--s-text-faint`) · "AI visibility tracker" **[R]** (text-h4) |
-| Badge | §1.6, full width |
+| Badge | ~~§1.6, full width~~ Superseded by ADR-0006 §12 (operator, 2026-10-08): no badge rendered |
 | Tabs | B2B SaaS · Manufacturing · Legal · IT and MSP · Logistics (existing labels) |
 | Context `<dl>` | Tracked brand · Domain · Prompt set: "Fixed before the baseline run." (existing) · Run: "Sample run" **[R, Ruth]**. No date of any kind: ADR-0006 R4 bans dates in screen data because a dated fictional run reads as an observation (CLAUDE.md §4), and R4 names "Sample run" as the replacement |
 | Table | Columns: Prompt · ChatGPT · Perplexity · Gemini · Google AI Overviews **[R, Ruth]**. These are the four members of the `Engine` type in `lib/b2b/observations.ts`, which ADR-0006 R1 makes the only assistant vocabulary. "Google AI Mode" is not a member and would not compile. Platform names are **row and column labels only**, never logos and never their UI |
@@ -522,7 +524,7 @@ This shows that the prompt set is fixed before work starts.
 | Field | Value |
 |---|---|
 | Title bar | "Scriblr" · "Prompt set" **[R]** |
-| Badge | §1.6 |
+| Badge | ~~§1.6~~ Superseded by ADR-0006 §12 (operator, 2026-10-08): no badge rendered |
 | Tracked brand | Pellman IT Group · `pellman-it.example` **[Ruth]** |
 | Rows (3) | Prompt · Platforms (text chips, the four `Engine` labels) · Status "Fixed" **[R]** |
 | Footer | "Changing any of them needs a recorded reason." (existing, from Evidence) |

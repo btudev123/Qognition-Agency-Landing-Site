@@ -32,18 +32,18 @@ export default function Evidence() {
       <Shell>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 lg:items-end">
           <ScrollReveal className="lg:col-span-6">
-            <Eyebrow accent>How we report</Eyebrow>
+            <Eyebrow accent>Proof</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 max-w-[24ch] font-semibold">
-              <MaskReveal>Every answer we report has a date on it.</MaskReveal>
+              <MaskReveal>Named clients. Dated results. Every AI answer on the record.</MaskReveal>
             </h2>
           </ScrollReveal>
           <ScrollReveal stagger={2} className="lg:col-span-6">
             <p className="text-body m-0 max-w-[62ch]" style={{ color: 'var(--s-text-muted)' }}>
-              We report each observation with the prompt we used, the platform, the date and the sources the answer cited. You can re-run any of it yourself.
+              Four named B2B programmes, with results confirmed by each client&apos;s own reporting. And every AI answer we report carries the prompt, the platform, the date and the sources it cited, so you can re-run it yourself.
             </p>
             {/* Below lg the caveat follows the method strip (brief §2.7); from lg it sits here. */}
             <p className="hidden lg:block text-body mt-4 m-0 max-w-[62ch]" style={{ color: 'var(--s-text)' }}>
-              A mention in an answer does not prove a buyer became a customer.
+              We report AI mentions and sales results in separate columns, because a mention is not a customer.
             </p>
           </ScrollReveal>
         </div>
@@ -58,7 +58,7 @@ export default function Evidence() {
             ))}
           </ul>
           <p className="lg:hidden text-body mt-6 m-0 max-w-[62ch]" style={{ color: 'var(--s-text)' }}>
-            A mention in an answer does not prove a buyer became a customer.
+            We report AI mentions and sales results in separate columns, because a mention is not a customer.
           </p>
         </ScrollReveal>
 
@@ -102,7 +102,7 @@ export default function Evidence() {
               How we handle evidence
             </Link>
             <Link href="/case-studies" className="rf-btn rf-btn--secondary">
-              Client programmes
+              See all case studies
             </Link>
           </div>
         </ScrollReveal>

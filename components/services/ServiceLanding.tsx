@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { CSSProperties, ReactNode } from 'react';
 import { ArrowUpRight, Check, Minus } from 'lucide-react';
 import FunnelCTA from '../shared/FunnelCTA';
+import SourceLink from '../shared/SourceLink';
 import ProductScreen from '../product-screens/ProductScreen';
 import { PRODUCT_SCREENS } from '../../data/product-screens';
 import { AI_PLATFORMS } from '../../data/aiPlatforms';
@@ -361,7 +362,7 @@ export default function ServiceLanding({ path, h1, content, serviceTitle, trail 
             className={`list-none p-0 m-0 mt-12 sm:mt-16 grid grid-cols-1 md:grid-cols-3 ${LATTICE_CELLS}`}
             style={LATTICE}
           >
-            {PROMISE_CHIPS.map((chip) => (
+            {(content.chips ?? PROMISE_CHIPS).map((chip) => (
               <li key={chip.label} className="flex items-center gap-4 p-4 sm:p-5">
                 <IconTile icon={chip.icon} size={24} />
                 <span className="text-h4 font-sans font-medium min-w-0">{chip.label}</span>
@@ -373,6 +374,23 @@ export default function ServiceLanding({ path, h1, content, serviceTitle, trail 
 
       {/* ── 3. Right for you if (and, on AI SEO, where each layer shows up). Light. ── */}
       <Band theme="light" id={`${key}-fit`}>
+        {/* Why now (docs/copy/2026-10/ai-search-is-winning.md §3). A label, not a heading:
+            the band is labelled by its H2 below, and a second heading here would sit
+            above it in the outline. A third-party figure carries its source link. */}
+        {content.whyNow && (
+          <div className="mb-12 pb-12 max-w-[68ch]" style={{ borderBottom: '1px solid var(--s-rule-hairline)' }}>
+            <span className="rf-eyebrow">Why now</span>
+            <p className="text-body mt-4 m-0" style={{ color: 'var(--s-text)' }}>
+              {content.whyNow.text}
+              {content.whyNow.source && (
+                <>
+                  {' '}
+                  <SourceLink source={content.whyNow.source} />
+                </>
+              )}
+            </p>
+          </div>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-16 gap-y-12">
           <div className={content.layers ? 'lg:col-span-6' : 'lg:col-span-8'}>
             <H2 id={`${key}-fit`}>Right for you if</H2>
@@ -538,7 +556,7 @@ export default function ServiceLanding({ path, h1, content, serviceTitle, trail 
             )}
             {content.monthly.auditLink && (
               <p className="text-body mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)' }}>
-                Want to see your answers first?{' '}
+                Want to see who gets named first?{' '}
                 <Link href="/free-ai-audit" className="rf-link" style={{ color: 'var(--s-accent)' }}>
                   Request a free AI visibility audit
                 </Link>
@@ -642,7 +660,7 @@ export default function ServiceLanding({ path, h1, content, serviceTitle, trail 
       {/* ── 9. Closing CTA. Dark. FunnelCTA stays: it carries the cta_click event. ── */}
       <section data-theme="dark" className="py-12 sm:py-16" style={HAIRLINE}>
         <div className={SHELL}>
-          <FunnelCTA stage="bofu" service={serviceTitle} />
+          <FunnelCTA stage="bofu" service={serviceTitle} headline={content.ctaHeadline} />
         </div>
       </section>
 

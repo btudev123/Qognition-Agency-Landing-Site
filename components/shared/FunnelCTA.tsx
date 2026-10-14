@@ -12,11 +12,14 @@ import { pushDataLayer } from '../../lib/analytics';
 export default function FunnelCTA({
   stage: stageProp,
   service,
+  headline,
   context,
   className = '',
 }: {
   stage?: FunnelStage;
   service?: string;
+  /** Replaces the stage headline. Absent: the stage default from getFunnelCTA(). */
+  headline?: string;
   context?: FunnelContext;
   className?: string;
 }) {
@@ -62,7 +65,7 @@ export default function FunnelCTA({
             color: 'var(--s-text)',
           }}
         >
-          {cta.headline}
+          {headline ?? cta.headline}
         </h2>
         <div className="flex flex-wrap gap-3 justify-center">
           <Primary

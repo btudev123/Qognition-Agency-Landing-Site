@@ -680,9 +680,16 @@ if (spineCollisions.length) {
     if (Array.isArray(node)) return node.forEach((v, i) => walk(v, `${where}[${i}]`, key));
     if (node && typeof node === 'object') for (const [k, v] of Object.entries(node)) walk(v, `${where}.${k}`, k);
   };
+  /* ADR-0006 §12.3 R7 (operator, 2026-10-08): with no badge, copy carries the
+     disclosure. A caption may not make a screen read as live, as a capture, or as
+     the reader's own result. Case-insensitive, whole-word. The same list runs on
+     the section around each served screen in scripts/lib/served-screens.mjs. */
+  const R7_BANNED = /\b(live|scanning|checking|loading|real[- ]?time|screenshots?|your results|your report|your score)\b/i;
   for (const [key, screen] of screens) {
     walk(screen, key);
     assert.ok(!/[0-9%]/.test(screen.caption), `${key}: the caption contains a digit or %, which reads as a result.`);
+    const r7 = screen.caption.match(R7_BANNED);
+    assert.ok(!r7, `${key}: the caption says "${r7 && r7[0]}". ADR-0006 §12.3 R7: copy never presents a screen as real or live.`);
   }
 
   // 6. Server-only screen components. The player is the one exception, and it is constrained (§11.6.k).
@@ -737,25 +744,42 @@ if (spineCollisions.length) {
     }
   }
 
-  // 7. The badge cannot be dropped.
-  const BADGE_TAIL = 'product interface. Sample data, not client results.';
-  const badgeFile = `${SCREEN_DIR}/ProvenanceBadge.tsx`;
-  const badgeSrc = fs.readFileSync(badgeFile, 'utf8');
+  // 7. No provenance badge. Rewritten deliberately, not loosened.
+  /* Operator decision 2026-10-08 (CLAUDE.md authority block, "No 'Illustrative'
+     label on product screens"): the badge and its banner are removed everywhere,
+     overriding ADR-0006 R3's visible-badge rule. This block used to assert the
+     badge could not be dropped; it now asserts it cannot come back. Everything
+     above (provenance marker in the data, "Your firm", sample brands only, no
+     figures, verbatim prompts, server-only components) is unchanged. */
+  /* ADR-0006 §12.4: the file is gone, nothing imports it (any ProvenanceBadge
+     reference fails, which covers ProductScreen.tsx), and neither the sentence nor
+     its tail survives anywhere. The tail is checked on its own because the
+     component split the sentence across two text nodes. */
+  const BADGE_PARTS = ['Illustrative product interface', 'product interface. Sample data, not client results.', 'Sample data, not client results'];
   assert.ok(
-    badgeSrc.includes('Illustrative') && badgeSrc.includes(BADGE_TAIL),
-    `${badgeFile} no longer contains the ADR-0006 R3 badge sentence.`
+    !fs.existsSync(`${SCREEN_DIR}/ProvenanceBadge.tsx`),
+    `${SCREEN_DIR}/ProvenanceBadge.tsx exists again. The badge was removed by the operator on 2026-10-08.`
   );
   for (const file of [...walkTsx('app'), ...walkTsx('components'), ...walkTsx('data'), ...walkTsx('lib')]) {
-    if (file === badgeFile) continue;
-    assert.ok(
-      !fs.readFileSync(file, 'utf8').includes('Sample data, not client results'),
-      `${file} contains the badge sentence. It lives in ${badgeFile} only, so it cannot drift.`
-    );
+    const code = stripComments(fs.readFileSync(file, 'utf8'));
+    assert.ok(!/\bProvenanceBadge\b/.test(code), `${file} references ProvenanceBadge. The badge was removed (operator, 2026-10-08).`);
+    for (const part of BADGE_PARTS) {
+      assert.ok(!code.includes(part), `${file} contains the retired badge text "${part}" (operator, 2026-10-08).`);
+    }
   }
-  assert.ok(
-    /import\s+ProvenanceBadge\s+from\s+['"]\.\/ProvenanceBadge['"]/.test(fs.readFileSync(`${SCREEN_DIR}/ProductScreen.tsx`, 'utf8')),
-    'ProductScreen.tsx no longer imports ProvenanceBadge, so a screen could render without its disclosure.'
-  );
+  /* The screen components render no visitor-facing "Illustrative". The data marker
+     `provenance: 'illustrative'` lives in data/product-screens and is never rendered
+     as text; the served-HTML gate checks the rendered page. */
+  for (const file of walkTsx(SCREEN_DIR)) {
+    const code = stripComments(fs.readFileSync(file, 'utf8'));
+    const strings = [...code.matchAll(/(['"`])((?:(?!\1)[^\\\n]|\\.)*)\1|>([^<>{}]+)</g)].map((m) => m[2] ?? m[3] ?? '');
+    assert.ok(
+      !strings.some((str) => /\billustrative\b/i.test(str)),
+      `${file} has the word "Illustrative" in a string. No provenance label is rendered on a screen (operator, 2026-10-08).`
+    );
+    // `data-provenance={screen.provenance}` is the marker and passes; `{screen.provenance}` as a child is text and fails.
+    assert.ok(!/(?<!=\s*)\{\s*screen\.provenance\s*\}/.test(code), `${file} renders screen.provenance as text. It is an internal marker only.`);
+  }
 
   // Industry visuals: every locked ICP industry has an icon (brief §2.5).
   const { icpIndustryCards } = require('../data/b2b/icp/index.ts');
@@ -765,7 +789,7 @@ if (spineCollisions.length) {
 
   console.log(
     `✓ product screens: ${screens.length} screens illustrative, tracker run ${run.rows.length} rows ` +
-    `(one per taxonomy industry, prompts verbatim), no numbers, no real names, badge in one file. ` +
+    `(one per taxonomy industry, prompts verbatim), no numbers, no real names, no provenance badge. ` +
     `${icpIndustryCards().length} industries have an icon.`
   );
 }

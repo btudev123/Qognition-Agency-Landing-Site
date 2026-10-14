@@ -17,6 +17,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 
 const SIZES = 'xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl';
 const RAW_SIZE = new RegExp(
@@ -109,7 +110,17 @@ try {
       snippet: '',
     });
   } else {
-    const text = h1[1].replace(/<[^>]+>/g, ' ').replace(/[{}'"]/g, ' ').replace(/\s+/g, ' ');
+    let text = h1[1].replace(/<[^>]+>/g, ' ').replace(/[{}'"]/g, ' ').replace(/\s+/g, ' ');
+    /* Since 2026-10-08 the H1 words live in data/homeHero.ts (HERO_H1), so the
+       JSX holds identifiers, not words. Reading only the JSX would pass any
+       sentence at all. When the H1 uses HERO_H1, the rules run on the sentence
+       the page serves, heroH1Sentence(), loaded from the data file itself. */
+    if (/\bHERO_H1\b/.test(h1[1])) {
+      const require = createRequire(import.meta.url);
+      require('./lib/load-typescript.cjs');
+      const { heroH1Sentence } = require('../data/homeHero.ts');
+      text = heroH1Sentence();
+    }
     for (const rule of HERO_BANNED) {
       if (rule.test(text)) {
         record(

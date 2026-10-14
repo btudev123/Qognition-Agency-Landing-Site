@@ -5,6 +5,7 @@ import {
   CalendarDays,
   ClipboardCheck,
   Columns2,
+  Columns3,
   Compass,
   FileText,
   Fingerprint,
@@ -15,6 +16,7 @@ import {
   Network,
   PenLine,
   Search,
+  ShieldCheck,
   Split,
   Star,
   Tags,
@@ -26,6 +28,12 @@ import {
 import type { B2BService } from './case-studies/b2b';
 import { B2B_PROOF_LINE } from './case-studies';
 import type { ServiceKey } from './case-studies/types';
+import {
+  G2_ANSWER_ECONOMY,
+  G2_DIFFERENT_VENDOR,
+  G2_SOFTWARE_RESEARCH,
+  type ExternalSource,
+} from './sourcedClaims';
 
 /* THE FIVE PLAIN-ENGLISH SERVICE PAGES.
  *
@@ -56,6 +64,11 @@ export interface ServiceFaq {
   readonly link?: { readonly text: string; readonly href: string };
 }
 
+export interface ServiceChip {
+  readonly icon: LucideIcon;
+  readonly label: string;
+}
+
 export interface ServicePageContent {
   /** Funnel context, `service_id` on /book and /contact links. */
   readonly serviceId: string;
@@ -63,6 +76,14 @@ export interface ServicePageContent {
   readonly promise: string;
   /** One line under the promise: the PPC scope line, the local-pack explainer. */
   readonly promiseNote?: string;
+  /** Hero chip row. Absent: the shared PROMISE_CHIPS (data/servicePromises.ts), as before.
+   *  docs/copy/2026-10/ai-search-is-winning.md §3. Three chips, to fill the 3-column row. */
+  readonly chips?: readonly [ServiceChip, ServiceChip, ServiceChip];
+  /** One paragraph at the top of the "Right for you if" band, under a "Why now" label.
+   *  Absent: nothing renders. A third-party figure carries its `source`, rendered as a link. */
+  readonly whyNow?: { readonly text: string; readonly source?: ExternalSource };
+  /** Closing FunnelCTA headline. Absent: the bofu default from getFunnelCTA(). */
+  readonly ctaHeadline?: string;
   readonly visual: ServiceVisual;
   /** The AI platform row. AI SEO and GEO only (copy §2.1). */
   readonly platforms: boolean;
@@ -131,9 +152,18 @@ export const MARKETS: readonly ServiceLink[] = [
 
 const SEO: ServicePageContent = {
   serviceId: 'seo',
-  eyebrow: 'SEO · Google search results',
+  eyebrow: 'Enterprise SEO services · Google search results',
   promise:
-    'We help B2B buyers find you on Google when they search for what you sell. We judge the work on enquiries, not traffic.',
+    "Google's AI answers are built from web pages Google can find. We fix and build the pages your buyers search for, so you rank for the searches that lead to enquiries and give Google's AI something worth quoting. We judge the work on qualified enquiries, not traffic.",
+  whyNow: {
+    text: 'Google now shows an AI Overview above the first result for some searches. Search your main service on Google and look at what sits above your listing.',
+  },
+  chips: [
+    { icon: TrendingUp, label: 'Judged on qualified enquiries' },
+    { icon: Columns3, label: 'Rankings and AI answers reported apart' },
+    { icon: ShieldCheck, label: 'No ranking promises' },
+  ],
+  ctaHeadline: 'Find out which searches you should be winning, and what is in the way.',
   visual: 'search-to-sale',
   platforms: false,
   rightFor: [
@@ -197,10 +227,15 @@ const SEO: ServicePageContent = {
         'No. Google decides its own results. We commit to the agreed work, a dated starting point and a monthly report you can check.',
     },
     {
-      question: 'How does SEO help with AI search?',
+      question: 'Is SEO still worth paying for with AI search?',
       answer:
-        "Google's AI Overviews and AI Mode only link to pages Google has stored and can show in search. So the fixes and pages that help you rank are the base for AI SEO and GEO. We still report AI answers separately, because a page can rank and still not be named.",
+        "Yes. Google's AI Overviews and AI Mode only link to pages Google has stored and can show in search. So the fixes and pages that help you rank are the base for AI SEO and GEO. We still report AI answers separately, because a page can rank and still not be named.",
       link: { text: 'AI SEO and GEO', href: '/services/ai-seo' },
+    },
+    {
+      question: 'What does an enterprise SEO agency do differently?',
+      answer:
+        'The work is the same kind. The scale is not: more pages, more markets and more people who approve changes. We agree owners and approvals in the proposal, fix the issues that block the most important pages first, and report by market.',
     },
     {
       question: 'Do we have to buy AI SEO or GEO as well?',
@@ -238,9 +273,20 @@ const SEO: ServicePageContent = {
 
 const AI_SEO: ServicePageContent = {
   serviceId: 'ai-seo',
-  eyebrow: 'AI SEO and GEO',
+  eyebrow: 'GEO services and AI search optimization',
   promise:
-    "Your buyers can ask Google's AI or ChatGPT which supplier to use. We work on what those answers draw from, and show you every answer we test, with its date.",
+    "When a buyer asks ChatGPT, Perplexity or Google's AI which firm to use, the answer names a few. We work on the pages and sources those answers draw from, so your firm has a reason to be one of them. Then we show you every answer, with its date.",
+  promiseNote: 'Try it first. Ask ChatGPT who to hire for what you sell, and note which firms it names.',
+  whyNow: {
+    text: `${G2_SOFTWARE_RESEARCH} ${G2_DIFFERENT_VENDOR} If you sell software, those are your buyers. If you sell something else, ask your sales team where new prospects first heard of you.`,
+    source: G2_ANSWER_ECONOMY,
+  },
+  chips: [
+    { icon: CalendarDays, label: 'Every AI answer dated and re-runnable' },
+    { icon: BadgeCheck, label: 'Named B2B clients, dated results' },
+    { icon: ShieldCheck, label: 'No placement promises' },
+  ],
+  ctaHeadline: "See who ChatGPT and Google's AI name for what you sell.",
   visual: 'tracker-run',
   platforms: true,
   layers: true,
@@ -301,6 +347,16 @@ const AI_SEO: ServicePageContent = {
       answer: 'No. Each AI tool decides its own answers. We commit to the work and a dated record of every answer we check.',
     },
     {
+      question: 'What do GEO services include?',
+      answer:
+        "Four parts. We agree the questions your buyers ask and test them on the AI tools your market uses. We fix how your own site describes you. We work on the other sites those answers rely on: directories, trade press, review sites and associations. Then we re-test the same questions on a schedule and report who each answer named, with dates. AI search optimization for Google's AI Overviews and AI Mode runs on the same pages.",
+    },
+    {
+      question: 'How do I choose a GEO agency?',
+      answer:
+        'Ask for three things. One stored AI answer with its prompt, platform and date. One named client with dated results. And a straight answer on placement: an agency that promises it is promising something no one controls. If the agency publishes a list of the best agencies, check who it ranks first.',
+    },
+    {
       question: "What's the difference between AI SEO and GEO?",
       answer:
         'AI SEO is the work on Google AI Overviews and AI Mode. GEO is the work on assistants: ChatGPT, Perplexity, Gemini, Claude and Copilot. They share foundations, but we report them separately.',
@@ -337,9 +393,18 @@ const AI_SEO: ServicePageContent = {
 
 const GEO: ServicePageContent = {
   serviceId: 'ai-seo',
-  eyebrow: 'GEO · ChatGPT, Perplexity, Gemini, Claude, Copilot',
+  eyebrow: 'Generative engine optimization · ChatGPT, Perplexity, Gemini, Claude, Copilot',
   promise:
-    'GEO is the work on what AI assistants say when a buyer asks them for a supplier. We work on what they draw from, and keep a dated record of what they say.',
+    'Generative engine optimization (GEO) is the work on what AI assistants say when a buyer asks them who to hire. We work on what they draw from, check whether they describe you correctly, and keep a dated record of every answer.',
+  whyNow: {
+    text: 'An assistant\'s answer is a shortlist with no click attached. Your analytics count the buyers who click through. They show nothing about the answers that named someone else.',
+  },
+  chips: [
+    { icon: Bot, label: 'One fixed question list, on the assistants we agree' },
+    { icon: Network, label: 'Who was named, and the sources behind it' },
+    { icon: ShieldCheck, label: 'No placement promises' },
+  ],
+  ctaHeadline: 'Find out what the assistants say about you, and whether it is right.',
   visual: 'answer-sources',
   platforms: true,
   rightFor: [
@@ -402,9 +467,9 @@ const GEO: ServicePageContent = {
         "No. SEO is about Google's search results. GEO is about what assistants say when someone asks them a question. Good SEO helps, but a page can rank well and still not be named.",
     },
     {
-      question: 'Can you get us recommended by ChatGPT?',
+      question: 'How do I get my company recommended by ChatGPT?',
       answer:
-        'No one can promise that. We work on what the assistants draw on and record what they say, with dates, so you can see whether it is changing.',
+        'No one can make ChatGPT recommend you. You can change what it draws on. State plainly on your own site what you do, for whom and where, in the words your buyers use. Get the sites your buyers trust, such as trade press, directories, review sites and associations, to describe you the same way. Make sure search engines can find your key pages, because some assistants search the web before they answer. Then test the same questions on a schedule and record what changes.',
     },
     {
       question: 'How do you choose the questions?',
@@ -426,6 +491,15 @@ const LOCAL_SEO: ServicePageContent = {
   promise:
     "If your buyers pick suppliers near them, we fix how you show up on Google Maps and in local listings. If location doesn't matter to them, we'll tell you.",
   promiseNote: 'The local pack is the short list of businesses Google shows with a map.',
+  whyNow: {
+    text: 'If your buyers need you on site, the map is part of their shortlist. Search your service and your city in Google Maps and see who appears.',
+  },
+  chips: [
+    { icon: Compass, label: 'A straight answer on whether location matters' },
+    { icon: MapPin, label: 'Real addresses only' },
+    { icon: Star, label: 'No paid or filtered reviews' },
+  ],
+  ctaHeadline: "Find out whether location shapes your buyers' choice, before you spend on it.",
   visual: 'listings',
   platforms: false,
   rightFor: [
@@ -503,11 +577,20 @@ const LOCAL_SEO: ServicePageContent = {
 
 const PPC: ServicePageContent = {
   serviceId: 'ppc',
-  eyebrow: 'B2B PPC · Google Ads and LinkedIn',
+  eyebrow: 'B2B PPC agency · Google Ads, Microsoft Advertising and LinkedIn',
   promise:
-    'Google Ads and LinkedIn campaigns for B2B firms, judged on qualified enquiries and booked meetings, not clicks.',
+    'Paid media management for B2B firms. Google Ads, Microsoft Advertising and LinkedIn campaigns, judged on qualified enquiries and booked meetings, not clicks.',
   promiseNote:
     'B2B PPC runs alongside the four layers and is scoped separately, priced as a share of ad spend with a monthly minimum. A firm that wants only PPC is a full client.',
+  whyNow: {
+    text: 'Search and AI answers take months to move. Paid search and LinkedIn can put you in front of buyers this month, while that work builds.',
+  },
+  chips: [
+    { icon: TrendingUp, label: 'Judged on cost per qualified enquiry' },
+    { icon: BadgeCheck, label: 'Your ad accounts stay in your name' },
+    { icon: Users, label: 'Works beside your team or agency' },
+  ],
+  ctaHeadline: 'Find out what your ad spend is buying, in qualified enquiries.',
   visual: 'budget-loop',
   platforms: false,
   rightFor: [
@@ -563,6 +646,11 @@ const PPC: ServicePageContent = {
   },
   proof: { b2b: 'ppc', insurance: 'ppc' },
   faqs: [
+    {
+      question: 'What does good B2B paid media management look like?',
+      answer:
+        "Judge it on cost per qualified enquiry, not cost per click. For Talentera, LinkedIn ads on US$20,000 of media spend produced 58 qualified leads at US$345 each, 15 June to 21 September 2026, confirmed by Talentera's own reporting.",
+    },
     {
       question: 'Is PPC included with AI SEO and GEO?',
       answer:

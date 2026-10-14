@@ -1,0 +1,146 @@
+/* PlatformReel, the slot-machine word in the homepage H1.
+ *
+ * Geometry. The reel is an inline-block that sits on the H1's baseline. Its
+ * in-flow child is .sizer: every platform stacked in one grid cell, invisible,
+ * so the box is exactly as wide as the widest entry and that width never
+ * changes. Nothing animates width or height, so the line never reflows (CLS 0).
+ * .window is absolutely positioned over the sizer and clips the moving .strip,
+ * so the spin cannot affect layout either.
+ *
+ * .window is exactly the line box. Measured in Geist at the text-display
+ * line-height (1.05): glyphs run from 0.149em below the top of the line box to
+ * 1.025em (Perplexity's p and y), so nothing at rest is cut, and a moving word
+ * is clipped in the gap between lines, never across a neighbouring line's
+ * glyphs. --reel-pad stays as the one knob if the type token ever changes; a
+ * pad above zero pushes the clip edge into the lines above and below.
+ *
+ * The word is drawn with content: attr(data-word), not as a text node. The
+ * reel is aria-hidden, and this keeps it out of the H1's served text too, so
+ * crawlers and the R7 scan read exactly heroH1Sentence() (data/homeHero.ts).
+ *
+ * Motion (docs/design/motion.md §1): transform only, each step 320ms, the
+ * discrete-motion ceiling. One pass, 3200ms after a 600ms hold, so it settles
+ * on the first platform inside WCAG 2.2.2's five seconds. No loop. */
+
+/* Platform word inks. Scoped here, not in app/globals.css, because globals.css
+   is hash-locked by docs/repositioning/preserved-assets-baseline.json
+   (scripts/check-niche-journeys.cjs). Promote them to the token layer if the
+   operator lifts that lock.
+
+   DISPLAY SIZE ONLY. The reel renders at text-display (44px minimum), which is
+   WCAG large text, so the floor is 3:1. Each brand colour comes from its logo
+   file in public/brand-logos. Where it fails on the hero ground (--s-bg
+   #F8F5EF), it is darkened in OKLCH at the same hue and chroma until it clears
+   3.4:1, a margin over 3:1 that still reads as the brand:
+     ChatGPT     #10A37F 2.94 fails  ->  #009673 3.44
+     Claude      #D97757 2.87 fails  ->  #CA6A4A 3.40
+     Gemini      #8E75B2 3.62 passes, unchanged
+     Perplexity  #1FB8CD 2.19 fails  ->  #0092A7 3.40
+   Never reuse these for body or meta text. */
+.reel {
+  --brand-ink-chatgpt:    #009673;
+  --brand-ink-claude:     #CA6A4A;
+  --brand-ink-gemini:     #8E75B2;
+  --brand-ink-perplexity: #0092A7;
+}
+/* On a dark ground the unmodified brand colours all clear 3:1, so nothing is
+   adjusted. Against --d-bg / --d-surface-3: ChatGPT 6.19 / 4.75, Claude
+   6.34 / 4.86, Gemini 5.03 / 3.86, Perplexity 8.30 / 6.36. */
+:global([data-theme='dark']) .reel {
+  --brand-ink-chatgpt:    #10A37F;
+  --brand-ink-claude:     #D97757;
+  --brand-ink-gemini:     #8E75B2;
+  --brand-ink-perplexity: #1FB8CD;
+}
+
+.reel {
+  --reel-pad: 0em;
+  --reel-line: 1.05em; /* text-display line-height, for browsers without lh */
+  --reel-step: calc(var(--reel-line) + 2 * var(--reel-pad));
+  --reel-ease: cubic-bezier(0.34, 1.32, 0.64, 1); /* settles with a small overshoot */
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+@supports (height: 1lh) {
+  .reel { --reel-line: 1lh; }
+}
+
+.sizer {
+  display: inline-grid;
+  visibility: hidden;
+}
+.sizer > .item { grid-area: 1 / 1; }
+
+.item {
+  display: block;
+  white-space: nowrap;
+}
+.item::after { content: attr(data-word); }
+
+.logo {
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-right: 0.2em;
+  vertical-align: -0.04em;
+  object-fit: contain;
+}
+
+.window {
+  position: absolute;
+  top: calc(-1 * var(--reel-pad));
+  left: 0;
+  right: 0;
+  height: var(--reel-step);
+  overflow: hidden;
+}
+
+.strip {
+  display: block;
+  transform: translateY(0);
+}
+.strip > .item {
+  height: var(--reel-step);
+  padding-top: var(--reel-pad);
+}
+
+/* intro: the one automatic pass. Runs with or without JavaScript. */
+.reel[data-reel='intro'] .strip { animation: reel-intro 3200ms var(--reel-ease) 600ms both; }
+/* spin: a replay the visitor asked for by pointing at the word. */
+.reel[data-reel='spin'] .strip { animation: reel-replay 3200ms var(--reel-ease) both; }
+/* rest: the first platform, which is also where every pass ends. */
+.reel[data-reel='rest'] .strip { animation: none; }
+
+/* Four steps of 320ms, three holds of 640ms. The fifth item repeats the first,
+   so the pass ends on the word it started on and resetting to rest is invisible.
+   Hold segments are linear over zero distance; travel segments take the ease. */
+@keyframes reel-intro {
+  0%   { transform: translateY(0); animation-timing-function: var(--reel-ease); }
+  10%  { transform: translateY(calc(-1 * var(--reel-step))); animation-timing-function: linear; }
+  30%  { transform: translateY(calc(-1 * var(--reel-step))); animation-timing-function: var(--reel-ease); }
+  40%  { transform: translateY(calc(-2 * var(--reel-step))); animation-timing-function: linear; }
+  60%  { transform: translateY(calc(-2 * var(--reel-step))); animation-timing-function: var(--reel-ease); }
+  70%  { transform: translateY(calc(-3 * var(--reel-step))); animation-timing-function: linear; }
+  90%  { transform: translateY(calc(-3 * var(--reel-step))); animation-timing-function: var(--reel-ease); }
+  100% { transform: translateY(calc(-4 * var(--reel-step))); }
+}
+/* Identical frames under a second name: changing animation-name is what restarts it. */
+@keyframes reel-replay {
+  0%   { transform: translateY(0); animation-timing-function: var(--reel-ease); }
+  10%  { transform: translateY(calc(-1 * var(--reel-step))); animation-timing-function: linear; }
+  30%  { transform: translateY(calc(-1 * var(--reel-step))); animation-timing-function: var(--reel-ease); }
+  40%  { transform: translateY(calc(-2 * var(--reel-step))); animation-timing-function: linear; }
+  60%  { transform: translateY(calc(-2 * var(--reel-step))); animation-timing-function: var(--reel-ease); }
+  70%  { transform: translateY(calc(-3 * var(--reel-step))); animation-timing-function: linear; }
+  90%  { transform: translateY(calc(-3 * var(--reel-step))); animation-timing-function: var(--reel-ease); }
+  100% { transform: translateY(calc(-4 * var(--reel-step))); }
+}
+
+/* Reduced motion: no spin at all, the static first platform. The global block
+   in globals.css only shortens durations, which would still jump the strip. */
+@media (prefers-reduced-motion: reduce) {
+  .reel .strip { animation: none !important; transform: none !important; }
+}

@@ -42,17 +42,18 @@ export function getFunnelCTA(stage: FunnelStage, opts?: { service?: string }): F
     case 'tofu':
       return {
         stage,
-        eyebrow: 'Free resource',
-        headline: 'Make your next growth decision clearer.',
-        primary: { label: 'Explore our approach', href: '/process' },
+        // docs/copy/2026-10/ai-search-is-winning.md §5.1: every stage leads with Book a call.
+        eyebrow: 'Next step',
+        headline: 'Ask ChatGPT who to hire in your category. Then talk to us.',
+        primary: { label: 'Book a call', href: '/book' },
         secondary: { label: 'Send an enquiry', href: '/contact#enquiry' },
-        reassurance: 'Practical guidance for B2B teams',
+        reassurance: 'No obligation · Written scope and fee after the call',
       };
     case 'bofu':
       return {
         stage,
         eyebrow: 'Next step',
-        headline: 'Find out where you stand in Google and AI search.',
+        headline: 'Find out who AI names in your category, and what it takes to be one of them.',
         primary: { label: 'Book a call', href: '/book' },
         secondary: { label: 'Send an enquiry', href: '/contact#enquiry' },
         // docs/copy/2026-10/plain-english-templates.md §2.2. No duration: the calendar shows the real one.
@@ -63,10 +64,10 @@ export function getFunnelCTA(stage: FunnelStage, opts?: { service?: string }): F
       return {
         stage,
         eyebrow: 'Your next step',
-        headline: service ? `Explore your ${service} opportunity` : 'See where your buyers can find you',
+        headline: service ? `Find out what ${service} could win for your firm` : 'Find out who AI names when your buyers ask',
         primary: { label: 'Book a call', href: '/book' },
         secondary: { label: 'Send an enquiry', href: '/contact#enquiry' },
-        reassurance: 'Tell us who you sell to, where you want to grow and what needs to improve.',
+        reassurance: 'Tell us who you sell to and where you want to grow. We tell you what we would test first.',
       };
   }
 }

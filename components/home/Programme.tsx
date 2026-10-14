@@ -38,7 +38,7 @@ export default function Programme() {
       <Shell>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 lg:items-end">
           <ScrollReveal className="lg:col-span-6">
-            <Eyebrow>How the programme works</Eyebrow>
+            <Eyebrow>How it works</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 font-semibold">
               <MaskReveal>From buyer questions to sales conversations.</MaskReveal>
             </h2>
@@ -97,9 +97,9 @@ export default function Programme() {
             differentiator. CLAUDE.md §4. */}
         <ScrollReveal stagger={5} className="mt-16 pt-8" style={{ borderTop: '1px solid var(--s-rule)' }}>
           <p className="text-body m-0 max-w-[72ch]" style={{ color: 'var(--s-text)' }}>
-            We do not control ChatGPT, Google or Perplexity, and we will not tell you when you will
-            appear in them. What we commit to is the work, the measurement and the dated record of
-            both.
+            No one controls what ChatGPT or Google says, and anyone who promises you a placement is
+            guessing. We commit to the work, the measurement and a dated record of both, so you can
+            see what moved.
           </p>
         </ScrollReveal>
       </Shell>

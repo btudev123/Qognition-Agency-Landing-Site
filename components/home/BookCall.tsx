@@ -9,8 +9,8 @@ import { Eyebrow, Shell } from './primitives';
 /* Brief §2.8: the copy column only. The section id, CalBooking, minHeight and
    the widget wrapper are unchanged; scripts/check-funnel.cjs asserts them. */
 const COVER = [
-  { icon: MessageSquareText, line: 'Who you sell to, and the questions your buyers ask before they shortlist.' },
-  { icon: ScanSearch, line: 'What we would check first in Google and AI search, and why.' },
+  { icon: MessageSquareText, line: 'The questions your buyers ask before they shortlist, and which ones we would test first.' },
+  { icon: ScanSearch, line: 'Where you can win soonest: AI answers, Google or paid search, and why.' },
   { icon: Scale, line: 'Whether we are the right fit. If we are not, we will say so.' },
 ];
 
@@ -27,7 +27,7 @@ export default function BookCall() {
           <ScrollReveal>
             <Eyebrow accent>Book a call</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 max-w-[18ch] font-semibold">
-              <MaskReveal>30 minutes. Here is what we cover.</MaskReveal>
+              <MaskReveal>30 minutes. You leave knowing what we would fix first.</MaskReveal>
             </h2>
             <ul className="list-none p-0 mt-8 grid gap-4">
               {COVER.map(({ icon, line }) => (

@@ -5,6 +5,13 @@
  * tsc and every grep before this existed (Owen, 2026-10-07, by mutation):
  *
  *   R3  `{false && <ProvenanceBadge />}`: imported, never rendered.
+ *
+ * Operator decision 2026-10-08 (CLAUDE.md authority block) removed the
+ * "Illustrative" badge and its banner from every screen, overriding ADR-0006
+ * R3's visible-badge rule. The R3 checks below are inverted, not dropped: a
+ * served page must render NO badge, hidden or visible, inside or outside a
+ * screen, and no "Illustrative" text inside a screen. `data-provenance` stays
+ * as the internal marker that finds each screen and must read "illustrative".
  *   R6  `String(tab.rows.filter(...).length)`, or a literal '41%', in a component.
  *   R5  a prompt typed into a component instead of read from the registry.
  *
@@ -114,24 +121,40 @@ const ancestors = function* (el) {
 };
 const describe = (el) => `<${el.tag}${el.attrs.class ? ` class="${el.attrs.class.slice(0, 60)}"` : ''}${'hidden' in el.attrs ? ' hidden' : ''}>`;
 
+/** The retired badge sentence. Kept only so the gate can assert it is never rendered (operator, 2026-10-08). */
 export const BADGE_SENTENCE = 'Illustrative product interface. Sample data, not client results.';
+/** Either half of the retired badge, so a partial or reworded badge is caught too. */
+const BADGE_PART = /Illustrative product interface|Sample data, not client results/;
+/** Any visitor-facing provenance label inside a screen. */
+const ILLUSTRATIVE = /\billustrative\b/i;
 
-/** Hidden at every width, whatever the viewport. */
-function hiddenEverywhere(el) {
-  const style = (el.attrs.style || '').replace(/\s+/g, '').toLowerCase();
-  return (
-    'hidden' in el.attrs ||
-    el.attrs['aria-hidden'] === 'true' ||
-    /display:none|visibility:hidden|opacity:0(?![.\d])/.test(style) ||
-    classes(el).some((c) => c === 'sr-only' || c === 'invisible' || c === 'opacity-0')
-  );
+/** ADR-0006 §12.3 R7: banned in and beside a screen, any case, whole word. "Live data" is covered by "live". */
+export const R7_BANNED = /\b(live|scanning|checking|loading|real[- ]?time|screenshots?|your results|your report|your score)\b/i;
+/** R7 / §11.3: a statement that the reader's firm is, or is not, named. Questions ("Does ChatGPT name you?") are allowed. */
+const READER = String.raw`(?:you|your (?:firm|company|business|brand))`;
+export const READER_NAMED = [
+  // "Your firm is not named", "you aren't named", "your company was never named", "you're named"
+  new RegExp(String.raw`\b${READER}(?:\s+(?:is|are|was|were|isn't|aren't|wasn't|weren't|gets?|got)|'re|’re)\s+(?:(?:not|never|still|being|already)\s+)*named\b`, 'i'),
+  // "ChatGPT names you", "no assistant named your firm", "doesn't name you"
+  new RegExp(String.raw`\b(?:name|names|named|naming)\s+${READER}\b`, 'i'),
+  // "Your firm: Not named", the screen's state rendered as copy
+  new RegExp(String.raw`\b${READER}\s*:\s*(?:not\s+)?named\b`, 'i'),
+];
+
+/** Visible text of `el`, skipping RAW bodies, elements removed from rendering, and every product screen. */
+function visibleTextOutside(el, figures) {
+  let out = '';
+  for (const c of el.children || []) {
+    if (c.text !== undefined) out += c.text;
+    else if (c.tag && !RAW.has(c.tag) && !figures.includes(c)) {
+      const style = (c.attrs.style || '').replace(/\s+/g, '').toLowerCase();
+      if ('hidden' in c.attrs || /display:none/.test(style)) continue;
+      out += ` ${visibleTextOutside(c, figures)} `;
+    }
+  }
+  return out;
 }
-/** Hidden at some width by a utility class (`hidden`, `max-sm:hidden`, `lg:hidden`). */
-const hiddenAtSomeWidth = (el) => classes(el).some((c) => c === 'hidden' || /(^|:)hidden$/.test(c) || /(^|:)(sr-only|invisible)$/.test(c));
-
-/** A Tailwind arbitrary variant that can hide a descendant: `[&_p]:hidden`, `max-sm:[&>p]:sr-only`. */
-const ARBITRARY_HIDE = /\[&[^\]]*\]:(hidden|invisible|sr-only|opacity-0)$/;
-const arbitraryHide = (el) => classes(el).find((c) => ARBITRARY_HIDE.test(c));
+const sentences = (text) => norm(text).split(/(?<=[.!?])\s+/).map((x) => x.trim()).filter(Boolean);
 /** `content-[...]` utilities, with any variant prefix. Group 1 is the bracket body. */
 const CONTENT = /(?:^|:)content-\[(.*)\]$/;
 
@@ -178,41 +201,54 @@ export function checkProductScreens(html, { allowed, expected, required = [], ru
     }
   }
 
-  // R3. A badge is the deepest element whose text is the whole sentence.
-  const holders = all.filter((e) => norm(textOf(e)).includes(BADGE_SENTENCE));
-  const badges = holders.filter((e) => !e.children.some((c) => c.tag && norm(textOf(c)).includes(BADGE_SENTENCE)));
-  if (badges.length !== figures.length) {
+  /* R3, inverted by the operator decision of 2026-10-08: no badge anywhere on the
+     page, whatever hides it. A badge is the deepest element whose text holds either
+     half of the retired sentence. Script and style bodies are skipped by the parser,
+     so the RSC payload is never counted. */
+  const holders = all.filter((e) => BADGE_PART.test(norm(textOf(e))));
+  const badges = holders.filter((e) => !e.children.some((c) => c.tag && BADGE_PART.test(norm(textOf(c)))));
+  if (badges.length) {
     errors.push(
-      `R3: ${badges.length} badge(s) rendered for ${figures.length} illustrative screen(s). ` +
-        'Every <ProductScreen> renders exactly one ProvenanceBadge, unconditionally.'
+      `R3: ${badges.length} provenance badge(s) rendered. The operator removed the badge from every screen on 2026-10-08; ` +
+        'none may render, visible or hidden, inside or outside a screen.'
     );
   }
   for (const f of figures) {
-    const own = badges.filter((b) => [...ancestors(b)].includes(f));
-    if (own.length !== 1) errors.push(`R3: a product screen contains ${own.length} badges, not 1.`);
+    for (const t of textNodes(f)) {
+      const s = norm(t.text);
+      if (ILLUSTRATIVE.test(s)) errors.push(`R3: "${s}" is rendered in a product screen. No provenance label is shown (operator, 2026-10-08).`);
+    }
+    for (const el of [f, ...elements(f)]) {
+      for (const key of ['aria-label', 'title', 'alt', 'aria-description']) {
+        const v = el.attrs[key];
+        if (v && ILLUSTRATIVE.test(v)) errors.push(`R3: ${key}="${v}" labels a product screen as illustrative. No provenance label is shown (operator, 2026-10-08).`);
+      }
+    }
   }
-  for (const b of badges) {
-    const figure = [...ancestors(b)].find((a) => figures.includes(a));
-    if (!figure) errors.push('R3: a badge is rendered outside any product screen.');
-    let insideFigure = true;
-    for (const a of [b, ...ancestors(b)]) {
-      if (hiddenEverywhere(a)) {
-        errors.push(`R3: a provenance badge is hidden by ${describe(a)}. The disclosure is never hidden, collapsed or tab-gated.`);
-        break;
+
+  /* R7 section scan (ADR-0006 §12.3, §12.4; operator 2026-10-08). With no badge, the
+     copy beside a screen is the disclosure. For each screen, its nearest <section>:
+     visible text outside every screen fails on the R7 words, and any statement that
+     the reader's firm is or is not named fails. Alt, aria-label and title count. */
+  const sectionsSeen = new Set();
+  for (const f of figures) {
+    const section = [...ancestors(f)].find((a) => a.tag === 'section');
+    if (!section || sectionsSeen.has(section)) continue;
+    sectionsSeen.add(section);
+    const where = section.attrs.id ? `section#${section.attrs.id}` : describe(section);
+    for (const sentence of sentences(visibleTextOutside(section, figures))) {
+      const banned = sentence.match(R7_BANNED);
+      if (banned) errors.push(`R7: "${banned[0]}" in the ${where} around a product screen ("${sentence.slice(0, 120)}"). ADR-0006 §12.3.`);
+      if (!sentence.endsWith('?') && READER_NAMED.some((re) => re.test(sentence))) {
+        errors.push(`R7: the ${where} around a product screen says whether the reader's firm is named ("${sentence.slice(0, 120)}"). ADR-0006 §12.3, §11.3.`);
       }
-      // An arbitrary variant reaches down into descendants, so it is checked up to the root.
-      const variant = arbitraryHide(a);
-      if (variant) {
-        errors.push(`R3: a provenance badge can be hidden by the class ${variant} on ${describe(a)}.`);
-        break;
+    }
+    for (const el of elements(section)) {
+      if ([el, ...ancestors(el)].some((a) => figures.includes(a))) continue;
+      for (const key of ['alt', 'aria-label', 'title']) {
+        const v = el.attrs[key];
+        if (v && R7_BANNED.test(v)) errors.push(`R7: ${key}="${v}" in the ${where} around a product screen. ADR-0006 §12.3.`);
       }
-      // Inside the figure, the badge may not be hidden at any width (brief §1.6: every viewport).
-      // A whole figure hidden by a responsive class (`hidden lg:block`) stays allowed.
-      if (insideFigure && a !== figure && hiddenAtSomeWidth(a)) {
-        errors.push(`R3: a provenance badge is hidden at some width by ${describe(a)}, inside its screen.`);
-        break;
-      }
-      if (a === figure) insideFigure = false;
     }
   }
 
@@ -249,11 +285,6 @@ export function checkProductScreens(html, { allowed, expected, required = [], ru
     for (const l of live) {
       if (l.attrs['aria-live'] !== 'polite' || l.attrs['aria-atomic'] !== 'true') errors.push('§11: the run live region must be aria-live="polite" aria-atomic="true".');
       if (norm(textOf(l))) errors.push(`§11: the run live region has text in the served HTML ("${norm(textOf(l))}"). It starts empty.`);
-    }
-    for (const b of badges.filter((x) => [...ancestors(x)].includes(f))) {
-      for (const a of [b, ...ancestors(b)]) {
-        if ('aria-live' in a.attrs || 'data-run-region' in a.attrs) errors.push('§11: the badge sits inside a live region or the run region. The disclosure never swaps or re-announces.');
-      }
     }
     // Pause precedes the run region in document order (inside is document order).
     const regionAt = inside.indexOf(regions[0]);
@@ -310,10 +341,10 @@ export function checkProductScreens(html, { allowed, expected, required = [], ru
     }
   }
 
-  // A screen's chrome rendered outside <ProductScreen> would carry no badge at all.
+  // A screen's chrome rendered outside <ProductScreen> would escape every R5 and R6 check above.
   for (const e of all) {
     if (e.tag === 'dt' && norm(textOf(e)) === 'Tracked brand' && ![...ancestors(e)].some((a) => figures.includes(a))) {
-      errors.push('R3: product-screen chrome ("Tracked brand") is rendered outside any figure[data-provenance], so it has no badge.');
+      errors.push('R3: product-screen chrome ("Tracked brand") is rendered outside any figure[data-provenance], so the screen gate cannot see it.');
     }
   }
 
@@ -330,12 +361,16 @@ export function checkProductScreens(html, { allowed, expected, required = [], ru
 
 /** Fixed interface text in the screen components. Adding a string here is a reviewed change (ADR-0006 R5). */
 const CHROME = [
-  'Prompt run', // ProductScreen TITLE (ADR-0006 §11: never "Live")
+  /* ProductScreen TITLE for the run. Was "Prompt run"; changed to the Ruth-cleared
+     title on 2026-10-08 (docs/copy/2026-10/ai-search-is-winning.md §6). It describes
+     the capability, present tense, which R7 allows (ADR-0006 §11: never "Live"). */
+  'What we check',
   'Prompt set', // ProductScreen TITLE
   'Prompt', 'Platforms', 'Status', // table headers
   'Tracked brand', // ScreenContext term
   ':', '.', // separators in each run row's [data-run-summary]
-  'Illustrative', 'product interface. Sample data, not client results.', // ProvenanceBadge, in its two text nodes
+  /* No badge text. The ProvenanceBadge strings left this list with the badge
+     (operator, 2026-10-08), so a returning badge also fails R5. */
   /* Run chrome (Pause, Play, Previous, Next, Show, Tracking, Sample run, the
      separator) lives in components/product-screens/labels.ts, which is walked
      below. "Live", "Scanning", "Checking", "Loading" and "Real-time" may never

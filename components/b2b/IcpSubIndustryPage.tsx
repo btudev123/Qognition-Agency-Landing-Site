@@ -1,6 +1,7 @@
 import type { IcpRecord } from '../../lib/b2b/icpRegistry';
 import {
   icpBreadcrumb,
+  icpCheckPrompt,
   icpChildren,
   icpCrossLinks,
   icpLeadingFit,
@@ -96,6 +97,7 @@ export default function IcpSubIndustryPage({
   const trail = icpBreadcrumb(record);
   const panel = panelFor(record.href, { exclude: icpPanelExclusions(record) });
   const fit = icpLeadingFit(record);
+  const checkPrompt = icpCheckPrompt(record);
 
   /* Rule 8 orders these two and nothing else. The classification is never rendered. */
   const questions = (
@@ -124,12 +126,13 @@ export default function IcpSubIndustryPage({
         industrySlug={industry.slug}
         industryName={industry.name}
         draft={state === 'draft'}
+        checkPrompt={checkPrompt}
       />
 
       {fit === 'PPC' && paid}
       {questions}
 
-      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} />
+      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} name={sub.name} hasQuestion={Boolean(checkPrompt)} />
       <BuyersBlock buyers={body.buyers} id={`${key}-buyers`} />
       {/* Kept at this level although copy §9.4 lists them for levels 3 and 4: the body
           kind here is `sub-niche`, §9.3 keeps them "at sub-niche level", and they are

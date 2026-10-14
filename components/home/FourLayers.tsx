@@ -12,13 +12,13 @@ const ANSWER_LAYERS: Layer[] = [
   {
     layer: 'AI SEO',
     surface: 'Google AI Overviews and AI Mode',
-    moves: 'Passage-level clarity, entity definition, content Google can extract and attribute',
+    moves: "Pages Google's AI can quote: a clear answer up front, plain facts about your firm, and proof it can point to",
     icon: ScanSearch,
   },
   {
     layer: 'GEO',
     surface: 'ChatGPT, Perplexity, Gemini, Claude, Copilot',
-    moves: 'What your site states, what third-party sources say about you, and whether your company name resolves to you',
+    moves: 'What your site says, what trusted sites say about you, and whether an assistant can tell you apart from firms with similar names',
     icon: MessageSquareText,
   },
 ];
@@ -27,13 +27,13 @@ const SUPPORTING_LAYERS: Layer[] = [
   {
     layer: 'SEO',
     surface: 'Google search results',
-    moves: 'Technical health, page structure, topical depth, links',
+    moves: 'A site Google can read, pages for the searches buyers make, and links from sites they trust',
     icon: Search,
   },
   {
     layer: 'Local SEO',
     surface: 'Google Maps, local pack, Bing Places, Business Profile, reviews, listings',
-    moves: 'Accurate profiles, relevant categories, authentic reviews and consistent listings',
+    moves: 'Accurate listings, the right categories and real reviews, where location matters to your buyers',
     icon: MapPin,
   },
 ];
@@ -73,18 +73,18 @@ export default function FourLayers() {
 
       <Shell>
         <ScrollReveal>
-          <Eyebrow accent>The four layers</Eyebrow>
+          <Eyebrow accent>What we do</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 font-semibold">
-            <MaskReveal>Four surfaces,</MaskReveal>
+            <MaskReveal>AI SEO, GEO and SEO.</MaskReveal>
             <br />
-            <MaskReveal delay={0.08}>four different jobs.</MaskReveal>
+            <MaskReveal delay={0.08}>Four surfaces, four jobs.</MaskReveal>
           </h2>
         </ScrollReveal>
 
         {/* Grouped to show the dependency, not four equal boxes (brief §2.4): the
             supporting layers feed the answer layers. The connector points up. */}
         <ScrollReveal stagger={2} className="mt-12">
-          <Eyebrow>Answer layers</Eyebrow>
+          <Eyebrow>Where buyers get answers</Eyebrow>
           <div className="mt-4">
             <LayerRow layers={ANSWER_LAYERS} />
           </div>
@@ -96,7 +96,7 @@ export default function FourLayers() {
             </svg>
           </div>
 
-          <Eyebrow>Supporting layers</Eyebrow>
+          <Eyebrow>What those answers draw on</Eyebrow>
           <div className="mt-4">
             <LayerRow layers={SUPPORTING_LAYERS} />
           </div>
@@ -104,7 +104,7 @@ export default function FourLayers() {
 
         <ScrollReveal stagger={3}>
           <p className="text-body mt-10 m-0 max-w-[72ch]" style={{ color: 'var(--s-text-muted)' }}>
-            Start with the layer you need. B2B PPC runs alongside the four layers and is scoped separately, priced as a share of ad spend with a monthly minimum. A firm that wants only PPC is a full client.
+            Start with one layer and add the rest as you grow. B2B PPC runs alongside and is priced separately, as a share of ad spend with a monthly minimum. A firm that wants only PPC is a full client.
           </p>
         </ScrollReveal>
       </Shell>

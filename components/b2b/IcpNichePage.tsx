@@ -1,6 +1,7 @@
 import type { IcpRecord } from '../../lib/b2b/icpRegistry';
 import {
   icpBreadcrumb,
+  icpCheckPrompt,
   icpChildren,
   icpLeadingFit,
   icpPanelExclusions,
@@ -92,6 +93,7 @@ export default function IcpNichePage({ record, observation, canonicalName, canon
   const parent = trail[trail.length - 1];
   const panel = panelFor(record.href, { exclude: icpPanelExclusions(record) });
   const fit = icpLeadingFit(record);
+  const checkPrompt = icpCheckPrompt(record);
   /* The coverage grid renders only the scope rows the body authored. No authored
      sentence, no row: a bare name list is the directory stub C6 forbids. */
   const scope = scopeRowsFor(record, icpVocabularyRows(record));
@@ -124,12 +126,13 @@ export default function IcpNichePage({ record, observation, canonicalName, canon
         industrySlug={industry.slug}
         industryName={industry.name}
         draft={state === 'draft'}
+        checkPrompt={checkPrompt}
       />
 
       {fit === 'PPC' && paid}
       {questions}
 
-      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} />
+      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} name={niche.name} hasQuestion={Boolean(checkPrompt)} />
       <BuyersBlock buyers={body.buyers} id={`${key}-buyers`} />
       {body.kind === 'sub-niche' && (
         <>

@@ -48,7 +48,7 @@ export default function Industries() {
     <section data-theme="dark" className="py-20 sm:py-28" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>
       <Shell>
         <ScrollReveal>
-          <Eyebrow>Who we build this for</Eyebrow>
+          <Eyebrow>Industries we serve</Eyebrow>
           <h2 className="text-h2 font-sans m-0 mt-4 max-w-[20ch] font-semibold">
             <MaskReveal>A software demo, an RFQ and a consultation need different pages.</MaskReveal>
           </h2>
@@ -89,7 +89,7 @@ export default function Industries() {
 
         <ScrollReveal stagger={4} className="mt-8">
           <Link href="/industries" className="rf-btn rf-btn--secondary">
-            See every sector
+            See every industry
           </Link>
         </ScrollReveal>
       </Shell>

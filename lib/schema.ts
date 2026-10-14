@@ -155,11 +155,13 @@ export function localBusinessSchema(location: {
   };
 }
 
-export function faqPageSchema(faqs: { question: string; answer: string }[]) {
+/** `max` defaults to the historical cap of 8. A page whose FAQs are all visible and must
+ *  match the JSON-LD one for one (the homepage, 9 since 2026-10-08) passes its own length. */
+export function faqPageSchema(faqs: { question: string; answer: string }[], { max = 8 }: { max?: number } = {}) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.slice(0, 8).map((faq) => ({
+    mainEntity: faqs.slice(0, max).map((faq) => ({
       '@type': 'Question',
       name: faq.question,
       acceptedAnswer: {

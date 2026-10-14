@@ -1,5 +1,5 @@
 import type { IcpRecord } from '../../lib/b2b/icpRegistry';
-import { icpBreadcrumb, icpChildren, icpCrossLinks, icpSiblings } from '../../lib/b2b/icpRegistry';
+import { icpBreadcrumb, icpCheckPrompt, icpChildren, icpCrossLinks, icpSiblings } from '../../lib/b2b/icpRegistry';
 import type { ObservationView } from '../../lib/b2b/observations';
 import DraftNotice from './DraftNotice';
 import { BuyersBlock, FactsBlock, WhyLostBlock, ServiceLinksBlock, FaqsBlock, SnapshotCta } from './blocks';
@@ -67,6 +67,7 @@ export default function IcpIndustryPage({ record, canonicalName, canonicalHref }
 
   const { industry, body, state } = record;
   const key = industry.slug;
+  const checkPrompt = icpCheckPrompt(record);
 
   return (
     <main className="min-h-screen">
@@ -81,9 +82,10 @@ export default function IcpIndustryPage({ record, canonicalName, canonicalHref }
         industrySlug={industry.slug}
         industryName={industry.name}
         draft={state === 'draft'}
+        checkPrompt={checkPrompt}
       />
 
-      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} />
+      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} name={industry.name} hasQuestion={Boolean(checkPrompt)} />
       <BuyersBlock buyers={body.buyers} id={`${key}-buyers`} />
       <ServiceLinksBlock id={`${key}-services`} />
       <FactsBlock facts={body.facts} id={`${key}-facts`} />

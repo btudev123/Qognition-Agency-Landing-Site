@@ -8,10 +8,11 @@ import v from '../visual/visual.module.css';
 
 const FITS = [
   'You sell to other businesses, and a purchase takes weeks of evaluation, not minutes',
+  'You asked an AI tool who to hire in your category, and did not like the answer',
   'You want AI search, SEO or PPC. Any one of them is enough to start',
-  'Referrals have carried your growth and you want a second channel',
+  'Referrals have carried your growth, and you know referred buyers still check you online',
   'Someone at your firm can approve and publish website changes',
-  'You want enquiry quality measured, not just traffic',
+  'You judge marketing on qualified enquiries, not traffic',
 ];
 
 /* CLAUDE.md §2 disqualifiers. No revenue floor (docs/icp-positioning.md v2.1). */

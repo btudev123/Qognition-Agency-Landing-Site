@@ -546,11 +546,15 @@ export function IcpHero({
   industrySlug,
   industryName,
   draft,
+  checkPrompt,
 }: {
   eyebrow: string;
   name: string;
   buyerQuestion: string;
   opener: string;
+  /** icpCheckPrompt(record). FAMILY B, so it renders only in the attributed <p> below,
+   *  never a heading (check-icp R10). `subName` is set at level 1. Absent: no line. */
+  checkPrompt?: { readonly prompt: string; readonly subName?: string };
   trail: readonly IcpLink[];
   upLink?: { readonly name: string; readonly href?: string };
   /** `buyer_titles`, verbatim. OUR buyer, so it sits in the hero (copy §9.3), never in the
@@ -581,6 +585,16 @@ export function IcpHero({
               AI search visibility for {name}.
             </h1>
 
+            {/* Promise line (docs/copy/2026-10/ai-search-is-winning.md §4.1). "Offer ... to",
+                never "run ... for": this renders on every industry page, and a page existing
+                is not a claim that we have worked in the sector (CLAUDE.md §11; Ruth,
+                2026-10-08). `name` verbatim, never lowercased. */}
+            <p className="text-body mt-6 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)' }}>
+              Buyers can ask ChatGPT, Perplexity, Gemini, Claude or Google&apos;s AI which firm to use. We
+              offer AI SEO, GEO, SEO and PPC to firms in {name}, working on the pages and sources those
+              answers draw from, and we show you every answer with its date.
+            </p>
+
             {/* Question, then answer, in that order and within 60 words.
                 Extraction depends on the answer being self-contained and not
                 referring back to the H1 with a pronoun. */}
@@ -588,6 +602,17 @@ export function IcpHero({
             <p className="text-body m-0 max-w-[68ch]" style={{ color: 'var(--s-text-muted)' }}>
               {opener}
             </p>
+
+            {/* The check line (§4.1). A <p>, never a heading: the prompt is the client's
+                buyer's words and is attributed to them in the same sentence. */}
+            {checkPrompt && (
+              <p className="text-body mt-4 m-0 max-w-[68ch]" style={{ color: 'var(--s-text)', overflowWrap: 'anywhere' }}>
+                {checkPrompt.subName
+                  ? <>Try a question a buyer of {checkPrompt.subName} might ask an AI tool: </>
+                  : <>Try a question your buyers might ask an AI tool: </>}
+                &quot;<PromptText prompt={checkPrompt.prompt} />&quot;. Which firms does the answer name?
+              </p>
+            )}
 
             {/* Up-link 2 of 2, inside the first 200 words, anchor is the
                 parent's name from the JSON. Nadia §5.1 rule 1. */}

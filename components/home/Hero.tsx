@@ -3,10 +3,13 @@ import ProductScreen from '../product-screens/ProductScreen';
 import { PRODUCT_SCREENS } from '../../data/product-screens';
 import { Shell } from './primitives';
 import { AI_PLATFORMS } from '../../data/aiPlatforms';
+import { HERO_H1, heroReelPlatforms, heroSpokenPlatforms } from '../../data/homeHero';
+import PlatformReel from './PlatformReel';
 import v from '../visual/visual.module.css';
 
 
 const ENGINES = AI_PLATFORMS;
+const REEL = heroReelPlatforms();
 
 export default function Hero() {
   return (
@@ -43,18 +46,30 @@ export default function Hero() {
           <div className="contents lg:flex lg:flex-col lg:min-w-0">
           {/* A — badge, H1, CTAs */}
           <div className="order-1 min-w-0 flex flex-col items-start text-left">
-            <span className="rf-eyebrow rf-eyebrow--accent mb-6">AI-native growth agency for B2B: AI SEO and GEO</span>
+            <span className="rf-eyebrow rf-eyebrow--accent mb-6">AI-native growth agency for B2B · AI SEO, GEO and SEO</span>
 
             {/* text-display is the canonical token. No inline font-size: the
                 orphaned file set clamp(40px, 5.8vw, 84px) by hand, which is
                 outside the scale and invisible to the typography gate, because
                 the gate reads className and not style. tokens-dark.md §9. */}
+            {/* Operator 2026-10-08: "Be the firm {platform} names when your buyer
+                asks who to hire." The words live in data/homeHero.ts.
+                Served and accessible text is one stable sentence, heroH1Sentence():
+                the sr-only span carries every platform name, and the reel is
+                aria-hidden with no text node, so nothing is read twice.
+                The <br> keeps the tail off the reel's line. The reel reserves the
+                widest platform's width, and on its own line that reserve is
+                trailing space nobody sees. If the tail followed it on the same
+                line, a gap would open after the shorter names. */}
             <h1 className="text-display font-sans m-0 max-w-[15ch]">
-              Get found. Get shortlisted.{' '}
-              <span style={{ color: 'var(--s-accent-display)' }}>Build pipeline.</span>
+              {HERO_H1.lead}{' '}
+              <span className="sr-only">{heroSpokenPlatforms()}</span>
+              <PlatformReel platforms={REEL} />{' '}
+              <br />
+              {HERO_H1.tail}
             </h1>
             <p className="text-body mt-5 m-0 max-w-[56ch]" style={{ color: 'var(--s-text-muted)' }}>
-              We run AI SEO and GEO for B2B companies, including SaaS, with SEO and local SEO as the supporting layers and B2B PPC alongside. Every AI answer we report comes with the prompt, the platform and the date, so you can check it yourself.
+              When a buyer asks ChatGPT or Google&apos;s AI who to hire, the answer names firms. We run AI SEO, GEO and SEO for B2B firms, including SaaS, with B2B PPC alongside. The work is on the pages and sources those answers draw from, and every AI answer we report comes with its prompt, platform and date.
             </p>
 
             <div className="mt-8 w-full flex flex-col sm:flex-row sm:flex-wrap gap-3">

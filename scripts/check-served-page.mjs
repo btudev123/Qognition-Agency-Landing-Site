@@ -6,8 +6,11 @@
  *
  *   1. Client JS budget. ADR-0005 §5.
  *   2. No content hidden behind an animation that may never run.
- *   3. ADR-0006 product screens: one visible badge per screen, no figures,
- *      every string traceable to the screen data (scripts/lib/served-screens.mjs).
+ *   3. ADR-0006 product screens: no provenance badge (operator decision
+ *      2026-10-08, CLAUDE.md authority block, inverting R3's visible-badge
+ *      rule), no figures, every string traceable to the screen data, and
+ *      the R7 scan of the section around each screen (ADR-0006 §12.3, §12.4)
+ *      (scripts/lib/served-screens.mjs).
  *
  * ── 1. CLIENT JS BUDGET ────────────────────────────────────────────────────
  *
@@ -193,9 +196,10 @@ try {
 
   /* ── 3. product screens, ADR-0006 R3 R5 R6 ─────────────────────────────
      Enforced under --report too: like hidden content, this is correctness,
-     not a budget. A badge that is imported but never rendered, or a figure
-     computed in a component, passes tsc and every source grep; only the
-     served page shows it. */
+     not a budget. A badge that comes back through a component the source
+     grep misses, or a figure computed in a component, passes tsc; only the
+     served page shows it. The badge itself was removed by the operator on
+     2026-10-08, so the served page must render none. */
   const screens = checkProductScreens(routeHtml, productScreenContract());
   let screensOk = true;
   if (screens.figures === 0) {
@@ -207,7 +211,7 @@ try {
     screensOk = false;
   } else {
     console.log(
-      `✓ product screens: ${screens.figures} on ${ROUTE}, ${screens.badges} visible badge(s), no figures, every string from the screen data.`
+      `✓ product screens: ${screens.figures} on ${ROUTE}, ${screens.badges} provenance badges, no figures, every string from the screen data.`
     );
   }
   for (const { route, expected } of SCREEN_ROUTES) {
@@ -222,7 +226,7 @@ try {
       screensOk = false;
     } else {
       console.log(
-        `✓ product screens: ${result.figures} on ${route}, ${result.badges} visible badge(s), no figures, every string from the screen data.`
+        `✓ product screens: ${result.figures} on ${route}, ${result.badges} provenance badges, no figures, every string from the screen data.`
       );
     }
   }

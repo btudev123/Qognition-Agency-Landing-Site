@@ -37,7 +37,7 @@ export const TRACKER_RUN: TrackerRunScreen = {
   id: 'scriblr-tracker-run',
   product: 'Scriblr',
   provenance: 'illustrative',
-  caption: 'Every answer is stored with its prompt, platform, date and cited sources.',
+  caption: 'A sample run: one buyer question per industry, on five AI platforms. In a real run, every answer carries its date and the sources it cited.',
   trackedBrand: 'Your firm',
   rows: [
     row('01', '01.06', 'best AP automation software that integrates with a mid-market ERP', 'C-N--', ['own-site', 'review-site']),

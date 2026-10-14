@@ -1,7 +1,8 @@
 # ADR-0006: Product screen component contract
 
-- Status: **accepted (operator, 2026-10-07)**
-- Date: 2026-09-28. Amended 2026-10-07 (three times, see below).
+- Status: **accepted (operator, 2026-10-07)**. Fourth amendment accepted by the operator 2026-10-08
+  (§12); Owen gates it.
+- Date: 2026-09-28. Amended 2026-10-07 (three times) and 2026-10-08 (once). See below.
 - Depends on: ADR-0004 (token layer), ADR-0005 (server-first, 40KB budget on `/`), ADR-0008 §5.2
   (no taxonomy import in components)
 - Constrains: `components/product-screens/**`, `data/product-screens/**`, and the run state in
@@ -42,12 +43,23 @@ wins.
 - R4 is relaxed for the run only, under the motion rules in §11.4.
 - The five-tab tracker and `SectorTabs` are retired. The prompt panel re-points at the run.
 
+## Amendment, 2026-10-08
+
+**Fourth amendment (operator, no Illustrative label).** Full text in §12. Where it conflicts with
+anything above or in §11, §12 wins.
+- The visible badge and its banner are removed from every product screen. R3 keeps the type and
+  loses the badge.
+- The served-page check inverts: it now asserts that no badge renders.
+- New rule **R7** carries the disclosure job the badge used to do, through copy.
+
 ## Decision
 
 One server component, `<ProductScreen screen={...} />`, renders a screen object from a typed registry
 in `data/product-screens/`. Screens are data, never JSX literals. Every screen renders inside a frame
 carrying a provenance badge whose text the component owns, driven by a required single-member union on
 the type. No time-based state.
+
+> Superseded by §12 (2026-10-08): the frame carries no badge. The required union stays.
 
 ---
 
@@ -86,6 +98,8 @@ The counter-example these rules close was `AICitationSimulator.tsx`:
 - The badge renders inside the frame at every viewport, in light and dark sections, including
   `frame="none"`. It is never a tooltip.
 
+> Superseded by §12 (2026-10-08): no visible badge. `provenance: 'illustrative'` stays required.
+
 **R4. No time-based state.** (F3)
 - No timers, `requestAnimationFrame`, typing effect, counter, progress bar, loading stage, or
   auto-rotating tabs (CLAUDE.md §9).
@@ -106,6 +120,8 @@ Components import from `PRODUCT_SCREENS`. They never declare rows, prompts, bran
   a metric. They are allowed.
 - If a future screen genuinely needs a figure, it comes by amendment as a value derived from the rows
   with a visible `SAMPLE` label. Never as an authored number.
+
+**R7. Copy never presents a screen as real.** Added 2026-10-08. Full text in §12.3.
 
 ## 2. Products and screens
 
@@ -142,6 +158,8 @@ components/product-screens/          server components only, no 'use client', no
 
 components/visual/SectorTabs.tsx     'use client'. Active index and keyboard pattern only (§5)
 ```
+
+> Superseded by §12 (2026-10-08): `ProvenanceBadge.tsx` is deleted and `ProductScreen.tsx` renders no badge.
 
 Accessibility:
 - Mention states render as a word plus a dot, never the dot alone (WCAG 1.4.1).
@@ -312,6 +330,7 @@ Tabs and motion are superseded by §11.4. The tracker below is retired.
 - `SectorTabs` (`'use client'`) holds only the active index and the keyboard pattern copied from
   `HeroSnapshotPanel`, and toggles panels with the `hidden` attribute.
 - The badge and title bar sit outside `SectorTabs`, so switching tabs never hides the disclosure.
+  > Superseded by §12 (2026-10-08): there is no badge. `SectorTabs` was already retired by §11.
 - `SectorTabs` has no timers and imports nothing heavy (no lucide).
 
 **Motion** comes only from the existing `ScrollReveal`. Nothing is added to ADR-0005's budget beyond
@@ -348,16 +367,19 @@ requires `data/product-screens/index.ts`, `sample-entities.ts` and `types.ts`, t
      `requestAnimationFrame`.
 7. **Badge cannot be dropped (R3).** The badge sentence appears in `ProvenanceBadge.tsx` and in no
    other file, and `ProductScreen.tsx` imports `ProvenanceBadge`.
+   > Superseded by §12.4 (2026-10-08): inverted. The badge sentence appears in no source file.
 
 ## 7. Alternatives rejected
 
 - **Images or Figma exports.** They do not reflow, they drift from the ADR-0004 tokens, and their
   text is invisible to search and to assistants.
 - **A `<Disclaimer>` beside each screen.** It can be omitted, so eventually it will be.
+  > Moot from §12 (2026-10-08): the operator removed the visible disclosure outright. See §12.5.
 - **A lint rule instead of the closed union.** Lint rules can be suppressed with a comment.
 - **Five tracker screens, one per sector id** (`scriblr-visibility-tracker-<sector>`).
   - Each would need its own frame and badge, so the disclosure would repeat five times inside one
     hero.
+    > Superseded by §12 (2026-10-08): no badge. The registry-type reasons below still hold.
   - The registry's `Extract<ProductScreen, { id: K }>` collapses to `never` when one interface owns
     five ids, so the registry type would get harder to read.
   - One screen with a `tabs` array keeps the `ScreenId` union and the registry type unchanged.
@@ -372,7 +394,7 @@ requires `data/product-screens/index.ts`, `sample-entities.ts` and `types.ts`, t
 - a real brand;
 - an assistant answer;
 - an animation or auto-rotating tab;
-- a missing badge;
+- a missing badge (superseded by §12, 2026-10-08: the gate now fails on a badge that is present);
 - an invented figure;
 - an all-named row;
 - "Own site" on a row where nothing named the brand.
@@ -399,6 +421,9 @@ There is no data migration and no URL change.
 `redacted: true` required literal, `provenance` widened to `'captured'`, and the badge "Captured
 {date}. Client identifiers removed." It comes as its own amendment when the first real capture
 exists.
+
+> Amended by §12.6 (2026-10-08): whether a captured screen carries a visible label is an open
+> operator decision for that amendment. §12 does not settle it.
 
 ## 10. What would make this wrong later
 
@@ -433,6 +458,8 @@ exists.
 badge and 21 rows, one per industry in `data/b2b/icp/icp-taxonomy.json`. Motion presents the rows.
 The resolved rows are the data. The five-tab tracker is retired and the prompt panel re-points at
 the run.
+
+> Superseded by §12 (2026-10-08): one frame, no badge, 21 rows.
 
 ### 11.1 R1 stands
 
@@ -527,6 +554,7 @@ export type ProductScreen = TrackerRunScreen | PromptPanelScreen;
   Three things carry it: rows are never all absent, the run label reads "Sample run", and the badge
   is always visible. Copy beside the hero may never say the reader's firm is not named. Ruth checks
   this.
+  > Superseded by §12 (2026-10-08): the badge is gone. The other two carriers stand, and R7 replaces the third.
 
 ### 11.4 Motion
 
@@ -556,6 +584,7 @@ R4 holds for every other screen. For the run:
      who paused by focus or hover sees "Play" and presses it to resume.
 5. **The badge and title bar sit outside `[data-run-region]`** and outside any `aria-live` element.
    The disclosure never swaps, fades or re-announces.
+   > Superseded by §12 (2026-10-08) for the badge only. The title bar and the "Sample run" label still sit outside both.
 6. **One `aria-atomic="true"` live region.** It is empty in the served HTML.
    - **Its politeness follows who is driving.** It is `aria-live="off"` while the run auto-rotates,
      so a screen reader is not interrupted every few seconds by content the user did not ask for.
@@ -627,6 +656,7 @@ named". Each one renders as a word plus a dot. The run adds no state and no inte
 - **Screen count.** `expected` stays the registry size, which is now two. The run counts as one
   `figure[data-provenance]` with one badge, however many rows it has. Rows are not screens. They are
   validated by a to f above and by `required`.
+  > Superseded by §12.4 (2026-10-08): one `figure[data-provenance]` with no badge.
 - `required` is the run's prompts plus "Your firm". The tracker's brands and domains leave it.
 - `allowed` uses `RUN_PLATFORMS` in place of `ENGINES` and adds the run's industry names. The run's
   chrome strings go into `CHROME`: at least "Pause", "Play", "Previous" and "Next", with the rest
@@ -635,6 +665,7 @@ named". Each one renders as a word plus a dot. The run adds no state and no inte
   state cells whose text is a `MENTION_LABEL` value, and the prompt in `th[scope="row"]` (the R6
   carve-out).
 - No ancestor of the badge carries `aria-live` or `data-run-region`.
+  > Superseded by §12.4 (2026-10-08): there is no badge to check. Replaced by the no-badge assertion.
 - Exactly one `[aria-live]` in the figure, with no text in the served HTML.
 - A `button` reading "Pause" or "Play" comes before `[data-run-region]` in document order.
 - **Routes.** Every route that renders the run is held to these checks: `/` and `/services/ai-seo`.
@@ -668,11 +699,13 @@ named". Each one renders as a word plus a dot. The run adds no state and no inte
   reader's own firm, which is the point of the run.
 - **Counting each row as a screen.** That would mean 21 badges inside one hero, the same failure as
   five tracker screens (§7).
+  > Superseded by §12 (2026-10-08) as a reason: no badges. Rows are still not screens.
 
 ### 11.9 Consequences
 
 **Good.** One source of prompts on `/`, each traceable to a taxonomy id. The motion cannot carry
 the data, hide the badge or announce a score.
+> Superseded by §12 (2026-10-08) for "hide the badge": there is none.
 
 **Unpleasant.**
 - The hero now ships a timer, against the spirit of R4, under rules the gate can only partly
@@ -703,3 +736,187 @@ change.
 - **An accessibility complaint about the live region or the motion.** Make autoplay off by default.
   Pause is already required.
 - **The hero's client JS crosses the ADR-0005 budget.** Drop the typing reveal before anything else.
+
+---
+
+## 12. No Illustrative label (fourth amendment, 2026-10-08)
+
+- Status: **accepted (operator, 2026-10-08)**. Kyle records it. Mira changes the gates in parallel.
+  Owen gates both and checks Mira's change against §12.4.
+- **Authority.** CLAUDE.md authority block, "Operator decisions, 2026-10-08 (after the second
+  preview)", bullet "No 'Illustrative' label on product screens". It overrides:
+  - R3's visible badge (§1);
+  - the badge placement in `docs/design/2026-10-visual-upgrade.md` §1.6, and the "Badge" rows in that
+    brief's §2 screen tables;
+  - the badge rules in §11 (§11.3 third carrier, §11.4 rule 5, §11.6 badge checks);
+  - the served-page check "one visible badge per screen".
+
+**Decision.** Product screens render with no visible provenance badge or banner. Every data rule
+stays. The disclosure job moves from a label on the screen to a rule on the copy around it (R7).
+
+"Badge and banner" here means the sentence "Illustrative product interface. Sample data, not client
+results." and the full-width box that holds it (brief §1.6). Both go.
+
+### 12.1 What is removed
+
+- `components/product-screens/ProvenanceBadge.tsx` is deleted.
+- `ProductScreen.tsx` neither imports nor renders a badge.
+- The badge sentence appears in no source file and in no served page.
+- Every placement rule that existed to protect the badge: never a tooltip, every viewport, top row
+  under the title bar, outside `SectorTabs`, outside `[data-run-region]` and `aria-live`.
+
+### 12.2 What stays mandatory
+
+Unchanged by this amendment, and still enforced at compile time or at the gate:
+
+1. **R1.** Never a third-party AI answer. No `answer`, `response` or `provider` field. An assistant
+   is a column label only.
+2. **R2.** `SampleBrand` is the closed `SAMPLE_BRANDS` union on `${string}.example` domains.
+   Qognition is not a member. Every member stays [UNVERIFIED: trading-name check].
+3. **`RunTrackedBrand = 'Your firm'`** on the run only, and never added to `SAMPLE_BRANDS` (§11.3).
+4. **R6.** No figures. No `number` fields, no score, count, percentage, rank or delta. A future
+   figure still comes by amendment with a visible `SAMPLE` label; that label is a figure rule, not
+   the screen badge, and §12 does not remove it.
+5. **Verbatim prompts.** Gate §11.6 b to d: exact match against the taxonomy's `ai_prompts`, no
+   placeholders, no capitalised words.
+6. **`provenance: 'illustrative'`** stays a required, single-member union on `ScreenBase`. It is now
+   an internal type marker, not a disclosure.
+   - It renders only as `figure[data-provenance="illustrative"]`, which the served check uses to
+     find screens. A data attribute is not shown to sighted users and is not announced by assistive
+     technology, so nobody may cite it as a disclosure.
+   - It stays because it is the only thing in code that separates an illustrative screen from the
+     deferred captured screen (§9), and widening it is still a reviewed type change.
+7. **R4 and §11.4.** No dates, the motion rules, the Pause control, and the title bar and "Sample
+   run" label outside the run region.
+8. **"Sample run" (`RUN_LABEL`)** stays. It is the run's date substitute under R4, not the
+   Illustrative label, and the operator's decision names only the Illustrative label. It is now the
+   only on-screen cue, so removing it is a new operator decision and reopens §12 (§12.8).
+9. **§2.** Copy never calls a screen a screenshot.
+10. **Gate.** §6 checks 1 and 3 to 6, and §11.6 a to k, all stand.
+
+### 12.3 R7. Copy never presents a screen as real
+
+This mattered before. With the badge gone it is the main disclosure left, so it is now a rule.
+
+No copy may present a product screen as a real result, a client's data, or a live run. That covers
+the screen's caption and chrome, the section around it, alt and aria text, and any ad, deck, social
+post or proposal that reuses the screen.
+
+- **Not a real result.** No wording that makes the screen an observation. CLAUDE.md §4: a real
+  observation needs a platform, a date and a prompt set, and a screen carries none of them.
+- **Not client data.** No "a client's dashboard", "from a recent engagement", or any line that ties
+  the screen to a named or unnamed client.
+- **Not a live run, and not about the reader.**
+  - Banned in and beside a screen, in any case: "Live", "Scanning", "Checking", "Loading",
+    "Real-time" (also "realtime" and "live data"), "screenshot", "your results", "your report",
+    "your score".
+  - No sentence says the reader's firm is, or is not, named (§11.3).
+- **The 2026-10-08 messaging ("AI search is winning") sits next to the hero.** Its fear lines stay
+  general ("buyers ask AI who to hire") and never point at the screen as evidence about the reader.
+  CLAUDE.md already bars stating "you are invisible" as fact.
+- **Allowed:** describing the capability in the present tense, for example "Scriblr records which
+  platforms name a firm for each prompt."
+
+**Enforcement.**
+- Caption and `CHROME`: the gate. Captions already fail on digits. They now also fail on the banned
+  words above. `CHROME` already excludes them (§11.6).
+- The surrounding section: the served check (§12.4).
+- Everything off the site: Ruth reviews it.
+
+### 12.4 Gate changes
+
+Mira makes these in parallel. Owen checks her change against this list, and does not pass the build
+until each item holds.
+
+**`scripts/check-b2b.cjs`, check 7, inverted:**
+- `components/product-screens/ProvenanceBadge.tsx` does not exist.
+- `ProductScreen.tsx` does not import `ProvenanceBadge`.
+- No file under `components/` or `app/` contains the badge sentence or its tail ("product interface.
+  Sample data, not client results."). The tail check exists because the component split the sentence
+  across two text nodes.
+- Every screen `caption` fails on the R7 banned words, case-insensitive and whole-word.
+
+**`scripts/lib/served-screens.mjs`, on `/` and on `/services/ai-seo`:**
+- **No badge rendered.** No element on the page has text containing `BADGE_SENTENCE` or its tail, and
+  no `figure[data-provenance]` contains the word "Illustrative" in visible text.
+- **Screen count unchanged.** `figure[data-provenance]` count equals the registry size. The run
+  counts as one figure with no badge.
+- **"Tracked brand" outside a figure still fails.** The reason changes: chrome rendered outside a
+  figure escapes every per-screen string check.
+- **R7 section scan.** For each `figure[data-provenance]`, take its nearest `section` ancestor. That
+  section's visible text outside the figure fails on the R7 banned words, case-insensitive and
+  whole-word. This one is new. If Mira's parallel change does not include it, it is the next gate
+  item, not an optional one.
+- Every other §11.6 served check stands: one `[data-run-region]`, 21 `[data-run-row]`, five state
+  cells per row, one empty `[aria-live]`, and Pause before the region.
+- The `check-served-page.mjs` success line stops reporting "visible badge(s)".
+
+### 12.5 Alternatives
+
+- **Keep the badge.** This was the status quo. The operator removed it after the second preview,
+  having been told the hero can then read as real data.
+- **A smaller disclosure,** such as a "Sample data" line in the figcaption or a footnote. Not
+  adopted: a smaller Illustrative label is still the label the operator removed. It is the first
+  fallback if §12.8 fires, and needs an operator decision.
+- **Screen-reader-only text.** Rejected. It gives assistive-technology users a disclosure that
+  sighted users do not get. A disclaimer hidden on purpose also reads worse if found than a visible
+  one, or none.
+- **Drop `provenance` as well.** Rejected. It renders nothing, costs nothing, and is the only code
+  path that keeps illustrative and captured screens apart (§9).
+
+### 12.6 Consequences
+
+**Good.**
+- The hero reads as product, not as a disclaimer.
+- One component and its icon import leave the server render. It was a server component, so the
+  ADR-0005 client budget does not change.
+- Every data rule that made the badge safe to remove is still enforced in code.
+
+**Unpleasant. The operator accepted these risks.**
+- **Read as real data.** Without the label, the hero can read as real data about the visitor
+  ("Your firm: Not named") or as a client's data. The operator was told this before deciding
+  (authority block). This ADR records the risk; it does not mitigate it away.
+- **Thinner carriers for "Your firm".** The §11.3 read-through risk now rests on two on-screen
+  carriers (never an all-absent row, and "Sample run") plus R7.
+- **R7 is mostly enforced by people.** The gate reaches the caption, the chrome and the enclosing
+  section on two routes. Ads, decks, social posts and proposals that reuse a screen depend on Ruth.
+- **The answer on a call.** When a prospect asks "is this real?", the answer is: an illustrative
+  interface with sample data. Nobody may answer otherwise. Rafael's materials need that line.
+- **The design brief is stale.** `docs/design/2026-10-visual-upgrade.md` §1.6 and its "Badge"
+  rows still specify the badge until the brief's owner marks them superseded. This ADR does not
+  edit the brief.
+- **Two documents in flight.** Until Owen checks Mira's gate change against §12.4, the ADR and the
+  gate may disagree.
+- **The capture path loses its contrast (§9).** Before, illustrative and captured screens each
+  carried a distinct label. Whether a future capture carries one is an open operator decision for
+  that amendment.
+
+### 12.7 Rollback
+
+- Restore `components/product-screens/ProvenanceBadge.tsx` and its import and render in
+  `ProductScreen.tsx`.
+- Restore check 7 in `scripts/check-b2b.cjs` and the R3 badge checks in
+  `scripts/lib/served-screens.mjs` and `scripts/check-served-page.mjs`.
+- Source: `786944c`, the last commit containing the badge at the time of writing. Confirm with
+  `git log -1 -- components/product-screens/ProvenanceBadge.tsx`.
+- If those gate files have changed since, restore the badge blocks by hand rather than checking out
+  whole files, or the rollback reverts unrelated gate work.
+- Strike the §12 notes above. R3's badge half returns as written.
+- R7 stays on rollback. It costs nothing with a badge present.
+- There is no data migration and no URL change. The badge took no props, and screen data never
+  carried it.
+
+### 12.8 What would make this wrong later
+
+- **Someone reads a screen as real.** One report from a prospect, client, Ruth or Rafael that a
+  reader took the hero as their own result or as client data is enough. Take it to the operator
+  with the §12.5 smaller disclosure first, then the full rollback.
+- **A complaint or ad-platform flag that a page or ad using a screen misrepresents a result.**
+  Restore a visible label in that channel at minimum, the same day, and take it to the operator.
+- **A relaxation of R2, R4, R6 or §11.3.** Any amendment that allows dates, figures, real brands or
+  a named firm on a screen must reopen §12. The missing badge is safe only because those rules hold.
+- **"Sample run" is proposed for removal.** It is the last on-screen cue, so reopen §12 first.
+- **The capture path (§9) is built.** Decide its label, and whether its presence changes what an
+  unlabelled illustrative screen implies.
+- **Screens are reused routinely off the site** (ads, decks, social). The gate does not reach
+  there. That needs a per-channel label rule, not more Ruth review.

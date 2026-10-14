@@ -34,14 +34,14 @@ export default function Snapshot() {
             <ScrollReveal>
               <Eyebrow accent>Free AI visibility audit</Eyebrow>
               <h2 className="text-h2 font-sans m-0 mt-4 max-w-[16ch] font-semibold">
-                <MaskReveal>Want to see the answers first?</MaskReveal>
+                <MaskReveal>See who AI names in your category before you commit.</MaskReveal>
               </h2>
               <p className="text-body mt-5 m-0 max-w-[56ch]" style={{ color: 'var(--s-text-muted)' }}>
-                It is free, and there is no obligation to book.
+                Free, with no obligation to book. Someone on our team reviews your firm, then sends you what AI platforms said when asked your buyers&apos; questions, with dates and sources.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
                 <Link href="/free-ai-audit#request" className="rf-btn rf-btn--primary">
-                  Request your free audit
+                  Request your free AI visibility audit
                 </Link>
                 <Link href="/free-ai-audit#scope" className="rf-btn rf-btn--secondary">
                   What the audit covers

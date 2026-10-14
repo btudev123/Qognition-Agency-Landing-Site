@@ -40,6 +40,26 @@ The user approved a sitewide copy and funnel update in the dev checkout. These d
   - **Hero tracker run** (ADR-0006 §11). The hero cycles through all 21 industries with a verbatim taxonomy prompt each, tracking "Your firm". The operator chose it over a chat-style AI answer, so ADR-0006 R1 stands.
     - It is the one exception to §9's "no auto-rotating sliders". It needs a Pause button, pauses on hover and focus, and does not auto-advance under reduced motion.
     - The operator confirms Scriblr tracks Claude in production, so the run has five columns: ChatGPT, Perplexity, Gemini, Claude and Google AI Overviews.
+  - **Operator decisions, 2026-10-08 (after the second preview):**
+    - **No "Illustrative" label on product screens.** The badge and its banner are removed everywhere. This overrides ADR-0006's visible-badge rule and §1's "illustrative interface" disclosure. The operator was told the hero can then read as real data.
+      - The data rules stand: sample brands only, "Your firm" only, no figures, and screens are still never client data.
+    - **Positioning line, operator 2026-10-08:** Qognition is an AI-native growth marketing agency selling AI SEO, generative engine optimization (GEO) and SEO to B2B firms. Copy is written to attract high-intent buyers and sell, using the writer's own craft. It does not just restate a brief.
+    - **Homepage H1, operator 2026-10-08:** "Be the firm {platform} names when your buyer asks who to hire." The platform word spins like a slot-machine reel through ChatGPT, Claude, Gemini and Perplexity, each with its logo and brand colour.
+      - This changes the H1 of priority page #1 by operator decision. The title and meta are unchanged.
+      - The served H1 text stays a complete, stable sentence. The reel is decorative.
+      - **§4 amendment, this H1 only.** Ruth ruled "Be the firm … names" a placement promise. The operator was offered "Give {AI} reasons to name your firm" and chose to keep "Be the firm {AI} names", on 2026-10-08. The promise ban still applies everywhere else.
+      - The reel spins once, settles in under 5 seconds and replays on hover or focus, so it is not a second continuously rotating element under §9.
+    - **Messaging: "AI search is winning."** Copy sells fear (buyers ask AI who to hire, competitors get named, the shortlist forms without you) and desire (be the firm the AI names). Sitewide.
+      - §4 still applies: no invented statistics, no guarantees, and no "you are invisible" stated as fact about the reader. Fear the reader can check beats fear we assert.
+    - **/industries is rebuilt on the 21 taxonomy industries**, with the 341 sub-industries under them. The legacy 11 hubs and 66 sub-pages keep their URLs and are mapped in; nothing is redirected without Search Console data. /industries title, meta and URL stay fixed (priority page).
+    - **Industries rebuild decisions (Nadia's spec `docs/seo/2026-10-industries-rebuild.md`):**
+      - All 21 industry and 341 sub-industry pages publish together, once every page passes §7. This overrides the 90-day wave rule and ADR-0008's wave size.
+      - A page needs no stored Scriblr run to publish. With no run stored, the observation section is omitted entirely, with no "Not tested yet" placeholder (§4: omit, never placeholder).
+      - Prabal is the named reviewer, recorded in data and not printed on the page.
+      - The legacy 11-card grid comes off the /industries hub. Each legacy page stays live and links to its new owner page.
+      - /industries/financial-services becomes the B2B Financial Services industry page at the same URL, once its Search Console data is pulled. No redirects.
+    - **Niche and sub-niche pages (2,376 + 8,823) come next**, after the operator approves the industries design. They must be researched and substantive, never a name swapped into a template.
+    - **No GeoNames stat tiles** on the markets page. The CC BY credit line stays.
   - **Homepage approved** (hero animation still in build). Service and industry pages are next: they read thin.
   - **Plain English everywhere.** No technical jargon. Every message must be clear to a CEO or marketing lead on first read.
   - **No Pexels credit lines** on the site.

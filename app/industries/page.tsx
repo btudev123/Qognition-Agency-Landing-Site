@@ -51,7 +51,7 @@ export default function Page() {
             <Badge className="mb-4">Industries</Badge>
             <Heading level="h1" className="mb-4">Industries We Serve</Heading>
             <p className="text-body text-[var(--text-muted)] max-w-2xl mx-auto">
-              AI SEO, GEO, SEO and PPC for B2B firms, written to the way your buyer decides: a software evaluation, an RFQ, a regulated purchase or a specialist consultation.
+              Digital marketing by industry, built for B2B. AI SEO, GEO, SEO and PPC, written to the way your buyer decides: a software evaluation, an RFQ, a regulated purchase or a specialist consultation.
             </p>
           </div>
         </Section>
@@ -61,7 +61,7 @@ export default function Page() {
             {[
               'We write to your buyer’s decision: the spec an engineer checks, the integration an IT lead needs, the expertise a CFO looks for.',
               'The pages speak to the people your sales team wants to meet, and we judge them on qualified enquiries, not traffic.',
-              'Every sector page ends with a clear next step: a call with us, and the evidence behind what we say.',
+              'Industry pages show questions their buyers might ask an AI tool, so you can run them yourself.',
             ].map((item) => (
               <div
                 key={item}
@@ -226,7 +226,7 @@ export default function Page() {
 
         <Section spacing="lg">
           <div className="max-w-xl mx-auto text-center">
-            <Heading level="h2" className="mb-3">Need a market-specific plan?</Heading>
+            <Heading level="h2" className="mb-3">Ask AI who to hire in your industry. Then talk to us.</Heading>
             <p className="text-body text-[var(--text-muted)] mb-8">
               Bring your industry, your markets, your sales cycle and the buyers you want to reach. We&apos;ll tell you what we would check first.
             </p>

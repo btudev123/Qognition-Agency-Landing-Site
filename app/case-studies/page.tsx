@@ -68,7 +68,7 @@ export default function Page() {
               Case Studies
             </Heading>
             <Text>
-              B2B client programmes with dated results, then our programmes for local service businesses and commercial insurance.
+              Marketing case studies from named B2B clients, with qualified leads, meetings and sales opportunities for stated dates. Then our programmes for local service businesses and commercial insurance.
             </Text>
           </header>
 

@@ -1,5 +1,5 @@
 import type { IcpRecord } from '../../lib/b2b/icpRegistry';
-import { icpBreadcrumb, icpPanelExclusions, icpSiblings } from '../../lib/b2b/icpRegistry';
+import { icpBreadcrumb, icpCheckPrompt, icpPanelExclusions, icpSiblings } from '../../lib/b2b/icpRegistry';
 import { panelFor } from '../../lib/b2b/promptPanel';
 import type { ObservationView } from '../../lib/b2b/observations';
 import DraftNotice from './DraftNotice';
@@ -96,6 +96,7 @@ export default function IcpSubNichePage({
   const trail = icpBreadcrumb(record);
   const parent = trail[trail.length - 1];
   const panel = panelFor(record.href, { exclude: icpPanelExclusions(record) });
+  const checkPrompt = icpCheckPrompt(record);
 
   return (
     <main className="min-h-screen">
@@ -112,6 +113,7 @@ export default function IcpSubNichePage({
         industrySlug={industry.slug}
         industryName={industry.name}
         draft={state === 'draft'}
+        checkPrompt={checkPrompt}
       />
 
       <QuestionsBlock
@@ -122,7 +124,7 @@ export default function IcpSubNichePage({
         id={`${key}-questions`}
       />
 
-      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} />
+      <WhyLostBlock text={body.whyTheAnswerIsLost} id={`${key}-why`} name={subNiche.name} hasQuestion={Boolean(checkPrompt)} />
       <BuyersBlock buyers={body.buyers} id={`${key}-buyers`} />
       {body.kind === 'sub-niche' && (
         <>

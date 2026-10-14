@@ -9,6 +9,14 @@ import { Eyebrow, Shell } from './primitives';
    (docs/copy/2026-10/home.md §11, entry 8). */
 export const HOME_FAQS = [
   {
+    q: 'What does an AI-native growth agency do?',
+    a: 'We sell AI SEO, GEO and SEO to B2B firms, with B2B PPC alongside, and we track and report the work on software we built. Scriblr tracks what AI tools say about you, question by question, platform by platform, with a date on every answer. LinkersPro is our tool for authority and link work.',
+  },
+  {
+    q: 'What is the difference between an AI SEO agency and an SEO agency?',
+    a: "An SEO agency works on Google's search results. An AI SEO agency also works on the answers: Google's AI Overviews and AI Mode, and assistants such as ChatGPT, Perplexity, Gemini and Claude. The foundations overlap. The difference is measurement. We test the questions your buyers ask AI and report who each answer names, separately from rankings.",
+  },
+  {
     q: 'What is the difference between AI SEO and GEO?',
     a: 'AI SEO is the work on Google AI Overviews and AI Mode. GEO is the work on assistants: ChatGPT, Perplexity, Gemini, Claude and Copilot. SEO covers Google search results, and local SEO covers Maps, the local pack, Business Profile, reviews and listings. They share foundations, but we measure each one separately.',
   },
@@ -46,7 +54,8 @@ export default function Faqs() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema(HOME_FAQS.map((f) => ({ question: f.q, answer: f.a })))),
+          /* Every visible FAQ, uncapped: the JSON-LD must equal what the page shows. */
+          __html: JSON.stringify(faqSchema(HOME_FAQS.map((f) => ({ question: f.q, answer: f.a })), { max: HOME_FAQS.length })),
         }}
       />
       <Shell>

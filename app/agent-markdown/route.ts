@@ -172,6 +172,15 @@ const linesForPath = (path: string) => {
       ...(servicePage.promiseNote ? ['', servicePage.promiseNote] : []),
       '',
       `Canonical: ${SITE_URL}${cleanPath}`,
+      ...(servicePage.whyNow
+        ? [
+            '',
+            '## Why now',
+            servicePage.whyNow.source
+              ? `${servicePage.whyNow.text} [${servicePage.whyNow.source.label}](${servicePage.whyNow.source.href})`
+              : servicePage.whyNow.text,
+          ]
+        : []),
       '',
       '## What you get',
       ...servicePage.whatYouGet.map((item) => `- ${item.title}: ${item.body}`),
@@ -181,7 +190,7 @@ const linesForPath = (path: string) => {
       ...monthly.items.map((item) => `- ${item}`),
       ...(monthly.note ? ['', monthly.note] : []),
       ...(monthly.auditLink
-        ? ['', `Want to see your answers first? [Request a free AI visibility audit](${SITE_URL}/free-ai-audit).`]
+        ? ['', `Want to see who gets named first? [Request a free AI visibility audit](${SITE_URL}/free-ai-audit).`]
         : []),
       '',
       '## Questions buyers ask us',

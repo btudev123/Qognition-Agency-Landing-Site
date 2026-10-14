@@ -665,6 +665,34 @@ export function icpPanelExclusions(record: IcpRecord): readonly string[] {
     .map((key) => `${ICP_BASE}/${key}`);
 }
 
+/* ── The hero's check line. ───────────────────────────────────────────────── */
+
+/**
+ * The one buyer question the hero invites the reader to try in an AI tool
+ * (docs/copy/2026-10/ai-search-is-winning.md §4.1, Ruth cleared 2026-10-08).
+ *
+ * FAMILY B, so it is only ever rendered in a `<p>` that attributes it to the
+ * client's buyer, never in a heading, title, meta or FAQ question (check-icp R10).
+ *
+ *   Levels 2 to 4: the sub-industry's `ai_prompts[0]`, verbatim.
+ *   Level 1: no prompts of its own, so the first PUBLISHED sub-industry's
+ *            `ai_prompts[0]`, with that sub-industry's name, because the line
+ *            then says whose buyer is asking. No published child: undefined,
+ *            and the line is omitted rather than pointing at an unpublished page.
+ */
+export function icpCheckPrompt(record: IcpRecord): { readonly prompt: string; readonly subName?: string } | undefined {
+  if (record.level !== 'industry') {
+    const prompt = record.sub.aiPrompts[0];
+    return prompt ? { prompt } : undefined;
+  }
+  const industry = getIcpIndustry(record.industry.slug);
+  const first = icpChildren(record)[0];
+  if (!industry || !first) return undefined;
+  const sub = industry.sub_industries.find((s) => s.id === first.id);
+  const prompt = sub?.ai_prompts?.[0];
+  return prompt ? { prompt, subName: first.name } : undefined;
+}
+
 /* ── Rule 8: which angle leads. ────────────────────────────────────────────── */
 
 /**
