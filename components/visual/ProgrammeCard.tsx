@@ -78,8 +78,10 @@ function B2BProgrammeCard({ study }: { study: ResolvedB2BCaseStudy }) {
           {study.sector}, {b2bMarket(study)}
         </p>
         <p className="text-meta m-0 mt-1" style={{ color: 'var(--s-text)' }}>
-          {/* A dot list, not joinServices: two labels already contain "and". */}
-          {study.services.slice(0, 3).map((s) => B2B_SERVICE_LABEL[s].label).join(' · ')}
+          {/* A dot list, not joinServices: two labels already contain "and". The full mix,
+              in record order: the figures below came from all of it, so showing the first
+              three credited search work alone (Ruth, D1 attribution rule). It wraps. */}
+          {study.services.map((s) => B2B_SERVICE_LABEL[s].label).join(' · ')}
         </p>
         <div className="mt-auto pt-4">
           <div className="pt-4" style={{ borderTop: '1px solid var(--s-rule-hairline)' }}>

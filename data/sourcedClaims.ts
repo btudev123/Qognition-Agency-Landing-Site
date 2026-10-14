@@ -53,3 +53,28 @@ export function brixioProof(): { text: string; href: string } | null {
     href: `/case-studies/${s.id}`,
   };
 }
+
+/**
+ * The Talentera paid-media line in the /services/ppc FAQ. Every figure and date comes
+ * from the record's `paidMedia` block (data/case-studies/b2b.ts), the way brixioProof()
+ * reads the Brixio record, so the FAQ cannot drift from the case study.
+ *
+ * Renders: "For Talentera, LinkedIn ads on US$20,000 of media spend produced 58
+ * qualified leads at US$345 each, 15 June to 21 September 2026, confirmed by
+ * Talentera's own reporting."
+ *
+ * Null when a figure is missing or the window is open: omit, never approximate.
+ */
+export function talenteraPpcProof(): string | null {
+  const s = getB2BCaseStudy('talentera');
+  if (!s || !s.window.end || !s.paidMedia) return null;
+  const figure = (label: string) => s.paidMedia?.figures.find((f) => f.label === label)?.value;
+  const spend = figure('Media spend');
+  const leads = figure('Qualified leads from ads');
+  const cost = figure('Cost per qualified lead');
+  if (!spend || !leads || !cost) return null;
+  return (
+    `For ${s.client}, ${s.paidMedia.channel} on ${spend} of media spend produced ${leads} qualified leads ` +
+    `at ${cost} each, ${formatWindow(s)}, confirmed by ${s.client}'s own reporting.`
+  );
+}

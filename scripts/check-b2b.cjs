@@ -793,3 +793,22 @@ if (spineCollisions.length) {
     `${icpIndustryCards().length} industries have an icon.`
   );
 }
+
+/* Named-client figures in service copy are read from the record, never typed in.
+   On 2026-10-14 the /services/ppc FAQ carried the Talentera spend, lead count, cost
+   per lead and dates as a literal, so a correction to data/case-studies/b2b.ts would
+   have left the FAQ saying something else (MARS, fix 4). */
+{
+  const fs = require('node:fs');
+  const { talenteraPpcProof } = require('../data/sourcedClaims.ts');
+  const { getB2BCaseStudy } = require('../data/case-studies/index.ts');
+  const { SERVICE_PAGES } = require('../data/servicePages.ts');
+  const line = talenteraPpcProof();
+  assert.ok(line, 'talenteraPpcProof() returned null: the Talentera paidMedia block lost a figure or its end date.');
+  const ppcFaq = SERVICE_PAGES['/services/ppc'].faqs.find((f) => f.question === 'What does good B2B paid media management look like?');
+  assert.ok(ppcFaq && ppcFaq.answer.endsWith(line), 'The /services/ppc paid-media FAQ no longer ends with talenteraPpcProof().');
+  const servicePagesSrc = fs.readFileSync('data/servicePages.ts', 'utf8');
+  const literals = getB2BCaseStudy('talentera').paidMedia.figures.map((f) => f.value).filter((v) => servicePagesSrc.includes(v));
+  assert.deepEqual(literals, [], `data/servicePages.ts hard-codes Talentera figures (${literals.join(', ')}). Read them from the record.`);
+  console.log('✓ talentera ppc line: derived from the record, no figure typed into data/servicePages.ts.');
+}

@@ -7,7 +7,7 @@ import v from '../visual/visual.module.css';
 const PHASES = [
   {
     n: '01', window: 'Discovery', title: 'Understand the buying decision', icon: Compass,
-    deliverable: 'A buyer brief, the prompt set and a dated baseline on the agreed platforms.',
+    deliverable: 'A buyer brief, the list of buyer questions we will test, and a dated starting point on the agreed platforms.',
   },
   {
     n: '02', window: 'Foundations', title: 'Make your firm easy to read', icon: Blocks,

@@ -26,7 +26,7 @@ export const HOME_FAQS = [
   },
   {
     q: 'How do you measure something that changes every time you ask?',
-    a: 'We fix the prompt set and the platforms before the first run, then re-run the same set on the agreed schedule. Each answer is recorded with its date and cited sources, so changes can be compared and checked. AI answers, rankings, referral visits and qualified enquiries are reported in separate columns.',
+    a: 'We agree the list of buyer questions and the platforms before the first test, then re-run the same list on the agreed schedule. We save each answer with its date and the sources it cited, so you can compare and check every change. We report AI answers, Google rankings, visits that come from AI tools and qualified enquiries in separate columns.',
   },
   {
     q: 'Have you worked with firms like mine?',

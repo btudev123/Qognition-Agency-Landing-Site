@@ -32,6 +32,7 @@ import {
   G2_ANSWER_ECONOMY,
   G2_DIFFERENT_VENDOR,
   G2_SOFTWARE_RESEARCH,
+  talenteraPpcProof,
   type ExternalSource,
 } from './sourcedClaims';
 
@@ -649,7 +650,8 @@ const PPC: ServicePageContent = {
     {
       question: 'What does good B2B paid media management look like?',
       answer:
-        "Judge it on cost per qualified enquiry, not cost per click. For Talentera, LinkedIn ads on US$20,000 of media spend produced 58 qualified leads at US$345 each, 15 June to 21 September 2026, confirmed by Talentera's own reporting.",
+        // Figures and dates read from the Talentera record (talenteraPpcProof). Without them, the first sentence stands alone.
+        ['Judge it on cost per qualified enquiry, not cost per click.', talenteraPpcProof()].filter(Boolean).join(' '),
     },
     {
       question: 'Is PPC included with AI SEO and GEO?',
