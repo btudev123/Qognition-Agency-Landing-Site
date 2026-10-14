@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CalculatorTool from '../../../components/CalculatorTool';
-import LeadForm from '../../../components/shared/LeadForm';
 import { INDUSTRIES } from '../../../data/industries';
 import { FREE_TOOLS, RESOURCES } from '../../../data/seoExpansion';
 import { SERVICES } from '../../../data/services';
@@ -90,19 +89,12 @@ export default async function Page({ params }: { params: Promise<{ tool: string 
             <CalculatorTool tool={page.slug} />
           </div>
 
-          <div className="mt-20 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Info title="Inputs" items={page.inputs} />
-              <Info title="Outputs" items={page.outputs} />
-              <Info title="Use Cases" items={page.useCases} />
-            </div>
-            <div>
-              <Heading level="h2" className="mb-4">Discuss your assumptions</Heading>
-              <p className="text-body text-[var(--text-muted)] mb-6">
-                Tell us which assumptions you want to check and the commercial decision you are making. The calculator output is a planning aid, not an expected result.
-              </p>
-              <LeadForm spoke="marketing" intent="contact" sourcePage={path} ctaLabel="Send enquiry" />
-            </div>
+          {/* One next step per tool, and it lives with the result: CalculatorShell, or the
+              end of FinanceHealthScore. The page-level block asked the same thing twice (Ruth C). */}
+          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Info title="Inputs" items={page.inputs} />
+            <Info title="Outputs" items={page.outputs} />
+            <Info title="Use Cases" items={page.useCases} />
           </div>
 
           <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8">

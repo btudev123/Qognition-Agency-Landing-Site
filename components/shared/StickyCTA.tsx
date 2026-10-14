@@ -7,7 +7,7 @@ import { ArrowRight, X, Phone, MessageCircle, Mail, Calendar } from 'lucide-reac
 import { PHONE_LINK, WHATSAPP_CHAT_LINK } from '../../data/siteConfig';
 import { getFunnelStage, getFunnelCTA } from '../../lib/funnel';
 import { pushDataLayer } from '../../lib/analytics';
-import { appendFunnelContext } from '../../lib/funnelContext';
+import { AUDIT_ASSET_ID, appendFunnelContext } from '../../lib/funnelContext';
 import { trackContactChannel } from './ContactChannelLink';
 
 const track = (action: string, stage: string) =>
@@ -37,6 +37,8 @@ const StickyCTA = () => {
   const primaryIsBooking = cta.primary.href === '/book';
   const primaryHref = primaryIsBooking ? bookHref : appendFunnelContext(cta.primary.href, { page_id: path, stage });
   const primaryExternal = primaryHref.startsWith('http');
+  // On /free-ai-audit the enquiry is an audit request, so it carries the audit tag (Owen L2).
+  const enquiryHref = appendFunnelContext('/contact#enquiry', { page_id: path, stage, ...(path === '/free-ai-audit' ? { asset_id: AUDIT_ASSET_ID } : {}) });
   const Primary = primaryExternal ? 'a' : Link;
 
   return (
@@ -81,7 +83,7 @@ const StickyCTA = () => {
           <span style={{ fontSize: 11 }}>WhatsApp</span>
         </a>
         <a
-          href={appendFunnelContext('/contact#enquiry', { page_id: path, stage })}
+          href={enquiryHref}
           onClick={() => track('enquiry', stage)}
           className={slot}
           style={{ color: 'var(--on-dark)', borderRight: divider }}

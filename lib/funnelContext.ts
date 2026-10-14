@@ -28,3 +28,15 @@ export function appendFunnelContext(href: string, context?: FunnelContext): stri
   for (const key of keys) if (safe?.[key]) url.searchParams.set(key, safe[key]!);
   return `${url.pathname}${url.search}${url.hash}`;
 }
+
+/* The Free AI visibility audit is requested through the /contact form (operator,
+ * 2026-10-14: "all leads should end up in /contact"). The tag rides in the existing
+ * asset_id key, so it survives appendFunnelContext and readFunnelContext like any
+ * other context. /contact turns it into intent "audit", and the lead carries both
+ * intent: 'audit' and context.asset_id: AUDIT_ASSET_ID. */
+export const AUDIT_ASSET_ID = 'free-ai-visibility-audit';
+export const AUDIT_REQUEST_HREF = `/contact?asset_id=${AUDIT_ASSET_ID}`;
+export const isAuditRequest = (context?: FunnelContext) => context?.asset_id === AUDIT_ASSET_ID;
+export function auditRequestHref(context?: FunnelContext): string {
+  return appendFunnelContext('/contact', { ...context, asset_id: AUDIT_ASSET_ID });
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import CalculatorShell from '../CalculatorShell';
+import EnquiryLinks from '../../shared/EnquiryLinks';
 
 interface Props {
   toolSlug: string;
@@ -49,9 +49,9 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
 
   const results = [
     ['Finance Health Score', `${score}/100`],
-    ['Category', score >= 70 ? 'Healthy — proactive' : score >= 40 ? 'Reactive — needs attention' : 'At risk — urgent gaps'],
+    ['Category', score >= 70 ? 'Healthy: proactive' : score >= 40 ? 'Reactive: needs attention' : 'At risk: urgent gaps'],
     ['Top Gap', recommendations[0] || 'No critical gaps'],
-    ['Second Gap', recommendations[1] || '—'],
+    ['Second Gap', recommendations[1] || 'None'],
   ];
 
   return (
@@ -113,32 +113,13 @@ export default function FinanceHealthScore({ toolSlug }: Props) {
             ))}
           </div>
           <p className="text-meta mt-6 text-[var(--text-muted)]">
-            This is a quick self-assessment. For a full finance health check with benchmarks and recommendations, request the free audit below.
+            This is a quick self-assessment.
           </p>
         </div>
 
-        {/* Capture */}
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
-          <h3 className="text-h3 text-[var(--text)] mb-1 text-center font-semibold">
-            Get Your Full Finance Health Check
-          </h3>
-          <p className="text-meta text-[var(--text-muted)] mb-5 text-center">
-            A real CFO-level analysis delivered in 48 hours. Free, no commitment.
-          </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              window.location.href = '/free-ai-audit';
-            }}
-          >
-            <button
-              type="submit"
-              className="w-full inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium bg-[var(--accent)] text-[var(--accent-deep)] rounded-lg hover:brightness-110 transition-all"
-            >
-              Request Full Health Check
-            </button>
-          </form>
-        </div>
+        {/* Next step. The capture form that promised "CFO-level analysis delivered in 48
+            hours" came off on 2026-10-14 (Ruth F): every lead goes through /contact. */}
+        <EnquiryLinks context={{ stage: 'tofu', page_id: `/free-tools/${toolSlug}` }} />
       </div>
 
       <script

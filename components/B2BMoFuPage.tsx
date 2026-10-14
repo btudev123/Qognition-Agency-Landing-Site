@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import LeadForm from './shared/LeadForm';
+import EnquiryLinks from './shared/EnquiryLinks';
 import Heading from './ui/Heading';
 import { B2BMoFuPage as B2BMoFuPageType } from '../types';
 
@@ -26,13 +26,7 @@ const B2BMoFuPage = ({ page }: Props) => {
               <Heading level="h2" className="mb-4">
                 Discuss your priorities
               </Heading>
-              <Link href="/book" className="mb-6 inline-flex text-[var(--accent)]">Book a call →</Link>
-              <LeadForm
-                spoke="marketing"
-                intent="contact"
-                sourcePage={path}
-                ctaLabel="Send enquiry"
-              />
+              <EnquiryLinks context={{ stage: 'mofu', page_id: path }} />
             </div>
           </div>
         </header>

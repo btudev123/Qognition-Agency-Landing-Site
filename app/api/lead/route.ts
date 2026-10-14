@@ -61,7 +61,14 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: 'Please check the form fields.', fields: parsed.error.flatten().fieldErrors }, { status: 400 });
   const lead = parsed.data;
   try { lead.context = normalizeLeadContext(lead.context); }
-  catch { return NextResponse.json({ success: false, error: 'Please check the page context.', code: 'invalid_taxonomy' }, { status: 400 }); }
+  catch {
+    // Owen L4, 2026-10-14: /contact is the only form, so page context that does not resolve
+    // never costs the lead. Only the taxonomy keys go (they are reporting, not qualification);
+    // the audit tag, page and locale stay. The supplied IDs are never logged.
+    console.warn('[Lead] context_taxonomy_dropped', { code: 'invalid_taxonomy' });
+    const { industry_id: _industry, subindustry_id: _sub, niche_id: _niche, subniche_id: _leaf, ...kept } = lead.context || {};
+    lead.context = Object.keys(kept).length ? kept : undefined;
+  }
   if (lead.intent === 'newsletter' && !lead.consent?.email_marketing) return NextResponse.json({ error: 'Please opt in to receive the newsletter.' }, { status: 400 });
   // NODE_ENV=production also occurs in Vercel previews; it never grants write access.
   if (!liveLeadWritesAllowed()) {
@@ -85,11 +92,25 @@ export async function POST(request: NextRequest) {
       const cookies = metaCookiesFromRequest(request);
       const ip = getAuditClientIp(request);
       const userAgent = request.headers.get('user-agent') || undefined;
+      // after() hands the task to the platform's waitUntil, so Vercel keeps the function
+      // alive (within maxDuration) after the response. With no Upstash ledger the stand-in
+      // claim always succeeds (createDisabledLeadLedger), so the notification still sends.
       after(async () => {
-        const deliver = async (kind: DeliveryKind, send: () => Promise<{ ok?: boolean; skipped?: boolean }>) => {
+        const deliver = async (kind: DeliveryKind, send: () => Promise<{ ok?: boolean; skipped?: boolean }>, sendIfLedgerDown = false) => {
           let claimed = false;
           try {
-            claimed = await captured.ledger.claimDelivery(captured.submissionId, captured.digest, kind);
+            try { claimed = await captured.ledger.claimDelivery(captured.submissionId, captured.digest, kind); }
+            catch (error) {
+              // The ledger only adds exactly-once (operator 2026-10-06). If it fails after a
+              // confirmed GHL capture, hello@ is still told: the cost is a possible repeat
+              // notification, never a lead nobody hears about. Prospect email and CAPI stay
+              // claimed-only, so a ledger outage never sends them twice.
+              if (!sendIfLedgerDown) throw error;
+              console.error('[Lead] delivery_claim_unavailable', { kind });
+              const outcome = await send();
+              if (!outcome.ok && !outcome.skipped) console.error('[Lead] downstream_delivery_failed', { kind });
+              return;
+            }
             if (!claimed) return;
             const outcome = await send();
             const state: DeliveryState = outcome.skipped ? 'skipped' : outcome.ok ? 'sent' : 'failed';
@@ -101,7 +122,7 @@ export async function POST(request: NextRequest) {
             console.error('[Lead] downstream_delivery_unconfirmed', { kind });
           }
         };
-        const tasks: Promise<void>[] = [deliver('notification', () => sendLeadNotification(lead, evidence))];
+        const tasks: Promise<void>[] = [deliver('notification', () => sendLeadNotification(lead, evidence), true)];
         if (confirm) tasks.push(deliver('confirmation', () => sendLeadConfirmation(lead)));
         if (advertisingAllowed(lead, evidence)) tasks.push(deliver('advertising', () => sendMetaCapiEvent(metaLeadEvent(lead, captured.eventId, { ip, userAgent, cookies }))));
         await Promise.allSettled(tasks);

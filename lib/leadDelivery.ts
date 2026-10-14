@@ -1,4 +1,4 @@
-import type { LeadPayload, ServerConsentEvidence } from './validation';
+import { isAuditLead, type LeadPayload, type ServerConsentEvidence } from './validation';
 import { leadCopy } from './leadCopy';
 import { BOOKING_LINK, CONTACT_EMAIL } from '../data/siteConfig';
 
@@ -55,6 +55,17 @@ const consentLabel = (value: boolean | undefined) => value === true ? 'yes (opt-
 // Cookie categories: a yes is only "explicit" when the visitor chose it; otherwise it is the region default.
 const cookieConsentLabel = (value: boolean | undefined, basis: ServerConsentEvidence['basis']) =>
   value === false ? 'no' : value !== true ? 'not recorded' : basis === 'explicit' ? 'explicit yes' : basis === 'region_default' ? 'region default' : 'yes (basis not recorded)';
+/** The five-field form asks company size only; older clients may still send model and revenue. */
+const SIZE_LABELS: Record<string, string> = { '1-19': '1-19 staff', '20-99': '20-99 staff', '100-300': '100-300 staff', '301+': '301+ staff' };
+const REVENUE_LABELS: Record<string, string> = { 'under-3m': 'under $3M', '3m-10m': '$3M-$10M', '10m-50m': '$10M-$50M', '50m-500m': '$50M-$500M', 'over-500m': 'over $500M' };
+const MODEL_LABELS: Record<string, string> = { b2b: 'B2B', b2c: 'B2C', mixed: 'mixed' };
+const AUDIT_LABEL = 'Free AI visibility audit';
+/**
+ * What the team is being told about. The spoke ("marketing") is retired and never labels a
+ * lead (Ruth, 2026-10-14). Newsletter wins: an audit tag inherited from the URL does not make
+ * a newsletter signup an audit request.
+ */
+const requestLabel = (lead: LeadPayload) => lead.intent === 'newsletter' ? 'Newsletter signup' : isAuditLead(lead) ? AUDIT_LABEL : 'Enquiry';
 const BASIS_LABELS: Record<ServerConsentEvidence['basis'], string> = { explicit: 'explicit', region_default: 'region default', unknown: 'not recorded' };
 
 function leadNotificationHtml(lead: LeadPayload, evidence: ServerConsentEvidence): string {
@@ -92,6 +103,10 @@ function leadNotificationHtml(lead: LeadPayload, evidence: ServerConsentEvidence
         <td style="padding:8px 12px;color:#6b7280;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Source</td>
         <td style="padding:8px 12px;font-size:15px">${escapeHtml(lead.source_page)}</td>
       </tr>
+      ${row('Request', requestLabel(lead))}
+      ${row('Company size', SIZE_LABELS[lead.qualification?.employee_band || ''] || 'not answered')}
+      ${lead.qualification?.business_model && MODEL_LABELS[lead.qualification.business_model] ? row('Business model', MODEL_LABELS[lead.qualification.business_model]) : ''}
+      ${lead.qualification?.revenue_band && REVENUE_LABELS[lead.qualification.revenue_band] ? row('Revenue', REVENUE_LABELS[lead.qualification.revenue_band]) : ''}
       ${row('Submission', lead.submission_id || 'not supplied')}
       ${row('Marketing email', consentLabel(lead.consent?.email_marketing))}
       ${row('Analytics', cookieConsentLabel(lead.consent?.analytics, evidence.basis))}
@@ -163,7 +178,8 @@ export async function sendResendEmail({
 const subjectText = (value: string) => value.replace(/[\u0000-\u001f\u007f\u2028\u2029]/g, '').replace(/\s+/g, ' ').trim();
 
 export async function sendLeadNotification(lead: LeadPayload, evidence: ServerConsentEvidence = { basis: lead.consent?.basis || 'unknown', country: null, gpc: false }) {
-  const subject = `[${lead.service}] ${subjectText(lead.contact.name)}: ${lead.intent} from ${subjectText(lead.source_page)}`.slice(0, 120);
+  // The request type leads the subject so the team can triage from the inbox list.
+  const subject = `[${requestLabel(lead)}] ${subjectText(lead.contact.name)}: ${lead.intent} from ${subjectText(lead.source_page)}`.slice(0, 120);
   return sendResendEmail({
     to: notifyEmailAddress(),
     subject,

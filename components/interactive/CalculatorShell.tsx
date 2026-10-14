@@ -1,12 +1,13 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import LeadForm from '../shared/LeadForm';
+import EnquiryLinks from '../shared/EnquiryLinks';
 import type { SpokeId } from '../../lib/validation';
 
 interface CalculatorShellProps {
   title: string;
   toolSlug: string;
+  /** Unused since the form came off (2026-10-14). Kept so the calculators still type-check. */
   spoke?: SpokeId;
   children: ReactNode;
   results: string[][];
@@ -16,7 +17,6 @@ interface CalculatorShellProps {
 export default function CalculatorShell({
   title,
   toolSlug,
-  spoke = 'marketing',
   children,
   results,
   resultType = 'numeric',
@@ -60,22 +60,16 @@ export default function CalculatorShell({
         </p>
       </div>
 
-      {/* Lead capture below results */}
+      {/* Next step below results. The form lives on /contact only (2026-10-14). */}
       <div className="lg:col-span-2 max-w-md mx-auto w-full">
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-6">
           <h3 className="text-h3 text-[var(--text)] mb-1 text-center font-semibold">
-            Want the full model?
+            Check these numbers with us
           </h3>
           <p className="text-meta text-[var(--text-muted)] mb-5 text-center">
-            Send this estimate and we&apos;ll review the assumptions with you — free.
+            Tell us the numbers you used and we will check the assumptions with you, free.
           </p>
-          <LeadForm
-            spoke={spoke}
-            intent="audit"
-            sourcePage={`/free-tools/${toolSlug}`}
-            ctaLabel="Review My Estimate"
-            qualifyingQuestion="What's your biggest growth challenge?"
-          />
+          <EnquiryLinks className="justify-center" context={{ stage: 'tofu', page_id: `/free-tools/${toolSlug}` }} />
         </div>
       </div>
     </div>

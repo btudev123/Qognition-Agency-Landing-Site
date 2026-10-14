@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { auditRequestHref } from '../../lib/funnelContext';
 import { CalendarDays, FileText, Send, UserCheck } from 'lucide-react';
 import ScrollReveal from '../shared/ScrollReveal';
 import MaskReveal from '../shared/MaskReveal';
@@ -40,7 +41,7 @@ export default function Snapshot() {
                 Free, with no obligation to book. Someone on our team reviews your firm, then sends you what AI platforms said when asked your buyers&apos; questions, with dates and sources.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3">
-                <Link href="/free-ai-audit#request" className="rf-btn rf-btn--primary">
+                <Link href={auditRequestHref({ page_id: '/' })} className="rf-btn rf-btn--primary">
                   Request your free AI visibility audit
                 </Link>
                 <Link href="/free-ai-audit#scope" className="rf-btn rf-btn--secondary">

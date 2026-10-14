@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import type { LeadPayload, ServerConsentEvidence } from './validation';
+import { isAuditLead, type LeadPayload, type ServerConsentEvidence } from './validation';
 import { qualifyLead } from './leadQualification';
 import { createLeadLedger, createDisabledLeadLedger, ledgerAbsent, ledgerConfiguration, LeadLedgerError, type LeadEnv, type LeadLedger, type LeadLease, type LeadReceipt } from './leadLedger';
 
@@ -68,6 +68,9 @@ export async function captureLeadInCrm(lead: LeadPayload, options: { env?: LeadE
   let lease: LeadLease | undefined;
   let degraded = false;
   const qualification = qualifyLead(lead);
+  // Shown to the team in GHL. Derived from the payload, so it is also inside the digest.
+  const audit = isAuditLead(lead);
+  const requestType = audit ? 'free-ai-visibility-audit' : 'enquiry';
   const initialReceipt: LeadReceipt = {
     version: 1, submissionId: identity.submissionId, digest: identity.digest,
     eventId: lead.event_id && /^[a-zA-Z0-9_-]{8,64}$/.test(lead.event_id) ? lead.event_id : randomUUID(),
@@ -143,7 +146,7 @@ export async function captureLeadInCrm(lead: LeadPayload, options: { env?: LeadE
       const snapshot = JSON.stringify({
         submission_id: identity.submissionId, received_at: lease.receipt.createdAt, ...identity.content,
         attribution: { ...lead.attribution, first_touch: previous?.first_touch || lead.attribution?.first_touch, landing_page: previous?.landing_page || lead.attribution?.landing_page },
-        qualification_result: qualification, consent_evidence: options.consentEvidence,
+        qualification_result: qualification, consent_evidence: options.consentEvidence, request_type: requestType,
       });
       const fields = [
         { id: env.GHL_INQUIRY_FIELD_ID!, fieldValue: snapshot },
@@ -178,9 +181,9 @@ export async function captureLeadInCrm(lead: LeadPayload, options: { env?: LeadE
       }
       noteId = matches[0].id;
     } else if (!noteId) {
-      const body = `${marker}\n${JSON.stringify({ schema_version: 1, submission_id: identity.submissionId, received_at: lease.receipt.createdAt, ...identity.content, qualification_result: qualification, consent_evidence: options.consentEvidence })}`;
+      const body = `${marker}\n${JSON.stringify({ schema_version: 1, submission_id: identity.submissionId, received_at: lease.receipt.createdAt, ...identity.content, qualification_result: qualification, consent_evidence: options.consentEvidence, request_type: requestType })}`;
       await save({ state: 'note_write_started', noteBodyHash: hash(body) });
-      const created = await call(notesPath, { method: 'POST', body: JSON.stringify({ body, title: 'Website enquiry' }) }, true);
+      const created = await call(notesPath, { method: 'POST', body: JSON.stringify({ body, title: audit ? 'Website enquiry: Free AI visibility audit' : 'Website enquiry' }) }, true);
       if (!created.note?.id) throw new LeadCrmError('invalid_response');
       noteId = created.note.id;
     }

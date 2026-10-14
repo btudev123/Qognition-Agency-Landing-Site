@@ -3,7 +3,6 @@ import { appendFunnelContext } from '../lib/funnelContext';
 import Link from 'next/link';
 import { GROWTH_DICTIONARIES, GROWTH_LOCALES, LOCALIZED_PILLARS, type GrowthLocale, type LocalizedPillar } from '../data/growth-locales';
 import { canPublishLocale, localizedHomePath, localizedServicePath } from '../lib/growth-locales';
-import LeadForm from './shared/LeadForm';
 import GrowthLocaleDocument from './GrowthLocaleDocument';
 import AIPlatforms from './shared/AIPlatforms';
 
@@ -13,6 +12,12 @@ export default function GrowthLocalizedPage({ locale, pillar }: { locale: Growth
   const path = pillar ? localizedServicePath(locale, pillar) : localizedHomePath(locale);
   const home = localizedHomePath(locale);
   const section = 'mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-24';
+  // Both conversions leave this page: /book for the calendar, /contact for the one form (2026-10-14).
+  const funnel = { locale, page_id: path, stage: 'bofu' as const };
+  const bookHref = appendFunnelContext('/book', funnel);
+  const contactHref = appendFunnelContext('/contact', funnel);
+  const primaryClass = 'bg-teal-800 px-6 py-4 text-body font-semibold text-white hover:bg-teal-950';
+  const secondaryClass = 'border border-black/20 px-6 py-4 text-body hover:border-teal-800';
   const schema = { '@context': 'https://schema.org', '@type': service ? 'Service' : 'WebPage', name: service?.name || copy.eyebrow, description: service?.description || copy.meta, url: `https://www.qognitionagency.com${path}`, inLanguage: locale, ...(service ? { provider: { '@type': 'Organization', '@id': 'https://www.qognitionagency.com/#organization', name: 'Qognition Agency', url: 'https://www.qognitionagency.com' } } : {}) };
   return <div lang={locale} dir={copy.dir} className="bg-[var(--bg)] text-[var(--ink)]">
     <GrowthLocaleDocument locale={locale} dir={copy.dir} />
@@ -31,7 +36,7 @@ export default function GrowthLocalizedPage({ locale, pillar }: { locale: Growth
         <p className="mb-6 text-meta font-semibold uppercase tracking-widest text-teal-800">{service?.name || copy.eyebrow}</p>
         <h1 className="max-w-5xl text-display font-semibold tracking-tight">{service?.headline || copy.headline}</h1>
         <p className="mt-8 max-w-3xl text-body leading-relaxed text-[var(--ink-soft)]">{service?.description || copy.intro}</p>
-        <div className="mt-9 flex flex-wrap gap-4"><a href={appendFunnelContext('/book', {locale, page_id:path, stage:'bofu'})} className="bg-teal-800 px-6 py-4 text-body font-semibold text-white hover:bg-teal-950">{FUNNEL_ACTIONS[locale][0]}</a><a href="#contact" className="border border-black/20 px-6 py-4 text-body hover:border-teal-800">{FUNNEL_ACTIONS[locale][1]}</a></div>
+        <div className="mt-9 flex flex-wrap gap-4"><a href={bookHref} className={primaryClass}>{FUNNEL_ACTIONS[locale][0]}</a><a href={contactHref} className={secondaryClass}>{FUNNEL_ACTIONS[locale][1]}</a></div>
         {(!pillar || pillar === 'ai-search') && <div className="mt-12"><AIPlatforms compact locale={locale} /></div>}
       </section>
       {service && <section className="border-y border-black/10 bg-white"><div className={`${section} grid gap-12 md:grid-cols-2`}><div><h2 className="text-h2 font-semibold">{copy.deliverablesTitle}</h2><ul className="mt-7 space-y-4">{service.deliverables.map((item) => <li key={item} className="flex gap-3 text-body"><span aria-hidden="true" className="text-teal-700">↗</span><span>{item}</span></li>)}</ul></div><div className="border-s-2 border-teal-700 ps-7"><h2 className="text-h2 font-semibold">{copy.outcomeTitle}</h2><p className="mt-7 text-body leading-relaxed">{service.outcome}</p></div></div></section>}
@@ -39,7 +44,7 @@ export default function GrowthLocalizedPage({ locale, pillar }: { locale: Growth
       <section id="industries" className="bg-[#122d2b] text-white"><div className={section}><h2 className="text-h2 font-semibold">{copy.industriesTitle}</h2><p className="mt-6 max-w-3xl text-body leading-relaxed text-white/80">{copy.industriesIntro}</p><ul className="mt-10 grid gap-x-10 sm:grid-cols-2">{copy.industries.map((name) => <li key={name} className="border-b border-white/20 py-5 text-body">{name}</li>)}</ul></div></section>
       <section id="process" className={section}><h2 className="max-w-3xl text-h2 font-semibold">{copy.processTitle}</h2><div className="mt-12 grid gap-9 md:grid-cols-3">{copy.steps.map((step, index) => <div key={step.title} className="border-t-2 border-teal-700 pt-6"><span className="text-meta text-teal-800">0{index + 1}</span><h3 className="mt-4 text-h3 font-semibold">{step.title}</h3><p className="mt-5 text-body leading-relaxed text-[var(--ink-soft)]">{step.text}</p></div>)}</div><div className="mt-12 border border-black/10 bg-white p-7"><h3 className="text-h3 font-semibold">{copy.scopeTitle}</h3><p className="mt-4 max-w-4xl text-body leading-relaxed">{copy.scopeText}</p></div></section>
       <section className="border-y border-black/10 bg-white"><div className={section}><h2 className="text-h2 font-semibold">{copy.faqTitle}</h2><div className="mt-8">{copy.faqs.map((faq) => <details key={faq.question} className="border-b border-black/10 py-5"><summary className="cursor-pointer text-body font-semibold">{faq.question}</summary><p className="mt-4 max-w-4xl text-body leading-relaxed text-[var(--ink-soft)]">{faq.answer}</p></details>)}</div></div></section>
-      <section id="contact" className={`${section} grid gap-12 lg:grid-cols-2`}><div><h2 className="text-h2 font-semibold">{copy.contactTitle}</h2><p className="mt-6 text-body leading-relaxed text-[var(--ink-soft)]">{copy.contactIntro}</p><a href="mailto:hello@qognitionagency.com" dir="ltr" className="mt-8 inline-block text-body text-teal-800 underline underline-offset-4">hello@qognitionagency.com</a></div><LeadForm spoke="marketing" intent="contact" sourcePage={path} locale={locale} ctaLabel={FUNNEL_ACTIONS[locale][1]} qualifyingQuestion={copy.form.message} /></section>
+      <section id="contact" className={`${section} grid gap-12 lg:grid-cols-2`}><div><h2 className="text-h2 font-semibold">{copy.contactTitle}</h2><p className="mt-6 text-body leading-relaxed text-[var(--ink-soft)]">{copy.contactIntro}</p><a href="mailto:hello@qognitionagency.com" dir="ltr" className="mt-8 inline-block text-body text-teal-800 underline underline-offset-4">hello@qognitionagency.com</a></div><div className="flex flex-wrap items-start gap-4 lg:self-end"><a href={bookHref} className={primaryClass}>{FUNNEL_ACTIONS[locale][0]}</a><a href={contactHref} className={secondaryClass}>{FUNNEL_ACTIONS[locale][1]}</a></div></section>
     </main>
     <footer className="border-t border-black/15 px-6 py-10"><div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-5 text-meta"><p>{copy.footer}</p><Link href="/insights" hrefLang="en" className="underline underline-offset-4">{copy.nav.insights} ({copy.english})</Link><p dir="ltr">© {new Date().getFullYear()} Qognition Agency</p></div></footer>
   </div>;

@@ -686,9 +686,11 @@ export const FREE_TOOLS: FreeToolPage[] = [
     intro:
       'Assess your financial operations across bookkeeping, tax strategy, cash flow, reporting, payroll, and CFO access.',
     inputs: ['6 yes/no/partial questions'],
-    outputs: ['Score out of 100', 'Category breakdown', 'Top gaps identified', 'Personalized recommendations'],
-    useCases: ['Audit your finance function', 'Prepare for fundraising due diligence', 'Identify the biggest risk areas'],
-    faqs: serviceFaq('Finance Health Check')
+    outputs: ['Score out of 100', 'Category breakdown', 'Top gaps identified'],
+    useCases: ['Check your finance basics in a few minutes', 'List the gaps to raise with your accountant or finance lead'],
+    /* No FAQs (Ruth, 2026-10-14). serviceFaq() said Qognition handles "strategy and execution"
+       for a finance health check, a finance-advisory service the agency does not sell. */
+    faqs: []
   }
 ];
 

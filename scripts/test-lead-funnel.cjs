@@ -40,12 +40,33 @@ test('legacy schema accepted and client lifecycle fields are stripped', () => {
   const result = leadSchema.parse({ service: 'tech', intent: 'contact', source_page: '/contact', contact: { name: 'Test', email: 'a@example.com' }, lifecycle: 'SQL' });
   assert.equal(result.lifecycle, undefined); assert.equal(result.service, 'tech');
 });
-test('only fit plus service intent yields MQL; SQL is never inferred', () => {
+// Operator 2026-10-14: every lead arrives through /contact (intent 'contact', or 'audit'), and the
+// form no longer asks business model, revenue or company name. Fit is scored on what is still asked.
+test('only fit plus a service request yields MQL; SQL is never inferred', () => {
   assert.equal(qualifyLead(lead()).eligibility, 'MQL');
   assert.equal(qualifyLead({ ...lead(), qualification: undefined }).eligibility, 'Lead');
   assert.equal(qualifyLead({ ...lead(), intent: 'newsletter' }).eligibility, 'Lead');
-  assert.equal(qualifyLead({ ...lead(), intent: 'audit' }).eligibility, 'Lead');
+  assert.equal(qualifyLead({ ...lead(), intent: 'audit' }).eligibility, 'MQL');
+  assert.equal(qualifyLead({ ...lead(), intent: 'contact' }).eligibility, 'MQL');
   assert.equal(qualifyLead({ ...lead(), qualification: { business_model: 'b2c', employee_band: '20-99' } }).eligibility, 'Lead');
+});
+test('unasked fields never cost a lead its MQL: no business model, revenue, company name or marketing consent', () => {
+  const short = { ...lead(), intent: 'contact', contact: { name: 'Test Buyer', email: 'buyer@example.com', company_url: 'https://example.com', message: 'AI search help' }, qualification: { employee_band: '100-300' }, consent: undefined };
+  const result = qualifyLead(short);
+  assert.equal(result.eligibility, 'MQL');
+  for (const unasked of ['B2B fit', 'Company size or revenue', 'Service-related buying intent']) assert.equal(result.missing.includes(unasked), false, unasked);
+  assert.equal(qualifyLead({ ...short, qualification: { employee_band: '100-300', business_model: 'unknown', revenue_band: 'unknown' } }).eligibility, 'MQL');
+  assert.equal(qualifyLead({ ...short, qualification: { employee_band: '301+', business_model: 'mixed' } }).eligibility, 'MQL');
+});
+test('MQL needs a website, an in-band company size and a message', () => {
+  const short = { ...lead(), intent: 'contact', contact: { name: 'Test Buyer', email: 'buyer@example.com', company_url: 'https://example.com', message: 'AI search help' }, qualification: { employee_band: '20-99' } };
+  assert.equal(qualifyLead({ ...short, contact: { ...short.contact, company_url: '' } }).eligibility, 'Lead');
+  assert.equal(qualifyLead({ ...short, contact: { ...short.contact, message: '   ' } }).eligibility, 'Lead');
+  assert.ok(qualifyLead({ ...short, contact: { ...short.contact, message: undefined } }).missing.includes('What they want help with'));
+  for (const band of ['1-19', 'unknown', undefined]) assert.equal(qualifyLead({ ...short, qualification: { employee_band: band } }).eligibility, 'Lead', String(band));
+  // An older cached client that still sends revenue keeps its fit when staff was not answered.
+  assert.equal(qualifyLead({ ...short, qualification: { revenue_band: '10m-50m' } }).eligibility, 'MQL');
+  assert.equal(qualifyLead({ ...short, qualification: { employee_band: '20-99', business_model: 'b2c' } }).missing.includes('B2B fit'), true);
 });
 test('no configuration fails without network access', async () => {
   assert.equal(crmConfiguration({}).configured, false);
@@ -163,10 +184,22 @@ test('preview validation performs no external request and cannot report capture'
   assert.equal(response.status, 200); assert.equal(body.success, false); assert.equal(body.status, 'validated'); assert.equal(calls, 0);
   delete process.env.QOGNITION_LEAD_MODE;
 });
-test('taxonomy mismatch rejects before providers are contacted', async () => {
-  process.env.VERCEL_ENV = 'production'; let calls = 0; global.fetch = async () => { calls++; throw Error('No network'); };
-  const response = await POST(request({ ...lead(), context: { industry_id: '02', subniche_id: '01.01.01.01' } }));
-  assert.equal(response.status, 400); assert.equal(calls, 0);
+// Owen L4, 2026-10-14: /contact is the only form, so bad page context must never cost the lead.
+test('unresolvable taxonomy context is stripped and logged, and the lead is still accepted', async () => {
+  Object.assign(process.env, env, { RESEND_API_KEY: 'test-only', RESEND_FROM: 'hello@example.com' }); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+  const sent = resendOnly(); pending.length = 0; const logged = [];
+  const bad = { ...lead(), submission_id: 'request-bad-taxonomy', event_id: 'request-bad-taxonomy', context: { industry_id: '02', subniche_id: '01.01.01.01', asset_id: 'free-ai-visibility-audit', page_id: '/contact', locale: 'de' } };
+  const response = await quietly(() => POST(request(bad)), logged); const body = await response.json();
+  assert.equal(response.status, 200); assert.equal(body.status, 'emailed');
+  assert.deepEqual(logged.filter(l => l[1] === '[Lead] context_taxonomy_dropped'), [['warn', '[Lead] context_taxonomy_dropped', { code: 'invalid_taxonomy' }]]);
+  assert.equal(JSON.stringify(logged).includes('01.01.01.01'), false, 'no supplied IDs in logs');
+  assert.equal(JSON.stringify(logged).includes('xample.com'), false);
+  // Only the taxonomy keys go; the audit tag, page and locale survive.
+  assert.match(sent[0].subject, /^\[Free AI visibility audit\]/);
+  const p = provider(); Object.assign(process.env, env); global.fetch = p.request; pending.length = 0;
+  assert.equal((await (await quietly(() => POST(request({ ...bad, submission_id: 'request-bad-taxonomy-2', event_id: 'request-bad-taxonomy-2' })))).json()).status, 'captured');
+  const snapshot = JSON.parse(p.contact.customFields.find(f => f.id === 'inquiry').value);
+  assert.deepEqual(snapshot.context, { asset_id: 'free-ai-visibility-audit', page_id: '/contact', locale: 'de' });
 });
 // Operator decision 2026-10-06: email fallback until GHL credentials exist. LEAD_EMAIL_FALLBACK=off restores strict GHL-first.
 const quietly = async (fn, logged = []) => {
@@ -588,6 +621,124 @@ test('ledger and GHL both down, with email failing too, logs its own allowlisted
 test('ledger rejects insecure endpoint and missing shared secret', () => {
   assert.equal(ledgerConfiguration({ ...env, UPSTASH_REDIS_REST_URL: 'http://redis.example.com' }).configured, false);
   assert.throws(() => createLeadLedger({ ...env, LEAD_LEDGER_HMAC_SECRET: '' }));
+});
+// Operator 2026-10-14: every lead ends up in /contact and emails hello@ through Resend.
+// The five-field form sends name, work email, website, message and company size only.
+const shortLead = (id, extra = {}) => ({
+  service: 'marketing', intent: 'contact', source_page: '/contact', submission_id: id, event_id: id,
+  contact: { name: 'Test Buyer', email: 'buyer@example.com', company_url: 'example.com', message: 'Help us get named in AI answers' },
+  qualification: { employee_band: '100-300' },
+  consent: { analytics: false, advertising: false, basis: 'region_default', recorded_at: '', policy_version: '2026-10-07' },
+  ...extra,
+});
+const toNotify = emails => emails.filter(m => m.to === 'hello@qognitionagency.com');
+test('schema accepts the five-field payload with company, business model, revenue and marketing consent absent or unknown', () => {
+  assert.equal(leadSchema.safeParse(shortLead('request-short-schema')).success, true);
+  const unknowns = shortLead('request-short-unknown', { qualification: { employee_band: '20-99', business_model: 'unknown', revenue_band: 'unknown' }, contact: { ...shortLead('x').contact, company: '' } });
+  assert.equal(leadSchema.safeParse(unknowns).success, true);
+  assert.equal(leadSchema.safeParse(shortLead('request-short-noconsent', { consent: undefined })).success, true);
+  // Older cached clients still submit the full payload.
+  assert.equal(leadSchema.safeParse(lead()).success, true);
+});
+test('short payload: GHL ok without Upstash captures and emails hello@ through Resend', async () => {
+  configured(); for (const k of LEDGER_KEYS) delete process.env[k];
+  const p = provider(); global.fetch = p.request; pending.length = 0;
+  const response = await quietly(() => POST(request(shortLead('request-short-ghl'))));
+  const body = await response.json();
+  assert.equal(response.status, 200); assert.equal(body.status, 'captured'); assert.equal(p.commands.length, 0, 'no Redis call');
+  assert.equal(p.contact.customFields.find(f => f.id === 'eligibility').value, 'MQL');
+  assert.equal(p.contact.customFields.find(f => f.id === 'consent').value, 'not-opted-in');
+  assert.equal(pending.length, 1); await quietly(() => pending[0]());
+  assert.equal(toNotify(p.emailWrites).length, 1, 'notification sent with no ledger');
+  configured();
+});
+test('short payload: GHL down falls back to a synchronous Resend email before the response', async () => {
+  configured(); const p = provider({ ghlUnavailable: true }); global.fetch = p.request; pending.length = 0;
+  const response = await quietly(() => POST(request(shortLead('request-short-down'))));
+  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'emailed');
+  assert.equal(toNotify(p.emailWrites).length, 1, 'notification sent before the response, not in after()');
+});
+test('short payload: GHL down and Resend rejecting is a retryable 503, never a false success', async () => {
+  configured(); const p = provider({ ghlUnavailable: true, emailFails: true }); global.fetch = p.request; pending.length = 0;
+  const response = await quietly(() => POST(request(shortLead('request-short-reject')))); const body = await response.json();
+  assert.equal(response.status, 503); assert.equal(body.success, false); assert.equal(body.retryable, true); assert.equal(pending.length, 0);
+});
+test('short payload: GHL ok and Resend rejecting keeps the GHL capture and logs the failed notification', async () => {
+  configured(); const p = provider({ emailFails: true }); global.fetch = p.request; pending.length = 0; const logged = [];
+  const response = await quietly(() => POST(request(shortLead('request-short-ghl-reject'))), logged);
+  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'captured');
+  await quietly(() => pending[0](), logged);
+  assert.ok(logged.some(l => l[1] === '[Lead] downstream_delivery_failed' && l[2].kind === 'notification'));
+});
+test('LEAD_EMAIL_FALLBACK=off with GHL down is a 503 and sends nothing', async () => {
+  configured(); process.env.LEAD_EMAIL_FALLBACK = 'off'; const p = provider({ ghlUnavailable: true }); global.fetch = p.request; pending.length = 0;
+  try {
+    const response = await quietly(() => POST(request(shortLead('request-short-strict'))));
+    assert.equal(response.status, 503); assert.equal(p.emailWrites.length, 0); assert.equal(pending.length, 0);
+  } finally { configured(); }
+});
+test('a ledger that fails after capture still sends the hello@ notification, but never an unclaimed prospect email', async () => {
+  configured(); const p = provider(); global.fetch = p.request; pending.length = 0; const logged = [];
+  const response = await quietly(() => POST(request(shortLead('request-short-claim'))), logged);
+  assert.equal((await response.json()).status, 'captured');
+  p.options.redisUnavailable = true;
+  await quietly(() => pending[0](), logged);
+  assert.equal(toNotify(p.emailWrites).length, 1, 'internal notification is not lost to a ledger outage');
+  assert.equal(p.emailWrites.filter(m => m.to === 'buyer@example.com').length, 0, 'prospect confirmation stays exactly-once');
+  assert.ok(logged.some(l => l[1] === '[Lead] delivery_claim_unavailable' && l[2].kind === 'notification'));
+});
+test('with a working ledger the notification is still sent exactly once across retries', async () => {
+  configured(); const p = provider(); global.fetch = p.request; pending.length = 0;
+  await quietly(() => POST(request(shortLead('request-short-once'))));
+  await quietly(() => pending[0]()); await quietly(() => pending[0]());
+  assert.equal(toNotify(p.emailWrites).length, 1);
+});
+test('an audit request tagged by funnel context reaches GHL and the notification subject and rows', async () => {
+  // Same constant Mira's /contact and /free-ai-audit use, so client and server cannot drift.
+  const { AUDIT_ASSET_ID, readFunnelContext } = require('../lib/funnelContext.ts');
+  const fromUrl = readFunnelContext(new URLSearchParams(`asset_id=${AUDIT_ASSET_ID}&page_id=/free-ai-audit&stage=bofu`));
+  // Tagged by context alone (intent 'contact'), to prove the context tag is enough by itself.
+  const tagged = shortLead('request-short-audit', { context: fromUrl });
+  assert.equal(leadSchema.parse(tagged).context.asset_id, AUDIT_ASSET_ID);
+  configured(); const p = provider(); global.fetch = p.request; pending.length = 0;
+  assert.equal((await (await quietly(() => POST(request(tagged)))).json()).status, 'captured');
+  const snapshot = JSON.parse(p.contact.customFields.find(f => f.id === 'inquiry').value);
+  assert.equal(snapshot.request_type, 'free-ai-visibility-audit'); assert.equal(snapshot.context.asset_id, AUDIT_ASSET_ID);
+  assert.equal(p.writes.find(w => w.kind === 'note').body.title, 'Website enquiry: Free AI visibility audit');
+  assert.equal(JSON.parse(p.notes[0].body.split('\n').slice(1).join('\n')).request_type, 'free-ai-visibility-audit');
+  await quietly(() => pending[0]());
+  const [mail] = toNotify(p.emailWrites);
+  assert.match(mail.subject, /^\[Free AI visibility audit\] Test Buyer/);
+  const cell = (html, label) => html.match(new RegExp(`>${label}</td><td[^>]*>([^<]*)<`))?.[1];
+  assert.equal(cell(mail.html, 'Request'), 'Free AI visibility audit');
+  assert.equal(cell(mail.html, 'Company size'), '100-300 staff');
+  // The same tag survives the GHL-down fallback.
+  const q = provider({ ghlUnavailable: true }); global.fetch = q.request; pending.length = 0;
+  await quietly(() => POST(request({ ...tagged, submission_id: 'request-short-audit-2', event_id: 'request-short-audit-2' })));
+  assert.match(toNotify(q.emailWrites)[0].subject, /^\[Free AI visibility audit\]/);
+});
+test('intent audit from an older client is also an audit request; a plain enquiry is labelled as one', async () => {
+  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; const sent = resendOnly(); pending.length = 0;
+  await quietly(() => POST(request(shortLead('request-short-legacy-audit', { intent: 'audit' }))));
+  await quietly(() => POST(request(shortLead('request-short-plain'))));
+  const [audit, plain] = toNotify(sent);
+  assert.match(audit.subject, /^\[Free AI visibility audit\]/);
+  assert.equal(plain.html.match(/>Request<\/td><td[^>]*>([^<]*)</)?.[1], 'Enquiry');
+  assert.equal(/Free AI visibility audit/.test(plain.subject), false);
+  configured();
+});
+// Ruth, 2026-10-14: "marketing" is the retired spoke and never leads a notification subject.
+test('non-audit notifications lead with [Enquiry], newsletter signups with [Newsletter signup]', async () => {
+  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; const sent = resendOnly(); pending.length = 0;
+  await quietly(() => POST(request(shortLead('request-label-enquiry'))));
+  await quietly(() => POST(request(shortLead('request-label-news', { intent: 'newsletter', consent: { ...shortLead('x').consent, email_marketing: true }, context: { asset_id: 'free-ai-visibility-audit' } }))));
+  const [enquiry, newsletter] = toNotify(sent);
+  const cell = (html, label) => html.match(new RegExp(`>${label}</td><td[^>]*>([^<]*)<`))?.[1];
+  assert.match(enquiry.subject, /^\[Enquiry\] Test Buyer/); assert.equal(/marketing/i.test(enquiry.subject), false);
+  assert.equal(cell(enquiry.html, 'Request'), 'Enquiry');
+  assert.match(newsletter.subject, /^\[Newsletter signup\] Test Buyer/, 'newsletter wins over an inherited audit tag');
+  assert.equal(cell(newsletter.html, 'Request'), 'Newsletter signup');
+  configured();
 });
 
 (async () => {

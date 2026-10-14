@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { AUDIT_ASSET_ID } from './funnelContext';
 
 export const spokeSchema = z.enum([
   'marketing',
@@ -86,7 +87,11 @@ export const leadSchema = z.object({
     timeframe: z.enum(['now', '1-3-months', '3-6-months', 'researching']).optional(),
   }).optional(),
   consent: z.object({
-    email_marketing: z.boolean(),
+    /**
+     * Optional since the five-field /contact form (operator, 2026-10-14) stopped asking.
+     * Absent is "not opted in", never a yes. Newsletter signups still require true (route).
+     */
+    email_marketing: z.boolean().optional(),
     analytics: z.boolean(),
     advertising: z.boolean(),
     policy_version: z.string().min(1).max(50),
@@ -119,6 +124,15 @@ export const leadSchema = z.object({
 });
 
 export type LeadPayload = z.infer<typeof leadSchema>;
+
+/**
+ * A Free AI visibility audit request: /contact?asset_id=AUDIT_ASSET_ID (lib/funnelContext.ts,
+ * which /contact turns into intent 'audit'), or intent 'audit' from an older client. Either
+ * signal alone counts. A display label for the team only: it comes from the URL, so it never
+ * grants anything and plays no part in qualification.
+ */
+export const isAuditLead = (lead: Pick<LeadPayload, 'intent' | 'context'>) =>
+  lead.intent === 'audit' || lead.context?.asset_id === AUDIT_ASSET_ID;
 
 /**
  * Consent evidence the server derives itself (country from x-vercel-ip-country, the Sec-GPC

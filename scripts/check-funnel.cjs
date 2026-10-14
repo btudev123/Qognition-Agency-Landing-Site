@@ -29,6 +29,7 @@ const walk = (dir, out = []) => {
 // lib/ included: on 2026-10-06 spokes, the audit email and the audit PDF still hard-coded it.
 const sources = [...walk('app'), ...walk('components'), ...walk('lib')].filter((f) => !f.includes('siteConfig'));
 // services.leadconnectorhq.com is the GHL REST API used by lib/leadCrm.ts, not the calendar.
+const readNextConfig = () => fs.readFileSync('next.config.mjs', 'utf8');
 const hardCoded = sources.filter((f) => /(?<!services\.)leadconnectorhq\.com/.test(fs.readFileSync(f, 'utf8')));
 assert.deepEqual(
   hardCoded, [],
@@ -46,13 +47,190 @@ assert.ok(/^tel:\+\d{8,15}$/.test(PHONE_LINK), `PHONE_LINK is malformed: ${PHONE
 assert.ok(/^https:\/\//.test(BOOKING_LINK), `BOOKING_LINK is not an absolute URL: ${BOOKING_LINK}`);
 assert.ok(/@/.test(CONTACT_EMAIL), `CONTACT_EMAIL is malformed: ${CONTACT_EMAIL}`);
 
-/* 3. The audit page must carry a real form. It is the primary CTA on the
-      homepage in three places, and the operator's model is form-first with a
-      human delivering the report. */
-const auditView = fs.readFileSync('components/LocalAuditExperience.tsx', 'utf8');
-assert.ok(auditView.includes('LeadForm'), '/free-ai-audit no longer renders LeadForm. That page is the destination of the primary CTA.');
-const leadForm = fs.readFileSync('components/shared/LeadForm.tsx', 'utf8');
-assert.ok(leadForm.includes("'/api/lead'"), 'LeadForm no longer posts to /api/lead.');
+/* 3. One form, on /contact. Operator, 2026-10-14: "Just one single page with a form
+      that submits leads, and one book call, that's it", and "all leads should end up
+      in /contact". Until that day seven surfaces embedded LeadForm, /free-ai-audit
+      included, and the form carried nine controls.
+
+      Every check here reads code with comments stripped, so a commented-out
+      <LeadForm> or a stale comment cannot pass or fail it. */
+const stripComments = (src) => src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+const code = (file) => stripComments(fs.readFileSync(file, 'utf8'));
+const LEAD_FORM_FILE = path.join('components', 'shared', 'LeadForm.tsx');
+
+/* 3a. Exactly one route renders LeadForm. SpokeHomepage.tsx still imports it, and is
+       allowed only because every path that could render it is 308'd before routing:
+       the four retired spoke hubs and their :path* wildcards, in next.config.mjs. */
+const formHosts = sources.filter((f) => f !== LEAD_FORM_FILE && /<LeadForm[\s/>]|from\s+['"][./]*(?:components\/)?shared\/LeadForm['"]|from\s+['"]\.\/LeadForm['"]/.test(code(f))).sort();
+const RETIRED_HOST = path.join('components', 'spokes', 'SpokeHomepage.tsx');
+assert.deepEqual(
+  formHosts, [path.join('app', 'contact', 'page.tsx'), RETIRED_HOST].sort(),
+  `LeadForm is rendered outside /contact:\n  ${formHosts.join('\n  ')}\n` +
+  `Operator, 2026-10-14: every lead goes through the one form on /contact. Link to it with ` +
+  `components/shared/EnquiryLinks.tsx, or auditRequestHref() for the Free AI visibility audit.`
+);
+for (const spoke of ['marketing', 'tech', 'automation', 'finance']) {
+  for (const source of [`/${spoke}`, `/${spoke}/:path*`]) {
+    assert.ok(
+      new RegExp(`source:\\s*'${source.replace(/[/*]/g, (c) => '\\' + c)}',\\s*destination:\\s*'[^']+',\\s*permanent:\\s*true`).test(readNextConfig()),
+      `${source} is no longer a permanent redirect, so app/[spoke] can render SpokeHomepage and its LeadForm again. ` +
+      `Either restore the redirect or take LeadForm out of ${RETIRED_HOST}.`
+    );
+  }
+}
+const spokeImporters = sources.filter((f) => /SpokeHomepage['"]/.test(code(f))).sort();
+assert.deepEqual(
+  spokeImporters, [path.join('app', '[spoke]', '[service]', 'page.tsx'), path.join('app', '[spoke]', 'page.tsx')].sort(),
+  `SpokeHomepage is imported outside the redirected app/[spoke] routes: ${spokeImporters.join(', ')}`
+);
+
+/* 3b. Only LeadForm posts to /api/lead. A second fetch is a second form. */
+const posters = sources.filter((f) => !f.startsWith(path.join('app', 'api')) && /fetch\(\s*[`'"][^`'"]*\/api\/lead/.test(code(f)));
+assert.deepEqual(posters, [LEAD_FORM_FILE], `Files that post to /api/lead: ${posters.join(', ')}. Only LeadForm may.`);
+
+/* 3c. /book is the calendar and nothing else. */
+for (const file of ['app/book/page.tsx', 'components/shared/CalBooking.tsx']) {
+  const src = code(file);
+  assert.ok(!/<form[\s>]|<LeadForm|<input[\s/>]|<textarea|<select[\s>]|\/api\/lead/.test(src), `${file} renders a form or posts a lead. /book is the calendar only.`);
+}
+assert.ok(/<CalBooking[\s/>]/.test(code('app/book/page.tsx')), '/book no longer renders the calendar.');
+
+/* 3d. LeadForm renders exactly five fields, rendered rather than grepped, through the
+       props /contact itself builds from its query string (lib/contactForm.ts). Until
+       2026-10-14 this block passed `locale` straight to LeadForm, which /contact never
+       did, so it proved German labels while every /contact?locale=de visitor got an
+       English form (Owen F1). The honeypot is excluded by name; the newsletter opt-in
+       renders only for intent="newsletter", which the server rejects without it. */
+const React = require('react');
+const { renderToStaticMarkup } = require('react-dom/server');
+const LeadFormModule = require('../components/shared/LeadForm.tsx');
+const { contactFormProps } = require('../lib/contactForm.ts');
+const { leadCopy, LEAD_LOCALES } = require('../lib/leadCopy.ts');
+const { leadSchema } = require('../lib/validation.ts');
+const funnelContext = require('../lib/funnelContext.ts');
+const FIVE = ['name', 'email', 'company_url', 'message', 'employee_band'];
+const contactPage = code('app/contact/page.tsx');
+// The page must hand LeadForm exactly what contactFormProps returns, or rendering it here proves nothing.
+assert.ok(/contactFormProps\(await searchParams\)/.test(contactPage), '/contact no longer builds its form props with contactFormProps(), so this gate is not rendering what the page renders.');
+const leadFormJsx = contactPage.match(/<LeadForm\b[\s\S]*?\/>/)?.[0] || '';
+for (const prop of ['spoke="marketing"', 'intent={intent}', 'sourcePage="/contact"', 'locale={locale}', 'context={context}']) {
+  assert.ok(leadFormJsx.includes(prop), `/contact renders <LeadForm> without ${prop}.`);
+}
+const asContactRenders = (query) => {
+  const { intent, locale, context } = contactFormProps(query);
+  return { html: renderToStaticMarkup(React.createElement(LeadFormModule.default, { spoke: 'marketing', intent, sourcePage: '/contact', locale, context })), intent, locale, context };
+};
+const controls = (html) => [...html.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)].map((m) => m[1]).filter((n) => n !== 'website_trap');
+const escapeHtml = (t) => t.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;');
+const english = leadCopy('en');
+for (const audit of [false, true]) {
+  for (const locale of [undefined, ...LEAD_LOCALES]) {
+    const query = { page_id: '/de', stage: 'bofu', ...(locale ? { locale } : {}), ...(audit ? { asset_id: funnelContext.AUDIT_ASSET_ID } : {}) };
+    const r = asContactRenders(query);
+    const where = `/contact?${new URLSearchParams(query)}`;
+    const expected = locale || 'en';
+    assert.equal(r.locale, expected, `${where} resolves locale ${r.locale}.`);
+    assert.equal(r.intent, audit ? 'audit' : 'contact', `${where} submits intent ${r.intent}.`);
+    assert.deepEqual(controls(r.html), FIVE, `${where} renders ${controls(r.html).join(', ')}. Operator, 2026-10-14: exactly ${FIVE.join(', ')}.`);
+    assert.ok(r.html.includes('name="website_trap"'), 'LeadForm lost its honeypot.');
+    for (const [, id] of r.html.matchAll(/<(?:input|select|textarea)\b[^>]*\bid="([^"]+)"/g)) {
+      assert.ok(r.html.includes(`for="${id}"`), `LeadForm control ${id} has no <label for>, so a screen reader announces it unnamed.`);
+    }
+    const c = leadCopy(expected);
+    for (const label of [c.name, c.email, c.website, c.message, c.employees, `* ${c.required}`, audit ? c.audit : c.send]) {
+      assert.ok(r.html.includes(escapeHtml(label)), `${where} does not render "${label}" in its own language.`);
+    }
+    if (expected !== 'en') assert.ok(!r.html.includes(escapeHtml(english.email)) || c.email === english.email, `${where} renders the English "${english.email}" label.`);
+    assert.equal(/<form[^>]*\bdir="rtl"/.test(r.html), expected === 'ar', `${where}: the form is ${expected === 'ar' ? 'not ' : ''}right-to-left.`);
+  }
+}
+assert.equal(leadCopy('en').message, 'What do you want help with?', 'The message label is the operator\'s, 2026-10-14.');
+assert.deepEqual(controls(renderToStaticMarkup(React.createElement(LeadFormModule.default, { spoke: 'marketing', sourcePage: '/contact', intent: 'newsletter' }))), [...FIVE, 'email_marketing'], 'A newsletter LeadForm must still render its opt-in, or the server rejects every newsletter lead.');
+
+/* 3d-ii. The locale survives to the submission. Rendering proves the labels; the lead's
+          context.locale drives the confirmation email and the GHL locale field, so it
+          is asserted on the exact functions submit() calls. Also covers a caller that
+          passes only context, no locale prop (Owen's repro). */
+const { resolveFormLocale, submissionContextFor } = LeadFormModule;
+const leadFormCode = code(LEAD_FORM_FILE);
+assert.ok(/useState<LeadLocale>\(resolveFormLocale\(localeProp, context\?\.locale, sourcePage\)\)/.test(leadFormCode), 'LeadForm no longer seeds its locale from resolveFormLocale(prop, context, path).');
+assert.ok(/setLocale\(resolveFormLocale\(localeProp, context\?\.locale, pathname\)\)/.test(leadFormCode), 'LeadForm re-resolves its locale without the context locale, so the first client render undoes the fix.');
+assert.ok(/const submissionContext = submissionContextFor\(\{ inherited, context, locale, sourcePage, intent \}\)/.test(leadFormCode), 'submit() no longer builds its context with submissionContextFor().');
+for (const locale of LEAD_LOCALES) {
+  const { locale: propLocale, context } = contactFormProps({ locale, page_id: '/de' });
+  for (const [prop, label] of [[propLocale, 'as /contact passes it'], [undefined, 'context only']]) {
+    const formLocale = resolveFormLocale(prop, context.locale, '/contact');
+    assert.equal(formLocale, locale, `LeadForm (${label}) resolves ${formLocale} for /contact?locale=${locale}.`);
+    const submitted = submissionContextFor({ inherited: funnelContext.readFunnelContext(new URLSearchParams({ locale, page_id: '/de' })), context, locale: formLocale, sourcePage: '/contact', intent: 'contact' });
+    assert.equal(submitted.locale, locale, `A /contact?locale=${locale} lead is submitted with context.locale ${submitted.locale}.`);
+    assert.equal(leadSchema.parse({ service: 'marketing', intent: 'contact', source_page: '/contact', contact: { name: 'A', email: 'a@example.com' }, context: submitted }).context.locale, locale, `context.locale ${locale} does not survive the lead schema.`);
+  }
+  const contextOnly = renderToStaticMarkup(React.createElement(LeadFormModule.default, { spoke: 'marketing', intent: 'contact', sourcePage: '/contact', context: { locale } }));
+  assert.ok(contextOnly.includes(escapeHtml(leadCopy(locale).email)), `LeadForm given only context.locale=${locale} renders another language.`);
+}
+assert.equal(resolveFormLocale(undefined, 'xx', '/de/growth'), 'de', 'An invalid context locale must fall back to the path, not win.');
+assert.equal(resolveFormLocale(undefined, undefined, '/contact'), 'en');
+
+// The removed fields still send their defaults, so the server sees the same payload shape.
+for (const band of ['unknown', '1-19', '20-99', '100-300', '301+']) {
+  const q = LeadFormModule.enquiryQualification(band);
+  assert.deepEqual(q, { business_model: 'unknown', employee_band: band, revenue_band: 'unknown', revenue_basis: 'annual-revenue' });
+  leadSchema.parse({ service: 'marketing', intent: 'contact', source_page: '/contact', contact: { name: 'A', email: 'a@example.com', company: '' }, qualification: q });
+}
+assert.ok(leadFormCode.includes("'/api/lead'"), 'LeadForm no longer posts to /api/lead.');
+assert.ok(/company:\s*''/.test(leadFormCode), 'LeadForm no longer sends contact.company as an empty string.');
+
+/* 3e. The Free AI visibility audit is requested on /contact, tagged. The tag is the
+       existing asset_id funnel key; /contact turns it into intent "audit". Links build
+       it with auditRequestHref() or AUDIT_REQUEST_HREF, never a typed-in URL (Owen L1). */
+assert.equal(funnelContext.AUDIT_ASSET_ID, 'free-ai-visibility-audit');
+for (const href of [funnelContext.AUDIT_REQUEST_HREF, funnelContext.auditRequestHref({ page_id: '/' }), funnelContext.auditRequestHref()]) {
+  const query = Object.fromEntries(new URL(href, 'https://x.test').searchParams);
+  assert.equal(new URL(href, 'https://x.test').pathname, '/contact');
+  assert.equal(contactFormProps(query).intent, 'audit', `${href} does not arrive on /contact as an audit request.`);
+}
+const auditView = code('components/LocalAuditExperience.tsx');
+assert.ok(!/LeadForm|<form[\s>]/.test(auditView), '/free-ai-audit renders a form again. It links to /contact (operator, 2026-10-14).');
+assert.ok(auditView.includes('auditRequestHref('), '/free-ai-audit no longer links to the tagged /contact request.');
+assert.ok(/href=\{auditRequestHref\(/.test(code('components/home/Snapshot.tsx')), 'The homepage audit button no longer builds its link with auditRequestHref().');
+const sticky = code('components/shared/StickyCTA.tsx');
+assert.ok(/path === '\/free-ai-audit' \? \{ asset_id: AUDIT_ASSET_ID \}/.test(sticky) && /href=\{enquiryHref\}/.test(sticky), 'The sticky bar enquiry link on /free-ai-audit no longer carries the audit tag (Owen L2).');
+const typedTags = sources.filter((f) => f !== path.join('lib', 'funnelContext.ts') && /asset_id=/.test(code(f)));
+assert.deepEqual(typedTags, [], `Typed-in audit tags: ${typedTags.join(', ')}. Use auditRequestHref() so the tag cannot drift.`);
+const deadAnchor = sources.filter((f) => /free-ai-audit\/?#request/.test(code(f)));
+assert.deepEqual(deadAnchor, [], `These link to /free-ai-audit#request, which no longer exists: ${deadAnchor.join(', ')}`);
+
+/* 3e-ii. No other form takes a lead. A <form> outside LeadForm passes only as a GET
+          search or filter: no onSubmit, no POST, no /api action. On 2026-10-14
+          FinanceHealthScore still had an onSubmit "capture" form promising a CFO-level
+          analysis in 48 hours (Ruth F); this is the rule that would have caught it. */
+const formTags = (src) => {
+  const tags = [];
+  for (let i = src.indexOf('<form'); i !== -1; i = src.indexOf('<form', i + 5)) {
+    if (!/[\s>]/.test(src[i + 5] || '')) continue;
+    let depth = 0, j = i;
+    for (; j < src.length; j++) {
+      if (src[j] === '{') depth++;
+      else if (src[j] === '}') depth--;
+      else if (src[j] === '>' && depth === 0) break;
+    }
+    tags.push(src.slice(i, j + 1));
+  }
+  return tags;
+};
+const leadishForms = sources.filter((f) => f !== LEAD_FORM_FILE).flatMap((f) => formTags(code(f))
+  .filter((tag) => /\bonSubmit=|method=\{|method=["']post|action=[{"'`][^>]*\/api\//i.test(tag))
+  .map((tag) => `${f}: ${tag.replace(/\s+/g, ' ').slice(0, 100)}`));
+assert.deepEqual(leadishForms, [], `Forms outside LeadForm that submit somewhere other than a GET search:\n  ${leadishForms.join('\n  ')}\nEvery lead goes through /contact. A calculator needs inputs, not a <form>.`);
+
+/* 3f. Copy on the conversion path: plain English, no em dash, no banned words (§10). */
+const BANNED = /\b(unlock|supercharge|leverage|seamless|game-changer)\b|in today's digital landscape/i;
+const copyStrings = [...LEAD_LOCALES.flatMap((l) => Object.values(leadCopy(l))), ...[contactPage, auditView, code('components/shared/EnquiryLinks.tsx')]];
+for (const text of copyStrings) {
+  assert.ok(!text.includes('—'), `Em dash on the conversion path (CLAUDE.md §10): ${text.slice(0, 80)}`);
+  assert.ok(!BANNED.test(text), `Banned word on the conversion path (CLAUDE.md §10): ${text.match(BANNED)?.[0]}`);
+}
+assert.ok(!/<ContactChannelLink|mailto:|Prefer to talk/.test(contactPage), '/contact carries a second path again (book link, email, phone or WhatsApp). Operator, 2026-10-14.');
 
 /* 4. The homepage must expose the calendar on the page, not only as a link.
       Every navigation between intent and a held slot loses people who had
@@ -86,7 +264,7 @@ for (const stale of ['public/llms.txt', 'public/llm.txt']) {
     `silently and public/llms.txt conflicts with the route.`
   );
 }
-const nextConfig = fs.readFileSync('next.config.mjs', 'utf8');
+const nextConfig = readNextConfig();
 assert.ok(
   /source:\s*'\/llm\.txt',\s*destination:\s*'\/llms\.txt',\s*permanent:\s*true/.test(nextConfig),
   'next.config.mjs no longer 308s /llm.txt to /llms.txt. Crawlers cached the old address from the Link header.'
@@ -165,7 +343,11 @@ for (const file of ['app/about/page.tsx', 'app/contact/page.tsx', 'app/team/page
 
 console.log(
   `✓ funnel: booking resolves from one constant in ${sources.length} source files, contact links ` +
-  `well-formed, /free-ai-audit posts to /api/lead, calendar embedded on the homepage at #book.`
+  `well-formed, calendar embedded on the homepage at #book.`
+);
+console.log(
+  `✓ one form: LeadForm renders only on /contact with ${FIVE.length} fields in ${LEAD_LOCALES.length} locales, /book is the calendar only, ` +
+  `/free-ai-audit links to /contact tagged asset_id=${funnelContext.AUDIT_ASSET_ID}.`
 );
 console.log(
   `✓ llms: one source (route), /llm.txt 308s to /llms.txt, ${PRIORITY.length} priority pages listed ` +
