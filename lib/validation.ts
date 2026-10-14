@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { AUDIT_ASSET_ID } from './funnelContext';
+import { CLICK_ID_PATTERN, isIsoTimestamp, sanitizeClickIds, type ClickIdKey } from './clickIds';
 
 export const spokeSchema = z.enum([
   'marketing',
@@ -36,15 +37,31 @@ export const contactSchema = z.object({
   message: z.string().max(5000).optional(),
 });
 
-export const utmSchema = z
-  .object({
-    source: z.string().max(200).optional(),
-    medium: z.string().max(200).optional(),
-    campaign: z.string().max(200).optional(),
-    term: z.string().max(200).optional(),
-    content: z.string().max(200).optional(),
-  })
-  .optional();
+/**
+ * Owen F1, 2026-10-14: attribution never fails a lead. A field that does not parse is dropped,
+ * and a value that is not an object at all, or has nothing valid left, becomes undefined. The
+ * strict object after the preprocess therefore never fails. Same idea as the click ID field below.
+ */
+function failSoftObject<Shape extends Record<string, z.ZodType>>(shape: Shape) {
+  return z.preprocess((value) => {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+    const source = value as Record<string, unknown>;
+    const kept: Record<string, unknown> = {};
+    for (const key of Object.keys(shape)) {
+      const field = shape[key].safeParse(source[key]);
+      if (field.success && field.data !== undefined) kept[key] = field.data;
+    }
+    return Object.keys(kept).length ? kept : undefined;
+  }, z.object(shape).optional());
+}
+
+export const utmSchema = failSoftObject({
+  source: z.string().max(200).optional(),
+  medium: z.string().max(200).optional(),
+  campaign: z.string().max(200).optional(),
+  term: z.string().max(200).optional(),
+  content: z.string().max(200).optional(),
+});
 
 /** A filled trap is a bot. Empty or whitespace is a person. */
 const trapField = z.preprocess(
@@ -54,6 +71,15 @@ const trapField = z.preprocess(
   },
   z.string().max(500).optional(),
 );
+
+/** sanitizeClickIds runs first and drops anything invalid, so the object below never fails. */
+const clickId = z.object({ id: z.string().regex(CLICK_ID_PATTERN), captured_at: z.string().refine(isIsoTimestamp) }).optional();
+const clickIdsField = z.preprocess(
+  sanitizeClickIds,
+  z.object({ gclid: clickId, wbraid: clickId, gbraid: clickId, li_fat_id: clickId, msclkid: clickId } satisfies Record<ClickIdKey, typeof clickId>).optional(),
+);
+
+const recordedAt = z.union([z.string().datetime(), z.literal('')]);
 
 export const leadSchema = z.object({
   service: spokeSchema,
@@ -104,17 +130,28 @@ export const leadSchema = z.object({
     analytics: z.boolean(),
     advertising: z.boolean(),
     policy_version: z.string().min(1).max(50),
-    /** When the visitor made the cookie choice; empty when no choice was made and the region default applied. */
-    recorded_at: z.union([z.string().datetime(), z.literal('')]),
+    /**
+     * When the visitor made the cookie choice; empty when no choice was made and the region default applied.
+     * Fail-soft (Owen re-review C): it comes from the visitor's own storage, so a value that is not a
+     * datetime is dropped rather than costing the lead a 400. The notification then says "not recorded".
+     */
+    recorded_at: z.preprocess(
+      (value) => (recordedAt.safeParse(value).success ? value : undefined),
+      recordedAt.optional(),
+    ),
     /** Optional for older clients. Absent is treated as a region default, never as explicit. */
     basis: z.enum(['explicit', 'region_default']).optional(),
   }).optional(),
-  attribution: z.object({
+  /** Fail-soft (Owen F1): a field that does not parse is dropped, never a 400. */
+  attribution: failSoftObject({
     first_touch: utmSchema,
     last_touch: utmSchema,
     landing_page: z.string().max(500).optional(),
     referrer_host: z.string().max(250).optional(),
-  }).optional(),
+    /** Ad click IDs (lib/clickIds.ts). An invalid ID is dropped here, never a 400. */
+    first_click_ids: clickIdsField,
+    last_click_ids: clickIdsField,
+  }),
   /** The trap. hp_field_q matches no autofill rule (Anton F4); honeypot is what cached clients send. */
   hp_field_q: trapField,
   honeypot: trapField,

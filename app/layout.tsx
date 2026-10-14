@@ -14,7 +14,7 @@ import StickyCTA from '../components/shared/StickyCTA';
 import FloatingWhatsApp from '../components/shared/FloatingWhatsApp';
 import MetaPixel from '../components/shared/MetaPixel';
 import ConsentManager, { ConsentScripts } from '../components/shared/ConsentManager';
-import { consentDefaultFor, consentModeScript } from '../lib/consent';
+import { consentDefaultFor, consentModeScript, ga4ConfigScript } from '../lib/consent';
 import AcquisitionTracker from '../components/shared/AcquisitionTracker';
 import NoiseLayer from '../components/NoiseLayer';
 
@@ -144,11 +144,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             and ConsentScripts read, so this signal and the script gate agree. A
             stored explicit choice always wins. On an update the fallback is
             `denied`: a choice was just made and we could not read it.
-            Global Privacy Control: with no stored choice and
-            navigator.globalPrivacyControl === true, ad_storage, ad_user_data and
-            ad_personalization are denied even in an opt-out region. Analytics
-            keeps the region default. This is effectiveConsent() in lib/consent.ts,
-            so the Google signal and the script gate agree for GPC visitors too.
+            Global Privacy Control: with navigator.globalPrivacyControl === true,
+            ad_storage, ad_user_data and ad_personalization are denied whatever
+            was stored or defaulted, an explicit advertising yes included (Anton
+            F3, 2026-10-14). Analytics keeps the stored choice, else the region
+            default. This is effectiveConsent() in lib/consent.ts, so the Google
+            signal and the script gate agree for GPC visitors too. A choice saved
+            under an older CONSENT_POLICY_VERSION is ignored, so it is asked again.
             The script itself is consentModeScript() in the same file. */}
         {!preview && (
           <script
@@ -170,13 +172,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </Script>
         </ConsentScripts>
         <ConsentScripts category="analytics">
-        {/* GA4 */}
+        {/* GA4. With advertising off, page_location goes without the ad click IDs
+            (lib/clickIds.ts); the address bar is never rewritten. ga4ConfigScript()
+            in lib/consent.ts, tested in scripts/test-lead-funnel.cjs. */}
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} strategy="afterInteractive" />
         <Script id="ga4-config" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA4_ID}');`}
+          {ga4ConfigScript(GA4_ID, regionDefault)}
         </Script>
         {/* Microsoft Clarity (renders only when NEXT_PUBLIC_CLARITY_ID is set) */}
         {CLARITY_ID && (

@@ -1,6 +1,7 @@
 import { isAuditLead, type LeadPayload, type ServerConsentEvidence } from './validation';
 import { leadCopy } from './leadCopy';
 import { qualifyLead } from './leadQualification';
+import { CLICK_ID_KEYS, type ClickIds } from './clickIds';
 import { BOOKING_LINK, CONTACT_EMAIL } from '../data/siteConfig';
 
 /**
@@ -81,6 +82,11 @@ const optionalRow = (label: string, value: string | undefined) => value?.trim() 
 const STAGE_LABELS: Record<string, string> = { tofu: 'Researching (tofu)', mofu: 'Comparing options (mofu)', bofu: 'Ready to buy (bofu)' };
 type Touch = NonNullable<LeadPayload['utm']>;
 const campaign = (touch: Touch | undefined) => touch ? [touch.source, touch.medium, touch.campaign, touch.term, touch.content].filter(Boolean).join(' / ') : undefined;
+/** "gclid: abc (2026-10-14) / msclkid: def (2026-09-30)", in a fixed order, so the team can copy
+ *  an ID into an offline conversion import. The date is when the browser first saw that ID (UTC),
+ *  which an import needs as the click time. The server has already validated each ID and date;
+ *  row() still escapes. */
+const clickIds = (ids: ClickIds | undefined) => ids ? CLICK_ID_KEYS.flatMap(key => { const entry = ids[key]; return entry ? [`${key}: ${entry.id} (${entry.captured_at.slice(0, 10)})`] : []; }).join(' / ') : undefined;
 const BASIS_LABELS: Record<ServerConsentEvidence['basis'], string> = { explicit: 'explicit', region_default: 'region default', unknown: 'not recorded' };
 
 function leadNotificationHtml(lead: LeadPayload, evidence: ServerConsentEvidence): string {
@@ -127,6 +133,8 @@ function leadNotificationHtml(lead: LeadPayload, evidence: ServerConsentEvidence
       ${optionalRow('Last campaign', campaign(lead.attribution?.last_touch))}
       ${optionalRow('Landing page', lead.attribution?.landing_page)}
       ${optionalRow('Referred by', lead.attribution?.referrer_host)}
+      ${optionalRow('First ad click', clickIds(lead.attribution?.first_click_ids))}
+      ${optionalRow('Latest ad click', clickIds(lead.attribution?.last_click_ids))}
       ${row('Request', requestLabel(lead))}
       ${row('Qualification', qualification.eligibility)}
       ${row('Missing for MQL', qualification.missing.join(', ') || 'nothing')}

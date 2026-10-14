@@ -392,7 +392,29 @@ test('schema accepts the consent basis and an empty recorded_at for a default, a
   assert.equal(leadSchema.parse(withConsent({ basis: 'explicit' })).consent.basis, 'explicit');
   assert.equal(leadSchema.parse(lead()).consent.basis, undefined);
   assert.equal(leadSchema.safeParse(withConsent({ basis: 'implied' })).success, false);
-  assert.equal(leadSchema.safeParse(withConsent({ recorded_at: 'yesterday' })).success, false);
+});
+/* Owen re-review C: a tampered stored recorded_at used to make /api/lead return 400. */
+test('schema: a consent recorded_at that is not a datetime is dropped, never a 400, and the rest of consent is kept', () => {
+  for (const bad of ['yesterday', 'tampered', 42, null, '<b>2026-10-14T00:00:00.000Z</b>']) {
+    const parsed = leadSchema.safeParse(withConsent({ basis: 'explicit', advertising: false, recorded_at: bad }));
+    assert.equal(parsed.success, true, JSON.stringify(bad));
+    assert.equal(Object.hasOwn(parsed.data.consent, 'recorded_at') && parsed.data.consent.recorded_at !== undefined, false, `${JSON.stringify(bad)} is dropped`);
+    assert.deepEqual([parsed.data.consent.analytics, parsed.data.consent.advertising, parsed.data.consent.basis], [true, false, 'explicit'], JSON.stringify(bad));
+  }
+  assert.equal(leadSchema.parse(withConsent({ recorded_at: '2026-10-14T00:00:00.000Z' })).consent.recorded_at, '2026-10-14T00:00:00.000Z');
+  assert.equal(leadSchema.parse(withConsent({ recorded_at: '' })).consent.recorded_at, '');
+  const { recorded_at: _omitted, ...withoutTime } = lead().consent;
+  assert.equal(leadSchema.safeParse({ ...lead(), consent: withoutTime }).success, true, 'absent is accepted too');
+});
+test('API: consent.recorded_at "tampered" returns 200 emailed, and the notification does not print it', async () => {
+  configured(); const sent = resendOnly(); pending.length = 0;
+  const body = { ...lead(), submission_id: 'request-badtime-1', consent: { ...lead().consent, recorded_at: 'tampered' } };
+  const response = await quietly(() => POST(request(body)));
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).status, 'emailed');
+  const [note] = toNotify(sent);
+  assert.equal(note.html.includes('tampered'), false);
+  assert.equal(cell(note.html, 'Consent recorded'), 'not recorded');
 });
 test('Meta CAPI follows the consent basis, the server region and Sec-GPC', async () => {
   const cases = [
@@ -452,7 +474,13 @@ test('consent: rejects clear their own cookies every time, reload only on withdr
     env = setup(); saveConsent(false, true); assert.deepEqual(env.cleared(), ['_ga', '_gid']); assert.equal(env.reloads(), 0);
     env = setup({ region: 'granted' }); saveConsent(false, false); assert.deepEqual(env.cleared(), ['_fbp', '_ga', '_gcl_au', '_gid', '_lfa']); assert.equal(env.reloads(), 1, 'rejecting a running default is a withdrawal');
     setup({ region: 'granted', gpc: true }); assert.deepEqual([effectiveConsent().analytics, effectiveConsent().advertising], [true, false]);
-    setup({ region: 'granted', gpc: true }); saveConsent(true, true); assert.equal(effectiveConsent().advertising, true, 'an explicit choice beats GPC');
+    // Anton F3: GPC wins over a stored advertising yes. Analytics keeps the stored choice.
+    setup({ region: 'granted', gpc: true }); saveConsent(true, true);
+    assert.deepEqual([effectiveConsent().analytics, effectiveConsent().advertising], [true, false], 'GPC beats an explicit advertising yes');
+    assert.deepEqual([consentEvidence().basis, consentEvidence().advertising], ['explicit', false], 'the lead payload says no to advertising');
+    setup({ region: 'denied', gpc: true }); saveConsent(false, true);
+    assert.deepEqual([effectiveConsent().analytics, effectiveConsent().advertising], [false, false]);
+    setup({ region: 'granted', gpc: false }); saveConsent(true, true); assert.equal(effectiveConsent().advertising, true, 'without GPC the stored yes stands');
   } finally {
     delete global.window; delete global.document; refreshConsentFromStorage();
     if (navigatorDescriptor) Object.defineProperty(globalThis, 'navigator', navigatorDescriptor); else delete globalThis.navigator;
@@ -465,13 +493,15 @@ test('consent mode default script matches effectiveConsent(), including GPC in o
   const navigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
   const stored = [null, { analytics: true, advertising: true }, { analytics: false, advertising: false }, { analytics: true, advertising: false }];
   try {
-    for (const region of [true, false]) for (const gpc of [true, false]) for (const choice of stored) {
+    // Owen re-review C: a stored choice whose recorded_at is not one saveConsent() could have
+    // written counts as no choice, in the module and the inline script alike.
+    for (const when of ['2026-10-07T00:00:00.000Z', 'tampered', '2026-02-30T00:00:00.000Z', 42, undefined]) for (const region of [true, false]) for (const gpc of [true, false]) for (const choice of stored) {
       const store = new Map();
-      if (choice) store.set(CONSENT_STORAGE_KEY, JSON.stringify({ ...choice, recorded_at: '2026-10-07T00:00:00.000Z', policy_version: CONSENT_POLICY_VERSION }));
+      if (choice) store.set(CONSENT_STORAGE_KEY, JSON.stringify({ ...choice, recorded_at: when, policy_version: CONSENT_POLICY_VERSION }));
       const listeners = {};
       const win = { localStorage: { getItem: k => store.get(k) ?? null }, navigator: { globalPrivacyControl: gpc }, addEventListener: (name, fn) => { listeners[name] = fn; } };
       vm.runInNewContext(consentModeScript(region), { window: win });
-      const label = `region=${g(region)} gpc=${gpc} stored=${JSON.stringify(choice)}`;
+      const label = `region=${g(region)} gpc=${gpc} stored=${JSON.stringify(choice)} recorded_at=${JSON.stringify(when)}`;
       // JSON round-trip: the signal object comes from the vm realm, whose Object prototype differs.
       const [command, mode, signal] = JSON.parse(JSON.stringify(Array.from(win.dataLayer[0])));
       assert.deepEqual([command, mode], ['consent', 'default'], label);
@@ -483,8 +513,14 @@ test('consent mode default script matches effectiveConsent(), including GPC in o
       const expected = effectiveConsent();
       assert.deepEqual(signal, { analytics_storage: g(expected.analytics), ad_storage: g(expected.advertising), ad_user_data: g(expected.advertising), ad_personalization: g(expected.advertising) }, label);
       if (region && gpc && !choice) assert.deepEqual([signal.analytics_storage, signal.ad_storage], ['granted', 'denied'], `${label}: GPC denies advertising only`);
+      // Anton F3: GPC denies all three advertising signals whatever was stored.
+      if (gpc) assert.deepEqual([signal.ad_storage, signal.ad_user_data, signal.ad_personalization], ['denied', 'denied', 'denied'], `${label}: GPC wins`);
+      if (choice && typeof when === 'string' && when.startsWith('2026-10')) assert.equal(signal.analytics_storage, g(choice.analytics), `${label}: stored analytics stands`);
+      if (choice && when === 'tampered') assert.equal(signal.analytics_storage, g(region), `${label}: a tampered choice falls back to the region default`);
       listeners[CONSENT_EVENT]();
-      assert.equal(Array.from(win.dataLayer[1])[1], 'update', label);
+      const [, updateMode, updated] = JSON.parse(JSON.stringify(Array.from(win.dataLayer[1])));
+      assert.equal(updateMode, 'update', label);
+      if (gpc) assert.equal(updated.ad_storage, 'denied', `${label}: GPC wins on update too`);
     }
   } finally {
     delete global.window; delete global.document; refreshConsentFromStorage();
@@ -794,6 +830,434 @@ test('a BOOKING_CREATED older than 24 hours, or with no createdAt, is a replay a
 test('the webhook note records the signature format as confirmed from source', () => {
   const text = fs.readFileSync(path.join(ROOT, 'app/api/cal/webhook/route.ts'), 'utf8');
   assert.equal(text.includes('[UNVERIFIED'), false); assert.match(text, /sendPayload\.ts/); assert.match(text, /Ping test/);
+});
+
+/* ── Ad click IDs and durable attribution (CLAUDE.md §8) ─────────────────────────── */
+const { sanitizeClickIds, clickIdsFrom, CLICK_ID_KEYS } = require('../lib/clickIds.ts');
+const { getAttribution } = require('../lib/analytics.ts');
+const { CONSENT_STORAGE_KEY, CONSENT_POLICY_VERSION, ATTRIBUTION_DURABLE_KEY } = require('../lib/consent.ts');
+const SESSION_KEY = 'qognition_attribution_v2';
+const DAY = 24 * 60 * 60 * 1000;
+const NOW = Date.parse('2026-10-14T12:00:00.000Z');
+const VALID_IDS = { gclid: 'test-gclid_001.a~b', wbraid: 'test-wbraid-001', gbraid: 'test-gbraid-001', li_fat_id: 'test-li-fat-001', msclkid: 'testmsclkid001' };
+/** Each click ID carries its own capture time (Anton F5 / Owen F5). */
+const iso = ms => new Date(ms).toISOString();
+const AT = iso(NOW);
+const stamp = (ids, at = AT) => Object.fromEntries(Object.entries(ids).map(([key, id]) => [key, { id, captured_at: at }]));
+const STAMPED = stamp(VALID_IDS);
+/** An explicit advertising yes, so the server keeps the click IDs (Anton F2). */
+const AD_CONSENT = { analytics: true, advertising: true, basis: 'explicit', recorded_at: '2026-10-14T00:00:00.000Z', policy_version: '2026-10-14' };
+const memoryStorage = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => { m.set(k, String(v)); }, removeItem: k => { m.delete(k); }, map: m }; };
+const blockedStorage = () => ({ blocked: true, getItem() { throw Error('denied'); }, setItem() { throw Error('denied'); }, removeItem() { throw Error('denied'); } });
+/** A browser double. `consent` is an explicit stored choice; omit it for no choice in an opt-in region.
+ *  Blocked storage cannot hold a choice, so none is written to it (Owen F6: this guard used to
+ *  compare two fresh function objects and so never skipped anything). */
+const browser = ({ search = '', path = '/', consent, local = memoryStorage(), session = memoryStorage(), referrer = '', gpc = false } = {}) => {
+  global.window = { location: { search, pathname: path, hostname: 'www.qognitionagency.com' }, localStorage: local, sessionStorage: session };
+  global.document = { referrer, documentElement: { getAttribute: () => null } };
+  Object.defineProperty(globalThis, 'navigator', { value: { globalPrivacyControl: gpc }, configurable: true, writable: true });
+  if (consent && !local.blocked) local.setItem(CONSENT_STORAGE_KEY, JSON.stringify({ ...consent, recorded_at: '2026-10-14T00:00:00.000Z', policy_version: CONSENT_POLICY_VERSION }));
+  refreshConsentFromStorage();
+  return { local, session };
+};
+const visit = (state, { search = '', path = '/', consent, referrer = '', gpc = false } = {}) => browser({ search, path, consent, referrer, gpc, local: state.local, session: state.session });
+const stored = (storage, key) => JSON.parse(storage.getItem(key) || 'null');
+const NAVIGATOR = Object.getOwnPropertyDescriptor(globalThis, 'navigator');
+const leaveBrowser = () => {
+  delete global.window; delete global.document; refreshConsentFromStorage();
+  if (NAVIGATOR) Object.defineProperty(globalThis, 'navigator', NAVIGATOR); else delete globalThis.navigator;
+};
+const inBrowser = fn => async () => { try { return await fn(); } finally { leaveBrowser(); } };
+const BOTH = { analytics: true, advertising: true };
+const ANALYTICS_ONLY = { analytics: true, advertising: false };
+
+test('click IDs: each valid ID is kept, anything outside the charset, too long, empty, non-string or unknown is dropped', () => {
+  assert.deepEqual(CLICK_ID_KEYS, ['gclid', 'wbraid', 'gbraid', 'li_fat_id', 'msclkid']);
+  assert.deepEqual(sanitizeClickIds(STAMPED), STAMPED);
+  assert.deepEqual(sanitizeClickIds(stamp({ gclid: 'x'.repeat(512) })), stamp({ gclid: 'x'.repeat(512) }));
+  for (const bad of ['x'.repeat(513), '', ' test', 'a b', '<script>', 'a"b', "a'b", 'a/b', 'a=b', 'a&b', 'a%20b', 'a\nb', 'café', 'a;b']) assert.equal(sanitizeClickIds(stamp({ gclid: bad })), undefined, JSON.stringify(bad));
+  for (const notIds of [undefined, null, 'gclid', 42, ['test-gclid'], { fbclid: { id: 'test-fbclid', captured_at: AT } }, { gclid: 123 }, { gclid: { nested: 'x' } }]) assert.equal(sanitizeClickIds(notIds), undefined, JSON.stringify(notIds));
+  // An ID without a valid capture time cannot be expired on time, so it is dropped.
+  for (const when of [undefined, '', 'yesterday', '2026-10-14', '2026-10-14T12:00:00Z', '2026-13-45T99:99:99.000Z', 1760443200000, '<b>2026-10-14T12:00:00.000Z</b>']) assert.equal(sanitizeClickIds({ gclid: { id: 'test-gclid-001', captured_at: when } }), undefined, JSON.stringify(when));
+  assert.equal(sanitizeClickIds({ gclid: 'test-gclid-001' }), undefined, 'a bare string has no capture time');
+  assert.deepEqual(sanitizeClickIds({ gclid: { id: 'test-gclid-001', captured_at: AT, extra: '<b>' } }), { gclid: { id: 'test-gclid-001', captured_at: AT } }, 'only id and captured_at are kept');
+  assert.deepEqual(sanitizeClickIds({ ...stamp({ gclid: '<b>', msclkid: 'testmsclkid001' }), other: 'x' }), stamp({ msclkid: 'testmsclkid001' }));
+  assert.deepEqual(clickIdsFrom(new URLSearchParams('gclid=test-gclid-001&msclkid=%3Cb%3E&utm_source=google'), NOW), stamp({ gclid: 'test-gclid-001' }));
+  assert.equal(clickIdsFrom(new URLSearchParams('utm_source=google'), NOW), undefined);
+});
+test('schema keeps valid click IDs and silently drops invalid ones, never failing the lead', () => {
+  const parsed = leadSchema.parse(shortLead('request-click-schema', { attribution: { first_click_ids: stamp({ gclid: 'test-gclid-001', msclkid: '"><svg onload=x>' }), last_click_ids: stamp({ gbraid: 'x'.repeat(600) }) } }));
+  assert.deepEqual(parsed.attribution.first_click_ids, stamp({ gclid: 'test-gclid-001' }));
+  assert.equal(parsed.attribution.last_click_ids, undefined);
+  for (const junk of ['not-an-object', 7, null, [], { gclid: ['a'] }, { gclid: 'test-gclid-001' }, { gclid: { id: 'test-gclid-001', captured_at: 'yesterday' } }]) {
+    const result = leadSchema.safeParse(shortLead('request-click-junk', { attribution: { first_click_ids: junk, last_click_ids: junk } }));
+    assert.equal(result.success, true, JSON.stringify(junk));
+    assert.equal(result.data.attribution, undefined, 'nothing valid is left, so the whole object is dropped (Owen F1)');
+  }
+  assert.equal(leadSchema.parse(shortLead('request-click-none')).attribution, undefined, 'a lead without attribution is unchanged');
+});
+test('API: hostile click IDs never 400 the lead; the notification shows only the valid ones, escaped', async () => {
+  configured(); const sent = resendOnly();
+  const response = await quietly(() => POST(request(shortLead('request-click-hostile', { consent: AD_CONSENT, attribution: {
+    first_click_ids: stamp({ gclid: 'test-gclid-001', wbraid: '<img src=x onerror=alert(1)>' }),
+    last_click_ids: { ...stamp({ msclkid: '"><script>x</script>', li_fat_id: 'test-li-fat-001' }), gbraid: { id: 'test-gbraid-001', captured_at: '"><svg onload=x>' } },
+  } }))));
+  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'emailed');
+  const [{ html }] = toNotify(sent);
+  assert.equal(cell(html, 'First ad click'), 'gclid: test-gclid-001 (2026-10-14)');
+  assert.equal(cell(html, 'Latest ad click'), 'li_fat_id: test-li-fat-001 (2026-10-14)');
+  assert.equal(html.includes('<svg'), false);
+  for (const raw of ['<img', '<script>', 'onerror', 'alert(1)']) assert.equal(html.includes(raw), false, `hostile ${raw} reached the email`);
+});
+test('notification shows first and latest ad click rows in a fixed order, and omits them when there are none', async () => {
+  configured(); const sent = resendOnly();
+  await quietly(() => POST(request(attributed('request-click-rows', { consent: AD_CONSENT, attribution: { ...attributed('x').attribution, first_click_ids: { ...stamp({ msclkid: 'testmsclkid001' }, '2026-09-30T08:00:00.000Z'), ...stamp({ gclid: 'test-gclid-001' }) }, last_click_ids: STAMPED } }))));
+  await quietly(() => POST(request(attributed('request-click-absent', { consent: AD_CONSENT }))));
+  const [withIds, without] = toNotify(sent).map(m => m.html);
+  assert.equal(cell(withIds, 'First ad click'), 'gclid: test-gclid-001 (2026-10-14) / msclkid: testmsclkid001 (2026-09-30)', 'each ID shows its own capture date');
+  assert.equal(cell(withIds, 'Latest ad click'), 'gclid: test-gclid_001.a~b (2026-10-14) / wbraid: test-wbraid-001 (2026-10-14) / gbraid: test-gbraid-001 (2026-10-14) / li_fat_id: test-li-fat-001 (2026-10-14) / msclkid: testmsclkid001 (2026-10-14)');
+  assert.equal(cell(withIds, 'First campaign'), 'linkedin / paid / insurance-q4', 'campaign rows are unchanged');
+  assert.equal(cell(without, 'First ad click'), undefined); assert.equal(cell(without, 'Latest ad click'), undefined);
+});
+test('click IDs never reach Meta CAPI, even with an explicit advertising yes', async () => {
+  configured(); const h = capiHarness(); pending.length = 0;
+  try {
+    const payload = { ...withConsent({ basis: 'explicit' }, 'request-click-capi'), attribution: { first_click_ids: STAMPED, last_click_ids: STAMPED } };
+    assert.equal((await (await quietly(() => POST(request(payload)))).json()).status, 'emailed');
+    for (const run of pending) await quietly(() => run());
+    assert.equal(h.capi.length, 1, 'the CAPI Lead still fires');
+    const body = JSON.stringify(h.capi);
+    for (const id of Object.values(VALID_IDS)) assert.equal(body.includes(id), false, `${id} was sent to Meta`);
+    for (const key of CLICK_ID_KEYS) assert.equal(body.includes(key), false, `${key} was sent to Meta`);
+  } finally { h.done(); }
+});
+test('advertising consent: click IDs and first touch go to localStorage for 90 days; landing page stays path-only', inBrowser(() => {
+  const state = browser({ consent: BOTH, path: '/industries/insurance', referrer: 'https://www.google.com/search?q=x', search: '?utm_source=google&utm_medium=cpc&gclid=test-gclid-001&msclkid=%3Cb%3E' });
+  const result = getAttribution(NOW);
+  assert.deepEqual(result, { first_touch: { source: 'google', medium: 'cpc' }, last_touch: { source: 'google', medium: 'cpc' }, landing_page: '/industries/insurance', referrer_host: 'www.google.com', first_click_ids: stamp({ gclid: 'test-gclid-001' }), last_click_ids: stamp({ gclid: 'test-gclid-001' }) });
+  const record = stored(state.local, ATTRIBUTION_DURABLE_KEY);
+  assert.equal(record.expires_at, NOW + 90 * DAY);
+  assert.equal(state.session.getItem(SESSION_KEY), null, 'no second copy in the session');
+  assert.equal(window.dataLayer, undefined, 'reading attribution pushes nothing to GTM');
+}));
+test('a return visit weeks later keeps first touch and the first click; the latest click is kept per platform', inBrowser(() => {
+  const state = browser({ consent: BOTH, path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' });
+  getAttribution(NOW);
+  state.session = memoryStorage(); // A new session: the browser was closed in between.
+  visit(state, { consent: BOTH, path: '/pricing', search: '?utm_source=bing&msclkid=testmsclkid001' });
+  getAttribution(NOW + 30 * DAY);
+  visit(state, { consent: BOTH, path: '/contact', search: '?gclid=test-gclid-002' });
+  const result = getAttribution(NOW + 40 * DAY);
+  assert.equal(result.first_touch.source, 'google'); assert.equal(result.last_touch.source, 'bing');
+  assert.equal(result.landing_page, '/ai-seo');
+  assert.deepEqual(result.first_click_ids, stamp({ gclid: 'test-gclid-001' }));
+  assert.deepEqual(result.last_click_ids, { ...stamp({ gclid: 'test-gclid-002' }, iso(NOW + 40 * DAY)), ...stamp({ msclkid: 'testmsclkid001' }, iso(NOW + 30 * DAY)) });
+  assert.equal(stored(state.local, ATTRIBUTION_DURABLE_KEY).expires_at, NOW + 130 * DAY, 'a new ad click restarts the 90 days for campaign context');
+  visit(state, { consent: BOTH, path: '/about' });
+  getAttribution(NOW + 50 * DAY);
+  assert.equal(stored(state.local, ATTRIBUTION_DURABLE_KEY).expires_at, NOW + 130 * DAY, 'a plain page view does not extend it');
+}));
+test('the durable record expires 90 days after the last campaign or click, and a corrupt one is discarded', inBrowser(() => {
+  const state = browser({ consent: BOTH, path: '/geo', search: '?utm_source=google&gclid=test-gclid-001' });
+  getAttribution(NOW);
+  visit(state, { consent: BOTH, path: '/seo', search: '?utm_source=linkedin' });
+  const later = getAttribution(NOW + 91 * DAY);
+  assert.equal(later.first_touch.source, 'linkedin'); assert.equal(later.landing_page, '/seo'); assert.equal(later.first_click_ids, undefined);
+  for (const corrupt of ['{not json', JSON.stringify({ first_touch: { source: 'old' } }), JSON.stringify([1]), JSON.stringify({ expires_at: 'never', first_touch: { source: 'old' } })]) {
+    state.local.setItem(ATTRIBUTION_DURABLE_KEY, corrupt);
+    visit(state, { consent: BOTH, path: '/ppc' });
+    assert.equal(getAttribution(NOW).first_touch, undefined, corrupt);
+  }
+  state.local.setItem(ATTRIBUTION_DURABLE_KEY, JSON.stringify({ expires_at: NOW + DAY, first_click_ids: stamp({ gclid: '<tampered>' }), last_click_ids: stamp({ gclid: 'test-gclid-001' }) }));
+  visit(state, { consent: BOTH, path: '/ppc' });
+  const reread = getAttribution(NOW);
+  assert.equal(reread.first_click_ids, undefined, 'a tampered stored ID is dropped'); assert.deepEqual(reread.last_click_ids, stamp({ gclid: 'test-gclid-001' }));
+}));
+test('analytics only: today\'s session-only behaviour, and click IDs are never read', inBrowser(() => {
+  const state = browser({ consent: ANALYTICS_ONLY, path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' });
+  const result = getAttribution(NOW);
+  assert.deepEqual(result, { first_touch: { source: 'google' }, last_touch: { source: 'google' }, landing_page: '/ai-seo' });
+  assert.equal(state.local.getItem(ATTRIBUTION_DURABLE_KEY), null);
+  assert.equal(state.session.getItem(SESSION_KEY).includes('test-gclid'), false);
+  assert.equal(stored(state.session, SESSION_KEY).first_touch.source, 'google');
+}));
+test('no consent (opt-in region, no choice): nothing is read or stored, and an old durable record is deleted', inBrowser(() => {
+  const state = browser({ path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' });
+  state.local.setItem(ATTRIBUTION_DURABLE_KEY, JSON.stringify({ expires_at: NOW + DAY, first_click_ids: { gclid: 'test-gclid-000' } }));
+  assert.equal(getAttribution(NOW), undefined);
+  assert.equal(state.local.getItem(ATTRIBUTION_DURABLE_KEY), null); assert.equal(state.session.getItem(SESSION_KEY), null);
+}));
+test('advertising without analytics keeps click IDs durably but no campaign context', inBrowser(() => {
+  const state = browser({ consent: { analytics: false, advertising: true }, path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' });
+  assert.deepEqual(getAttribution(NOW), { first_click_ids: stamp({ gclid: 'test-gclid-001' }), last_click_ids: stamp({ gclid: 'test-gclid-001' }) });
+  const record = stored(state.local, ATTRIBUTION_DURABLE_KEY);
+  assert.equal(record.first_touch, undefined); assert.equal(record.landing_page, undefined);
+}));
+test('a later advertising yes promotes the session record; a click ID still on the URL is captured then', inBrowser(() => {
+  const state = browser({ consent: ANALYTICS_ONLY, path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' });
+  getAttribution(NOW);
+  visit(state, { consent: BOTH, path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' }); // Accepted on the landing page.
+  const result = getAttribution(NOW + 1000);
+  assert.equal(result.first_touch.source, 'google'); assert.equal(result.landing_page, '/ai-seo');
+  assert.deepEqual(result.first_click_ids, stamp({ gclid: 'test-gclid-001' }, iso(NOW + 1000)), 'captured when advertising was granted');
+  assert.equal(state.session.getItem(SESSION_KEY), null, 'promoted, not copied');
+  assert.equal(stored(state.local, ATTRIBUTION_DURABLE_KEY).first_touch.source, 'google');
+}));
+test('withdrawing advertising deletes the durable record and keeps campaign context for the session only', inBrowser(() => {
+  const state = browser({ consent: BOTH, path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' });
+  getAttribution(NOW);
+  visit(state, { consent: ANALYTICS_ONLY, path: '/pricing' });
+  const result = getAttribution(NOW + 1000);
+  assert.equal(result.first_touch.source, 'google'); assert.equal(result.first_click_ids, undefined); assert.equal(result.last_click_ids, undefined);
+  assert.equal(state.local.getItem(ATTRIBUTION_DURABLE_KEY), null);
+  assert.equal(state.session.getItem(SESSION_KEY).includes('test-gclid'), false);
+}));
+test('saveConsent: an advertising reject deletes the durable record even with no tracker mounted', inBrowser(() => {
+  const state = browser({ consent: BOTH });
+  state.local.setItem(ATTRIBUTION_DURABLE_KEY, JSON.stringify({ expires_at: NOW + DAY, first_click_ids: { gclid: 'test-gclid-001' } }));
+  window.dispatchEvent = () => {}; window.location.reload = () => {}; global.document.cookie = '';
+  saveConsent(true, true);
+  assert.notEqual(state.local.getItem(ATTRIBUTION_DURABLE_KEY), null, 'a yes keeps it');
+  saveConsent(true, false);
+  assert.equal(state.local.getItem(ATTRIBUTION_DURABLE_KEY), null);
+}));
+test('blocked storage never throws: the current page still carries its click IDs', inBrowser(() => {
+  browser({ consent: BOTH, local: blockedStorage(), session: blockedStorage(), path: '/ai-seo', search: '?gclid=test-gclid-001' });
+  // Blocked storage cannot hold a choice, so this is the region default; make it an opt-out region.
+  global.document.documentElement.getAttribute = () => 'granted';
+  const result = getAttribution(NOW);
+  assert.deepEqual(result.first_click_ids, stamp({ gclid: 'test-gclid-001' }));
+  Object.defineProperty(global.window, 'localStorage', { get() { throw Error('SecurityError'); } });
+  Object.defineProperty(global.window, 'sessionStorage', { get() { throw Error('SecurityError'); } });
+  assert.doesNotThrow(() => getAttribution(NOW));
+}));
+test('LeadForm sends attribution only on the lead body, never in a track() event', () => {
+  const form = fs.readFileSync(path.join(ROOT, 'components/shared/LeadForm.tsx'), 'utf8');
+  for (const call of form.match(/track\([^;]*\);/g) || []) for (const banned of ['attribution', 'click', 'gclid', 'email', 'name:', 'phone', 'message']) assert.equal(call.includes(banned), false, `${banned} in ${call}`);
+});
+
+/* ── Owen F1, 2026-10-14: attribution never fails a lead ─────────────────────────── */
+const LONG_HOST = ['a', 'b', 'c', 'd'].map(c => c.repeat(63)).join('.') + '.com';
+test('API: a 259-char referrer hostname still returns 200 emailed, and the rest of the attribution survives', async () => {
+  assert.equal(LONG_HOST.length, 259);
+  configured(); const sent = resendOnly();
+  const response = await quietly(() => POST(request(shortLead('request-long-referrer', { attribution: { first_touch: { source: 'google', campaign: 'q4' }, referrer_host: LONG_HOST } }))));
+  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'emailed');
+  const [{ html }] = toNotify(sent);
+  assert.equal(cell(html, 'Referred by'), undefined, 'the field that does not parse is dropped');
+  assert.equal(cell(html, 'First campaign'), 'google / q4');
+});
+test('schema: attribution and utm fields that do not parse are dropped, never a 400', () => {
+  const parse = extra => { const result = leadSchema.safeParse(shortLead('request-soft', extra)); assert.equal(result.success, true, JSON.stringify(extra)); return result.data; };
+  for (const junk of ['string', 7, null, [], true]) { assert.equal(parse({ attribution: junk }).attribution, undefined, JSON.stringify(junk)); assert.equal(parse({ utm: junk }).utm, undefined, JSON.stringify(junk)); }
+  assert.deepEqual(parse({ utm: { source: 5, medium: 'cpc', campaign: 'x'.repeat(201) } }).utm, { medium: 'cpc' });
+  assert.equal(parse({ utm: { source: 5 } }).utm, undefined, 'an object with nothing valid left is dropped');
+  assert.deepEqual(parse({ attribution: { landing_page: 'x'.repeat(501), referrer_host: { host: 'x' }, first_touch: { source: 'x'.repeat(300), campaign: 'q4' }, last_touch: 'organic', first_click_ids: stamp({ gclid: 'test-gclid-001' }) } }).attribution, { first_touch: { campaign: 'q4' }, first_click_ids: stamp({ gclid: 'test-gclid-001' }) });
+  assert.deepEqual(parse({ attribution: { referrer_host: 'x'.repeat(250), landing_page: '/ai-seo' } }).attribution, { referrer_host: 'x'.repeat(250), landing_page: '/ai-seo' }, 'valid fields at the limit are kept');
+  assert.equal(leadSchema.safeParse(shortLead('request-strict', { contact: { name: '', email: 'not-an-email' } })).success, false, 'the contact fields stay strict');
+});
+test('browser: a long referrer hostname is cut to 250 characters', inBrowser(() => {
+  browser({ consent: BOTH, path: '/ai-seo', referrer: `https://${LONG_HOST}/path` });
+  const result = getAttribution(NOW);
+  assert.equal(result.referrer_host.length, 250); assert.equal(result.referrer_host, LONG_HOST.slice(0, 250));
+}));
+test('browser: a malformed durable record is discarded on read, and the lead built from it returns 200', inBrowser(async () => {
+  const malformed = [
+    { expires_at: NOW + DAY, first_touch: { source: 123 }, first_click_ids: stamp({ gclid: 'test-gclid-000' }) },
+    { expires_at: NOW + DAY, landing_page: 'x'.repeat(600) },
+    { expires_at: NOW + DAY, referrer_host: LONG_HOST },
+    { expires_at: NOW + DAY, last_touch: 'organic' },
+    { expires_at: NOW + DAY, first_touch: ['google'] },
+    { expires_at: NOW + DAY, first_click_ids: 'test-gclid-000' },
+    { expires_at: NOW + DAY, last_click_ids: [stamp({ gclid: 'test-gclid-000' })] },
+  ];
+  configured(); const sent = resendOnly();
+  for (const [i, record] of malformed.entries()) {
+    const state = browser({ consent: BOTH, path: '/contact' });
+    state.local.setItem(ATTRIBUTION_DURABLE_KEY, JSON.stringify(record));
+    const attribution = getAttribution(NOW);
+    assert.deepEqual(attribution, { landing_page: '/contact' }, `record ${i} is discarded, not partly kept`);
+    assert.equal(JSON.stringify(stored(state.local, ATTRIBUTION_DURABLE_KEY)).includes('test-gclid-000'), false, `record ${i} is gone from storage`);
+    // The raw malformed record, sent as it was, also never fails the lead on the server.
+    for (const [kind, payload] of [['rebuilt', attribution], ['raw', record]]) {
+      const response = await quietly(() => POST(request(shortLead(`request-malformed-${i}-${kind}`, { consent: AD_CONSENT, attribution: payload, utm: payload.first_touch }))));
+      assert.equal(response.status, 200, `record ${i} ${kind}`); assert.equal((await response.json()).status, 'emailed');
+    }
+  }
+  assert.equal(toNotify(sent).length, malformed.length * 2);
+}));
+
+/* ── Anton F2, 2026-10-14: the server drops click IDs without an advertising yes ──── */
+test('click IDs reach the email only when the server allows advertising', async () => {
+  const cases = [
+    ['advertising false', { ...AD_CONSENT, advertising: false }, { 'x-vercel-ip-country': 'US' }, false],
+    ['consent missing', undefined, { 'x-vercel-ip-country': 'US' }, false],
+    ['opt-in country on a region default', { ...AD_CONSENT, basis: 'region_default', recorded_at: '' }, { 'x-vercel-ip-country': 'DE' }, false],
+    ['region default with no country', { ...AD_CONSENT, basis: 'region_default', recorded_at: '' }, {}, false],
+    ['GPC with an explicit yes', AD_CONSENT, { 'x-vercel-ip-country': 'US', 'sec-gpc': '1' }, false],
+    ['explicit yes in an opt-in country', AD_CONSENT, { 'x-vercel-ip-country': 'DE' }, true],
+    ['region default in an opt-out country', { ...AD_CONSENT, basis: 'region_default', recorded_at: '' }, { 'x-vercel-ip-country': 'US' }, true],
+  ];
+  configured();
+  for (const [i, [name, consent, headers, kept]] of cases.entries()) {
+    const sent = resendOnly();
+    const response = await quietly(() => POST(requestWith(shortLead(`request-click-gate-${i}`, { consent, attribution: { first_touch: { source: 'google' }, first_click_ids: STAMPED, last_click_ids: STAMPED } }), headers)));
+    assert.equal(response.status, 200, name); assert.equal((await response.json()).status, 'emailed', name);
+    const [{ html }] = toNotify(sent);
+    assert.equal(cell(html, 'First ad click') !== undefined, kept, `${name}: first ad click row`);
+    assert.equal(cell(html, 'Latest ad click') !== undefined, kept, `${name}: latest ad click row`);
+    if (!kept) for (const id of Object.values(VALID_IDS)) assert.equal(html.includes(id), false, `${name}: ${id} in the email`);
+    assert.equal(cell(html, 'First campaign'), 'google', `${name}: campaign context is not touched`);
+  }
+});
+test('the route drops click IDs before the notification is sent', () => {
+  const route = fs.readFileSync(path.join(ROOT, 'app/api/lead/route.ts'), 'utf8');
+  const gate = route.indexOf('delete lead.attribution.first_click_ids'), send = route.indexOf('await sendLeadNotification(');
+  assert.ok(gate > 0 && send > gate, 'the click ID gate runs before sendLeadNotification');
+});
+
+/* ── Anton F1, 2026-10-14: the consent policy version re-asks earlier choices ─────── */
+test('the policy version is 2026-10-14, and a choice saved under an older version is not honoured', inBrowser(() => {
+  const vm = require('node:vm');
+  const { consentModeScript } = require('../lib/consent.ts');
+  assert.equal(CONSENT_POLICY_VERSION, '2026-10-14');
+  for (const old of ['2026-10-06', '2026-09-24', undefined]) {
+    const state = browser({ path: '/' });
+    state.local.setItem(CONSENT_STORAGE_KEY, JSON.stringify({ analytics: true, advertising: true, recorded_at: '2026-10-07T00:00:00.000Z', policy_version: old }));
+    refreshConsentFromStorage();
+    assert.equal(readConsent(), null, `${old}: readConsent ignores it`);
+    const win = { localStorage: state.local, navigator: { globalPrivacyControl: false }, addEventListener() {} };
+    vm.runInNewContext(consentModeScript(false), { window: win });
+    const [, , signal] = JSON.parse(JSON.stringify(Array.from(win.dataLayer[0])));
+    assert.deepEqual([signal.analytics_storage, signal.ad_storage], ['denied', 'denied'], `${old}: the inline script falls back to the opt-in region default`);
+  }
+}));
+
+/* ── Anton F4 / Owen F2: GA4 page_location loses the click IDs when advertising is off ── */
+test('GA4 config strips click IDs from page_location when advertising is off, and only then', () => {
+  const vm = require('node:vm');
+  const { ga4ConfigScript } = require('../lib/consent.ts');
+  const HREF = 'https://www.qognitionagency.com/ai-seo?utm_source=google&gclid=test-gclid-001&x=1&wbraid=w&gbraid=g&li_fat_id=l&msclkid=m#top';
+  /** Every gtag call after 'js', in order. */
+  const run = ({ href = HREF, choice, region = false, gpc = false, id = 'G-TEST123', urlThrows = false }) => {
+    const store = new Map();
+    if (choice) store.set(CONSENT_STORAGE_KEY, JSON.stringify({ ...choice, recorded_at: '2026-10-14T00:00:00.000Z', policy_version: CONSENT_POLICY_VERSION }));
+    const url = new URL(href);
+    const win = { localStorage: { getItem: k => store.get(k) ?? null }, navigator: { globalPrivacyControl: gpc }, location: { href, origin: url.origin, pathname: url.pathname }, dataLayer: [] };
+    const BrokenURL = function () { throw new TypeError('Invalid URL'); };
+    vm.runInNewContext(ga4ConfigScript(id, region), { window: win, URL: urlThrows ? BrokenURL : URL });
+    const calls = win.dataLayer.map(args => JSON.parse(JSON.stringify(Array.from(args))));
+    assert.equal(calls[0][0], 'js');
+    return calls.slice(1);
+  };
+  const STRIPPED = 'https://www.qognitionagency.com/ai-seo?utm_source=google&x=1#top';
+  // Owen re-review A: a config-level page_location persists for the destination, so later
+  // client-side page views would report the landing URL. The stripped URL rides on one
+  // page_view event instead, and the config turns its own automatic page view off.
+  const stripped = (page, id = 'G-TEST123') => [['config', id, { send_page_view: false }], ['event', 'page_view', { page_location: page, send_to: id }]];
+  assert.deepEqual(run({ choice: ANALYTICS_ONLY }), stripped(STRIPPED), 'explicit advertising no');
+  assert.deepEqual(run({ choice: BOTH, gpc: true }), stripped(STRIPPED), 'GPC beats a stored yes');
+  assert.deepEqual(run({ region: true, gpc: true }), stripped(STRIPPED), 'GPC in an opt-out region');
+  assert.deepEqual(run({ choice: ANALYTICS_ONLY, urlThrows: true }), stripped('https://www.qognitionagency.com/ai-seo'), 'a URL that cannot be parsed fails closed to origin and path');
+  for (const [label, options] of [['advertising on: GA4 reads the page as before', { choice: BOTH }], ['opt-out region default', { region: true }], ['no click ID on the URL: nothing is overridden', { choice: ANALYTICS_ONLY, href: 'https://www.qognitionagency.com/ai-seo?utm_source=google' }]]) {
+    assert.deepEqual(run(options), [['config', 'G-TEST123']], label);
+  }
+  for (const call of [run({ choice: ANALYTICS_ONLY }), run({ choice: BOTH })].flat()) if (call[0] === 'config') assert.equal(JSON.stringify(call).includes('page_location'), false, 'page_location never sits on the config');
+  const odd = 'G-a\'b"c</script>';
+  assert.deepEqual(run({ choice: ANALYTICS_ONLY, id: odd }), stripped(STRIPPED, odd), 'the measurement ID is data, not code');
+  const layout = fs.readFileSync(path.join(ROOT, 'app/layout.tsx'), 'utf8');
+  assert.match(layout, /ga4ConfigScript\(GA4_ID, regionDefault\)/);
+  for (const file of ['app/layout.tsx', 'lib/consent.ts', 'lib/analytics.ts', 'lib/clickIds.ts', 'components/shared/AcquisitionTracker.tsx']) assert.equal(fs.readFileSync(path.join(ROOT, file), 'utf8').includes('replaceState'), false, `${file} rewrites history`);
+});
+
+/* ── Owen final review, 2026-10-14: the inline GA4 config used to declare a global gtag. The
+ *    IIFE in ga4ConfigScript() hid it, so trackGtag() (lib/analytics.ts) silently sent nothing. ── */
+test('GA4 config exposes window.gtag, so trackGtag() still reaches GA4', () => {
+  const vm = require('node:vm');
+  const { ga4ConfigScript } = require('../lib/consent.ts');
+  for (const href of ['https://www.qognitionagency.com/contact', 'https://www.qognitionagency.com/contact?gclid=test-gclid-001']) {
+    const url = new URL(href);
+    const win = { localStorage: { getItem: () => null }, navigator: { globalPrivacyControl: false }, location: { href, origin: url.origin, pathname: url.pathname }, dataLayer: [] };
+    vm.runInNewContext(ga4ConfigScript('G-TEST123', false), { window: win, URL });
+    assert.equal(typeof win.gtag, 'function', `${href}: window.gtag is defined`);
+    const before = win.dataLayer.length;
+    win.gtag('event', 'contact_submitted', { form: 'test' });
+    assert.equal(win.dataLayer.length, before + 1, `${href}: window.gtag pushes to the same dataLayer`);
+    assert.deepEqual(Array.from(win.dataLayer.at(-1)), ['event', 'contact_submitted', { form: 'test' }]);
+  }
+});
+
+/* ── Owen F4: analytics no with advertising yes removes campaign context from storage ── */
+test('saveConsent: analytics no with advertising yes keeps click IDs and removes campaign fields from the durable record', inBrowser(() => {
+  const state = browser({ consent: BOTH });
+  state.local.setItem(ATTRIBUTION_DURABLE_KEY, JSON.stringify({ expires_at: NOW + DAY, first_touch: { source: 'google' }, last_touch: { source: 'bing' }, landing_page: '/ai-seo', referrer_host: 'www.google.com', utm: { source: 'google' }, first_click_ids: stamp({ gclid: 'test-gclid-001' }), last_click_ids: stamp({ gclid: 'test-gclid-001' }) }));
+  window.dispatchEvent = () => {}; window.location.reload = () => {}; global.document.cookie = '';
+  saveConsent(false, true);
+  assert.deepEqual(stored(state.local, ATTRIBUTION_DURABLE_KEY), { expires_at: NOW + DAY, first_click_ids: stamp({ gclid: 'test-gclid-001' }), last_click_ids: stamp({ gclid: 'test-gclid-001' }) });
+  state.local.setItem(ATTRIBUTION_DURABLE_KEY, '{not json');
+  saveConsent(false, true);
+  assert.equal(state.local.getItem(ATTRIBUTION_DURABLE_KEY), null, 'an unreadable record is deleted');
+}));
+
+/* ── Anton F5 / Owen F5: each click ID expires 90 days after its own capture ──────── */
+test('a click ID drops 90 days after its own capture, even while later visits keep the record alive', inBrowser(() => {
+  const state = browser({ consent: BOTH, path: '/ai-seo', search: '?utm_source=google&gclid=test-gclid-001' });
+  getAttribution(NOW);
+  visit(state, { consent: BOTH, path: '/pricing', search: '?msclkid=testmsclkid001' });
+  getAttribution(NOW + 60 * DAY);
+  visit(state, { consent: BOTH, path: '/contact' });
+  const before = getAttribution(NOW + 90 * DAY - 1);
+  assert.deepEqual(before.first_click_ids, stamp({ gclid: 'test-gclid-001' }));
+  visit(state, { consent: BOTH, path: '/contact' });
+  const after = getAttribution(NOW + 90 * DAY);
+  assert.equal(after.first_touch.source, 'google', 'campaign context still lives');
+  assert.equal(after.first_click_ids, undefined, 'the first click is 90 days old');
+  assert.deepEqual(after.last_click_ids, stamp({ msclkid: 'testmsclkid001' }, iso(NOW + 60 * DAY)), 'the newer click keeps its own clock');
+  assert.equal(JSON.stringify(stored(state.local, ATTRIBUTION_DURABLE_KEY)).includes('test-gclid-001'), false, 'the expired ID is gone from storage');
+}));
+test('seeing the same click ID again does not restart its 90 days', inBrowser(() => {
+  const state = browser({ consent: BOTH, path: '/ai-seo', search: '?gclid=test-gclid-001' });
+  getAttribution(NOW);
+  visit(state, { consent: BOTH, path: '/ai-seo', search: '?gclid=test-gclid-001' });
+  const again = getAttribution(NOW + 60 * DAY);
+  assert.deepEqual(again.last_click_ids, stamp({ gclid: 'test-gclid-001' }), 'original capture time kept');
+  visit(state, { consent: BOTH, path: '/contact' });
+  assert.equal(getAttribution(NOW + 91 * DAY).last_click_ids, undefined);
+}));
+test('a stored click ID with a capture time in the future is dropped', inBrowser(() => {
+  const state = browser({ consent: BOTH, path: '/contact' });
+  state.local.setItem(ATTRIBUTION_DURABLE_KEY, JSON.stringify({ expires_at: NOW + DAY, last_click_ids: { ...stamp({ gclid: 'test-gclid-009' }, iso(NOW + 30 * DAY)), ...stamp({ msclkid: 'testmsclkid001' }) } }));
+  assert.deepEqual(getAttribution(NOW).last_click_ids, stamp({ msclkid: 'testmsclkid001' }));
+}));
+
+/* ── Privacy page, 2026-10-14 ─────────────────────────────────────────────────────── */
+test('the privacy page describes click codes and their 90 days', () => {
+  const page = fs.readFileSync(path.join(ROOT, 'app/legal/privacy/page.tsx'), 'utf8').replace(/\s+/g, ' ');
+  assert.ok(page.includes('When advertising measurement is on, your browser keeps the click codes that Google, Microsoft and LinkedIn add to their ad links. Each code lasts 90 days from the ad click it came with, and coming back to the site does not extend it.'));
+  assert.ok(page.includes('for 90 days after your latest ad click or campaign visit'), 'campaign details follow the rolling rule');
+  assert.ok(page.includes('Turning advertising measurement off deletes the click codes from your browser straight away.'));
+  assert.ok(page.includes('advertising measurement is off for as long as the signal is on, even if you accepted it before'), 'GPC beats an earlier yes');
+  assert.ok(page.indexOf('Meta may match them to an account.') < page.indexOf('your browser keeps the click codes'), 'after the Meta sentence');
+  assert.match(page, /Usage data<\/strong>: [^<]*ad click codes/);
+  assert.equal(page.includes('—'), false, 'no em dashes');
+});
+
+/* ── Owen re-review C: readConsent() ignores a stored choice with an invalid recorded_at ── */
+test('readConsent: a stored choice is honoured only with a recorded_at saveConsent() could have written', inBrowser(() => {
+  const state = browser({ path: '/' });
+  for (const [when, honoured] of [['2026-10-14T00:00:00.000Z', true], ['tampered', false], ['', false], [42, false], [undefined, false], ['2026-02-30T00:00:00.000Z', false], ['2026-10-14T00:00:00Z', false]]) {
+    state.local.setItem(CONSENT_STORAGE_KEY, JSON.stringify({ analytics: true, advertising: true, recorded_at: when, policy_version: CONSENT_POLICY_VERSION }));
+    refreshConsentFromStorage();
+    assert.equal(readConsent() !== null, honoured, JSON.stringify(when));
+  }
+}));
+
+/* ── Owen re-review nit: a capture time must be a real calendar instant ─────────────── */
+test('click IDs: a capture time that matches the pattern but names an impossible date is dropped', () => {
+  for (const when of ['2026-02-30T12:00:00.000Z', '2026-02-29T12:00:00.000Z', '2026-04-31T00:00:00.000Z', '2026-10-14T24:00:00.000Z', '2026-10-14T12:60:00.000Z']) {
+    assert.equal(sanitizeClickIds({ gclid: { id: 'test-gclid-001', captured_at: when } }), undefined, when);
+  }
+  assert.deepEqual(sanitizeClickIds({ gclid: { id: 'test-gclid-001', captured_at: '2028-02-29T12:00:00.000Z' } }), { gclid: { id: 'test-gclid-001', captured_at: '2028-02-29T12:00:00.000Z' } }, 'a leap day is real');
 });
 
 (async () => {

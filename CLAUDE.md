@@ -53,7 +53,7 @@ The user approved a sitewide copy and funnel update in the dev checkout. These d
       - This changes the H1 of priority page #1 by operator decision. The title and meta are unchanged.
       - The served H1 text stays a complete, stable sentence. The reel is decorative.
       - **§4 amendment, this H1 only.** Ruth ruled "Be the firm … names" a placement promise. The operator was offered "Give {AI} reasons to name your firm" and chose to keep "Be the firm {AI} names", on 2026-10-08. The promise ban still applies everywhere else.
-      - The reel spins once, settles in under 5 seconds and replays on hover or focus, so it is not a second continuously rotating element under §9.
+      - The reel spins once, settles in under 5 seconds and replays on hover, so it is not a second continuously rotating element under §9.
     - **Messaging: "AI search is winning."** Copy sells fear (buyers ask AI who to hire, competitors get named, the shortlist forms without you) and desire (be the firm the AI names). Sitewide.
       - §4 still applies: no invented statistics, no guarantees, and no "you are invisible" stated as fact about the reader. Fear the reader can check beats fear we assert.
     - **/industries is rebuilt on the 21 taxonomy industries**, with the 341 sub-industries under them. The legacy 11 hubs and 66 sub-pages keep their URLs and are mapped in; nothing is redirected without Search Console data. /industries title, meta and URL stay fixed (priority page).
@@ -540,8 +540,10 @@ Events, `snake_case`, defined once in `lib/analytics.ts`:
   `message` field into GA4 or GTM.
 - Capture click IDs (`gclid`, `wbraid`, `gbraid`, `li_fat_id`, `msclkid`) on the lead record, or
   offline conversion import is impossible.
+  Implemented 2026-10-14: read with advertising consent only, validated by `lib/clickIds.ts` (invalid IDs dropped, never a 400), dropped again by `/api/lead` unless the server allows advertising, and shown with their capture date as "First ad click" and "Latest ad click" in the hello@ email. This code never adds them to an analytics or Meta event payload; when advertising is off, only the landing page_view is stripped; other GA4 hits sent while the visitor is still on the landing URL (events, scroll, engagement) carry the raw URL with the click IDs (observed 2026-10-14, headless browser, hits aborted). [UNVERIFIED: tags inside the GTM container, which loads under analytics, and Microsoft Clarity still see the raw landing URL.]
 - Attribution must outlive the session. A multi-week consideration purchase loses first touch if it
   is stored in `sessionStorage`.
+  Implemented 2026-10-14: with advertising consent, `getAttribution()` keeps click IDs in localStorage, and with analytics consent as well it keeps first touch there, for 90 days after the last campaign or ad click, and each click ID for 90 days after its own capture, never extended; without it, session-only as before.
 
 ---
 

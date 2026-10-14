@@ -82,6 +82,9 @@ export async function POST(request: NextRequest) {
   let body: unknown;
   try { body = JSON.parse(raw); }
   catch { return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 }); }
+  // Ad click IDs are validated inside leadSchema (lib/clickIds.ts): an invalid one is dropped,
+  // never a 400. So is any attribution field that does not parse (Owen F1). Click IDs reach only
+  // the hello@ notification, never Meta CAPI, and only when advertising is allowed (below).
   const parsed = leadSchema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: 'Please check the form fields.', fields: parsed.error.flatten().fieldErrors }, { status: 400 });
   const lead = parsed.data;
@@ -114,6 +117,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(accepted);
   }
   const evidence = consentEvidenceFrom(request, lead);
+  // Decided before the notification, because it also governs what the notification may show.
+  const advertise = advertisingAllowed(lead, evidence);
+  // Anton F2: the browser keeps click IDs only with advertising consent, but the server does not
+  // take the body's word for it. The same rule as Meta CAPI decides: no advertising, no IDs.
+  // Campaign context is left alone.
+  if (!advertise && lead.attribution) {
+    delete lead.attribution.first_click_ids;
+    delete lead.attribution.last_click_ids;
+    if (!Object.values(lead.attribution).some(value => value !== undefined)) lead.attribution = undefined;
+  }
   // The acceptance boundary: hello@ is told before the visitor is.
   const notified = await sendLeadNotification(lead, evidence).catch(() => ({ ok: false, skipped: false }));
   if (!notified.ok) {
@@ -124,7 +137,6 @@ export async function POST(request: NextRequest) {
   }
   // Decided now, while the request is in scope. The lead is accepted either way.
   const confirm = confirmationAllowed(request, lead);
-  const advertise = advertisingAllowed(lead, evidence);
   const cookies = metaCookiesFromRequest(request);
   const ip = getAuditClientIp(request);
   const userAgent = request.headers.get('user-agent') || undefined;
