@@ -1,5 +1,7 @@
 # 05 · Booking path: make the GHL calendar appear fast and reliably
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Owner: Marcus (performance). Date: 2026-10-07. Branch: `codex/sitewide-b2b-funnels`.
 Implements: Mira (`frontend-dev`). Gate: Owen on the code, Ruth on the one line of visible copy.
 Status: read-only audit. No code edited.

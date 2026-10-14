@@ -1,5 +1,7 @@
 # Positioning and ICP rules — approved implementation update
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Version 2.1 · 3 October 2026. This document records the current user-approved copy and funnel decisions. The source taxonomy remains unchanged at v2.0.0.
 
 ## Positioning

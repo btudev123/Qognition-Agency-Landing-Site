@@ -1,5 +1,7 @@
 # Qognition lead capture and revenue funnel
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Updated 2026-09-24. The implementation, rather than earlier setup notes, is the source of truth.
 
 ## System of record and acceptance

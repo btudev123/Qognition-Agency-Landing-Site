@@ -1,5 +1,7 @@
 # 04 · Meta ads plan for Qognition's own lead generation, October 2026
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Owner: Marcus (performance). Date: 2026-10-06. Branch: `codex/sitewide-b2b-funnels`.
 Status: internal plan. The ad copy in §3.5 and the form copy in §3.3 are **drafts** and go to Ruth
 (`brand-guard`) before anything is uploaded. Nothing in this file is budget approval.

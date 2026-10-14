@@ -132,7 +132,7 @@ Ruth, 2026-10-08: **not inside the hero `<section>`.** The hero holds the unlabe
 **DECISION, operator 2026-10-08: kept, as a written §4 amendment for this H1 only** (CLAUDE.md authority block, "Homepage H1, operator 2026-10-08"). The operator saw Ruth's ruling below and the cleared alternative ("Give {AI} reasons to name your firm"), and chose to keep this line.
 - **Built H1, final:** "Be the firm {ChatGPT | Claude | Gemini | Perplexity} names when your buyer asks who to hire."
 - **Served H1 text, stable and complete:** "Be the firm ChatGPT, Claude, Gemini or Perplexity names when your buyer asks who to hire."
-- **Motion:** the reel spins once, settles in under 5 seconds and replays on hover or focus. It is therefore not a second continuously rotating element under §9, which closes Ruth's §9 flag below. Under reduced motion, render the served sentence and no spin.
+- **Motion:** the reel spins once, settles in under 5 seconds and replays on hover. It is therefore not a second continuously rotating element under §9, which closes Ruth's §9 flag below. Under reduced motion, render the served sentence and no spin.
 - **The amendment does not travel.** Every other line on the site stays under §4's ban on promising placement, including the core line in §1, FinalCta, the CTAs, service pages, ads, decks and outbound. Nobody may cite this H1 as precedent for a second "Be the firm … names" line. Ruth will fail any line that does.
 - **Conditions the amendment does not lift:**
   - The platform row's "A name here is not a partnership …" (`Hero.tsx` line 106) stays in the hero section. It is now the only thing in that section separating four third-party logos from an endorsement.
@@ -229,14 +229,16 @@ Plain English replaces the jargon in the `moves` lines. Layer names and surfaces
 | Line | Now | Replace with |
 |---|---|---|
 | 28 | Book a call | keep |
-| 30 (H2) | 30 minutes. Here is what we cover. | 30 minutes. You leave knowing what we would fix first. |
+| 30 (H2) | 30 minutes. Here is what we cover. | 15 minutes. You leave knowing where we would start. (Shipped 2026-10-14: the call is now 15 minutes, operator.) |
 | 12 | Who you sell to, and the questions your buyers ask before they shortlist. | The questions your buyers ask before they shortlist, and which ones we would test first. |
 | 13 | What we would check first in Google and AI search, and why. | Where you can win soonest: AI answers, Google or paid search, and why. |
 | 14 | Whether we are the right fit. If we are not, we will say so. | keep |
 | 44 | After the call you get a written scope and fee. | keep |
 | 48 | Prefer to write? Send an enquiry with the challenge you want to solve. | keep |
 
-"30 minutes" is existing copy (`BookCall.tsx` line 30, `FinalCta.tsx` line 23). Cleared: MARS relays commit c95b929 ("the call is 30 minutes. The site said 20."), recording the operator fixing it at 30. Ruth did not open the commit (no git access) and accepts the operator's statement as the source.
+**Superseded 2026-10-14:** the operator moved booking to Cal.com `15min`, and the site now says 15 minutes everywhere. The note below is kept for history.
+
+"30 minutes" was existing copy (`BookCall.tsx` line 30, `FinalCta.tsx` line 23). Cleared: MARS relays commit c95b929 ("the call is 30 minutes. The site said 20."), recording the operator fixing it at 30. Ruth did not open the commit (no git access) and accepts the operator's statement as the source.
 
 ### 2.8 Free AI visibility audit · `components/home/Snapshot.tsx`
 
@@ -287,7 +289,7 @@ Guardrail note for Ruth: the AI-native answer describes our tools only. It makes
 | Line | Now | Replace with |
 |---|---|---|
 | 14 to 16 (H2) | See what AI search says about you, / with the date on it. | Find out who AI names when your buyers ask. / Then give it reasons to name you. |
-| 23 | Book a 30-minute call. | Book a 30-minute call. We show you what we would test first and what we would fix first. |
+| 23 | Book a 30-minute call. | Book a 15-minute call. We tell you where we would start, and whether we are the right fit. (Shipped 2026-10-14.) |
 | 27, 30 | Book a call · Send an enquiry | keep |
 
 ---

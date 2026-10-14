@@ -1,5 +1,7 @@
 # Privacy notice: DRAFT for counsel review
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 | | |
 |---|---|
 | Status | DRAFT. Not legal advice. Not approved. Not published. |

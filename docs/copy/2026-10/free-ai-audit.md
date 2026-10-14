@@ -1,5 +1,7 @@
 # Free AI visibility audit `/free-ai-audit` · copy v3 (N1, O5 applied 2026-10-07)
 
+> **Superseded in part, operator 2026-10-14.** /free-ai-audit no longer hosts a form. Its button links to `/contact?asset_id=free-ai-visibility-audit`, and /contact holds the only lead form (5 fields). The call is 15 minutes, booked on /book through Cal.com. Sections below that describe a form on this page are kept for history.
+
 **Author:** Theo (content) · 2026-10-07 · plan step 2.7
 **Status:** DRAFT. Ruth gates, then Mira wires. No `.tsx` edited.
 **Supersedes:** `docs/copy/audit.md` (kept).

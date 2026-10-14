@@ -96,7 +96,7 @@ const websiteSchema = buildWebsiteSchema();
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || 'G-4S2F6T5QET';
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-M83XBQG2';
-const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || 'x9bhw0zqaf';
+const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || '';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const requestHeaders = await headers();

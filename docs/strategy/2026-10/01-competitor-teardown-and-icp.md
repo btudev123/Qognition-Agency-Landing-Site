@@ -1,5 +1,7 @@
 # 01 · Competitor teardown and ICP in buyer language
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 **Plan step 2.1 · Iris (research) · 2026-10-06 · INTERNAL. Not client-facing. Not reviewed by Ruth.**
 
 **The decision this informs:** this file is for MARS (2.4 offer architecture), Marcus (2.3 objection table and CRO), Rafael (2.5 account lists) and Nadia (2.2 cohort order). It answers three questions:

@@ -1,6 +1,8 @@
 # ADR-0010: Niche journeys, isolated previews and durable lead capture
 
-- Status: implementation contract; independent security and quality review required before release
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
+- Status: implementation contract; independent security and quality review required before release. Superseded in part by the 2026-10-14 operator decision: the GHL, Upstash and durable-receipt parts (§3 to §5) no longer apply. Leads go to hello@ through Resend and booking is Cal.com.
 - Date: 2026-10-03
 - Author: Kyle (architect), coordinated by M.A.R.S
 - Scope: interface and rollout decisions only; no feature code in this ADR

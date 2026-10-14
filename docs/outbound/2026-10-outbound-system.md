@@ -1,5 +1,7 @@
 # Qognition Agency outbound system, October 2026
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 **Status:** DRAFT v0.1, 2026-10-06. Author: Rafael (`sales`). **Not sent, not scheduled, not loaded into any tool.** A named human sends every message. Nothing here goes out before Ruth (`brand-guard`) returns SHIP, and the agency white-label sequence needs Ruth specifically (CLAUDE.md, 2026-09-29 operator decision).
 
 **Primary conversion event:** booked qualified walkthrough calls (`walkthrough_booked`, CLAUDE.md §3 and §8). Every message below exists to get one, or to find out fast that it should not.

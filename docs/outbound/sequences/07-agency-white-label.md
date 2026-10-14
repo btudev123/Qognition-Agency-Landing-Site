@@ -1,5 +1,7 @@
 # Cohort 7: Agency white-label, written to agency principals
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 **DRAFT v0.1 · 2026-10-06 · Rafael · Not sent. Ruth review is mandatory** (CLAUDE.md, 2026-09-29: agency copy and client copy must not be able to read each other). Shared rules are in `docs/outbound/2026-10-outbound-system.md`.
 
 **Who this is for.** The principal of a B2B marketing, demand-gen, ABM, PR or franchise-development agency who buys **delivery capacity**. Every message is written to that person. No message addresses, names, describes or offers to contact any of their clients.

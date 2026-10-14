@@ -1,5 +1,7 @@
 # Cohort 1: Commercial insurance distribution (04.05)
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 **DRAFT v0.1 · 2026-10-06 · Rafael · Not sent. Ruth gate pending.** Shared rules, footer, E2-B, signal lines, compliance and GHL fields are in `docs/outbound/2026-10-outbound-system.md`. This file has only what is specific to the cohort.
 
 ## Taxonomy mapping (verified against `icp-taxonomy.json` v2.0.0)

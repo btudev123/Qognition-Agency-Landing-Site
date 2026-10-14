@@ -15,11 +15,12 @@ export const dynamic = 'force-dynamic';
  *   URL:     https://www.qognitionagency.com/api/cal/webhook
  *   Trigger: Booking created
  *   Secret:  must match CALCOM_WEBHOOK_SECRET
- * [NEEDS DATA: CALCOM_WEBHOOK_SECRET is not on Vercel yet. Until it is, every delivery is a 503.]
+ * Configured 2026-10-14: webhook created via the Cal.com API (BOOKING_CREATED only), and
+ * CALCOM_WEBHOOK_SECRET set on Vercel for Production and Preview.
  *
  * Signature: Cal.com sends x-cal-signature-256, the hex HMAC-SHA256 of the raw body under the
  * webhook secret. Format confirmed from Cal.com's source (sendPayload.ts, Anton's review,
- * 2026-10-14). A live Ping test is still pending until CALCOM_WEBHOOK_SECRET is set.
+ * 2026-10-14). A live Ping test is still pending until this route is deployed.
  *
  * Replays: a signed body stays valid forever, so a BOOKING_CREATED whose createdAt is missing
  * or more than 24 hours old is acknowledged and not counted.

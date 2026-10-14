@@ -1,5 +1,7 @@
 # The snapshot funnel: hero panel to booked walkthrough
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Owner: Marcus (performance). Date: 2026-09-28. Branch: `b2b-ai-search`.
 Status: funnel and measurement design. Form copy is draft and Ruth runs before it ships.
 

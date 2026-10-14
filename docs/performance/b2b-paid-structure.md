@@ -1,5 +1,7 @@
 # B2B paid media structure
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Owner: Marcus (performance). Date: 2026-09-28. Branch: `b2b-ai-search`.
 Status: structure and viability input for the `/services/ppc` page, for ADR-0007, and for the
 account build we run on a client. Not copy. Nothing here ships to a client-facing page until Ruth

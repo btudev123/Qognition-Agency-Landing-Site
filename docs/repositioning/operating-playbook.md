@@ -1,5 +1,7 @@
 # Qognition enquiry, nurture and sales operating playbook
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Internal implementation draft · 3 October 2026 · Owner: M.A.R.S, with Imogen and Rafael.
 
 This playbook connects the website to qualified enquiries and booked calls. It specifies work to configure and verify; it does not claim that GHL workflows are live. All outbound copy below is a draft. No messages, calendar appointments or nurture enrolments were created while preparing it.

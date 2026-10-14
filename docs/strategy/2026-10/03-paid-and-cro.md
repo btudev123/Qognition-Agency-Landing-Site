@@ -1,5 +1,7 @@
 # 03 · Paid launch, conversion setup and CRO for Qognition's own lead generation
 
+> **Superseded in part, operator 2026-10-14.** GoHighLevel and Upstash are removed. Leads are emailed to hello@ through Resend, and calls are booked through Cal.com on /book. Sections below that describe GHL or Upstash are kept for history.
+
 Owner: Marcus (performance). Date: 2026-10-06. Branch: `codex/sitewide-b2b-funnels`.
 Plan step: 1E (measurement decisions) and 2.3 in `~/.claude/plans/there-should-be-either-fuzzy-cookie.md`.
 Status: internal. The RSA copy in §3.6 is draft and goes to Ruth before anything is uploaded.

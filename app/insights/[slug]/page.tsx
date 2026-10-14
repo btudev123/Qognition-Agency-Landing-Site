@@ -32,7 +32,7 @@ export default async function GrowthInsightPage({ params }: Props) {
         </div>
       </div>
     </article>
-    <section className="mx-auto mt-20 max-w-6xl border-t border-black/15 pt-14"><h2 className="text-h2 font-semibold">Continue the decision.</h2><div className="mt-8 grid gap-5 md:grid-cols-3">{related.map((item) => <Link key={item.slug} href={`/insights/${item.slug}`} className="border border-black/10 bg-white p-6 hover:border-teal-700"><p className="text-meta text-teal-800">{item.kind}</p><h3 className="mt-4 text-h3 font-semibold">{item.title}</h3></Link>)}</div></section>
+    <section className="mx-auto mt-20 max-w-6xl border-t border-black/15 pt-14"><h2 className="text-h2 font-semibold">Read next.</h2><div className="mt-8 grid gap-5 md:grid-cols-3">{related.map((item) => <Link key={item.slug} href={`/insights/${item.slug}`} className="border border-black/10 bg-white p-6 hover:border-teal-700"><p className="text-meta text-teal-800">{item.kind}</p><h3 className="mt-4 text-h3 font-semibold">{item.title}</h3></Link>)}</div></section>
     <section id="discuss" className="mx-auto mt-20 grid max-w-6xl gap-12 border-t border-black/15 pt-14 lg:grid-cols-2"><div><p className="text-meta uppercase tracking-widest text-teal-800">Your next step</p><h2 className="mt-5 text-h2 font-semibold">Want this checked for your firm?</h2><p className="mt-6 text-body leading-relaxed text-[var(--ink-soft)]">Tell us what you sell and who buys it. We will tell you which buyer questions we would test first, and why.</p></div><EnquiryLinks className="self-end" context={{ stage: insight.stage === 'Learn' ? 'tofu' : 'mofu', page_id: `/insights/${slug}` }} /></section>
   </main>;
 }
