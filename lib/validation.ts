@@ -46,13 +46,22 @@ export const utmSchema = z
   })
   .optional();
 
+/** A filled trap is a bot. Empty or whitespace is a person. */
+const trapField = z.preprocess(
+  (value) => {
+    if (typeof value !== 'string') return undefined;
+    return value.trim() === '' ? undefined : value;
+  },
+  z.string().max(500).optional(),
+);
+
 export const leadSchema = z.object({
   service: spokeSchema,
   intent: intentSchema,
   source_page: z.string().min(1).max(500),
   utm: utmSchema,
   contact: contactSchema,
-  /** CRM tag, e.g. "lead magnet for ai readiness". Falls back to a funnel-derived tag. */
+  /** Retired free-text tag, e.g. "lead magnet for ai readiness". Still accepted from older clients; nothing reads it. */
   tag: z.string().max(120).optional(),
   /**
    * Meta deduplication key. The browser pixel fires `Lead` with this as its
@@ -106,13 +115,9 @@ export const leadSchema = z.object({
     landing_page: z.string().max(500).optional(),
     referrer_host: z.string().max(250).optional(),
   }).optional(),
-  honeypot: z.preprocess(
-    (value) => {
-      if (typeof value !== 'string') return undefined;
-      return value.trim() === '' ? undefined : value;
-    },
-    z.string().max(500).optional(),
-  ),
+  /** The trap. hp_field_q matches no autofill rule (Anton F4); honeypot is what cached clients send. */
+  hp_field_q: trapField,
+  honeypot: trapField,
   metadata: z
     .object({
       spoke_visited_first: z.string().max(50).optional(),

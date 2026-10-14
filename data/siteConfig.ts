@@ -1,11 +1,13 @@
 // ── Single source of truth for contact + booking ────────────────────────────
-// Booking. LeadConnector (GoHighLevel) is the booking system. BOOKING_LINK is
-// the PUBLIC widget URL used by both the inline embed and every "Book a call"
-// anchor. Swap it in one place and the whole site follows.
-export const BOOKING_LINK =
-  "https://api.leadconnectorhq.com/widget/bookings/discovery-call-qognition-agency";
-/** Script that drives the LeadConnector iframe auto-resize handshake. */
-export const BOOKING_EMBED_SCRIPT = "https://link.msgsndr.com/js/form_embed.js";
+// Booking. Cal.com is the booking system (operator, 2026-10-14). BOOKING_LINK is
+// the public booking page every "Book a call" anchor opens; CAL_LINK is the same
+// event as the inline embed addresses it. Change the event in one place, here,
+// and the whole site follows. scripts/check-funnel.cjs pins both.
+export const CAL_LINK = "qognition-agency/15min";
+export const BOOKING_LINK = `https://cal.com/${CAL_LINK}`;
+/** Cal.com's official inline-embed loader. It frames https://app.cal.com/<CAL_LINK>/embed. */
+export const CAL_EMBED_ORIGIN = "https://app.cal.com";
+export const CAL_EMBED_SCRIPT = `${CAL_EMBED_ORIGIN}/embed/embed.js`;
 
 /** @deprecated alias → BOOKING_LINK. Kept so existing imports keep working. */
 export const CALENDLY_LINK = BOOKING_LINK;

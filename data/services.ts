@@ -543,7 +543,7 @@ export const SERVICES: Service[] = [
       },
       {
         "question": "What happens on the first call?",
-        "answer": "It takes 30 minutes. We cover who you sell to, what we would check first, and whether we are a fit. You can send an enquiry instead if you prefer."
+        "answer": "It takes 15 minutes. We cover who you sell to, what we would check first, and whether we are a fit. You can send an enquiry instead if you prefer."
       }
     ]
   },
@@ -658,7 +658,7 @@ export const SERVICES: Service[] = [
       },
       {
         "question": "What happens on the first call?",
-        "answer": "It takes 30 minutes. We cover who you sell to, what we would check first in Google and AI search, and whether we are a fit. You can send an enquiry instead if you prefer."
+        "answer": "It takes 15 minutes. We cover who you sell to, what we would check first in Google and AI search, and whether we are a fit. You can send an enquiry instead if you prefer."
       }
     ],
     "deepDive": [
@@ -826,7 +826,7 @@ export const SERVICES: Service[] = [
       },
       {
         "question": "What happens on the first call?",
-        "answer": "It takes 30 minutes. Bring your account access, or a recent export, and the cost per lead you want to reach. We tell you what we would check first and whether we are a fit."
+        "answer": "It takes 15 minutes. Bring a recent export from your ad account and the cost per lead you want to reach. We tell you what we would check first and whether we are a fit."
       }
     ],
     "deepDive": [

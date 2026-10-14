@@ -3,12 +3,17 @@
 The user approved a sitewide copy and funnel update in the dev checkout. These decisions supersede contradictory historical instructions below:
 - Keep the existing Qognition logo, colours, typography and design. Rewrite messaging for B2B AI SEO/GEO, including SaaS.
 - No public agency prices, price ranges or tiers; retain /pricing with tailored-scope content.
-- Primary conversion is Book a call; secondary is Send an enquiry. The existing GHL calendar remains.
+- Primary conversion is Book a call; secondary is Send an enquiry. ~~The existing GHL calendar remains.~~ Superseded 2026-10-14, see below.
+- **Lead and booking stack, operator 2026-10-14.** This supersedes every GHL and Upstash rule in this file, including the 2026-10-06 amendment below.
+  - GoHighLevel and Upstash are removed everywhere: code, env, docs.
+  - Leads: `/api/lead` reports success only when Resend accepts the notification to hello@. Resend is the only acceptance boundary.
+  - Booking: Cal.com, `cal.com/qognition-agency/15min`, embedded on /book. The operator deleted the Upstash and `NEXT_PUBLIC_LEAD_TRANSPORT` Vercel env vars on 2026-10-14.
+  - Funnel: one form on /contact (5 fields) and one calendar on /book. No other page renders a lead form.
 - Cover all 8,823 sub-niche IDs with substantive TOFU/MOFU/BOFU journeys. Generated mappings are not completed reviewed content.
 - Qualified regional expansion is authorized; empty permutations are not publication-ready.
 - Existing URLs and uncommitted drafts remain preserved. Candidate preview routes never imply production sign-off.
-- GHL persistence must precede lead success. No production writes or nurture from preview tests.
-  **Amended by the operator 2026-10-06:**
+- ~~GHL persistence must precede lead success.~~ (Superseded 2026-10-14.) No production writes or nurture from preview tests.
+  **Amended by the operator 2026-10-06 (superseded 2026-10-14, kept for history):**
   - When GHL is unconfigured or erroring, `/api/lead` sends the Resend notification to hello@ synchronously, and reports success only if Resend accepts it.
   - `LEAD_EMAIL_FALLBACK=off` restores strict GHL-first.
   - The Upstash ledger is optional. It adds exactly-once email and CAPI on retries, and GHL capture works without it.
@@ -457,8 +462,8 @@ consolidated. See §7 before touching any of them.
 | `data/growth/taxonomy.ts` | Sector → niche → subniche entity spine |
 | `components/growth/GrowthPage.tsx` | Discriminated switch on `page.kind`. New page types are a new kind plus a branch, never a new route |
 | `lib/auditEngine.ts` | Crawl + scoring for the snapshot. `normalizeTargetUrl` is the SSRF guard, keep it |
-| `lib/leadDelivery.ts` | Resend delivery. Post-capture notification, and the synchronous fallback record when GHL is down or unconfigured (operator, 2026-10-06) |
-| `lib/leadCrm.ts` | GoHighLevel. Primary acceptance boundary when configured; Upstash ledger optional |
+| `lib/leadDelivery.ts` | Resend delivery. The hello@ notification is the only acceptance boundary (operator, 2026-10-14). There is no CRM and no ledger |
+| `app/api/cal/webhook/route.ts` | Cal.com `BOOKING_CREATED` webhook, HMAC-verified with `CALCOM_WEBHOOK_SECRET`. Records `walkthrough_booked` |
 | `lib/leadQualification.ts` | MQL scoring. Constrains how short the form can be |
 | `lib/analytics.ts` | `track()` → dataLayer + gtag + Meta with shared dedup `eventID`; UTM attribution |
 | `lib/consent.ts` | Regional defaults via `consentDefaultFor()` (opt-out US/CA/AU/AE/SG, opt-in elsewhere), GPC honoured for advertising |
@@ -525,9 +530,12 @@ Events, `snake_case`, defined once in `lib/analytics.ts`:
 
 - **A booking-link click is never a booking.** `CalBooking.tsx` fires `booking_widget_view` and says
   so in a comment. That comment is load-bearing. Do not "improve" it into a booking event.
-- `walkthrough_booked` is **server-side only**, from the GoHighLevel webhook. The booking lives in an
-  iframe; the parent page cannot see a completed booking.
-- `/api/lead` returns `duplicate`; retries must not double-count.
+- `walkthrough_booked` is **server-side only**, from the Cal.com webhook (2026-10-14; it was GoHighLevel).
+  The booking lives in an iframe, so the parent page cannot see a completed booking. Until a GA4 Measurement
+  Protocol path exists, it is recorded in logs only. Count distinct `booking_uid`.
+- Retries must not double-count. With no ledger, the browser reuses `event_id`, Meta merges CAPI by
+  `event_id`, and success events fire once per success response. A lost 200 can still produce a second
+  hello@ email; the operator accepted that.
 - **No sensitive data in analytics events.** Never send `email`, `phone`, `name` or the free-text
   `message` field into GA4 or GTM.
 - Capture click IDs (`gclid`, `wbraid`, `gbraid`, `li_fat_id`, `msclkid`) on the lead record, or

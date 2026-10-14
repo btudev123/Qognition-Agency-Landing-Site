@@ -3,7 +3,7 @@ import { appendFunnelContext, type FunnelContext } from '../../lib/funnelContext
 import { FUNNEL_ACTIONS, resolveLeadLocale } from '../../lib/leadCopy';
 
 /* What a page shows where it used to embed a lead form. Operator, 2026-10-14: "all
- * leads should end up in /contact". Two links, never a form: Book a call (the GHL
+ * leads should end up in /contact". Two links, never a form: Book a call (the Cal.com
  * calendar on /book) and Send an enquiry (the one form, on /contact). Both carry the
  * page's funnel context so the lead still says where it came from.
  *

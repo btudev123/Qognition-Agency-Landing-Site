@@ -333,7 +333,7 @@ export default async function Page({ params }: { params: Promise<{ service: stri
                 </Link>
               </div>
               <p className="text-body text-[var(--text-muted)] mb-8 border-t border-[var(--border)] pt-4">
-                Book a 30-minute call about {service.title}. Bring your website and the buyers you want to reach.
+                Book a 15-minute call about {service.title}. Bring your website and the buyers you want to reach.
               </p>
               <a
                 href={appendFunnelContext("/book", { page_id: path, service_id: service.id, stage: "bofu" })}

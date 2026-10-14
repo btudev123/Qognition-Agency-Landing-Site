@@ -1,6 +1,9 @@
-// Isolated contract tests. Every HTTP call is mocked; never sends a live lead.
+// Isolated contract tests. Every HTTP call is mocked; never sends a live lead or a live email.
+// Operator 2026-10-14: Resend is the only lead acceptance boundary. GHL and Upstash are gone.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
+const { createHmac } = require('node:crypto');
 const ts = require('typescript');
 const Module = require('node:module');
 require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText, filename);
@@ -11,30 +14,58 @@ Module._load = function(name, ...args) {
   return originalLoad.call(this, name, ...args);
 };
 global.fetch = async () => { throw new Error('Live network is forbidden in funnel tests'); };
+const ROOT = path.join(__dirname, '..');
 const { leadSchema } = require('../lib/validation.ts');
 const { qualifyLead } = require('../lib/leadQualification.ts');
-const { captureLeadInCrm, crmConfiguration } = require('../lib/leadCrm.ts');
 const { mergeAttribution } = require('../lib/analytics.ts');
 const { leadCopy, LEAD_LOCALES } = require('../lib/leadCopy.ts');
 const { readConsent, saveConsent, refreshConsentFromStorage, consentWasWithdrawn } = require('../lib/consent.ts');
-const { POST } = require('../app/api/lead/route.ts');
-const env = { GHL_PRIVATE_INTEGRATION_TOKEN: 'test-only', GHL_LOCATION_ID: 'test-location', GHL_INQUIRY_FIELD_ID: 'inquiry', GHL_SUBMISSION_FIELD_ID: 'receipts', GHL_QUALIFICATION_FIELD_ID: 'eligibility', GHL_MARKETING_CONSENT_FIELD_ID: 'consent', GHL_LOCALE_FIELD_ID: 'locale', VERCEL_ENV: 'production', UPSTASH_REDIS_REST_URL: 'https://redis.example.com', UPSTASH_REDIS_REST_TOKEN: 'redis-test-only', LEAD_LEDGER_HMAC_SECRET: 'test-only-secret-at-least-32-characters' };
-const lead = () => leadSchema.parse({ service: 'marketing', intent: 'consultation', source_page: '/services/ai-seo', submission_id: 'request-001', event_id: 'request-001', contact: { name: 'Test Buyer', email: 'Buyer@Example.com', company_url: 'example.com', message: 'Technical search support' }, context: { locale: 'de' }, qualification: { business_model: 'b2b', employee_band: '20-99' }, consent: { email_marketing: false, analytics: false, advertising: false, recorded_at: '2026-09-24T00:00:00.000Z', policy_version: '2026-09-24' } });
-
-const { provider } = require('./test-support/lead-providers.cjs');
 const { normalizeLeadContext } = require('../lib/leadTaxonomy.ts');
-const { createLeadLedger, ledgerConfiguration } = require('../lib/leadLedger.ts');
-const { leadSubmissionIdentity } = require('../lib/leadCrm.ts');
+const { POST } = require('../app/api/lead/route.ts');
+
+/** The only lead configuration that exists now. */
+const env = { VERCEL_ENV: 'production', RESEND_API_KEY: 'test-only', RESEND_FROM: 'hello@example.com' };
+/** Retired settings. Set in some tests to prove nothing reads them any more. */
+const RETIRED_ENV = {
+  GHL_PRIVATE_INTEGRATION_TOKEN: 'test-only', GHL_LOCATION_ID: 'test-location', GHL_INQUIRY_FIELD_ID: 'inquiry', GHL_SUBMISSION_FIELD_ID: 'receipts',
+  GHL_QUALIFICATION_FIELD_ID: 'eligibility', GHL_MARKETING_CONSENT_FIELD_ID: 'consent', GHL_LOCALE_FIELD_ID: 'locale',
+  UPSTASH_REDIS_REST_URL: 'https://redis.example.com', UPSTASH_REDIS_REST_TOKEN: 'redis-test-only', LEAD_LEDGER_HMAC_SECRET: 'test-only-secret-at-least-32-characters',
+  LEAD_EMAIL_FALLBACK: 'off',
+};
+const configured = () => { for (const key of Object.keys(RETIRED_ENV)) delete process.env[key]; Object.assign(process.env, env); delete process.env.QOGNITION_LEAD_MODE; };
+const lead = () => leadSchema.parse({ service: 'marketing', intent: 'consultation', source_page: '/services/ai-seo', submission_id: 'request-001', event_id: 'request-001', contact: { name: 'Test Buyer', email: 'Buyer@Example.com', company_url: 'example.com', message: 'Technical search support' }, context: { locale: 'de' }, qualification: { business_model: 'b2b', employee_band: '20-99' }, consent: { email_marketing: false, analytics: false, advertising: false, recorded_at: '2026-09-24T00:00:00.000Z', policy_version: '2026-09-24' } });
+const requestWith = (payload, headers = {}) => { const r = new Request('https://www.qognitionagency.com/api/lead', { method: 'POST', body: typeof payload === 'string' ? payload : JSON.stringify(payload), headers: { 'content-type': 'application/json', 'x-forwarded-for': '192.0.2.1', ...headers } }); r.cookies = { get: () => undefined }; return r; };
+const request = payload => requestWith(payload);
+const quietly = async (fn, logged = []) => {
+  const old = { info: console.info, warn: console.warn, error: console.error, log: console.log };
+  for (const level of Object.keys(old)) console[level] = (...args) => logged.push([level, ...args]);
+  try { return await fn(); } finally { Object.assign(console, old); }
+};
+/** Resend double. Records every request URL so a test can prove where the route went. */
+const resendOnly = (options = {}) => {
+  const sent = []; const urls = [];
+  global.fetch = async (url, init = {}) => {
+    urls.push(String(url));
+    if (!String(url).startsWith('https://api.resend.com/')) throw Error('Unexpected external destination');
+    sent.push(JSON.parse(init.body));
+    return options.fails ? Response.json({ name: 'validation_error', message: 'to buyer@example.com rejected' }, { status: 422 }) : Response.json({ id: 'email-1' });
+  };
+  sent.urls = urls;
+  return sent;
+};
+const toNotify = emails => emails.filter(m => m.to === 'hello@qognitionagency.com');
+const cell = (html, label) => html.match(new RegExp(`>${label}</td>\\s*<td[^>]*>([^<]*)<`))?.[1];
 const tests = [];
 const test = (name, fn) => tests.push([name, fn]);
-test('preview cannot capture a lead even when email delivery is configured', async () => {
-  process.env.VERCEL_ENV = 'preview'; delete process.env.QOGNITION_LEAD_MODE;
-  process.env.RESEND_API_KEY = 'test-only'; process.env.RESEND_FROM = 'hello@example.com';
-  let calls = 0; global.fetch = async () => { calls++; return Response.json({id:'email-1'}); };
+
+/* ── Schema, scoring, attribution, copy and consent (unchanged contracts) ─────────── */
+test('preview cannot send a lead even when email delivery is configured', async () => {
+  configured(); process.env.VERCEL_ENV = 'preview';
+  let calls = 0; global.fetch = async () => { calls++; return Response.json({ id: 'email-1' }); };
   const response = await POST(request(lead()));
   assert.equal(response.status, 503); assert.equal(calls, 0);
   assert.equal((await response.json()).status, 'preview_disabled');
-  delete process.env.RESEND_API_KEY; delete process.env.RESEND_FROM;
+  configured();
 });
 test('legacy schema accepted and client lifecycle fields are stripped', () => {
   const result = leadSchema.parse({ service: 'tech', intent: 'contact', source_page: '/contact', contact: { name: 'Test', email: 'a@example.com' }, lifecycle: 'SQL' });
@@ -68,79 +99,6 @@ test('MQL needs a website, an in-band company size and a message', () => {
   assert.equal(qualifyLead({ ...short, qualification: { revenue_band: '10m-50m' } }).eligibility, 'MQL');
   assert.equal(qualifyLead({ ...short, qualification: { employee_band: '20-99', business_model: 'b2c' } }).missing.includes('B2B fit'), true);
 });
-test('no configuration fails without network access', async () => {
-  assert.equal(crmConfiguration({}).configured, false);
-  await assert.rejects(captureLeadInCrm(lead(), { env: {} }), e => e.code === 'not_configured');
-});
-test('capture confirms note history and preserves verified identity, ownership and stages', async () => {
-  const p = provider(); const result = await captureLeadInCrm(lead(), { env, fetch: p.request });
-  assert.equal(result.duplicate, false); assert.equal(result.contactId, 'contact-1'); assert.equal(result.noteId, 'note-1');
-  const write = p.writes.find(w => w.kind === 'contact').body;
-  for (const forbidden of ['tags', 'assignedTo', 'dnd', 'source', 'pipelineId', 'pipelineStageId', 'name', 'companyName', 'website', 'phone', 'email']) assert.equal(Object.hasOwn(write, forbidden), false);
-  assert.equal(p.contact.name, 'Verified name'); assert.equal(p.contact.assignedTo, 'owner');
-  assert.equal(p.contact.customFields.find(f => f.id === 'sales_stage').value, 'Customer');
-  assert.equal(p.notes.length, 1); assert.match(p.notes[0].body, /Technical search support/);
-  const receipt = [...p.values.values()].map(v => { try { return JSON.parse(v); } catch {} }).find(v => v?.state === 'captured');
-  assert.equal(receipt.noteId, 'note-1');
-  assert.equal(JSON.stringify([...p.values]).includes('buyer@example.com'), false);
-  assert.equal(JSON.stringify([...p.values]).includes('Technical search support'), false);
-});
-test('equal retries share durable receipts across adapter instances; changed content returns conflict', async () => {
-  const p = provider({ existing: false });
-  await captureLeadInCrm(lead(), { env, fetch: p.request });
-  const result = await captureLeadInCrm(lead(), { env, fetch: p.request });
-  assert.equal(result.duplicate, true); assert.equal(result.eventId, 'request-001'); assert.equal(p.notes.length, 1);
-  await assert.rejects(captureLeadInCrm({ ...lead(), contact: { ...lead().contact, email: 'other@example.com' } }, { env, fetch: p.request }), e => e.code === 'submission_conflict');
-});
-test('concurrent independent adapters cannot append duplicate notes', async () => {
-  const p = provider({ existing: false });
-  const settled = await Promise.allSettled([captureLeadInCrm(lead(), { env, fetch: p.request }), captureLeadInCrm(lead(), { env, fetch: p.request })]);
-  assert.equal(settled.filter(r => r.status === 'fulfilled').length, 1);
-  assert.equal(settled.find(r => r.status === 'rejected').reason.code, 'busy');
-  assert.equal((await captureLeadInCrm(lead(), { env, fetch: p.request })).duplicate, true); assert.equal(p.notes.length, 1);
-});
-test('provider errors, lost fields and cross-location records cannot be acknowledged', async () => {
-  for (const options of [{ ghlUnavailable: true }, { loseInquiry: true }, { wrongLocation: true }, { corruptNote: true }]) {
-    const p = provider(options);
-    await assert.rejects(captureLeadInCrm(lead(), { env, fetch: p.request }));
-  }
-});
-test('lost note response reconciles exactly one verified append', async () => {
-  const p = provider({ loseNoteResponse: true });
-  await assert.rejects(captureLeadInCrm(lead(), { env, fetch: p.request }));
-  assert.equal(p.notes.length, 1); p.options.loseNoteResponse = false;
-  const result = await captureLeadInCrm(lead(), { env, fetch: p.request });
-  assert.equal(result.noteId, 'note-1'); assert.equal(p.notes.length, 1);
-});
-test('an uncertain append with no observable note is never sent again', async () => {
-  const p = provider({ loseNoteResponse: true, dropNote: true });
-  await assert.rejects(captureLeadInCrm(lead(), { env, fetch: p.request }));
-  p.options.loseNoteResponse = false; p.options.dropNote = false;
-  await assert.rejects(captureLeadInCrm(lead(), { env, fetch: p.request }), e => e.code === 'reconciliation_required');
-  assert.equal(p.writes.filter(w => w.kind === 'note').length, 1);
-});
-test('receipt commit failure is retryable and reconciliation does not repeat append', async () => {
-  const p = provider({ failCommit: true });
-  await assert.rejects(captureLeadInCrm(lead(), { env, fetch: p.request })); p.options.failCommit = false;
-  await captureLeadInCrm(lead(), { env, fetch: p.request }); assert.equal(p.notes.length, 1);
-});
-test('lease loss stops before provider writes', async () => {
-  const p = provider({ loseLease: true });
-  await assert.rejects(captureLeadInCrm(lead(), { env, fetch: p.request }), e => e.code === 'lease_lost'); assert.equal(p.writes.length, 0);
-});
-test('new enquiries append history while contact first touch stays fixed', async () => {
-  const p = provider();
-  await captureLeadInCrm({ ...lead(), attribution: { first_touch: { source: 'google' }, last_touch: { source: 'google' }, landing_page: '/first' } }, { env, fetch: p.request });
-  await captureLeadInCrm({ ...lead(), submission_id: 'request-002', attribution: { first_touch: { source: 'linkedin' }, last_touch: { source: 'linkedin' }, landing_page: '/later' } }, { env, fetch: p.request });
-  assert.equal(p.notes.length, 2);
-  const saved = JSON.parse(p.contact.customFields.find(f => f.id === 'inquiry').value);
-  assert.equal(saved.attribution.first_touch.source, 'google'); assert.equal(saved.attribution.last_touch.source, 'linkedin'); assert.equal(saved.attribution.landing_page, '/first');
-});
-test('canonical digest ignores object-key order and transport IDs', () => {
-  const one = lead(); const two = { ...one, contact: Object.fromEntries(Object.entries(one.contact).reverse()), event_id: 'a-new-event', honeypot: '' };
-  assert.equal(leadSubmissionIdentity(one).digest, leadSubmissionIdentity(two).digest);
-  assert.equal(leadSubmissionIdentity({ ...one, submission_id: undefined, event_id: undefined }, new Date('2026-10-03')).submissionId, leadSubmissionIdentity({ ...two, submission_id: undefined, event_id: undefined }, new Date('2026-10-03')).submissionId);
-});
 test('every leaf retains its ancestors, including children of declared overlaps', () => {
   const tax = require('../data/b2b/icp/icp-taxonomy.json'); let count = 0;
   for (const i of tax.industries) for (const s of i.sub_industries) for (const n of s.niches) for (const l of n.sub_niches) {
@@ -173,21 +131,104 @@ test('storage-denied consent choices do not throw and withdrawal unloads tracker
   assert.equal(consentWasWithdrawn({ analytics: true, advertising: false }, null), true);
   delete global.window; delete global.document; refreshConsentFromStorage();
 });
-const request = payload => { const r = new Request('https://www.qognitionagency.com/api/lead', { method: 'POST', body: JSON.stringify(payload), headers: { 'x-forwarded-for': '192.0.2.1' } }); r.cookies = { get: () => undefined }; return r; };
 test('API rejects newsletter without opt-in', async () => {
-  const response = await POST(request({ ...lead(), intent: 'newsletter' })); assert.equal(response.status, 400);
+  configured(); let calls = 0; global.fetch = async () => { calls++; throw Error('No network'); };
+  const response = await POST(request({ ...lead(), intent: 'newsletter' })); assert.equal(response.status, 400); assert.equal(calls, 0);
 });
-test('preview validation performs no external request and cannot report capture', async () => {
-  process.env.VERCEL_ENV = 'preview'; process.env.QOGNITION_LEAD_MODE = 'validate';
+test('preview validation performs no external request and cannot report success', async () => {
+  configured(); process.env.VERCEL_ENV = 'preview'; process.env.QOGNITION_LEAD_MODE = 'validate';
   let calls = 0; global.fetch = async () => { calls++; throw Error('No network'); };
   const response = await POST(request(lead())); const body = await response.json();
   assert.equal(response.status, 200); assert.equal(body.success, false); assert.equal(body.status, 'validated'); assert.equal(calls, 0);
-  delete process.env.QOGNITION_LEAD_MODE;
+  configured();
+});
+
+/* ── The Resend acceptance boundary ──────────────────────────────────────────────── */
+test('Resend accepts: 200 emailed, hello@ notified before the response, confirmation after it', async () => {
+  configured(); const sent = resendOnly(); pending.length = 0; const logged = [];
+  const response = await quietly(() => POST(request(lead())), logged); const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.deepEqual(body, { success: true, status: 'emailed', message: 'Your enquiry has been received.', submission_id: 'request-001', event_id: 'request-001' });
+  assert.equal(sent.length, 1, 'internal notification is sent before responding'); assert.equal(sent[0].to, 'hello@qognitionagency.com');
+  assert.equal(JSON.stringify(logged).includes('xample.com'), false); assert.equal(JSON.stringify(logged).includes('Technical search support'), false);
+  assert.equal(pending.length, 1); await quietly(() => pending[0]());
+  assert.equal(sent.length, 2, 'prospect confirmation fires after the response'); assert.equal(sent[1].to, 'Buyer@Example.com');
+});
+test('a success response carries no duplicate or fallback flag: neither can be known without storage', async () => {
+  configured(); resendOnly(); pending.length = 0;
+  const body = await (await quietly(() => POST(request(lead())))).json();
+  assert.equal(Object.hasOwn(body, 'duplicate'), false); assert.equal(Object.hasOwn(body, 'fallback'), false);
+});
+test('without client references the route generates them', async () => {
+  configured(); resendOnly(); pending.length = 0;
+  const body = await (await quietly(() => POST(request({ ...lead(), submission_id: undefined, event_id: undefined })))).json();
+  assert.equal(body.status, 'emailed'); assert.match(body.submission_id, /^[a-zA-Z0-9_-]{8,80}$/); assert.equal(body.event_id, body.submission_id);
+});
+test('Resend rejects: retryable 503 with the book-a-call message, no follow-ups, only status and error name logged', async () => {
+  configured(); const sent = resendOnly({ fails: true }); pending.length = 0; const logged = [];
+  const response = await quietly(() => POST(request(lead())), logged); const body = await response.json();
+  assert.equal(response.status, 503); assert.equal(response.headers.get('Retry-After'), '30');
+  assert.deepEqual({ success: body.success, retryable: body.retryable, code: body.code }, { success: false, retryable: true, code: 'unavailable' });
+  assert.match(body.error, /book a call directly/);
+  assert.equal(sent.length, 1); assert.equal(pending.length, 0);
+  assert.ok(logged.some(l => l[1] === '[Lead] email_rejected' && l[2].status === 422 && l[2].name === 'validation_error'));
+  assert.ok(logged.some(l => l[1] === '[Lead] capture_failed' && l[2].codes[0] === 'unavailable'));
+  assert.equal(JSON.stringify(logged).includes('xample.com'), false); assert.equal(JSON.stringify(logged).includes('to buyer'), false);
+});
+test('Resend unconfigured (no API key): retryable 503, nothing sent, skip reason logged', async () => {
+  configured(); delete process.env.RESEND_API_KEY; const sent = resendOnly(); pending.length = 0; const logged = [];
+  const response = await quietly(() => POST(request(lead())), logged); const body = await response.json();
+  assert.equal(response.status, 503); assert.equal(body.success, false); assert.equal(body.retryable, true); assert.equal(body.code, 'not_configured');
+  assert.equal(sent.urls.length, 0); assert.equal(pending.length, 0);
+  assert.ok(logged.some(l => l[1] === '[Lead] email_skipped' && l[2].reason === 'missing_api_key'));
+  assert.deepEqual(logged.filter(l => l[1] === '[Lead] capture_failed'), [['error', '[Lead] capture_failed', { codes: ['not_configured'] }]]);
+  configured();
+});
+test('Resend unconfigured (no sender): 503, logged as its own skip reason', async () => {
+  configured(); delete process.env.RESEND_FROM; const sent = resendOnly(); const logged = [];
+  assert.equal((await quietly(() => POST(request(lead())), logged)).status, 503);
+  assert.equal(sent.urls.length, 0);
+  assert.ok(logged.some(l => l[1] === '[Lead] email_skipped' && l[2].reason === 'missing_from'));
+  configured();
+});
+test('a Resend call that aborts is a 503 and logs only allowlisted codes', async () => {
+  configured(); pending.length = 0; const logged = [];
+  global.fetch = async () => { throw new DOMException('The operation was aborted due to timeout', 'AbortError'); };
+  const response = await quietly(() => POST(request(lead())), logged);
+  assert.equal(response.status, 503); assert.equal(pending.length, 0);
+  assert.deepEqual(logged, [['error', '[Lead] capture_failed', { codes: ['unavailable'] }]]);
+});
+test('no GHL or Upstash request is ever made, even with every retired variable still set', async () => {
+  configured(); Object.assign(process.env, RETIRED_ENV, { NEXT_PUBLIC_META_PIXEL_ID: 'pixel-test', META_CAPI_ACCESS_TOKEN: 'test-only' });
+  const urls = []; let failResend = false; pending.length = 0;
+  global.fetch = async (url) => {
+    urls.push(String(url));
+    if (String(url).startsWith('https://graph.facebook.com/')) return Response.json({ events_received: 1 });
+    if (String(url).startsWith('https://api.resend.com/')) return failResend ? new Response('no', { status: 503 }) : Response.json({ id: 'email-1' });
+    throw Error('Unexpected external destination');
+  };
+  try {
+    const consented = { ...lead(), consent: { ...lead().consent, advertising: true, basis: 'explicit' } };
+    const ok = await (await quietly(() => POST(request(consented)))).json();
+    assert.equal(ok.status, 'emailed', 'LEAD_EMAIL_FALLBACK=off no longer exists, so it cannot refuse the lead');
+    for (const run of pending) await quietly(() => run());
+    failResend = true; pending.length = 0;
+    assert.equal((await quietly(() => POST(request({ ...consented, submission_id: 'request-retired-2', event_id: 'request-retired-2' })))).status, 503);
+    assert.ok(urls.length >= 3);
+    for (const url of urls) assert.ok(/^https:\/\/(api\.resend\.com|graph\.facebook\.com)\//.test(url), `unexpected request to ${url}`);
+  } finally { delete process.env.NEXT_PUBLIC_META_PIXEL_ID; delete process.env.META_CAPI_ACCESS_TOKEN; configured(); }
+});
+test('the GHL and Upstash modules are gone and no server source names them', () => {
+  for (const gone of ['lib/leadCrm.ts', 'lib/leadLedger.ts', 'scripts/test-support/lead-providers.cjs']) assert.equal(fs.existsSync(path.join(ROOT, gone)), false, `${gone} still exists`);
+  const sources = ['app/api/lead/route.ts', 'lib/leadDelivery.ts', 'lib/validation.ts', 'lib/leadQualification.ts', 'app/api/integrations/status/route.ts', 'app/api/audit/route.ts', 'app/api/cal/webhook/route.ts', 'lib/audit/aiVisibility.ts', 'lib/contactForm.ts'];
+  for (const file of sources) {
+    const text = fs.readFileSync(path.join(ROOT, file), 'utf8');
+    assert.equal(/\bghl\b|gohighlevel|leadconnector|msgsndr|upstash|\bredis\b|LEAD_EMAIL_FALLBACK|LEAD_LEDGER/i.test(text), false, `${file} still references the retired stack`);
+  }
 });
 // Owen L4, 2026-10-14: /contact is the only form, so bad page context must never cost the lead.
 test('unresolvable taxonomy context is stripped and logged, and the lead is still accepted', async () => {
-  Object.assign(process.env, env, { RESEND_API_KEY: 'test-only', RESEND_FROM: 'hello@example.com' }); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
-  const sent = resendOnly(); pending.length = 0; const logged = [];
+  configured(); const sent = resendOnly(); pending.length = 0; const logged = [];
   const bad = { ...lead(), submission_id: 'request-bad-taxonomy', event_id: 'request-bad-taxonomy', context: { industry_id: '02', subniche_id: '01.01.01.01', asset_id: 'free-ai-visibility-audit', page_id: '/contact', locale: 'de' } };
   const response = await quietly(() => POST(request(bad)), logged); const body = await response.json();
   assert.equal(response.status, 200); assert.equal(body.status, 'emailed');
@@ -196,121 +237,151 @@ test('unresolvable taxonomy context is stripped and logged, and the lead is stil
   assert.equal(JSON.stringify(logged).includes('xample.com'), false);
   // Only the taxonomy keys go; the audit tag, page and locale survive.
   assert.match(sent[0].subject, /^\[Free AI visibility audit\]/);
-  const p = provider(); Object.assign(process.env, env); global.fetch = p.request; pending.length = 0;
-  assert.equal((await (await quietly(() => POST(request({ ...bad, submission_id: 'request-bad-taxonomy-2', event_id: 'request-bad-taxonomy-2' })))).json()).status, 'captured');
-  const snapshot = JSON.parse(p.contact.customFields.find(f => f.id === 'inquiry').value);
-  assert.deepEqual(snapshot.context, { asset_id: 'free-ai-visibility-audit', page_id: '/contact', locale: 'de' });
+  await quietly(() => pending[0]());
+  assert.equal(sent[1].html.includes('lang="de"'), true, 'locale survives into the confirmation');
 });
-// Operator decision 2026-10-06: email fallback until GHL credentials exist. LEAD_EMAIL_FALLBACK=off restores strict GHL-first.
-const quietly = async (fn, logged = []) => {
-  const old = { info: console.info, warn: console.warn, error: console.error };
-  for (const level of Object.keys(old)) console[level] = (...args) => logged.push([level, ...args]);
-  try { return await fn(); } finally { Object.assign(console, old); }
-};
-const resendOnly = (options = {}) => {
-  const sent = [];
-  global.fetch = async (url, init = {}) => {
-    if (!String(url).startsWith('https://api.resend.com/')) throw Error('Unexpected external destination');
-    sent.push(JSON.parse(init.body));
-    return options.fails ? Response.json({ name: 'validation_error', message: 'to buyer@example.com rejected' }, { status: 422 }) : Response.json({ id: 'email-1' });
+test('honeypot receives the same success shape as a real send, logs a bare hit and sends nothing', async () => {
+  configured(); resendOnly(); pending.length = 0;
+  const real = await (await quietly(() => POST(request({ ...lead(), submission_id: 'request-shape' })))).json();
+  let calls = 0; global.fetch = async () => { calls++; throw Error('No network'); }; pending.length = 0;
+  // hp_field_q is the current trap; honeypot is what cached clients still send.
+  for (const [field, id] of [['hp_field_q', 'request-bot'], ['honeypot', 'request-bot-legacy']]) {
+    const logged = [];
+    const response = await quietly(() => POST(request({ ...lead(), submission_id: id, contact: { ...lead().contact, email: `${id}@example.com` }, [field]: 'filled' })), logged); const bot = await response.json();
+    assert.equal(response.status, 200, field); assert.deepEqual(Object.keys(bot).sort(), Object.keys(real).sort(), field);
+    assert.equal(bot.success, true); assert.equal(bot.status, 'emailed'); assert.equal(bot.submission_id, id);
+    assert.deepEqual(logged, [['info', '[Lead] honeypot_hit']], `${field}: one bare log line, no fields`);
+  }
+  assert.equal(calls, 0); assert.equal(pending.length, 0);
+});
+test('the rate limit runs before the honeypot, so a flooding bot is refused like anyone else', async () => {
+  configured(); let calls = 0; global.fetch = async () => { calls++; throw Error('No network'); };
+  const statuses = [];
+  for (let i = 0; i < 31; i++) statuses.push((await quietly(() => POST(request({ ...lead(), submission_id: `request-flood-${i}`, contact: { ...lead().contact, email: `bot${i}@example.com` }, hp_field_q: 'filled' })))).status);
+  assert.deepEqual([statuses.slice(0, 30).every(s => s === 200), statuses[30]], [true, 429]);
+  assert.equal(calls, 0);
+});
+test('LeadForm names its trap hp_field_q, which no autofill rule matches, and sends it under that key', () => {
+  const form = fs.readFileSync(path.join(ROOT, 'components/shared/LeadForm.tsx'), 'utf8');
+  assert.match(form, /name="hp_field_q"/); assert.equal(form.includes('website_trap'), false);
+  assert.match(form, /hp_field_q: honeypot/);
+});
+/* ── Anton F1.1, 2026-10-14: no cross-site or non-JSON posts ─────────────────────── */
+test('a non-JSON content type is a 415 before anything is parsed or sent', async () => {
+  configured(); const sent = resendOnly();
+  for (const type of ['text/plain;charset=UTF-8', 'application/x-www-form-urlencoded', 'multipart/form-data; boundary=x', '']) {
+    const response = await quietly(() => POST(requestWith(lead(), { 'content-type': type })));
+    assert.equal(response.status, 415, type || 'empty');
+  }
+  assert.equal(sent.urls.length, 0);
+  assert.equal((await quietly(() => POST(requestWith(lead(), { 'content-type': 'application/json; charset=utf-8' })))).status, 200, 'a charset parameter is fine');
+});
+test('a cross-site Origin or Sec-Fetch-Site is a 403 and sends nothing', async () => {
+  configured(); const sent = resendOnly();
+  for (const headers of [
+    { origin: 'https://attacker.example' },
+    { origin: 'https://www.qognitionagency.com.attacker.example' },
+    { origin: 'http://www.qognitionagency.com' },
+    { origin: 'null' },
+    { 'sec-fetch-site': 'cross-site' },
+    { origin: 'https://www.qognitionagency.com', 'sec-fetch-site': 'cross-site' },
+  ]) assert.equal((await quietly(() => POST(requestWith(lead(), headers)))).status, 403, JSON.stringify(headers));
+  assert.equal(sent.urls.length, 0);
+});
+test('same-origin, apex, same-site with no Origin, and no browser headers at all are accepted', async () => {
+  configured(); const sent = resendOnly();
+  for (const [i, headers] of [
+    { origin: 'https://www.qognitionagency.com', 'sec-fetch-site': 'same-origin' },
+    { origin: 'https://qognitionagency.com', 'sec-fetch-site': 'same-site' },
+    { 'sec-fetch-site': 'same-site' },
+    {},
+  ].entries()) assert.equal((await quietly(() => POST(requestWith({ ...lead(), submission_id: `request-origin-${i}` }, headers)))).status, 200, JSON.stringify(headers));
+  assert.equal(toNotify(sent).length, 4);
+});
+test('the current Vercel deployment host is allowed from VERCEL_URL or VERCEL_BRANCH_URL, never another preview', async () => {
+  configured(); const sent = resendOnly();
+  Object.assign(process.env, { VERCEL_URL: 'qognition-abc123.vercel.app', VERCEL_BRANCH_URL: 'qognition-git-main-team.vercel.app' });
+  try {
+    for (const [i, host] of ['qognition-abc123.vercel.app', 'qognition-git-main-team.vercel.app'].entries()) assert.equal((await quietly(() => POST(requestWith({ ...lead(), submission_id: `request-vercel-${i}` }, { origin: `https://${host}` })))).status, 200, host);
+    assert.equal((await quietly(() => POST(requestWith(lead(), { origin: 'https://someone-else.vercel.app' })))).status, 403);
+  } finally { delete process.env.VERCEL_URL; delete process.env.VERCEL_BRANCH_URL; }
+  assert.equal((await quietly(() => POST(requestWith(lead(), { origin: 'https://qognition-abc123.vercel.app' })))).status, 403, 'unset means not allowed');
+  assert.equal(toNotify(sent).length, 2);
+});
+test('the project production .vercel.app alias is allowed from VERCEL_PROJECT_PRODUCTION_URL (Owen, low)', async () => {
+  configured(); const sent = resendOnly();
+  process.env.VERCEL_PROJECT_PRODUCTION_URL = 'qognition-agency.vercel.app';
+  try { assert.equal((await quietly(() => POST(requestWith({ ...lead(), submission_id: 'request-alias' }, { origin: 'https://qognition-agency.vercel.app' })))).status, 200); }
+  finally { delete process.env.VERCEL_PROJECT_PRODUCTION_URL; }
+  assert.equal((await quietly(() => POST(requestWith(lead(), { origin: 'https://qognition-agency.vercel.app' })))).status, 403, 'unset means not allowed');
+  assert.equal(toNotify(sent).length, 1);
+});
+test('local next dev: a localhost or 127.0.0.1 Origin with a port passes the origin check only outside production', async () => {
+  configured(); let calls = 0; global.fetch = async () => { calls++; throw Error('No network'); };
+  const local = ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:4123'];
+  try {
+    delete process.env.VERCEL_ENV; process.env.QOGNITION_LEAD_MODE = 'validate';
+    for (const origin of local) {
+      const response = await quietly(() => POST(requestWith(lead(), { origin, 'sec-fetch-site': 'same-origin' })));
+      assert.equal(response.status, 200, origin); assert.equal((await response.json()).status, 'validated', origin);
+    }
+    for (const origin of ['https://localhost:3000', 'http://localhost', 'http://localhost:3000.attacker.example', 'http://192.168.1.5:3000', 'http://localhost:3000/']) assert.equal((await quietly(() => POST(requestWith(lead(), { origin })))).status, 403, `not local dev: ${origin}`);
+    configured(); assert.equal(process.env.VERCEL_ENV, 'production');
+    for (const origin of local) assert.equal((await quietly(() => POST(requestWith(lead(), { origin })))).status, 403, `production refuses ${origin}`);
+  } finally { configured(); }
+  assert.equal(calls, 0);
+});
+/* ── Anton F2 (partial): one confirmation per mailbox, not per spelling ──────────── */
+test('the confirmation limit ignores +tags, and dots on gmail.com and googlemail.com', async () => {
+  configured(); const sent = resendOnly(); pending.length = 0;
+  const as = (email, id) => ({ ...lead(), submission_id: id, contact: { ...lead().contact, email } });
+  for (const [i, email] of ['buyer@gmail.com', 'Buyer+one@gmail.com', 'b.u.y.e.r@googlemail.com', 'buyer+x@GMAIL.com'].entries()) assert.equal((await quietly(() => POST(request(as(email, `request-gm-${i}`))))).status, 200);
+  for (const [i, email] of ['first.last@example.com', 'firstlast@example.com', 'first.last+tag@example.com'].entries()) assert.equal((await quietly(() => POST(request(as(email, `request-ex-${i}`))))).status, 200);
+  for (const run of pending) await quietly(() => run());
+  assert.equal(toNotify(sent).length, 7, 'every lead is still accepted and notified');
+  assert.deepEqual(sent.filter(m => m.to !== 'hello@qognitionagency.com').map(m => m.to), ['buyer@gmail.com', 'first.last@example.com', 'firstlast@example.com'], 'dots only collapse on Gmail; +tags collapse everywhere');
+});
+test('deliberate: a retry after a lost 200 re-sends the internal notification and reuses the event_id', async () => {
+  configured(); Object.assign(process.env, { NEXT_PUBLIC_META_PIXEL_ID: 'pixel-test', META_CAPI_ACCESS_TOKEN: 'test-only' });
+  const emails = []; const capi = []; pending.length = 0;
+  global.fetch = async (url, init) => {
+    if (String(url).startsWith('https://api.resend.com/')) { emails.push(JSON.parse(init.body)); return Response.json({ id: 'email-1' }); }
+    if (String(url).startsWith('https://graph.facebook.com/')) { capi.push(JSON.parse(init.body)); return Response.json({ events_received: 1 }); }
+    throw Error('Unexpected external destination');
   };
-  return sent;
-};
-test('LEAD_EMAIL_FALLBACK=off refuses email-only capture when durable GHL configuration is missing', async () => {
-  Object.assign(process.env, env); process.env.VERCEL_ENV = 'production'; delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
-  process.env.RESEND_API_KEY = 'test-only'; process.env.RESEND_FROM = 'hello@example.com'; process.env.LEAD_EMAIL_FALLBACK = 'off';
-  let calls = 0; global.fetch = async () => { calls++; return Response.json({ id: 'email-1' }); };
-  const response = await quietly(() => POST(request(lead()))); assert.equal(response.status, 503); assert.equal((await response.json()).success, false); assert.equal(calls, 0);
-  delete process.env.LEAD_EMAIL_FALLBACK;
+  try {
+    const retried = { ...lead(), consent: { ...lead().consent, advertising: true, basis: 'explicit' } };
+    const bodies = [];
+    for (let i = 0; i < 2; i++) bodies.push(await (await quietly(() => POST(request(retried)))).json());
+    for (const run of pending) await quietly(() => run());
+    assert.deepEqual(bodies.map(b => [b.status, b.event_id]), [['emailed', 'request-001'], ['emailed', 'request-001']]);
+    assert.equal(toNotify(emails).length, 2, 'no ledger, so the internal notification is sent again');
+    assert.deepEqual(capi.map(b => b.data[0].event_id), ['request-001', 'request-001'], 'Meta dedups the repeat on the shared event_id');
+    assert.equal(emails.filter(m => m.to === 'Buyer@Example.com').length, 1, 'the prospect is still mailed once per day');
+  } finally { delete process.env.NEXT_PUBLIC_META_PIXEL_ID; delete process.env.META_CAPI_ACCESS_TOKEN; configured(); }
 });
-test('CRM not configured falls back to a confirmed internal email and reports emailed', async () => {
-  Object.assign(process.env, env); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
-  const sent = resendOnly(); pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request(lead())), logged); const body = await response.json();
-  assert.equal(response.status, 200);
-  assert.deepEqual({ success: body.success, status: body.status, fallback: body.fallback, submission_id: body.submission_id, event_id: body.event_id }, { success: true, status: 'emailed', fallback: true, submission_id: 'request-001', event_id: 'request-001' });
-  assert.equal(sent.length, 1, 'internal notification is sent before responding'); assert.equal(sent[0].to, 'hello@qognitionagency.com');
-  assert.deepEqual(logged.filter(l => l[1] === '[Lead] crm_fallback_email'), [['info', '[Lead] crm_fallback_email', { code: 'not_configured' }]]);
-  assert.equal(JSON.stringify(logged).includes('xample.com'), false); assert.equal(JSON.stringify(logged).includes('Technical search support'), false);
-  assert.equal(pending.length, 1); await quietly(() => pending[0]());
-  assert.equal(sent.length, 2, 'prospect confirmation fires after the response'); assert.equal(sent[1].to, 'Buyer@Example.com');
+test('one prospect confirmation per address per day; the repeat lead is still accepted', async () => {
+  configured(); const sent = resendOnly(); pending.length = 0;
+  for (const id of ['request-repeat-1', 'request-repeat-2']) assert.equal((await (await quietly(() => POST(request({ ...lead(), submission_id: id })))).json()).status, 'emailed');
+  for (const run of pending) await quietly(() => run());
+  assert.equal(toNotify(sent).length, 2); assert.equal(sent.filter(m => m.to === 'Buyer@Example.com').length, 1);
 });
-test('fallback without client references generates them', async () => {
-  resendOnly(); pending.length = 0;
-  const response = await quietly(() => POST(request({ ...lead(), submission_id: undefined, event_id: undefined }))); const body = await response.json();
-  assert.equal(body.status, 'emailed'); assert.match(body.submission_id, /^[a-zA-Z0-9_-]{8,80}$/); assert.equal(typeof body.event_id, 'string'); assert.ok(body.event_id.length > 0);
+test('a failed prospect confirmation after success is logged by kind only and never undoes the lead', async () => {
+  configured(); let call = 0; const logged = []; pending.length = 0;
+  global.fetch = async (url) => { if (!String(url).startsWith('https://api.resend.com/')) throw Error('Unexpected'); return ++call === 1 ? Response.json({ id: 'email-1' }) : new Response('no', { status: 500 }); };
+  assert.equal((await (await quietly(() => POST(request(lead())), logged)).json()).status, 'emailed');
+  await quietly(() => pending[0](), logged);
+  assert.ok(logged.some(l => l[1] === '[Lead] downstream_delivery_failed' && l[2].kind === 'confirmation'));
+  assert.equal(JSON.stringify(logged).includes('xample.com'), false);
 });
-test('fallback with advertising consent swallows an unconfigured Meta CAPI without failing confirmation', async () => {
-  const sent = resendOnly(); pending.length = 0;
-  const response = await quietly(() => POST(request({ ...lead(), consent: { ...lead().consent, advertising: true } })));
-  assert.equal((await response.json()).status, 'emailed');
-  await quietly(() => pending[0]()); assert.equal(sent.length, 2);
-});
-test('GHL outage falls back to email', async () => {
-  Object.assign(process.env, env); const p = provider({ ghlUnavailable: true }); global.fetch = p.request; pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request({ ...lead(), submission_id: 'request-outage' })), logged);
-  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'emailed'); assert.equal(p.emailWrites.length, 1);
-  assert.ok(logged.some(l => l[1] === '[Lead] crm_fallback_email' && l[2].code === 'unavailable'));
-});
-test('CRM not configured and email skipped keeps the retryable 503', async () => {
-  Object.assign(process.env, env); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; delete process.env.RESEND_API_KEY;
-  const sent = resendOnly(); pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request(lead())), logged); const body = await response.json();
-  assert.equal(response.status, 503); assert.equal(body.success, false); assert.equal(body.code, 'not_configured'); assert.equal(sent.length, 0); assert.equal(pending.length, 0);
-  assert.ok(logged.some(l => l[1] === '[Lead] email_skipped' && l[2].reason === 'missing_api_key'));
-  assert.ok(logged.some(l => l[1] === '[Lead] capture_failed'));
-  process.env.RESEND_API_KEY = 'test-only';
-});
-test('missing sender is logged as its own skip reason', async () => {
-  delete process.env.RESEND_FROM; resendOnly(); const logged = [];
-  assert.equal((await quietly(() => POST(request(lead())), logged)).status, 503);
-  assert.ok(logged.some(l => l[1] === '[Lead] email_skipped' && l[2].reason === 'missing_from'));
-  process.env.RESEND_FROM = 'hello@example.com';
-});
-test('CRM not configured and Resend rejection keeps the 503 and logs only status and error name', async () => {
-  const sent = resendOnly({ fails: true }); pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request(lead())), logged);
-  assert.equal(response.status, 503); assert.equal(sent.length, 1); assert.equal(pending.length, 0);
-  assert.ok(logged.some(l => l[1] === '[Lead] email_rejected' && l[2].status === 422 && l[2].name === 'validation_error'));
-  assert.equal(JSON.stringify(logged).includes('xample.com'), false); assert.equal(JSON.stringify(logged).includes('to buyer'), false);
-  Object.assign(process.env, env);
-});
-// Operator decision 2026-10-06: the Upstash ledger is optional. It adds exactly-once email and CAPI on retries.
-const LEDGER_KEYS = ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN', 'LEAD_LEDGER_HMAC_SECRET'];
-const withoutLedger = () => Object.fromEntries(Object.entries(env).filter(([k]) => !LEDGER_KEYS.includes(k)));
-test('GHL configured with no ledger captures without contacting Redis and logs ledger_disabled once', async () => {
-  Object.assign(process.env, env); for (const k of LEDGER_KEYS) delete process.env[k];
-  const p = provider(); global.fetch = p.request; pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request({ ...lead(), submission_id: 'request-noledger' })), logged); const body = await response.json();
-  assert.equal(response.status, 200); assert.equal(body.status, 'captured'); assert.equal(body.duplicate, false); assert.equal(body.submission_id, 'request-noledger');
-  assert.equal(p.commands.length, 0); assert.equal(p.notes.length, 1);
-  await quietly(() => pending[0]()); assert.equal(p.emailWrites.length, 2);
-  await quietly(() => captureLeadInCrm({ ...lead(), submission_id: 'request-noledger-2' }, { env: withoutLedger(), fetch: p.request }), logged);
-  assert.equal(logged.filter(l => l[1] === '[Lead] ledger_disabled').length, 1, 'logged once per cold start');
-  Object.assign(process.env, env);
-});
-test('without a ledger a retried submission is recognised from its GHL note and conflicting content is refused', async () => {
-  const p = provider(); const options = { env: withoutLedger(), fetch: p.request };
-  await quietly(() => captureLeadInCrm(lead(), options));
-  const retry = await quietly(() => captureLeadInCrm(lead(), options));
-  assert.equal(retry.duplicate, true); assert.equal(retry.noteId, 'note-1'); assert.equal(p.notes.length, 1);
-  await assert.rejects(quietly(() => captureLeadInCrm({ ...lead(), contact: { ...lead().contact, message: 'Another enquiry' } }, options)), e => e.code === 'submission_conflict');
-  assert.equal(p.notes.length, 1); assert.equal(p.commands.length, 0);
-});
-test('a partially configured ledger is a configuration error, not a silent downgrade', async () => {
-  const p = provider();
-  await assert.rejects(captureLeadInCrm(lead(), { env: { ...withoutLedger(), UPSTASH_REDIS_REST_URL: 'https://redis.example.com' }, fetch: p.request }), e => e.code === 'misconfigured');
-  assert.equal(p.writes.length, 0);
-});
-// Consent review 2026-10-07 (Anton).
-const requestWith = (payload, headers = {}) => { const r = new Request('https://www.qognitionagency.com/api/lead', { method: 'POST', body: JSON.stringify(payload), headers: { 'x-forwarded-for': '192.0.2.1', ...headers } }); r.cookies = { get: () => undefined }; return r; };
+
+/* ── Consent and Meta CAPI (Anton, 2026-10-07) ───────────────────────────────────── */
 const withConsent = (consent, id) => ({ ...lead(), submission_id: id, consent: { ...lead().consent, analytics: true, advertising: true, ...consent } });
-const capiHarness = (ghl) => {
+const capiHarness = () => {
   const capi = [], emails = [];
   Object.assign(process.env, { NEXT_PUBLIC_META_PIXEL_ID: 'pixel-test', META_CAPI_ACCESS_TOKEN: 'test-only' });
   global.fetch = async (url, init) => {
     if (String(url).startsWith('https://graph.facebook.com/')) { capi.push(JSON.parse(init.body)); return Response.json({ events_received: 1 }); }
-    if (ghl) return ghl(url, init);
     if (String(url).startsWith('https://api.resend.com/')) { emails.push(JSON.parse(init.body)); return Response.json({ id: 'email-1' }); }
     throw Error('Unexpected external destination');
   };
@@ -333,7 +404,7 @@ test('Meta CAPI follows the consent basis, the server region and Sec-GPC', async
     ['explicit yes with Sec-GPC', { basis: 'explicit' }, { 'x-vercel-ip-country': 'US', 'sec-gpc': '1' }, 0],
     ['region default with Sec-GPC', { basis: 'region_default', recorded_at: '' }, { 'x-vercel-ip-country': 'US', 'sec-gpc': '1' }, 0],
   ];
-  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
+  configured();
   for (const [name, consent, headers, expected] of cases) {
     const h = capiHarness(); pending.length = 0;
     try {
@@ -342,43 +413,22 @@ test('Meta CAPI follows the consent basis, the server region and Sec-GPC', async
       assert.equal(h.capi.length, expected, name);
     } finally { h.done(); }
   }
-  configured();
 });
-test('GHL path also withholds Meta CAPI for a region default in an opt-in region', async () => {
-  configured(); const p = provider(); const h = capiHarness(p.request); pending.length = 0;
-  try {
-    assert.equal((await (await quietly(() => POST(requestWith(withConsent({ basis: 'region_default', recorded_at: '' }, 'request-capi-ghl'), { 'x-vercel-ip-country': 'FR' })))).json()).status, 'captured');
-    await quietly(() => pending[0]()); assert.equal(h.capi.length, 0); assert.equal(p.emailWrites.length, 2);
-  } finally { h.done(); }
+test('an unconfigured Meta CAPI is swallowed without failing the confirmation', async () => {
+  configured(); const sent = resendOnly(); pending.length = 0;
+  const response = await quietly(() => POST(request({ ...lead(), consent: { ...lead().consent, advertising: true, basis: 'explicit' } })));
+  assert.equal((await response.json()).status, 'emailed');
+  await quietly(() => pending[0]()); assert.equal(sent.length, 2);
 });
 test('notification labels the consent basis, country and GPC', async () => {
-  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; const sent = resendOnly();
+  configured(); const sent = resendOnly();
   await quietly(() => POST(requestWith(withConsent({ basis: 'region_default', recorded_at: '' }, 'request-label-1'), { 'x-vercel-ip-country': 'US', 'sec-gpc': '1' })));
   await quietly(() => POST(requestWith(withConsent({ basis: 'explicit', advertising: false }, 'request-label-2'), { 'x-vercel-ip-country': 'de' })));
-  const [defaulted, explicit] = sent.filter(m => m.to === 'hello@qognitionagency.com').map(m => m.html);
+  const [defaulted, explicit] = toNotify(sent).map(m => m.html);
   for (const text of ['region default', 'Consent basis', 'Visitor country', '>US<', 'Global Privacy Control', 'no explicit choice']) assert.ok(defaulted.includes(text), `default notification lacks ${text}`);
   for (const text of ['explicit yes', '>no<', '>DE<', '>explicit<']) assert.ok(explicit.includes(text), `explicit notification lacks ${text}`);
-  const cell = (html, label) => html.match(new RegExp(`>${label}</td><td[^>]*>([^<]*)<`))?.[1];
   assert.deepEqual([cell(defaulted, 'Analytics'), cell(defaulted, 'Advertising')], ['region default', 'region default']);
   assert.deepEqual([cell(explicit, 'Analytics'), cell(explicit, 'Advertising')], ['explicit yes', 'no']);
-  configured();
-});
-test('GHL records the consent basis and country in the optional field and on the note', async () => {
-  const p = provider(); const evidence = { basis: 'explicit', country: 'CA', gpc: false };
-  await quietly(() => captureLeadInCrm(withConsent({ basis: 'explicit' }, 'request-ghl-basis'), { env: { ...env, GHL_CONSENT_BASIS_FIELD_ID: 'consent_basis' }, fetch: p.request, consentEvidence: evidence }));
-  assert.deepEqual(JSON.parse(p.contact.customFields.find(f => f.id === 'consent_basis').value), evidence);
-  assert.deepEqual(JSON.parse(p.notes[0].body.split('\n').slice(1).join('\n')).consent_evidence, evidence);
-  const q = provider(); await quietly(() => captureLeadInCrm(lead(), { env, fetch: q.request, consentEvidence: evidence }));
-  assert.equal(q.writes.find(w => w.kind === 'contact').body.customFields.some(f => f.id === 'consent_basis'), false, 'no field written when the env var is unset');
-  await assert.rejects(captureLeadInCrm(lead(), { env: { ...env, GHL_CONSENT_BASIS_FIELD_ID: 'inquiry' }, fetch: p.request }), e => e.code === 'misconfigured');
-});
-test('ledger receipts expire after LEAD_LEDGER_TTL_DAYS, default 760 days', async () => {
-  const receiptTtls = p => p.commands.filter(c => /^-- lead:(begin|save|delivery-claim|delivery-finish)/.test(c[1])).map(c => { assert.match(c[1], /'EX'/); return c.at(-1); });
-  const p = provider(); await quietly(() => captureLeadInCrm(lead(), { env, fetch: p.request }));
-  assert.ok(receiptTtls(p).length > 0); assert.deepEqual([...new Set(receiptTtls(p))], [String(760 * 86400)]);
-  const q = provider(); await quietly(() => captureLeadInCrm(lead(), { env: { ...env, LEAD_LEDGER_TTL_DAYS: '30' }, fetch: q.request }));
-  assert.deepEqual([...new Set(receiptTtls(q))], [String(30 * 86400)]);
-  for (const bad of ['0', '-5', 'abc', '99999']) await assert.rejects(captureLeadInCrm(lead(), { env: { ...env, LEAD_LEDGER_TTL_DAYS: bad }, fetch: provider().request }), e => e.code === 'misconfigured', bad);
 });
 test('/privacy and /privacy-policy redirect permanently to /legal/privacy', async () => {
   const config = (await import('../next.config.mjs')).default; const redirects = await config.redirects();
@@ -441,62 +491,8 @@ test('consent mode default script matches effectiveConsent(), including GPC in o
     if (navigatorDescriptor) Object.defineProperty(globalThis, 'navigator', navigatorDescriptor); else delete globalThis.navigator;
   }
 });
-// Code review 2026-10-07 (Owen).
-const configured = () => { Object.assign(process.env, env, { RESEND_API_KEY: 'test-only', RESEND_FROM: 'hello@example.com' }); delete process.env.LEAD_EMAIL_FALLBACK; };
-test('concurrent POSTs for one submission: one is captured, the other is a busy 503 that sends no email', async () => {
-  configured(); const p = provider({ existing: false }); global.fetch = p.request; pending.length = 0;
-  const responses = await quietly(() => Promise.all([POST(request({ ...lead(), submission_id: 'request-race' })), POST(request({ ...lead(), submission_id: 'request-race' }))]));
-  const bodies = await Promise.all(responses.map(r => r.json()));
-  assert.deepEqual(responses.map(r => r.status).sort(), [200, 503]);
-  assert.equal(bodies.find(b => !b.success).code, 'busy'); assert.equal(p.emailWrites.length, 0); assert.equal(p.notes.length, 1);
-});
-test('reconciliation_required via POST is a 503 that sends no email', async () => {
-  configured(); const p = provider({ loseNoteResponse: true, dropNote: true });
-  await assert.rejects(quietly(() => captureLeadInCrm({ ...lead(), submission_id: 'request-reconcile' }, { env, fetch: p.request })));
-  p.options.loseNoteResponse = false; p.options.dropNote = false; global.fetch = p.request; pending.length = 0;
-  const response = await quietly(() => POST(request({ ...lead(), submission_id: 'request-reconcile' })));
-  assert.equal(response.status, 503); assert.equal((await response.json()).code, 'reconciliation_required'); assert.equal(p.emailWrites.length, 0); assert.equal(pending.length, 0);
-});
-test('fallback whose Resend call aborts is a 503 and logs only allowlisted codes', async () => {
-  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; pending.length = 0; const logged = [];
-  global.fetch = async () => { throw new DOMException('The operation was aborted due to timeout', 'AbortError'); };
-  const response = await quietly(() => POST(request(lead())), logged);
-  assert.equal(response.status, 503); assert.equal(pending.length, 0);
-  assert.deepEqual(logged, [['error', '[Lead] capture_failed', { codes: ['not_configured'] }]]);
-  configured();
-});
-test('an unreachable ledger degrades: GHL still captures, and the outage is logged', async () => {
-  configured(); const p = provider({ redisUnavailable: true }); global.fetch = p.request; pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request({ ...lead(), submission_id: 'request-degraded' })), logged);
-  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'captured'); assert.equal(p.notes.length, 1);
-  assert.ok(logged.some(l => l[0] === 'error' && l[1] === '[Lead] ledger_unavailable_degraded'));
-  await quietly(() => pending[0]()); assert.equal(p.emailWrites.length, 2);
-});
-test('ledger and GHL both unreachable falls back to email under its own code', async () => {
-  configured(); const p = provider({ redisUnavailable: true, ghlUnavailable: true }); global.fetch = p.request; pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request({ ...lead(), submission_id: 'request-both-down' })), logged);
-  assert.equal((await response.json()).status, 'emailed'); assert.equal(p.emailWrites.length, 1);
-  assert.ok(logged.some(l => l[1] === '[Lead] crm_fallback_email' && l[2].code === 'ledger_unavailable'));
-});
-test('deliberate: a retry after a lost fallback 200 re-sends the internal notification and reuses the event_id', async () => {
-  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; Object.assign(process.env, { NEXT_PUBLIC_META_PIXEL_ID: 'pixel-test', META_CAPI_ACCESS_TOKEN: 'test-only' });
-  const emails = []; const capi = []; pending.length = 0;
-  global.fetch = async (url, init) => {
-    if (String(url).startsWith('https://api.resend.com/')) { emails.push(JSON.parse(init.body)); return Response.json({ id: 'email-1' }); }
-    if (String(url).startsWith('https://graph.facebook.com/')) { capi.push(JSON.parse(init.body)); return Response.json({ events_received: 1 }); }
-    throw Error('Unexpected external destination');
-  };
-  try {
-    const retried = { ...lead(), consent: { ...lead().consent, advertising: true, basis: 'explicit' } };
-    const bodies = [];
-    for (let i = 0; i < 2; i++) bodies.push(await (await quietly(() => POST(request(retried)))).json());
-    for (const run of pending) await quietly(() => run());
-    assert.deepEqual(bodies.map(b => [b.status, b.event_id]), [['emailed', 'request-001'], ['emailed', 'request-001']]);
-    assert.equal(emails.filter(m => m.to === 'hello@qognitionagency.com').length, 2, 'no ledger, so the internal notification is sent again');
-    assert.deepEqual(capi.map(b => b.data[0].event_id), ['request-001', 'request-001'], 'Meta dedups the repeat on the shared event_id');
-  } finally { delete process.env.NEXT_PUBLIC_META_PIXEL_ID; delete process.env.META_CAPI_ACCESS_TOKEN; configured(); }
-});
-// Security review 2026-10-06 (Anton).
+
+/* ── Security review 2026-10-06 (Anton) ──────────────────────────────────────────── */
 test('client IP ignores a spoofed cf-connecting-ip', () => {
   const { getAuditClientIp } = require('../lib/auditRateLimit.ts');
   const ip = headers => getAuditClientIp(new Request('https://www.qognitionagency.com/api/lead', { headers }));
@@ -504,39 +500,27 @@ test('client IP ignores a spoofed cf-connecting-ip', () => {
   assert.equal(ip({ 'cf-connecting-ip': '203.0.113.9', 'x-forwarded-for': '192.0.2.1, 10.0.0.1' }), '192.0.2.1');
   assert.equal(ip({ 'cf-connecting-ip': '203.0.113.9' }), 'unknown');
 });
-test('fallback sends one prospect confirmation per address per day; the repeat lead is still accepted', async () => {
-  Object.assign(process.env, env); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN;
-  const sent = resendOnly(); pending.length = 0;
-  for (const id of ['request-repeat-1', 'request-repeat-2']) assert.equal((await (await quietly(() => POST(request({ ...lead(), submission_id: id })))).json()).status, 'emailed');
-  for (const run of pending) await quietly(() => run());
-  assert.equal(sent.filter(m => m.to === 'hello@qognitionagency.com').length, 2); assert.equal(sent.filter(m => m.to === 'Buyer@Example.com').length, 1);
-  Object.assign(process.env, env);
-});
-test('GHL capture sends one prospect confirmation per address per day; both enquiries are captured', async () => {
-  Object.assign(process.env, env); const p = provider(); global.fetch = p.request; pending.length = 0;
-  for (const id of ['request-repeat-3', 'request-repeat-4']) assert.equal((await (await quietly(() => POST(request({ ...lead(), submission_id: id })))).json()).status, 'captured');
-  for (const run of pending) await quietly(() => run());
-  assert.equal(p.notes.length, 2); assert.equal(p.emailWrites.filter(m => m.to === 'Buyer@Example.com').length, 1); assert.equal(p.emailWrites.length, 3);
-});
-test('honeypot receives the same success shape as a real capture and nothing is sent', async () => {
-  Object.assign(process.env, env); const p = provider(); global.fetch = p.request; pending.length = 0;
-  const real = await (await quietly(() => POST(request({ ...lead(), submission_id: 'request-shape' })))).json();
-  let calls = 0; global.fetch = async () => { calls++; throw Error('No network'); }; pending.length = 0;
-  const response = await POST(request({ ...lead(), submission_id: 'request-bot', honeypot: 'filled' })); const bot = await response.json();
-  assert.equal(response.status, 200); assert.deepEqual(Object.keys(bot).sort(), Object.keys(real).sort());
-  assert.equal(bot.success, true); assert.equal(bot.status, 'captured'); assert.equal(bot.duplicate, false); assert.equal(bot.submission_id, 'request-bot');
-  assert.equal(calls, 0); assert.equal(pending.length, 0);
-});
 test('notification subject strips control characters, carries no em dash and is capped at 120', async () => {
-  Object.assign(process.env, env); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; const sent = resendOnly();
+  configured(); const sent = resendOnly();
   await quietly(() => POST(request({ ...lead(), source_page: '/x\r\nBcc: a@b.example\u2028' + 'y'.repeat(300), contact: { ...lead().contact, name: 'Test\u0000\u007f\u2029 Buyer' } })));
   const subject = sent[0].subject;
   assert.equal(/[\u0000-\u001f\u007f\u2028\u2029]/.test(subject), false); assert.equal(subject.includes('\u2014'), false); assert.ok(subject.length <= 120, `subject is ${subject.length} chars`);
   assert.match(subject, /Test Buyer/);
-  Object.assign(process.env, env);
+});
+test('subject strips every Unicode control, format and separator character (Anton F5)', async () => {
+  configured(); const sent = resendOnly();
+  // U+0085 NEL (Cc), U+200B zero width space and U+202E right-to-left override (Cf), U+FEFF BOM (Cf).
+  await quietly(() => POST(request({ ...lead(), contact: { ...lead().contact, name: 'Te\u0085st\u200b \u202eBuyer\ufeff' } })));
+  assert.equal(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u.test(sent[0].subject), false, JSON.stringify(sent[0].subject));
+  assert.match(sent[0].subject, /Test Buyer/);
+});
+test('notification HTML escapes single quotes (Anton F5)', async () => {
+  configured(); const sent = resendOnly();
+  await quietly(() => POST(request({ ...lead(), contact: { ...lead().contact, name: "O'Brien' onmouseover='x" } })));
+  assert.equal(sent[0].html.includes("O'Brien"), false); assert.ok(sent[0].html.includes('O&#39;Brien&#39; onmouseover=&#39;x'));
 });
 test('notification carries escaped consent evidence; confirmation carries the sender footer', async () => {
-  Object.assign(process.env, env); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; const sent = resendOnly(); pending.length = 0;
+  configured(); const sent = resendOnly(); pending.length = 0;
   await quietly(() => POST(request({ ...lead(), submission_id: 'request-consent', consent: { ...lead().consent, email_marketing: true, policy_version: '<b>v1</b>' } })));
   await quietly(() => pending[0]());
   const [notification, confirmation] = sent;
@@ -545,20 +529,6 @@ test('notification carries escaped consent evidence; confirmation carries the se
   assert.ok(confirmation.html.includes('hello@qognitionagency.com')); assert.ok(confirmation.html.includes('Qognition Agency'));
   assert.ok(confirmation.html.includes('You received this because this address was used to submit an enquiry on qognitionagency.com.'));
   assert.equal(/TODO|postal|placeholder/i.test(confirmation.html), false);
-  Object.assign(process.env, env);
-});
-test('marketing consent is written to GHL as opt-in requested, never opted in', async () => {
-  const p = provider(); await quietly(() => captureLeadInCrm({ ...lead(), consent: { ...lead().consent, email_marketing: true } }, { env, fetch: p.request }));
-  assert.equal(p.contact.customFields.find(f => f.id === 'consent').value, 'opt-in-requested');
-});
-test('misconfiguration is a distinct code that still falls back and logs an error', async () => {
-  await assert.rejects(quietly(() => captureLeadInCrm(lead(), { env: withoutLedger(), fetch: async () => new Response('', { status: 401 }) })), e => e.code === 'misconfigured');
-  await assert.rejects(captureLeadInCrm(lead(), { env: { ...env, GHL_LOCALE_FIELD_ID: 'inquiry' } }), e => e.code === 'misconfigured');
-  Object.assign(process.env, env, { GHL_LOCALE_FIELD_ID: 'inquiry' }); const sent = resendOnly(); const logged = [];
-  const response = await quietly(() => POST(request({ ...lead(), submission_id: 'request-misconfig' })), logged);
-  assert.equal((await response.json()).status, 'emailed'); assert.equal(sent.length, 1);
-  assert.ok(logged.some(l => l[0] === 'error' && l[1] === '[Lead] crm_misconfigured_fallback' && l[2].code === 'misconfigured'));
-  Object.assign(process.env, env);
 });
 test('Meta CAPI requests are bounded and refuse redirects', async () => {
   const { sendMetaCapiEvent } = require('../lib/metaCapi.ts'); let seen;
@@ -568,62 +538,45 @@ test('Meta CAPI requests are bounded and refuse redirects', async () => {
   finally { delete process.env.NEXT_PUBLIC_META_PIXEL_ID; delete process.env.META_CAPI_ACCESS_TOKEN; }
   assert.equal(seen.redirect, 'error'); assert.ok(seen.signal instanceof AbortSignal);
 });
-test('status endpoint reveals nothing without the shared secret', async () => {
-  const { GET } = require('../app/api/integrations/status/route.ts');
-  const get = (headers = {}) => GET({ headers: new Headers(headers), nextUrl: new URL('https://www.qognitionagency.com/api/integrations/status') });
-  process.env.INTEGRATIONS_STATUS_SECRET = 'status-test-secret';
-  try {
-    assert.deepEqual(await (await get()).json(), { ok: true });
-    assert.deepEqual(await (await get({ 'x-status-secret': 'wrong' })).json(), { ok: true });
-    const detail = await (await get({ 'x-status-secret': 'status-test-secret' })).json();
-    assert.equal(typeof detail.capture, 'object'); assert.notEqual(detail.notificationDelivery, 'after-confirmed-crm-capture');
-    delete process.env.INTEGRATIONS_STATUS_SECRET;
-    assert.deepEqual(await (await get({ 'x-status-secret': '' })).json(), { ok: true });
-  } finally { delete process.env.INTEGRATIONS_STATUS_SECRET; }
-});
-test('API accepts committed GHL capture; notifications happen afterward exactly once', async () => {
-  Object.assign(process.env, env); const p = provider(); global.fetch = p.request; pending.length = 0;
-  const response = await POST(request(lead())); const body = await response.json();
-  assert.equal(response.status, 200); assert.equal(body.status, 'captured'); assert.equal(p.emailWrites.length, 0);
-  assert.equal(pending.length, 1); await pending[0](); assert.equal(p.emailWrites.length, 2);
-  await pending[0](); assert.equal(p.emailWrites.length, 2);
-  const retry = await POST(request(lead())); assert.equal((await retry.json()).duplicate, true); assert.equal(pending.length, 1);
-  const conflict = await POST(request({ ...lead(), contact: { ...lead().contact, message: 'Another enquiry' } })); assert.equal(conflict.status, 409);
-});
-test('notification outage cannot undo capture or cause retry duplicates', async () => {
-  const p = provider({ emailUnknown: true }); global.fetch = p.request; pending.length = 0;
-  const response = await POST(request({ ...lead(), submission_id: 'request-003' })); assert.equal(response.status, 200);
-  await pending[0](); await pending[0](); assert.equal(p.emailWrites.length, 2);
-  assert.equal(p.notes.length, 1);
-});
-test('DND survives capture and suppresses prospect confirmation', async () => {
-  const p = provider({ dnd: true }); global.fetch = p.request; pending.length = 0;
-  assert.equal((await POST(request({ ...lead(), submission_id: 'request-004' }))).status, 200);
-  await pending[0](); assert.equal(p.contact.dnd, true); assert.equal(p.emailWrites.length, 1); assert.notEqual(p.emailWrites[0].to, 'Buyer@Example.com');
-});
-test('channel-specific email DND suppresses confirmation without changing channel settings', async () => {
-  const p = provider(); p.contact.dndSettings = { email: { status: 'active' } }; global.fetch = p.request; pending.length = 0;
-  assert.equal((await POST(request({ ...lead(), submission_id: 'request-005' }))).status, 200);
-  await pending[0](); assert.equal(p.contact.dndSettings.email.status, 'active'); assert.equal(p.emailWrites.length, 1);
-});
-test('failure diagnostics never print contact or provider content', async () => {
+test('failure diagnostics never print contact or provider content', () => {
   const { recordFailedLead } = require('../lib/leadDelivery.ts'); const old = console.error; const logged = [];
   console.error = (...args) => logged.push(args);
   try { recordFailedLead(lead(), { capture: 'provider body buyer@example.com Technical search support' }); } finally { console.error = old; }
-  assert.equal(JSON.stringify(logged).includes('buyer@example.com'), false); assert.equal(JSON.stringify(logged).includes('Technical search support'), false);
+  assert.deepEqual(logged, [['[Lead] capture_failed', { codes: ['unavailable'] }]]);
 });
-test('ledger and GHL both down, with email failing too, logs its own allowlisted code', () => {
-  const { recordFailedLead } = require('../lib/leadDelivery.ts'); const logged = [];
-  const old = console.error; console.error = (...args) => logged.push(args);
-  try { recordFailedLead(lead(), { capture: 'ledger_unavailable' }); } finally { console.error = old; }
-  assert.deepEqual(logged, [['[Lead] capture_failed', { codes: ['ledger_unavailable'] }]]);
+
+/* ── Integrations status ─────────────────────────────────────────────────────────── */
+const statusGet = (headers = {}) => {
+  const { GET } = require('../app/api/integrations/status/route.ts');
+  return GET({ headers: new Headers(headers), nextUrl: new URL('https://www.qognitionagency.com/api/integrations/status') });
+};
+test('status endpoint reveals nothing without the shared secret', async () => {
+  process.env.INTEGRATIONS_STATUS_SECRET = 'status-test-secret';
+  try {
+    assert.deepEqual(await (await statusGet()).json(), { ok: true });
+    assert.deepEqual(await (await statusGet({ 'x-status-secret': 'wrong' })).json(), { ok: true });
+    delete process.env.INTEGRATIONS_STATUS_SECRET;
+    assert.deepEqual(await (await statusGet({ 'x-status-secret': '' })).json(), { ok: true });
+  } finally { delete process.env.INTEGRATIONS_STATUS_SECRET; }
 });
-test('ledger rejects insecure endpoint and missing shared secret', () => {
-  assert.equal(ledgerConfiguration({ ...env, UPSTASH_REDIS_REST_URL: 'http://redis.example.com' }).configured, false);
-  assert.throws(() => createLeadLedger({ ...env, LEAD_LEDGER_HMAC_SECRET: '' }));
+test('status reports Resend and Cal.com presence, and nothing about GHL, Upstash or a CRM', async () => {
+  configured(); Object.assign(process.env, RETIRED_ENV, { INTEGRATIONS_STATUS_SECRET: 'status-test-secret', CALCOM_API_KEY: 'cal-test-only-key' });
+  delete process.env.CALCOM_WEBHOOK_SECRET;
+  try {
+    let detail = await (await statusGet({ 'x-status-secret': 'status-test-secret' })).json();
+    assert.equal(/ghl|upstash|redis|ledger|crm|fallback/i.test(JSON.stringify(detail)), false, JSON.stringify(detail));
+    assert.equal(detail.resend.configured, true);
+    assert.deepEqual([detail.calcom.apiKeyConfigured, detail.calcom.webhookSecretConfigured], [true, false]);
+    assert.deepEqual([detail.capture.boundary, detail.capture.configured], ['resend', true]);
+    assert.equal(JSON.stringify(detail).includes('cal-test-only-key'), false, 'a secret value is never echoed');
+    process.env.CALCOM_WEBHOOK_SECRET = 'cal-webhook-test-secret'; delete process.env.RESEND_API_KEY;
+    detail = await (await statusGet({ 'x-status-secret': 'status-test-secret' })).json();
+    assert.equal(detail.calcom.webhookSecretConfigured, true); assert.equal(detail.resend.configured, false); assert.equal(detail.capture.configured, false);
+    assert.equal(JSON.stringify(detail).includes('cal-webhook-test-secret'), false);
+  } finally { delete process.env.INTEGRATIONS_STATUS_SECRET; delete process.env.CALCOM_API_KEY; delete process.env.CALCOM_WEBHOOK_SECRET; configured(); }
 });
-// Operator 2026-10-14: every lead ends up in /contact and emails hello@ through Resend.
-// The five-field form sends name, work email, website, message and company size only.
+
+/* ── Operator 2026-10-14: the five-field /contact payload ────────────────────────── */
 const shortLead = (id, extra = {}) => ({
   service: 'marketing', intent: 'contact', source_page: '/contact', submission_id: id, event_id: id,
   contact: { name: 'Test Buyer', email: 'buyer@example.com', company_url: 'example.com', message: 'Help us get named in AI answers' },
@@ -631,118 +584,226 @@ const shortLead = (id, extra = {}) => ({
   consent: { analytics: false, advertising: false, basis: 'region_default', recorded_at: '', policy_version: '2026-10-07' },
   ...extra,
 });
-const toNotify = emails => emails.filter(m => m.to === 'hello@qognitionagency.com');
 test('schema accepts the five-field payload with company, business model, revenue and marketing consent absent or unknown', () => {
   assert.equal(leadSchema.safeParse(shortLead('request-short-schema')).success, true);
   const unknowns = shortLead('request-short-unknown', { qualification: { employee_band: '20-99', business_model: 'unknown', revenue_band: 'unknown' }, contact: { ...shortLead('x').contact, company: '' } });
   assert.equal(leadSchema.safeParse(unknowns).success, true);
   assert.equal(leadSchema.safeParse(shortLead('request-short-noconsent', { consent: undefined })).success, true);
-  // Older cached clients still submit the full payload.
-  assert.equal(leadSchema.safeParse(lead()).success, true);
+  // Older cached clients still submit the full payload, including the retired CRM tag.
+  assert.equal(leadSchema.safeParse({ ...lead(), tag: 'lead magnet for ai readiness' }).success, true);
 });
-test('short payload: GHL ok without Upstash captures and emails hello@ through Resend', async () => {
-  configured(); for (const k of LEDGER_KEYS) delete process.env[k];
-  const p = provider(); global.fetch = p.request; pending.length = 0;
-  const response = await quietly(() => POST(request(shortLead('request-short-ghl'))));
-  const body = await response.json();
-  assert.equal(response.status, 200); assert.equal(body.status, 'captured'); assert.equal(p.commands.length, 0, 'no Redis call');
-  assert.equal(p.contact.customFields.find(f => f.id === 'eligibility').value, 'MQL');
-  assert.equal(p.contact.customFields.find(f => f.id === 'consent').value, 'not-opted-in');
-  assert.equal(pending.length, 1); await quietly(() => pending[0]());
-  assert.equal(toNotify(p.emailWrites).length, 1, 'notification sent with no ledger');
-  configured();
+test('the notification shows the v4 MQL result, what is missing, and the scoring version', async () => {
+  configured(); const sent = resendOnly();
+  await quietly(() => POST(request(shortLead('request-mql'))));
+  await quietly(() => POST(request(shortLead('request-thin', { contact: { name: 'Test Buyer', email: 'buyer@example.com', message: '' }, qualification: { employee_band: 'unknown' } }))));
+  const [mql, thin] = toNotify(sent).map(m => m.html);
+  assert.equal(cell(mql, 'Qualification'), 'MQL'); assert.equal(cell(mql, 'Missing for MQL'), 'nothing');
+  assert.equal(cell(mql, 'Scoring version'), '2026-10-b2b-v4');
+  assert.equal(cell(thin, 'Qualification'), 'Lead');
+  assert.equal(cell(thin, 'Missing for MQL'), 'Company website, Company size, What they want help with');
 });
-test('short payload: GHL down falls back to a synchronous Resend email before the response', async () => {
-  configured(); const p = provider({ ghlUnavailable: true }); global.fetch = p.request; pending.length = 0;
-  const response = await quietly(() => POST(request(shortLead('request-short-down'))));
-  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'emailed');
-  assert.equal(toNotify(p.emailWrites).length, 1, 'notification sent before the response, not in after()');
+// Owen F1, 2026-10-14: the hello@ email is the only lead record, so it must say where the lead came from.
+const firstLeaf = () => { const t = require('../data/b2b/icp/icp-taxonomy.json'); const i = t.industries[0], si = i.sub_industries[0], n = si.niches[0], l = n.sub_niches[0]; return { industry: i.id, sub: si.id, niche: n.id, leaf: l.id }; };
+const attributed = (id, extra = {}) => shortLead(id, {
+  context: { page_id: '/industries/insurance', stage: 'bofu', asset_id: 'free-ai-visibility-audit', subniche_id: firstLeaf().leaf },
+  attribution: { first_touch: { source: 'linkedin', medium: 'paid', campaign: 'insurance-q4' }, last_touch: { source: 'google', medium: 'organic' }, landing_page: '/industries/insurance?utm_source=linkedin', referrer_host: 'www.linkedin.com' },
+  ...extra,
 });
-test('short payload: GHL down and Resend rejecting is a retryable 503, never a false success', async () => {
-  configured(); const p = provider({ ghlUnavailable: true, emailFails: true }); global.fetch = p.request; pending.length = 0;
-  const response = await quietly(() => POST(request(shortLead('request-short-reject')))); const body = await response.json();
-  assert.equal(response.status, 503); assert.equal(body.success, false); assert.equal(body.retryable, true); assert.equal(pending.length, 0);
+const SOURCE_ROWS = ['Started on', 'Funnel stage', 'Offer', 'Industry ID', 'Sub-industry ID', 'Niche ID', 'Sub-niche ID', 'First campaign', 'Last campaign', 'Landing page', 'Referred by'];
+test('the notification says where the lead came from: page, stage, offer, taxonomy and both campaign touches', async () => {
+  configured(); const sent = resendOnly();
+  assert.equal((await quietly(() => POST(request(attributed('request-source'))))).status, 200);
+  const [{ html }] = toNotify(sent); const leaf = firstLeaf();
+  assert.deepEqual(Object.fromEntries(SOURCE_ROWS.map(label => [label, cell(html, label)])), {
+    'Started on': '/industries/insurance', 'Funnel stage': 'Ready to buy (bofu)', 'Offer': 'free-ai-visibility-audit',
+    'Industry ID': leaf.industry, 'Sub-industry ID': leaf.sub, 'Niche ID': leaf.niche, 'Sub-niche ID': leaf.leaf,
+    'First campaign': 'linkedin / paid / insurance-q4', 'Last campaign': 'google / organic',
+    'Landing page': '/industries/insurance?utm_source=linkedin', 'Referred by': 'www.linkedin.com',
+  });
+  assert.equal(cell(html, 'Source'), '/contact', 'the posting page is still shown');
+  assert.equal(html.includes('UTM:'), false, 'the first campaign is a row now, not a second footer line');
 });
-test('short payload: GHL ok and Resend rejecting keeps the GHL capture and logs the failed notification', async () => {
-  configured(); const p = provider({ emailFails: true }); global.fetch = p.request; pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request(shortLead('request-short-ghl-reject'))), logged);
-  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'captured');
-  await quietly(() => pending[0](), logged);
-  assert.ok(logged.some(l => l[1] === '[Lead] downstream_delivery_failed' && l[2].kind === 'notification'));
+test('Owen repro: sendLeadNotification alone carries page_id, stage, both touches, landing page and referrer', async () => {
+  configured(); const sent = resendOnly();
+  const { sendLeadNotification } = require('../lib/leadDelivery.ts');
+  await sendLeadNotification(leadSchema.parse({ service: 'marketing', intent: 'contact', source_page: '/contact', contact: { name: 'Test Buyer', email: 'buyer@example.com', company_url: 'example.com', message: 'help' }, context: { page_id: '/industries/insurance', stage: 'bofu', industry_id: '01' }, attribution: { first_touch: { source: 'linkedin', medium: 'paid', campaign: 'insurance-q4' }, last_touch: { source: 'google', medium: 'organic' }, landing_page: '/industries/insurance?utm_source=linkedin', referrer_host: 'www.linkedin.com' } }));
+  for (const needle of ['/industries/insurance', 'insurance-q4', 'organic', 'utm_source=linkedin', 'linkedin.com', 'bofu']) assert.ok(sent[0].html.includes(needle), needle);
 });
-test('LEAD_EMAIL_FALLBACK=off with GHL down is a 503 and sends nothing', async () => {
-  configured(); process.env.LEAD_EMAIL_FALLBACK = 'off'; const p = provider({ ghlUnavailable: true }); global.fetch = p.request; pending.length = 0;
-  try {
-    const response = await quietly(() => POST(request(shortLead('request-short-strict'))));
-    assert.equal(response.status, 503); assert.equal(p.emailWrites.length, 0); assert.equal(pending.length, 0);
-  } finally { configured(); }
+test('source rows are omitted when empty, and an older client that sends only utm still shows its first campaign', async () => {
+  configured(); const sent = resendOnly();
+  await quietly(() => POST(request(shortLead('request-bare'))));
+  await quietly(() => POST(request(shortLead('request-utm-only', { utm: { source: 'newsletter', campaign: 'oct' } }))));
+  const [bare, utmOnly] = toNotify(sent).map(m => m.html);
+  for (const label of SOURCE_ROWS) assert.equal(cell(bare, label), undefined, `empty ${label} rendered`);
+  assert.equal(cell(utmOnly, 'First campaign'), 'newsletter / oct');
 });
-test('a ledger that fails after capture still sends the hello@ notification, but never an unclaimed prospect email', async () => {
-  configured(); const p = provider(); global.fetch = p.request; pending.length = 0; const logged = [];
-  const response = await quietly(() => POST(request(shortLead('request-short-claim'))), logged);
-  assert.equal((await response.json()).status, 'captured');
-  p.options.redisUnavailable = true;
-  await quietly(() => pending[0](), logged);
-  assert.equal(toNotify(p.emailWrites).length, 1, 'internal notification is not lost to a ledger outage');
-  assert.equal(p.emailWrites.filter(m => m.to === 'buyer@example.com').length, 0, 'prospect confirmation stays exactly-once');
-  assert.ok(logged.some(l => l[1] === '[Lead] delivery_claim_unavailable' && l[2].kind === 'notification'));
+test('hostile page context and attribution are escaped in the notification', async () => {
+  configured(); const sent = resendOnly();
+  const hostile = `/x"><img src=x onerror=alert(1)>'`;
+  await quietly(() => POST(request(attributed('request-hostile', {
+    context: { page_id: hostile, stage: 'bofu' },
+    attribution: { first_touch: { source: '<b>src</b>' }, last_touch: { campaign: "<script>x</script>" }, landing_page: hostile, referrer_host: '"><svg onload=x>' },
+  }))));
+  const [{ html }] = toNotify(sent);
+  for (const raw of ['<img', '<b>src', '<script>', '<svg']) assert.equal(html.includes(raw), false, `unescaped ${raw}`);
+  assert.equal(cell(html, 'Started on'), '/x&quot;&gt;&lt;img src=x onerror=alert(1)&gt;&#39;');
+  assert.ok(html.includes('&lt;script&gt;x&lt;/script&gt;')); assert.ok(html.includes('&quot;&gt;&lt;svg onload=x&gt;'));
 });
-test('with a working ledger the notification is still sent exactly once across retries', async () => {
-  configured(); const p = provider(); global.fetch = p.request; pending.length = 0;
-  await quietly(() => POST(request(shortLead('request-short-once'))));
-  await quietly(() => pending[0]()); await quietly(() => pending[0]());
-  assert.equal(toNotify(p.emailWrites).length, 1);
+test('LeadForm marks its root for Clarity masking, so form contents never enter a session recording', () => {
+  const form = fs.readFileSync(path.join(ROOT, 'components/shared/LeadForm.tsx'), 'utf8');
+  assert.match(form, /<form ref=\{formRef\}[^>]*data-clarity-mask="true"/);
 });
-test('an audit request tagged by funnel context reaches GHL and the notification subject and rows', async () => {
+test('an audit request tagged by funnel context reaches the notification subject and rows', async () => {
   // Same constant Mira's /contact and /free-ai-audit use, so client and server cannot drift.
   const { AUDIT_ASSET_ID, readFunnelContext } = require('../lib/funnelContext.ts');
   const fromUrl = readFunnelContext(new URLSearchParams(`asset_id=${AUDIT_ASSET_ID}&page_id=/free-ai-audit&stage=bofu`));
   // Tagged by context alone (intent 'contact'), to prove the context tag is enough by itself.
   const tagged = shortLead('request-short-audit', { context: fromUrl });
   assert.equal(leadSchema.parse(tagged).context.asset_id, AUDIT_ASSET_ID);
-  configured(); const p = provider(); global.fetch = p.request; pending.length = 0;
-  assert.equal((await (await quietly(() => POST(request(tagged)))).json()).status, 'captured');
-  const snapshot = JSON.parse(p.contact.customFields.find(f => f.id === 'inquiry').value);
-  assert.equal(snapshot.request_type, 'free-ai-visibility-audit'); assert.equal(snapshot.context.asset_id, AUDIT_ASSET_ID);
-  assert.equal(p.writes.find(w => w.kind === 'note').body.title, 'Website enquiry: Free AI visibility audit');
-  assert.equal(JSON.parse(p.notes[0].body.split('\n').slice(1).join('\n')).request_type, 'free-ai-visibility-audit');
-  await quietly(() => pending[0]());
-  const [mail] = toNotify(p.emailWrites);
+  configured(); const sent = resendOnly(); pending.length = 0;
+  assert.equal((await (await quietly(() => POST(request(tagged)))).json()).status, 'emailed');
+  const [mail] = toNotify(sent);
   assert.match(mail.subject, /^\[Free AI visibility audit\] Test Buyer/);
-  const cell = (html, label) => html.match(new RegExp(`>${label}</td><td[^>]*>([^<]*)<`))?.[1];
   assert.equal(cell(mail.html, 'Request'), 'Free AI visibility audit');
   assert.equal(cell(mail.html, 'Company size'), '100-300 staff');
-  // The same tag survives the GHL-down fallback.
-  const q = provider({ ghlUnavailable: true }); global.fetch = q.request; pending.length = 0;
-  await quietly(() => POST(request({ ...tagged, submission_id: 'request-short-audit-2', event_id: 'request-short-audit-2' })));
-  assert.match(toNotify(q.emailWrites)[0].subject, /^\[Free AI visibility audit\]/);
 });
 test('intent audit from an older client is also an audit request; a plain enquiry is labelled as one', async () => {
-  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; const sent = resendOnly(); pending.length = 0;
+  configured(); const sent = resendOnly(); pending.length = 0;
   await quietly(() => POST(request(shortLead('request-short-legacy-audit', { intent: 'audit' }))));
   await quietly(() => POST(request(shortLead('request-short-plain'))));
   const [audit, plain] = toNotify(sent);
   assert.match(audit.subject, /^\[Free AI visibility audit\]/);
-  assert.equal(plain.html.match(/>Request<\/td><td[^>]*>([^<]*)</)?.[1], 'Enquiry');
+  assert.equal(cell(plain.html, 'Request'), 'Enquiry');
   assert.equal(/Free AI visibility audit/.test(plain.subject), false);
-  configured();
 });
 // Ruth, 2026-10-14: "marketing" is the retired spoke and never leads a notification subject.
 test('non-audit notifications lead with [Enquiry], newsletter signups with [Newsletter signup]', async () => {
-  configured(); delete process.env.GHL_PRIVATE_INTEGRATION_TOKEN; const sent = resendOnly(); pending.length = 0;
+  configured(); const sent = resendOnly(); pending.length = 0;
   await quietly(() => POST(request(shortLead('request-label-enquiry'))));
   await quietly(() => POST(request(shortLead('request-label-news', { intent: 'newsletter', consent: { ...shortLead('x').consent, email_marketing: true }, context: { asset_id: 'free-ai-visibility-audit' } }))));
   const [enquiry, newsletter] = toNotify(sent);
-  const cell = (html, label) => html.match(new RegExp(`>${label}</td><td[^>]*>([^<]*)<`))?.[1];
   assert.match(enquiry.subject, /^\[Enquiry\] Test Buyer/); assert.equal(/marketing/i.test(enquiry.subject), false);
   assert.equal(cell(enquiry.html, 'Request'), 'Enquiry');
+  for (const { html } of [enquiry, newsletter]) assert.equal(/>Spoke</.test(html), false, 'the retired spoke has no row in the notification');
   assert.match(newsletter.subject, /^\[Newsletter signup\] Test Buyer/, 'newsletter wins over an inherited audit tag');
   assert.equal(cell(newsletter.html, 'Request'), 'Newsletter signup');
-  configured();
+});
+
+/* ── Cal.com BOOKING_CREATED webhook: walkthrough_booked, the North Star (§8) ─────── */
+// Synthetic fixture. Every name and address is fake; nothing here is a real booking.
+const CAL_SECRET = 'cal-webhook-test-secret-not-real';
+const booking = (triggerEvent = 'BOOKING_CREATED', extra = {}, createdAt = new Date().toISOString()) => JSON.stringify({
+  triggerEvent, createdAt,
+  payload: {
+    type: '15min', title: '15 Min Meeting between Qognition Agency and Test Attendee', uid: 'bk_test_0001', bookingId: 101,
+    startTime: '2026-10-20T15:00:00.000Z', endTime: '2026-10-20T15:15:00.000Z',
+    attendees: [{ name: 'Test Attendee', email: 'attendee@example.com', timeZone: 'America/Toronto' }],
+    organizer: { name: 'Qognition Agency', email: 'organizer@example.com' },
+    responses: { name: 'Test Attendee', email: 'attendee@example.com', notes: 'Private attendee note' },
+    ...extra,
+  },
+});
+const sign = (body, secret = CAL_SECRET) => createHmac('sha256', secret).update(body).digest('hex');
+const calRequest = (body, signature) => new Request('https://www.qognitionagency.com/api/cal/webhook', { method: 'POST', body, headers: signature === undefined ? {} : { 'x-cal-signature-256': signature } });
+const calPost = (...args) => require('../app/api/cal/webhook/route.ts').POST(calRequest(...args));
+const ATTENDEE_PII = ['attendee@example.com', 'Test Attendee', 'Private attendee note', 'organizer@example.com', 'America/Toronto'];
+const withCal = async (fn) => {
+  configured(); process.env.CALCOM_WEBHOOK_SECRET = CAL_SECRET;
+  let calls = 0; global.fetch = async () => { calls++; throw Error('No network from the webhook'); };
+  try { return await fn(() => calls); } finally { delete process.env.CALCOM_WEBHOOK_SECRET; configured(); }
+};
+test('a signed BOOKING_CREATED records walkthrough_booked server-side with no attendee PII', () => withCal(async (calls) => {
+  const body = booking(); const logged = [];
+  const response = await quietly(() => calPost(body, sign(body)), logged);
+  assert.equal(response.status, 200); assert.deepEqual(await response.json(), { received: true, event: 'walkthrough_booked' });
+  const records = logged.filter(l => l[1] === '[Booking] walkthrough_booked');
+  assert.equal(records.length, 1);
+  assert.deepEqual(records[0][2], { booking_uid: 'bk_test_0001', event_type: '15min', start_time: '2026-10-20T15:00:00.000Z', analytics: 'recorded_only' });
+  for (const pii of ATTENDEE_PII) assert.equal(JSON.stringify(logged).includes(pii), false, `log carries ${pii}`);
+  assert.equal(calls(), 0, 'no analytics or provider request is made');
+}));
+test('a bad, missing or wrong-length signature is a 401 and records nothing', () => withCal(async (calls) => {
+  const body = booking();
+  for (const signature of [sign(body, 'a-different-secret'), sign(booking('BOOKING_CREATED', { uid: 'bk_other' })), undefined, '', 'not-hex', sign(body).slice(0, 32), `sha256=${sign(body)}`]) {
+    const logged = [];
+    const response = await quietly(() => calPost(body, signature), logged);
+    assert.equal(response.status, 401, String(signature));
+    assert.equal(logged.some(l => l[1] === '[Booking] walkthrough_booked'), false);
+    assert.ok(logged.some(l => l[1] === '[Booking] webhook_signature_invalid'));
+  }
+  assert.equal(calls(), 0);
+}));
+test('with CALCOM_WEBHOOK_SECRET unset the webhook is a 503, logged as config missing, and records nothing', async () => {
+  configured(); delete process.env.CALCOM_WEBHOOK_SECRET; const body = booking(); const logged = [];
+  const response = await quietly(() => calPost(body, sign(body)), logged);
+  assert.equal(response.status, 503);
+  assert.deepEqual(logged.filter(l => l[1] === '[Booking] webhook_config_missing'), [['error', '[Booking] webhook_config_missing', { env: 'CALCOM_WEBHOOK_SECRET' }]]);
+  assert.equal(logged.some(l => l[1] === '[Booking] walkthrough_booked'), false);
+});
+test('other signed triggers are acknowledged and never counted as a booking', () => withCal(async () => {
+  for (const trigger of ['BOOKING_CANCELLED', 'BOOKING_RESCHEDULED', 'PING']) {
+    const body = booking(trigger); const logged = [];
+    const response = await quietly(() => calPost(body, sign(body)), logged);
+    assert.equal(response.status, 200, trigger); assert.deepEqual(await response.json(), { received: true, ignored: true });
+    assert.equal(logged.some(l => l[1] === '[Booking] walkthrough_booked'), false, trigger);
+  }
+}));
+test('a signed body that is not JSON is a 400', () => withCal(async () => {
+  const body = 'not json'; const response = await quietly(() => calPost(body, sign(body)));
+  assert.equal(response.status, 400);
+}));
+test('unexpected field shapes are dropped from the record, never echoed', () => withCal(async () => {
+  const body = booking('BOOKING_CREATED', { uid: 'attendee@example.com', type: 'Meeting with Test Attendee', startTime: 'tomorrow' }); const logged = [];
+  assert.equal((await quietly(() => calPost(body, sign(body)), logged)).status, 200);
+  const [record] = logged.filter(l => l[1] === '[Booking] walkthrough_booked');
+  assert.deepEqual(record[2], { booking_uid: null, event_type: null, start_time: null, analytics: 'recorded_only' });
+  for (const pii of ATTENDEE_PII) assert.equal(JSON.stringify(logged).includes(pii), false, `log carries ${pii}`);
+}));
+test('a preview deployment verifies the signature but never records the North Star', () => withCal(async () => {
+  process.env.VERCEL_ENV = 'preview'; const body = booking(); const logged = [];
+  const response = await quietly(() => calPost(body, sign(body)), logged);
+  assert.equal(response.status, 200); assert.deepEqual(await response.json(), { received: true, preview: true });
+  assert.equal(logged.some(l => l[1] === '[Booking] walkthrough_booked'), false);
+  assert.equal((await quietly(() => calPost(body, sign(body, 'wrong')))).status, 401, 'the signature is still checked first');
+}));
+test('a declared Content-Length over 200 KB is refused before the body is read', () => withCal(async () => {
+  let read = false;
+  const fake = { headers: new Headers({ 'content-length': '200001', 'x-cal-signature-256': 'a'.repeat(64) }), text: async () => { read = true; return ''; } };
+  const response = await quietly(() => require('../app/api/cal/webhook/route.ts').POST(fake));
+  assert.equal(response.status, 413); assert.equal(read, false, 'the body was read');
+}));
+test('the body limit counts bytes, not UTF-16 units', () => withCal(async () => {
+  const body = '\u00e9'.repeat(100_001); // 100,001 units, 200,002 bytes
+  assert.equal((await quietly(() => calPost(body, sign(body)))).status, 413);
+  const small = 'x'.repeat(200_001);
+  assert.equal((await quietly(() => calPost(small, sign(small)))).status, 413);
+}));
+test('a BOOKING_CREATED older than 24 hours, or with no createdAt, is a replay and is not counted', () => withCal(async () => {
+  const withoutCreatedAt = () => { const event = JSON.parse(booking()); delete event.createdAt; return JSON.stringify(event); };
+  for (const createdAt of [new Date(Date.now() - 25 * 3600_000).toISOString(), 'omitted', null, 'yesterday']) {
+    const body = createdAt === 'omitted' ? withoutCreatedAt() : booking('BOOKING_CREATED', {}, createdAt); const logged = [];
+    const response = await quietly(() => calPost(body, sign(body)), logged);
+    assert.equal(response.status, 200, String(createdAt)); assert.deepEqual(await response.json(), { received: true, ignored: true });
+    assert.equal(logged.some(l => l[1] === '[Booking] walkthrough_booked'), false, String(createdAt));
+    assert.ok(logged.some(l => l[1] === '[Booking] webhook_stale'), String(createdAt));
+  }
+  const fresh = booking('BOOKING_CREATED', {}, new Date(Date.now() - 23 * 3600_000).toISOString()); const logged = [];
+  await quietly(() => calPost(fresh, sign(fresh)), logged);
+  assert.ok(logged.some(l => l[1] === '[Booking] walkthrough_booked'), 'inside 24 hours still counts');
+}));
+test('the webhook note records the signature format as confirmed from source', () => {
+  const text = fs.readFileSync(path.join(ROOT, 'app/api/cal/webhook/route.ts'), 'utf8');
+  assert.equal(text.includes('[UNVERIFIED'), false); assert.match(text, /sendPayload\.ts/); assert.match(text, /Ping test/);
 });
 
 (async () => {
   // The in-memory rate state is process-wide; each test starts with none.
-  for (const [name, fn] of tests) { delete globalThis.__qognitionRateState; await fn(); console.log(`PASS ${name}`); }
+  let failed = 0;
+  for (const [name, fn] of tests) {
+    delete globalThis.__qognitionRateState;
+    try { await fn(); console.log(`PASS ${name}`); }
+    catch (error) { failed++; console.error(`FAIL ${name}\n  ${String(error?.message || error).split('\n').slice(0, 4).join('\n  ')}`); }
+  }
+  if (failed) { console.error(`${failed} of ${tests.length} funnel contract tests failed.`); process.exitCode = 1; return; }
   console.log(`${tests.length} funnel contract tests passed; all network requests mocked.`);
 })().catch(error => { console.error(error); process.exitCode = 1; });

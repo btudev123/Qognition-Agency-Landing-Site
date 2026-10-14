@@ -44,7 +44,7 @@ export default function Page() {
       <section className="growth-page-section">
         <h2>Work with Qognition</h2>
         <p className="growth-page-intro">
-          Bring the search problem you want solved and the buyers you want to reach. On a 30-minute call, we&apos;ll tell you where we would start and whether we&apos;re the right fit.
+          Bring the search problem you want solved and the buyers you want to reach. On a 15-minute call, we&apos;ll tell you where we would start and whether we&apos;re the right fit.
         </p>
         <div className="growth-actions">
           <Link className="growth-button" href="/book">Book a call</Link>

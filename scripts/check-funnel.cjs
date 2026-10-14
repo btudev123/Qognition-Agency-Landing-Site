@@ -3,7 +3,7 @@
  *
  * WHY: data/siteConfig.ts says "Swap it in one place and the whole site
  * follows." That was false. On 2026-09-29 twelve files hard-coded the
- * LeadConnector booking URL, bypassing BOOKING_LINK entirely, so changing the
+ * previous calendar's booking URL, bypassing BOOKING_LINK entirely, so changing the
  * calendar would have silently broken the booking path on the industries tree,
  * the blog, every location page, every service page and the free tools. The
  * comment described an intent nobody was enforcing.
@@ -15,7 +15,7 @@ require('./lib/load-typescript.cjs');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { BOOKING_LINK, WHATSAPP_LINK, PHONE_LINK, CONTACT_EMAIL } = require('../data/siteConfig.ts');
+const { BOOKING_LINK, CAL_LINK, CAL_EMBED_SCRIPT, WHATSAPP_LINK, PHONE_LINK, CONTACT_EMAIL } = require('../data/siteConfig.ts');
 
 /* 1. One source of truth for the calendar. */
 const walk = (dir, out = []) => {
@@ -28,16 +28,29 @@ const walk = (dir, out = []) => {
 };
 // lib/ included: on 2026-10-06 spokes, the audit email and the audit PDF still hard-coded it.
 const sources = [...walk('app'), ...walk('components'), ...walk('lib')].filter((f) => !f.includes('siteConfig'));
-// services.leadconnectorhq.com is the GHL REST API used by lib/leadCrm.ts, not the calendar.
 const readNextConfig = () => fs.readFileSync('next.config.mjs', 'utf8');
-const hardCoded = sources.filter((f) => /(?<!services\.)leadconnectorhq\.com/.test(fs.readFileSync(f, 'utf8')));
+const hardCoded = sources.filter((f) => /cal\.com\/qognition-agency/i.test(fs.readFileSync(f, 'utf8')));
 assert.deepEqual(
   hardCoded, [],
-  `${hardCoded.length} file(s) hard-code the booking URL instead of importing BOOKING_LINK:\n  ` +
+  `${hardCoded.length} file(s) hard-code the booking URL instead of importing BOOKING_LINK or CAL_LINK:\n  ` +
   hardCoded.join('\n  ') +
   `\nsiteConfig.ts promises one swap changes the whole site. A hard-coded copy breaks that promise ` +
   `silently, on the path the operator has made the entire lead channel.`
 );
+
+/* 1b. Cal.com is the calendar, operator 2026-10-14: cal.com/qognition-agency/15min.
+       GoHighLevel's booking widget (leadconnectorhq.com) and its resize script
+       (msgsndr.com) are gone, and no served code may name either domain again: a
+       stale reference is either a dead calendar or a request to a vendor we left.
+       "Served code" is every file the build can ship: app/, components/, lib/, data/,
+       proxy.ts and next.config.mjs. Comments count, so the vendor cannot creep back in
+       as a "temporary" note. */
+assert.equal(CAL_LINK, 'qognition-agency/15min', `CAL_LINK is ${CAL_LINK}. The operator chose qognition-agency/15min on 2026-10-14.`);
+assert.equal(BOOKING_LINK, 'https://cal.com/qognition-agency/15min', `BOOKING_LINK is ${BOOKING_LINK}.`);
+assert.equal(CAL_EMBED_SCRIPT, 'https://app.cal.com/embed/embed.js', `CAL_EMBED_SCRIPT is ${CAL_EMBED_SCRIPT}. Use Cal.com's official loader.`);
+const served = [...sources, ...walk('data'), 'data/siteConfig.ts', 'proxy.ts', 'next.config.mjs'];
+const oldCalendar = [...new Set(served)].filter((f) => /leadconnector|msgsndr/i.test(fs.readFileSync(f, 'utf8'))).sort();
+assert.deepEqual(oldCalendar, [], `Served code still references leadconnector or msgsndr:\n  ${oldCalendar.join('\n  ')}`);
 
 /* 2. The contact constants must produce working links. A leading "+" in
       WHATSAPP_NUMBER produced wa.me/+91... which WhatsApp rejects, and
@@ -95,6 +108,84 @@ for (const file of ['app/book/page.tsx', 'components/shared/CalBooking.tsx']) {
 }
 assert.ok(/<CalBooking[\s/>]/.test(code('app/book/page.tsx')), '/book no longer renders the calendar.');
 
+/* 3c-ii. CalBooking is the Cal.com embed for CAL_LINK, rendered rather than grepped.
+          useEffectiveConsent is stubbed to each consent state; everything else is the
+          real module. Without advertising consent the server and first client render
+          must be one new-tab link to BOOKING_LINK and no frame host; with it, the host
+          Cal.com mounts into, addressed to qognition-agency/15min. The embed itself is
+          attached in an effect, so the source is also held to the official calls. */
+{
+  const React = require('react');
+  const { renderToStaticMarkup } = require('react-dom/server');
+  const consentPath = require.resolve('../components/shared/ConsentManager.tsx');
+  const calPath = require.resolve('../components/shared/CalBooking.tsx');
+  const renderWith = (consent) => {
+    require.cache[consentPath] = { id: consentPath, filename: consentPath, loaded: true, exports: { useEffectiveConsent: () => consent } };
+    delete require.cache[calPath];
+    const html = renderToStaticMarkup(React.createElement(require(calPath).default));
+    delete require.cache[consentPath];
+    delete require.cache[calPath];
+    return html;
+  };
+  const href = (html) => [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&'));
+  for (const consent of [null, { analytics: true, advertising: false }]) {
+    const html = renderWith(consent);
+    assert.ok(!/data-cal-link|<iframe/.test(html), `CalBooking mounts the calendar host with consent ${JSON.stringify(consent)}. The frame is gated on advertising.`);
+    assert.deepEqual(href(html), [BOOKING_LINK], `Without advertising consent CalBooking must render exactly one link, to ${BOOKING_LINK}. Got ${href(html).join(', ')}.`);
+    assert.ok(/target="_blank"/.test(html) && /rel="noopener noreferrer"/.test(html), 'The consent-free calendar link must open in a new tab with noopener.');
+  }
+  const embedded = renderWith({ analytics: true, advertising: true });
+  assert.ok(embedded.includes(`data-cal-link="${CAL_LINK}"`), `With advertising consent CalBooking does not render the Cal.com host for ${CAL_LINK}.`);
+  assert.ok(href(embedded).includes(BOOKING_LINK), 'The embedded calendar lost its "open it in a new tab" fallback link.');
+  const cal = code('components/shared/CalBooking.tsx');
+  for (const [pattern, why] of [
+    [/cal\('init', namespace, \{ origin: CAL_EMBED_ORIGIN \}\)/, 'init with the Cal.com origin'],
+    [/api\('inline', \{ elementOrSelector: host, calLink: CAL_LINK/, 'an inline embed of CAL_LINK'],
+    [/<Script\s+src=\{CAL_EMBED_SCRIPT\}/, 'embed.js loaded with next/script'],
+    [/pushDataLayer\('booking_widget_view'\)/, 'booking_widget_view on mount'],
+    [/pushDataLayer\('booking_link_click'/, 'booking_link_click on click'],
+  ]) assert.ok(pattern.test(cal), `CalBooking no longer does ${why}.`);
+  // §8: no booking event client-side. walkthrough_booked comes only from the Cal.com webhook.
+  assert.ok(!/walkthrough_booked|audit_purchased|['"]Schedule['"]|trackMeta|track\(/.test(cal), 'CalBooking fires a booking or conversion event client-side. walkthrough_booked is server-side only (CLAUDE.md §8).');
+  assert.ok(/A view is not a meeting/.test(fs.readFileSync('components/shared/CalBooking.tsx', 'utf8')) && /never a booking/.test(fs.readFileSync('components/shared/CalBooking.tsx', 'utf8')), 'CalBooking lost its load-bearing comment that a view or a click is not a booking (CLAUDE.md §8).');
+  assert.ok(/<Heading level="h1"[^>]*>Book a 15-minute call<\/Heading>/.test(code('app/book/page.tsx')), '/book H1 no longer matches the 15-minute Cal.com event.');
+}
+
+/* 3c-iii. The Cal.com embed is a mutable third-party script, so it never shares a page
+           with the lead form (Anton, 2026-10-14). Walks the relative import graph from
+           /contact and the root layout; nothing reachable may be CalBooking or load
+           CAL_EMBED_SCRIPT. SpokeHomepage renders both, and is allowed only while every
+           path to it is 308'd (asserted in 3a). */
+{
+  const resolveImport = (from, spec) => {
+    const base = path.join(path.dirname(from), spec);
+    return [base, `${base}.tsx`, `${base}.ts`, path.join(base, 'index.tsx'), path.join(base, 'index.ts')].find((p) => fs.existsSync(p) && fs.statSync(p).isFile());
+  };
+  const reachable = (entry) => {
+    const seen = new Set();
+    const stack = [path.normalize(entry)];
+    while (stack.length) {
+      const file = stack.pop();
+      if (seen.has(file) || !/\.tsx?$/.test(file)) continue;
+      seen.add(file);
+      for (const [, spec] of code(file).matchAll(/(?:from|import)\s*\(?\s*['"](\.{1,2}\/[^'"]+)['"]/g)) {
+        const next = resolveImport(file, spec);
+        if (next) stack.push(path.normalize(next));
+      }
+    }
+    return seen;
+  };
+  const CAL_FILE = path.join('components', 'shared', 'CalBooking.tsx');
+  for (const entry of ['app/contact/page.tsx', 'app/layout.tsx']) {
+    const graph = reachable(entry);
+    assert.ok(graph.size > 1, `Import walk from ${entry} found nothing; the gate is not reading the graph.`);
+    assert.ok(!graph.has(CAL_FILE), `${entry} reaches CalBooking through its imports, so the Cal.com script can load on the lead form page.`);
+    const loaders = [...graph].filter((f) => f !== path.join('data', 'siteConfig.ts') && /CAL_EMBED_SCRIPT|app\.cal\.com\/embed/.test(code(f)));
+    assert.deepEqual(loaders, [], `${entry} reaches a file that loads the Cal.com embed: ${loaders.join(', ')}`);
+  }
+  assert.ok(reachable('app/book/page.tsx').has(CAL_FILE), 'The import walk no longer finds CalBooking from /book, so the check above proves nothing.');
+}
+
 /* 3d. LeadForm renders exactly five fields, rendered rather than grepped, through the
        props /contact itself builds from its query string (lib/contactForm.ts). Until
        2026-10-14 this block passed `locale` straight to LeadForm, which /contact never
@@ -120,7 +211,7 @@ const asContactRenders = (query) => {
   const { intent, locale, context } = contactFormProps(query);
   return { html: renderToStaticMarkup(React.createElement(LeadFormModule.default, { spoke: 'marketing', intent, sourcePage: '/contact', locale, context })), intent, locale, context };
 };
-const controls = (html) => [...html.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)].map((m) => m[1]).filter((n) => n !== 'website_trap');
+const controls = (html) => [...html.matchAll(/<(?:input|select|textarea)\b[^>]*\bname="([^"]+)"/g)].map((m) => m[1]).filter((n) => n !== 'hp_field_q');
 const escapeHtml = (t) => t.replace(/&/g, '&amp;').replace(/'/g, '&#x27;').replace(/"/g, '&quot;');
 const english = leadCopy('en');
 for (const audit of [false, true]) {
@@ -132,7 +223,7 @@ for (const audit of [false, true]) {
     assert.equal(r.locale, expected, `${where} resolves locale ${r.locale}.`);
     assert.equal(r.intent, audit ? 'audit' : 'contact', `${where} submits intent ${r.intent}.`);
     assert.deepEqual(controls(r.html), FIVE, `${where} renders ${controls(r.html).join(', ')}. Operator, 2026-10-14: exactly ${FIVE.join(', ')}.`);
-    assert.ok(r.html.includes('name="website_trap"'), 'LeadForm lost its honeypot.');
+    assert.ok(r.html.includes('name="hp_field_q"'), 'LeadForm lost its honeypot.');
     for (const [, id] of r.html.matchAll(/<(?:input|select|textarea)\b[^>]*\bid="([^"]+)"/g)) {
       assert.ok(r.html.includes(`for="${id}"`), `LeadForm control ${id} has no <label for>, so a screen reader announces it unnamed.`);
     }
@@ -148,7 +239,7 @@ assert.equal(leadCopy('en').message, 'What do you want help with?', 'The message
 assert.deepEqual(controls(renderToStaticMarkup(React.createElement(LeadFormModule.default, { spoke: 'marketing', sourcePage: '/contact', intent: 'newsletter' }))), [...FIVE, 'email_marketing'], 'A newsletter LeadForm must still render its opt-in, or the server rejects every newsletter lead.');
 
 /* 3d-ii. The locale survives to the submission. Rendering proves the labels; the lead's
-          context.locale drives the confirmation email and the GHL locale field, so it
+          context.locale drives the confirmation email and the lead record, so it
           is asserted on the exact functions submit() calls. Also covers a caller that
           passes only context, no locale prop (Owen's repro). */
 const { resolveFormLocale, submissionContextFor } = LeadFormModule;

@@ -26,9 +26,9 @@ export default function Page() {
       />
       <main className="min-h-screen pt-32 pb-20 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
-          {/* 30 minutes is what the LeadConnector calendar renders ("Discovery
-              Call, 30 min"), verified in c95b929. If the calendar changes, change this. */}
-          <Heading level="h1" className="mb-3">Book a 30-minute call</Heading>
+          {/* 15 minutes is the Cal.com event the operator chose on 2026-10-14
+              (CAL_LINK, qognition-agency/15min). If the event changes, change this. */}
+          <Heading level="h1" className="mb-3">Book a 15-minute call</Heading>
           <p className="text-body text-[var(--text-muted)] mb-8">We&apos;ll cover who you sell to, what we&apos;d check first in Google and AI search, and whether we&apos;re a fit. Bring your website.</p>
           <div
             className="overflow-hidden"

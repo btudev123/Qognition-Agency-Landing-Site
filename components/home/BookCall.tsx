@@ -27,7 +27,7 @@ export default function BookCall() {
           <ScrollReveal>
             <Eyebrow accent>Book a call</Eyebrow>
             <h2 className="text-h2 font-sans m-0 mt-4 max-w-[18ch] font-semibold">
-              <MaskReveal>30 minutes. You leave knowing what we would fix first.</MaskReveal>
+              <MaskReveal>15 minutes. You leave knowing where we would start.</MaskReveal>
             </h2>
             <ul className="list-none p-0 mt-8 grid gap-4">
               {COVER.map(({ icon, line }) => (
@@ -55,7 +55,10 @@ export default function BookCall() {
               className="overflow-hidden"
               style={{ background: 'var(--s-surface-1)', border: '1px solid var(--s-rule)' }}
             >
-              <CalBooking minHeight={680} />
+              {/* 880: the Cal.com frame measured 884px in this column at 1280px wide
+                  (slots view, 2026-10-14). Reserving it keeps the page below from
+                  jumping when the calendar arrives. */}
+              <CalBooking minHeight={880} />
             </div>
           </ScrollReveal>
         </div>

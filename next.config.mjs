@@ -13,6 +13,27 @@ const nextConfig = {
       { protocol: 'https', hostname: 'api.producthunt.com' }
     ]
   },
+  // Anti-framing only (Anton, 2026-10-14). There is no full CSP on this site; do
+  // not read this one header as one. frame-ancestors 'self' stops another origin
+  // from framing any page (clickjacking on /contact and /book), and
+  // X-Frame-Options covers browsers that ignore frame-ancestors.
+  // All routes, /studio included: Sanity is configured without the presentation
+  // tool or any preview pane, so nothing frames this site, not even itself. If a
+  // Sanity presentation tool or the sanity.io dashboard ever needs to frame
+  // /studio or a page, scope that route here; do not drop the header.
+  // This does not affect the frames we embed (Cal.com, Tally): it governs who may
+  // frame us, not what we frame.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        ],
+      },
+    ];
+  },
   async redirects() {
     // Retired 4-spoke model → 11-category services taxonomy.
     // 301s preserve link equity (no route deletion). Specific sub-service

@@ -61,7 +61,7 @@ export default function Page() {
         <h2>When you get a number</h2>
         {/* No turnaround until the operator supplies one. Never a guessed N. */}
         <p className="growth-page-intro">
-          After a 30-minute call. We send a written scope and fee. If you want a full diagnosis before committing to ongoing work, we can offer a paid audit on the call.
+          After a 15-minute call, we send a written scope and fee. If you want a full diagnosis before committing to ongoing work, we can offer a paid audit on the call.
         </p>
       </section>
       <section className="growth-page-section">

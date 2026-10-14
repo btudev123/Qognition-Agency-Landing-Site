@@ -32,8 +32,8 @@
  *   2. lib/auditRateLimit.ts, policy 'audit': one per email per 24h, 12 per IP
  *      per hour. IN-MEMORY AND PER-INSTANCE, by its own documentation, so N
  *      serverless instances enforce N separate ceilings. It throttles; it does
- *      not cap. Project memory records Redis env vars unset in production, so
- *      this is the state today and not a thing to assume is handled.
+ *      not cap. There is no shared store behind it (the hosted
+ *      ledger was removed, operator 2026-10-14), so this is the state today and not a thing to assume is handled.
  *   3. No key configured means no call. Removing the key is the kill switch.
  *
  * That is honest but it is not a budget. Anton (secops) reviews this before it

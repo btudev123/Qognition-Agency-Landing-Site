@@ -25,12 +25,12 @@
  *   2. lib/auditRateLimit.ts, policy 'audit': one per email per 24h, and 12 per
  *      IP per hour. It is IN-MEMORY AND PER-INSTANCE by its own documentation,
  *      so N concurrent serverless instances enforce N separate ceilings.
- *      Project memory records Redis env vars UNSET in production, so that is
- *      the live state and not something to assume is handled. It throttles. It
- *      does not cap.
+ *      The stack has no shared store at all (removed by the operator,
+ *      2026-10-14), so that is the live state and not something to assume is
+ *      handled. It throttles. It does not cap.
  *   3. No key means no call. Removing PERPLEXITY_API_KEY is the kill switch.
  *
- * There is deliberately no ledger, no queue and no Redis here: the operator
+ * There is deliberately no ledger, no queue and no shared store here: the operator
  * scoped this to one call per audit, and ADR-0003 §6's durable-ledger
  * requirement is written for the 45-call /api/snapshot product, which this is
  * not and must not grow into without going back to that ADR.

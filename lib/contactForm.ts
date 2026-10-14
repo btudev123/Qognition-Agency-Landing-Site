@@ -4,7 +4,7 @@ import { resolveLeadLocale, type LeadLocale } from './leadCopy';
 /** Everything /contact derives from its query string, in one place, so the page and
  *  scripts/check-funnel.cjs render the form through the same props. A translated page
  *  links here as /contact?locale=de; the locale is passed through so the form, its
- *  confirmation email and the GHL record use it (Owen F1, 2026-10-14). */
+ *  confirmation email and the lead notification use it (Owen F1, 2026-10-14). */
 export function contactFormProps(query: Record<string, string | string[] | undefined>): {
   audit: boolean;
   intent: 'audit' | 'contact';

@@ -35,7 +35,7 @@ export function enquiryQualification(employeeBand: EmployeeBand): NonNullable<Le
 /** Which language the form speaks. An explicit prop wins, then the funnel context
  *  (/contact?locale=de from a translated page), then the first path segment. Before
  *  2026-10-14 the context was skipped, so /contact always resolved 'en': English labels,
- *  no RTL for Arabic, an English confirmation email and 'en' stored in GHL (Owen F1). */
+ *  no RTL for Arabic, an English confirmation email and 'en' on the lead record (Owen F1). */
 export function resolveFormLocale(localeProp: LeadLocale | undefined, contextLocale: string | undefined, path: string | null | undefined): LeadLocale {
   if (localeProp) return localeProp;
   if (contextLocale && resolveLeadLocale(contextLocale) === contextLocale) return contextLocale as LeadLocale;
@@ -107,7 +107,7 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, onSucces
       attempt.current = { fingerprint, payload: {
         service: spoke, intent, source_page: source,
         submission_id: submissionId, event_id: submissionId,
-        contact: validated.data, honeypot, attribution, utm: attribution?.first_touch,
+        contact: validated.data, hp_field_q: honeypot, attribution, utm: attribution?.first_touch,
         context: submissionContext,
         qualification,
         consent: { email_marketing: emailMarketing, analytics: preferences.analytics, advertising: preferences.advertising, basis: preferences.basis, policy_version: CONSENT_POLICY_VERSION, recorded_at: preferences.recorded_at },
@@ -128,8 +128,8 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, onSucces
         setStatus('error');
         return;
       }
-      // Success is success===true on a 2xx, whatever `status` says: 'captured'
-      // (GHL) and 'emailed' (the Resend fallback, fallback:true) both qualify.
+      // Success is success===true on a 2xx, whatever `status` says. /api/lead
+      // reports it only once Resend accepts the notification (operator, 2026-10-14).
       // contact_submitted is the canonical §8 name. lead_submit_success stays
       // for one release so GA4 history joins up; only it mirrors to Meta, so the
       // pixel still counts one Lead per submission. Neither carries PII.
@@ -147,9 +147,9 @@ export default function LeadForm({ spoke, intent, sourcePage, ctaLabel, onSucces
     <h3 className="text-h3 mb-3 font-semibold">{c.received}</h3><p className="text-body mb-6">{c.next}</p><a href={bookingHref} className="inline-block rounded-full bg-[var(--btn-primary-bg)] px-5 py-3 text-sm font-medium text-[var(--btn-primary-fg)]">{c.booking}</a>
   </div>;
 
-  return <form ref={formRef} onSubmit={submit} className={`space-y-5 ${className}`} noValidate dir={locale === 'ar' ? 'rtl' : undefined}>
+  return <form ref={formRef} data-clarity-mask="true" onSubmit={submit} className={`space-y-5 ${className}`} noValidate dir={locale === 'ar' ? 'rtl' : undefined}>
     <p className="text-meta m-0 text-[var(--text-muted)]" aria-hidden="true">* {c.required}</p>
-    <div className="absolute opacity-0 pointer-events-none" aria-hidden="true"><input name="website_trap" type="text" tabIndex={-1} autoComplete="off" value={honeypot} onChange={e => setHoneypot(e.target.value)} /></div>
+    <div className="absolute opacity-0 pointer-events-none" aria-hidden="true"><input name="hp_field_q" type="text" tabIndex={-1} autoComplete="off" value={honeypot} onChange={e => setHoneypot(e.target.value)} /></div>
     {(['name', 'email', 'company_url'] as const).map(field => <div key={field}>
       <label htmlFor={`${id}-${field}`} className="mb-1 block text-sm font-medium">{field === 'company_url' ? c.website : c[field]}{field !== 'company_url' && <span aria-hidden="true"> *</span>}</label>
       <input id={`${id}-${field}`} name={field} type={field === 'email' ? 'email' : field === 'company_url' ? 'url' : 'text'} dir={field === 'name' ? undefined : 'ltr'} value={contact[field]} onChange={e => setContact(current => ({ ...current, [field]: e.target.value }))} autoComplete={field === 'name' ? 'name' : field === 'email' ? 'email' : 'url'} required={field !== 'company_url'} aria-invalid={Boolean(errors[field])} aria-describedby={errors[field] ? `${id}-${field}-error` : undefined} className={fieldClass} />

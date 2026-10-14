@@ -42,7 +42,7 @@ export default function SpokeBookPage({ spoke }: { spoke: SpokeId }) {
           <ScrollReveal stagger={300}>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { icon: Clock, title: '30 Minutes', desc: 'Focused, efficient, and respectful of your time' },
+                { icon: Clock, title: '15 Minutes', desc: 'Focused, efficient, and respectful of your time' },
                 { icon: Video, title: 'Video Call', desc: 'Google Meet or Zoom — whatever you prefer' },
                 { icon: Calendar, title: 'Same Week', desc: 'Most calls scheduled within 2-3 business days' },
                 { icon: CheckCircle, title: 'No Pitch', desc: 'We listen first. Recommendations come after understanding.' },

@@ -1,15 +1,15 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { liveLeadWritesAllowed } from '../../../../lib/deploymentMode';
 import { NextRequest, NextResponse } from 'next/server';
-import { leadCaptureConfiguration } from '../../../../lib/leadCrm';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * Configuration health check for the lead pipeline.
  *
- * GHL is the capture destination. Until it is configured, or when it fails, the
- * internal Resend email is the lead record (LEAD_EMAIL_FALLBACK, default on).
+ * Resend is the only lead acceptance boundary (operator, 2026-10-14): /api/lead reports
+ * success only when Resend accepts the hello@ notification. Cal.com is the booking system;
+ * its webhook (app/api/cal/webhook) records walkthrough_booked and needs CALCOM_WEBHOOK_SECRET.
  *
  * Unauthenticated callers get only {ok:true}: which integrations are missing is
  * reconnaissance. With a matching x-status-secret the response reports whether
@@ -48,6 +48,8 @@ export async function GET(request: NextRequest) {
   const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
   const metaToken = process.env.META_CAPI_ACCESS_TOKEN;
   const metaTestCode = process.env.META_TEST_EVENT_CODE;
+  const calApiKey = process.env.CALCOM_API_KEY;
+  const calWebhookSecret = process.env.CALCOM_WEBHOOK_SECRET;
 
   const payload: Record<string, unknown> = {
     ok: true,
@@ -74,10 +76,16 @@ export async function GET(request: NextRequest) {
       storage: 'in-memory-per-instance',
       requiredEnv: [],
     },
-    capture: { ...leadCaptureConfiguration(), liveWritesAllowed: liveLeadWritesAllowed(), verified: false },
-    notificationDelivery: process.env.LEAD_EMAIL_FALLBACK === 'off'
-      ? 'after-confirmed-crm-capture'
-      : 'after-crm-capture-or-synchronous-email-fallback',
+    calcom: {
+      // Presence only. No code calls the Cal.com API today; the key is reported because it is set.
+      apiKeyConfigured: Boolean(calApiKey?.trim()),
+      // Without it the booking webhook refuses every delivery (503) and walkthrough_booked is never recorded.
+      webhookSecretConfigured: Boolean(calWebhookSecret?.trim()),
+      requiredEnv: ['CALCOM_WEBHOOK_SECRET'],
+      optionalEnv: ['CALCOM_API_KEY'],
+    },
+    capture: { boundary: 'resend', configured: Boolean(resendKey && resendFrom), liveWritesAllowed: liveLeadWritesAllowed(), verified: false },
+    notificationDelivery: 'synchronous-before-success',
   };
 
   if (request.nextUrl.searchParams.get('deep') !== '1') {
