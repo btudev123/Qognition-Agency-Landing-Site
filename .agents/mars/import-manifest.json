@@ -1,0 +1,1390 @@
+{
+  "importedAt": "2026-10-03T14:09:14.717072+00:00",
+  "agentCount": 15,
+  "coordinator": "M.A.R.S (parent session)",
+  "modelPolicy": "Inherit the current Codex session model; Claude model and tool frontmatter is preserved source metadata, not executable Codex configuration.",
+  "files": [
+    {
+      "source": "/Users/qognitionagency/.claude/agents/search.md",
+      "destination": ".claude/agents/search.md",
+      "sha256": "2a35174f218a981343572a79b2f2424b170aabde535c96c463b83bd53eb0fe92"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/content.md",
+      "destination": ".claude/agents/content.md",
+      "sha256": "0c1c82b4d76d281b987aa1030ef876f0dce043d0a81ad6749abc6932a76b15ce"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/creative.md",
+      "destination": ".claude/agents/creative.md",
+      "sha256": "079e38f931f50c63b1068595a49e5c93a508e8135c48b956a13b1919de71fa2d"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/performance.md",
+      "destination": ".claude/agents/performance.md",
+      "sha256": "860c7d3cfb103d42639894c2fbe23da1eac65857bba8f3840cd3712b56c5a586"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/lifecycle.md",
+      "destination": ".claude/agents/lifecycle.md",
+      "sha256": "2a4fdf2e3498900b91493059a514fde99d7b6bf7b9b4b7ad4ea0e401a40792c8"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/research.md",
+      "destination": ".claude/agents/research.md",
+      "sha256": "e65be222c3abaa056bb9245e66bdfed0bd2711ece2c31588cf0725361fdef8cd"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/sales.md",
+      "destination": ".claude/agents/sales.md",
+      "sha256": "0975d54aa82f1e4b4d6bd84aa7023c3e023b48326f8fb92d3cd751b1fd3b8693"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/brand-guard.md",
+      "destination": ".claude/agents/brand-guard.md",
+      "sha256": "5156c9fc1f11cb37d71cb738c1411e613aa967f5750e453a31ed13ae5419a66c"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/devrel.md",
+      "destination": ".claude/agents/devrel.md",
+      "sha256": "f44507fd38ebcbd4dd3f18a5e11e7a7015afa333768291b91f7f01b273c1ea26"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/architect.md",
+      "destination": ".claude/agents/architect.md",
+      "sha256": "2a4dccfe83e442c41d04337b86384f621b1f1fd71cb46b7d35a86a24b170e5ea"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/backend-dev.md",
+      "destination": ".claude/agents/backend-dev.md",
+      "sha256": "37c3a7620d805b98ec58223a90219a064ee7ca4edc74e16ad1904460ea193aa9"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/frontend-dev.md",
+      "destination": ".claude/agents/frontend-dev.md",
+      "sha256": "560b3b8ee7470c22112ea4f5323cc8b8375b679ab7567358e738349ba51ce5e9"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/quality.md",
+      "destination": ".claude/agents/quality.md",
+      "sha256": "363d2b86599a06a1c35e76fc6c135505c94aa8258fdec514a06a786c05da4bf1"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/secops.md",
+      "destination": ".claude/agents/secops.md",
+      "sha256": "6d0b447c71b8a3259508d5122e434d33c2509df4b7dde21f8a92a08f042f4fdc"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/agents/platform.md",
+      "destination": ".claude/agents/platform.md",
+      "sha256": "200754621010fa552772be9b68cc0208618d0674738778d9545a09184734c38c"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/CLAUDE.md",
+      "destination": ".agents/mars/orchestrator.md",
+      "sha256": "86d3eb0a24909431fee94706dac21cbc532093d2a615d959a8d18b797cde710e"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/standards/definition-of-done.md",
+      "destination": ".agents/mars/standards/definition-of-done.md",
+      "sha256": "d12ef6648e986520f13031787e2738da0ec08470414755c0819d98fa83fcdf01"
+    },
+    {
+      "source": "/Users/qognitionagency/.claude/standards/no-slop.md",
+      "destination": ".agents/mars/standards/no-slop.md",
+      "sha256": "39791160c5b8c58dbb9315c2b3b25a77b9884e2ee467811c98d3d45b35313a94"
+    },
+    {
+      "source": "/Users/qognitionagency/qognition-ops/standards/anti-slop.md",
+      "destination": ".agents/mars/standards/anti-slop.md",
+      "sha256": "039107a292a798e5f7759092aadfd2e30bb9458fb9bd116d301b5ecd9c0a54da"
+    },
+    {
+      "source": "/Users/qognitionagency/qognition-ops/standards/output-contract.md",
+      "destination": ".agents/mars/standards/output-contract.md",
+      "sha256": "c68e6c418530fd1001481206f0bf0f559c1fe1e986c41b46109d9b985d380dc7"
+    },
+    {
+      "source": "/Users/qognitionagency/qognition-ops/standards/reporting-format.md",
+      "destination": ".agents/mars/standards/reporting-format.md",
+      "sha256": "c52dcdb6d9ca64c6b5f1fa3bff7c6febbd344b35e3f617c03142e11b54509ef9"
+    }
+  ],
+  "skills": [
+    {
+      "reference": "accessibility-audit",
+      "roles": [
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/accessibility-audit/SKILL.md",
+      "sha256": "4261e12c948d0832ac8c14431df3b40d2feb4b126356e4215be223ef64688503"
+    },
+    {
+      "reference": "brand-skill",
+      "roles": [
+        "creative"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/brand-skill/SKILL.md",
+      "sha256": "222d2a08e7520426bfb3c3a596aa30c81730409ef44903655aecd680dca8c667"
+    },
+    {
+      "reference": "claude-md-generator",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/claude-md-generator/SKILL.md",
+      "sha256": "3a89ecf14ce4f522cc5aac781e1633ce392e6e1d2375b59b4923a14c888fc882"
+    },
+    {
+      "reference": "clay-gtm-outbound",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/clay-gtm-outbound/SKILL.md",
+      "sha256": "c470ab7aa877d81b9d8cc548438f82e64974bd3770746c4a3e593e0bba7bcb98"
+    },
+    {
+      "reference": "clean-architecture",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/clean-architecture/SKILL.md",
+      "sha256": "27f163b96cdbcd41221329247f82632aa424ce57520f610be5f811493221a374"
+    },
+    {
+      "reference": "clean-code",
+      "roles": [
+        "backend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/clean-code/SKILL.md",
+      "sha256": "2a7d73a3de457d5db44d7ae08b5e8dc940d108e39e7b6486c690405cd3de63ce"
+    },
+    {
+      "reference": "closing",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/closing/SKILL.md",
+      "sha256": "407eb33bf7df3b0d31e3767b1f4303fd55b61ba4a315d787169658010aaa6220"
+    },
+    {
+      "reference": "competitive-positioning",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/competitive-positioning/SKILL.md",
+      "sha256": "7fea753df5f897217f674b1e0dcd4bfffec94dbd699ecea8846c9e6ba9090b86"
+    },
+    {
+      "reference": "competitor-analysis",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/competitor-analysis/SKILL.md",
+      "sha256": "88f36d91a7672f017f8b95f12a0d78c07f28803ff6fd232b997a99596e914a2e"
+    },
+    {
+      "reference": "competitor-pr-finder",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/competitor-pr-finder/SKILL.md",
+      "sha256": "202508fb65191f93ed091ff95ae5055ec2f37856cd49640a2d5735a90c9531dd"
+    },
+    {
+      "reference": "contagious",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/contagious/SKILL.md",
+      "sha256": "0cc2b3cca532135c7b057ca6dc5109b05c974a1bb59bb72067e3cf03fccdf03a"
+    },
+    {
+      "reference": "cro-methodology",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/cro-methodology/SKILL.md",
+      "sha256": "2e139e48eab25f6dfeb3a772bb0905c903465ff2141b454475c37b9dfa56aeb4"
+    },
+    {
+      "reference": "ddia-systems",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/ddia-systems/SKILL.md",
+      "sha256": "1322ddf4bab0dfabbe7669082a9bd9cbae0a81d611b0861ba7e852943d4416eb"
+    },
+    {
+      "reference": "deal-review-win-loss",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/deal-review-win-loss/SKILL.md",
+      "sha256": "8c7fc7d965cb7e12397531a35d5d0dbe05c5fb35f0fd432e70411e18cadefbcb"
+    },
+    {
+      "reference": "decision-maker-identification",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/decision-maker-identification/SKILL.md",
+      "sha256": "0235983997fe8203b3963acac2e9703637c40fbbad5a12476b1fce2146180ea1"
+    },
+    {
+      "reference": "deep-research",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/deep-research/SKILL.md",
+      "sha256": "eb46840e338ad926c4b5e024b681691519dc11ce8d36bbf1e3d9a2ed6c5f2cfd"
+    },
+    {
+      "reference": "design-everyday-things",
+      "roles": [
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/design-everyday-things/SKILL.md",
+      "sha256": "3f565c88dbf7c61235b16beb730f7d0513d9e94a9206725c0c81a76b3b662d0d"
+    },
+    {
+      "reference": "discovery",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/discovery/SKILL.md",
+      "sha256": "6b3c3ada68f54b2a93fadcd98646eb3a0b3559f42a81cd424c5c345212eed11c"
+    },
+    {
+      "reference": "docs-auditor",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/docs-auditor/SKILL.md",
+      "sha256": "9ab95a3bf5bd60bf4a51a1229a68555b358a029703d2ee9574fb26e92a7504a3"
+    },
+    {
+      "reference": "docs-from-code",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/docs-from-code/SKILL.md",
+      "sha256": "03dfb7200e93b7a5b3b0cbbdcfc010b5b8bcf4299c7c66a90f6f3cb265aeebd9"
+    },
+    {
+      "reference": "documentation-strategy",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/documentation-strategy/SKILL.md",
+      "sha256": "c9313863695c971cb8d5dd179d9dd91610a01806fc4a8e3cde3fa44a6b426d52"
+    },
+    {
+      "reference": "domain-driven-design",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/domain-driven-design/SKILL.md",
+      "sha256": "2de41452f7b7d29e6315e51b58266c3a487ba5789759c39a3b2d1f8ab1855fca"
+    },
+    {
+      "reference": "email-deliverability",
+      "roles": [
+        "lifecycle"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/email-deliverability/SKILL.md",
+      "sha256": "d321d0661dbb471567570631f1b7ee031a7d96e1696206770af362eb2f1119e3"
+    },
+    {
+      "reference": "engineering-advanced-skills:api-design-reviewer",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/api-design-reviewer/SKILL.md",
+      "sha256": "a4e61a67981d7cab02f479f959b9e83d032e705c17b72e763d07ef9a3247bf54"
+    },
+    {
+      "reference": "engineering-advanced-skills:api-test-suite-builder",
+      "roles": [
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/api-test-suite-builder/SKILL.md",
+      "sha256": "a0db3fd9004317097c1c9c7ef7da6276a98d205a1c2af79fbbddd72fab976d42"
+    },
+    {
+      "reference": "engineering-advanced-skills:changelog-generator",
+      "roles": [
+        "devrel",
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/changelog-generator/SKILL.md",
+      "sha256": "0866b458e0eff49b95328452a32e326a866b661bbdd3b2f4ac2d3f9b9f3ddc25"
+    },
+    {
+      "reference": "engineering-advanced-skills:ci-cd-pipeline-builder",
+      "roles": [
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/ci-cd-pipeline-builder/SKILL.md",
+      "sha256": "b9628224a9fe77caca4aedda49a72938147000ab275da92ebccf190c3ba8f161"
+    },
+    {
+      "reference": "engineering-advanced-skills:codebase-onboarding",
+      "roles": [
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/codebase-onboarding/SKILL.md",
+      "sha256": "70261b95a8855d422b0d7538e138ef7434f032a953bd646507ac09a8379e6b7c"
+    },
+    {
+      "reference": "engineering-advanced-skills:database-designer",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/database-designer/SKILL.md",
+      "sha256": "3729790a4e29e45ea0e9cb0bbb220d2162fea0e954d32f2abf8728aa8ef41ad1"
+    },
+    {
+      "reference": "engineering-advanced-skills:dependency-auditor",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/dependency-auditor/SKILL.md",
+      "sha256": "4bde5bd43d14b39a9c282f1ab74b202d102b070b99a5083724e84526bc5e2f0a"
+    },
+    {
+      "reference": "engineering-advanced-skills:env-secrets-manager",
+      "roles": [
+        "backend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/env-secrets-manager/SKILL.md",
+      "sha256": "6724d5bd32506212977fe6e78be754d97458e16ae164fbc6adb69e30d31caaee"
+    },
+    {
+      "reference": "engineering-advanced-skills:focused-fix",
+      "roles": [
+        "backend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/focused-fix/SKILL.md",
+      "sha256": "84f2c465a23aa02c2b57269628254d8c35858ba0d5bd113daed38c7446bfe016"
+    },
+    {
+      "reference": "engineering-advanced-skills:migration-architect",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/migration-architect/SKILL.md",
+      "sha256": "b262c3b4eea8389b4fb65016734a092a99e096a226662c37efc89bc93c69a77a"
+    },
+    {
+      "reference": "engineering-advanced-skills:observability-designer",
+      "roles": [
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/observability-designer/SKILL.md",
+      "sha256": "70ab54164e3cb58f30f4f4e1500bd54361c67f6ecbde954b13596dc2902fe2ac"
+    },
+    {
+      "reference": "engineering-advanced-skills:pr-review-expert",
+      "roles": [
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/pr-review-expert/SKILL.md",
+      "sha256": "548a4d03c274203d803abb07a7a318a484ccad8191594480374de658592c6b49"
+    },
+    {
+      "reference": "engineering-advanced-skills:runbook-generator",
+      "roles": [
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/runbook-generator/SKILL.md",
+      "sha256": "ef426a9b8a04cb766ac002efeaf4907083aff817887c7652c3fbd4258661fa53"
+    },
+    {
+      "reference": "engineering-advanced-skills:secrets-vault-manager",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/secrets-vault-manager/SKILL.md",
+      "sha256": "208077ec32ddf526cc4aa8cfb71ac9318ae71e6127b787fd63e32d867f6066fc"
+    },
+    {
+      "reference": "engineering-advanced-skills:skill-security-auditor",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-advanced-skills/2.9.0/skills/skill-security-auditor/SKILL.md",
+      "sha256": "8281b2a45e2ab66d21d45910fa47e02158113e319391d51c60215d39090db686"
+    },
+    {
+      "reference": "engineering-skills:adversarial-reviewer",
+      "roles": [
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/adversarial-reviewer/SKILL.md",
+      "sha256": "d69e917a7c84405a18b40bd6e41d5fae9aba966db903171028f86bb5c25f6f94"
+    },
+    {
+      "reference": "engineering-skills:ai-security",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/ai-security/SKILL.md",
+      "sha256": "dac7c1312e5433e02fb287ca476979468d9a21901ed0d0fd67a64a8239ac6287"
+    },
+    {
+      "reference": "engineering-skills:cloud-security",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/cloud-security/SKILL.md",
+      "sha256": "b21c8b13654e421a65784430df2c6bba90bddfdae87fe5000d4bae0c3cd1a7c5"
+    },
+    {
+      "reference": "engineering-skills:incident-commander",
+      "roles": [
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/incident-commander/SKILL.md",
+      "sha256": "b7f8d0442f1c7379f67dc3089b105a3f7b668eed76beff623bc59f795d2642a4"
+    },
+    {
+      "reference": "engineering-skills:incident-response",
+      "roles": [
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/incident-response/SKILL.md",
+      "sha256": "d50d603c1198d7ed7de6c61764245dea24ade7aa96e16468a9f5f89d7150ab9b"
+    },
+    {
+      "reference": "engineering-skills:senior-architect",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/senior-architect/SKILL.md",
+      "sha256": "559d402c361591423b22de37485ad3900b3aba8c437bed1ebf70aa4e828e0e22"
+    },
+    {
+      "reference": "engineering-skills:senior-backend",
+      "roles": [
+        "backend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/senior-backend/SKILL.md",
+      "sha256": "4f1ae6929b9cb723bdf63c27aa2147ca36c7b028a8ab1d6d622f09c0a061f672"
+    },
+    {
+      "reference": "engineering-skills:senior-devops",
+      "roles": [
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/senior-devops/SKILL.md",
+      "sha256": "6eaeee798f2ffc82496c5d8dffb9a111a98e911284daa6886be3107a41917979"
+    },
+    {
+      "reference": "engineering-skills:senior-frontend",
+      "roles": [
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/senior-frontend/SKILL.md",
+      "sha256": "886e83d1713b473f01091954683d7f008cefd1100d32114ccaf85368fb67a9a5"
+    },
+    {
+      "reference": "engineering-skills:senior-secops",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/senior-secops/SKILL.md",
+      "sha256": "49e933139a7ce3fe02e7ae1e6d59f2fdf947afeabcee125a8e2c4cda7b575bd9"
+    },
+    {
+      "reference": "engineering-skills:senior-security",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/senior-security/SKILL.md",
+      "sha256": "454188e4f0188d3e0219f58c70dc666e0a9e98383d53a7437a027b13db68643a"
+    },
+    {
+      "reference": "engineering-skills:tdd-guide",
+      "roles": [
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/plugins/cache/claude-code-skills/engineering-skills/2.9.0/skills/tdd-guide/SKILL.md",
+      "sha256": "b12e75f376db6a72d0f5a9971c720c04546d02f0ecf68f40fd0efde22e46aa6d"
+    },
+    {
+      "reference": "explain-this-pr",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/explain-this-pr/SKILL.md",
+      "sha256": "a0c22a5941a24cc5584394f169d929a0d8aa751cac8e740bd659a622d353dbfb"
+    },
+    {
+      "reference": "finishing-a-development-branch",
+      "roles": [
+        "backend-dev",
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/finishing-a-development-branch/SKILL.md",
+      "sha256": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65"
+    },
+    {
+      "reference": "follow-up-discipline",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/follow-up-discipline/SKILL.md",
+      "sha256": "253314c7716c3f41bededcb931ce930e83b63e0229221dc1a0cf92a74fd5c9a7"
+    },
+    {
+      "reference": "frontend-component-build",
+      "roles": [
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/frontend-component-build/SKILL.md",
+      "sha256": "32c9a8c1e655649fd691f01ca33f80bf9efd0d75b9530f3f2000880bf807d34f"
+    },
+    {
+      "reference": "geo-gap-fixer",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/geo-gap-fixer/SKILL.md",
+      "sha256": "3a40c498e33955c02142299d154e4ba3e18a7c75962d6ce257210a6dde199f6c"
+    },
+    {
+      "reference": "geo-query-finder",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/geo-query-finder/SKILL.md",
+      "sha256": "ecf746382569c50b950999ba97032763bbee06a8293e284c51c7300cdcf97352"
+    },
+    {
+      "reference": "human-tone",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/human-tone/SKILL.md",
+      "sha256": "ff44c713ac7ff643c243f557fa2c29bd63ba48e5ad63e497f3f2a3803437c9d2"
+    },
+    {
+      "reference": "icp-builder",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/icp-builder/SKILL.md",
+      "sha256": "3dccdf6dcc06179510e65138fdb8aba93864b342c4ca987b934069cb1005d531"
+    },
+    {
+      "reference": "ideal-customer-profile-matching",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/ideal-customer-profile-matching/SKILL.md",
+      "sha256": "56b1626fd6593edd32d91d327514f2057a95cabc40790baed7e4771ef71f8adc"
+    },
+    {
+      "reference": "influence-psychology",
+      "roles": [
+        "lifecycle"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/influence-psychology/SKILL.md",
+      "sha256": "e7b44dec9642292693804aaa21d1cada0fa620ea019a548527f5a9a5c9ff53bf"
+    },
+    {
+      "reference": "jtbd-framing",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/jtbd-framing/SKILL.md",
+      "sha256": "400bf8ca34f5e11979dbf336ef936e4b90ac72c9e006740a2a7cc06d8e3ba297"
+    },
+    {
+      "reference": "lead-qualification",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/lead-qualification/SKILL.md",
+      "sha256": "5741d9bda78c01d84643980508d083a80e79f54c02296832591111c06afe4c34"
+    },
+    {
+      "reference": "linkedin-post-generator",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/linkedin-post-generator/SKILL.md",
+      "sha256": "eae104295118f13f2384874a351a577b0511811e225d2bcffaac52e9f4c4b2f9"
+    },
+    {
+      "reference": "llms-txt-checker",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/llms-txt-checker/SKILL.md",
+      "sha256": "f3bd42d59c9eae3af2ca69c72af93b7695756419beb3522c661e6539f7de0c62"
+    },
+    {
+      "reference": "llms-txt-generator",
+      "roles": [
+        "search",
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/llms-txt-generator/SKILL.md",
+      "sha256": "9fee3729f3ed6c91e25fa5384992baf3d41aba42c0e69bc6d20105596baaf4ab"
+    },
+    {
+      "reference": "made-to-stick",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/made-to-stick/SKILL.md",
+      "sha256": "b24e2c23fa1969f07b79c2c38c8ec57bef33b861cd013c9daf16d794fcbe2c88"
+    },
+    {
+      "reference": "marketing-skills:ab-testing",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/ab-testing/SKILL.md",
+      "sha256": "1fd229160f6014f3f2d7c92cc7d2f991fbf8dc9ed68aac9793c71b408a6d1144"
+    },
+    {
+      "reference": "marketing-skills:ad-creative",
+      "roles": [
+        "creative",
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/ad-creative/SKILL.md",
+      "sha256": "e5b0cd0bc6bf55ab2abd02ca399fa996b67324cbda0dd1a719689e9322ba6808"
+    },
+    {
+      "reference": "marketing-skills:ads",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/ads/SKILL.md",
+      "sha256": "5759f8e81a2fc61c135cb7e63b472e8788cf6a1a143b865b818e215d0fc02c69"
+    },
+    {
+      "reference": "marketing-skills:ai-seo",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/ai-seo/SKILL.md",
+      "sha256": "b1ecd93ebc65af886f81bc0a90645c8fd4ffdf68c5b3d4495a9e61481d954d00"
+    },
+    {
+      "reference": "marketing-skills:analytics",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/analytics/SKILL.md",
+      "sha256": "3eda97d96b2329daa933b6fdb94bf81aaa1196e3e344e56a8805f972a7438404"
+    },
+    {
+      "reference": "marketing-skills:attribution",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/attribution/SKILL.md",
+      "sha256": "eccc43eb93fed8fa871205fc441830ee020bcfce8b78a645e6e679c3f6099ac6"
+    },
+    {
+      "reference": "marketing-skills:churn-prevention",
+      "roles": [
+        "lifecycle"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/churn-prevention/SKILL.md",
+      "sha256": "88fd25b77e44ef3689d68d54091df9659a40f5e905c8bdeb09bdeed3f049ad67"
+    },
+    {
+      "reference": "marketing-skills:cold-email",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/cold-email/SKILL.md",
+      "sha256": "b7f8d793169a5111c857e5720c6b80028686cc95d5a0d0d6570957c2710aff9e"
+    },
+    {
+      "reference": "marketing-skills:competitor-profiling",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/competitor-profiling/SKILL.md",
+      "sha256": "3e775491484a9e6fddce1db4e03415a900a5026d898ef146161f6fea017eafcf"
+    },
+    {
+      "reference": "marketing-skills:competitors",
+      "roles": [
+        "search",
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/competitors/SKILL.md",
+      "sha256": "99e9ea715b1ac6dbaedda345a27358fb5e099f7d4fd5be63789d6e65cf2a6f46"
+    },
+    {
+      "reference": "marketing-skills:content-strategy",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/content-strategy/SKILL.md",
+      "sha256": "0ad572d607884c561668810f77cd21bbe3e0508c64090f2997661a728360f946"
+    },
+    {
+      "reference": "marketing-skills:copy-editing",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/copy-editing/SKILL.md",
+      "sha256": "9b5a20be3dc5513c8f0b4f4c4960857e4d28ed83698a5b33c8dde9dc75a47bf6"
+    },
+    {
+      "reference": "marketing-skills:copywriting",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/copywriting/SKILL.md",
+      "sha256": "ce18137ae31ab37f261078501431649865ab6b403054d97490754e82acb002d8"
+    },
+    {
+      "reference": "marketing-skills:cro",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/cro/SKILL.md",
+      "sha256": "199016bec3b44bc6a7507b111b6028f6550cc852cd54c7d0df789f15d6f814c4"
+    },
+    {
+      "reference": "marketing-skills:customer-research",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/customer-research/SKILL.md",
+      "sha256": "ae4769147f63dd5aea1308a0fddd85473601164893f58111dce738738226317e"
+    },
+    {
+      "reference": "marketing-skills:directory-submissions",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/directory-submissions/SKILL.md",
+      "sha256": "dd08854f5cd1e16413dd588b13e02a32ce01dd3a9f4e9b1099f92a7b635ac24a"
+    },
+    {
+      "reference": "marketing-skills:emails",
+      "roles": [
+        "lifecycle"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/emails/SKILL.md",
+      "sha256": "1fbd54df4c59f48408057e7db0dfb1a53c033e6a4ca5cd1927a47c51ec28d8f1"
+    },
+    {
+      "reference": "marketing-skills:image",
+      "roles": [
+        "creative"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/image/SKILL.md",
+      "sha256": "c34b67e249e558410ee960043d0de3c1d188dc3b6ba36d7714c16ec6f1fad46e"
+    },
+    {
+      "reference": "marketing-skills:launch",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/launch/SKILL.md",
+      "sha256": "1d5f5e6a4caaa5b62604a8df324b060eb99da567e65e9fc5a69b9999c61325b2"
+    },
+    {
+      "reference": "marketing-skills:marketing-psychology",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/marketing-psychology/SKILL.md",
+      "sha256": "573bbe4f6e300e7fb75299e314f56e26382d284782caa2ae0e0f33eb2e646548"
+    },
+    {
+      "reference": "marketing-skills:offers",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/offers/SKILL.md",
+      "sha256": "f27239be82e5d4ad42daa944fad7d0a640b80ca82697ba7399843437a001e5aa"
+    },
+    {
+      "reference": "marketing-skills:onboarding",
+      "roles": [
+        "lifecycle"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/onboarding/SKILL.md",
+      "sha256": "ca219e0ba8f931888e2a634624ab927206f8ef26aeca2250399c3c48da0341e0"
+    },
+    {
+      "reference": "marketing-skills:paywalls",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/paywalls/SKILL.md",
+      "sha256": "d062c03f6b99e76ffaa367a1494ba80098b2033d4d74609b895373a024a8eac1"
+    },
+    {
+      "reference": "marketing-skills:popups",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/popups/SKILL.md",
+      "sha256": "6c66e7f923c1eebc7eb7b94971af2e8016d3b5316e14bb1ad4b15ed3522084ce"
+    },
+    {
+      "reference": "marketing-skills:pricing",
+      "roles": [
+        "research"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/pricing/SKILL.md",
+      "sha256": "6cb88c2e944331c12f2fb83341ff16aba85a34629df11f4cffc7f611e4df6868"
+    },
+    {
+      "reference": "marketing-skills:product-marketing",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/product-marketing/SKILL.md",
+      "sha256": "6dfd6bd485f62448385844cb9eceefcee0977c843d7a1c9e6077590d4e19d1ec"
+    },
+    {
+      "reference": "marketing-skills:programmatic-seo",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/programmatic-seo/SKILL.md",
+      "sha256": "15cb5979cab5263ede902a830e03342869256ece17905bff240eef498e27cde1"
+    },
+    {
+      "reference": "marketing-skills:prospecting",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/prospecting/SKILL.md",
+      "sha256": "beabb53a99b4df893216c18ba84198d7f2622cc83ef35043c09b218840498356"
+    },
+    {
+      "reference": "marketing-skills:public-relations",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/public-relations/SKILL.md",
+      "sha256": "36fe43e755d951a9e05a268319e6089e7727dcd9de0a9ab6c4ec56768e4190ed"
+    },
+    {
+      "reference": "marketing-skills:referrals",
+      "roles": [
+        "lifecycle"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/referrals/SKILL.md",
+      "sha256": "103bd339d6d7796fae1128487c1560f38feecd94898d0d7c44ca0383f4c809d9"
+    },
+    {
+      "reference": "marketing-skills:sales-enablement",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/sales-enablement/SKILL.md",
+      "sha256": "d83c3244dd8e2e64d585f1ff0d760eff181587f06b90ceaf8127a4ce618265dd"
+    },
+    {
+      "reference": "marketing-skills:schema",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/schema/SKILL.md",
+      "sha256": "d8b7aa7bcd9727a87fb5470a6c9ee252b99a7ccb84f637d7c67c5d155b507e0b"
+    },
+    {
+      "reference": "marketing-skills:seo-audit",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/seo-audit/SKILL.md",
+      "sha256": "9420a6c1ffcf7212766bcb618c28766ecb084631bed8045f3115d42b1230d368"
+    },
+    {
+      "reference": "marketing-skills:signup",
+      "roles": [
+        "performance"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/signup/SKILL.md",
+      "sha256": "9395aabae64891ebdac5f31d17c83b9d47546dc0c9b22654c7b89e9b04da7cf6"
+    },
+    {
+      "reference": "marketing-skills:site-architecture",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/site-architecture/SKILL.md",
+      "sha256": "a47f693c6a4f45db89276d8c341b3aa3054090cc8002dd4a2635448d7d152492"
+    },
+    {
+      "reference": "marketing-skills:sms",
+      "roles": [
+        "lifecycle"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/sms/SKILL.md",
+      "sha256": "bf649cfac0e3851f28b4746dc0dccb51c7526935b64cae7dd237b1b948c58842"
+    },
+    {
+      "reference": "marketing-skills:social",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/social/SKILL.md",
+      "sha256": "8cc93d9b361622cdb640e87969747b85603bed2d268e923179f8dfb4799ec8c7"
+    },
+    {
+      "reference": "marketing-skills:video",
+      "roles": [
+        "content",
+        "creative"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.codex/skills/video/SKILL.md",
+      "sha256": "3b6d4864bae49dd3d60e7f6218e0de0803633989d68bdcf093a3771307387ac2"
+    },
+    {
+      "reference": "microinteractions",
+      "roles": [
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/microinteractions/SKILL.md",
+      "sha256": "9f7b271fcfcee890eb78cdc3d7666284350c8b14ab00774b7e5dc966d0b122ac"
+    },
+    {
+      "reference": "negotiation",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/negotiation/SKILL.md",
+      "sha256": "043e5753b3011248b9e948f20280d8a7c53722638d96d8870adf4ce09ae5ad20"
+    },
+    {
+      "reference": "objection-handling",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/objection-handling/SKILL.md",
+      "sha256": "98aeaeaefddba0957ee4172d5eea5b47bf44467de21bd0f16620d6d94750b0af"
+    },
+    {
+      "reference": "outbound-prospecting",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/outbound-prospecting/SKILL.md",
+      "sha256": "39eac9ddf4dfbeb4b78fe87110f04908c454fbdaea09dda877f3aed70267d844"
+    },
+    {
+      "reference": "pipeline-management",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/pipeline-management/SKILL.md",
+      "sha256": "ce80047ef7772a1aa4bf66d9b051bc7941c4a38cdf249c104377d01f098ceacf"
+    },
+    {
+      "reference": "pragmatic-programmer",
+      "roles": [
+        "backend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/pragmatic-programmer/SKILL.md",
+      "sha256": "7397f8b7120cc51ebb99e3df64a095bd902fdb9c879a612a0e5603808eabc8bf"
+    },
+    {
+      "reference": "proposal-writer",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/proposal-writer/SKILL.md",
+      "sha256": "ba52a8eedd84b5c9df1c239765895f892b367e672cc716fa5561835e9c896217"
+    },
+    {
+      "reference": "qa-testing",
+      "roles": [
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/qa-testing/SKILL.md",
+      "sha256": "605f8489de7d3860b01056be0d4380ca5753ec3cca4baab4e8b957a9c28ad85b"
+    },
+    {
+      "reference": "receiving-code-review",
+      "roles": [
+        "backend-dev",
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/receiving-code-review/SKILL.md",
+      "sha256": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438"
+    },
+    {
+      "reference": "refactoring-patterns",
+      "roles": [
+        "backend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/refactoring-patterns/SKILL.md",
+      "sha256": "3b16d1b244d6c505d51d695848243f700f90caa97da7129b634cf7a3c9eee865"
+    },
+    {
+      "reference": "refactoring-ui",
+      "roles": [
+        "creative",
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/refactoring-ui/SKILL.md",
+      "sha256": "7f0dd5535007058f2f02e978cb3ff1a0d3f7f7306765dbeb2cb14ad49719a507"
+    },
+    {
+      "reference": "release-it",
+      "roles": [
+        "backend-dev",
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/release-it/SKILL.md",
+      "sha256": "afb7581ae84dd3bc1356c34f589a9529b87ea971760dd39bec7909459bebba91"
+    },
+    {
+      "reference": "requesting-code-review",
+      "roles": [
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/requesting-code-review/SKILL.md",
+      "sha256": "cfcee1b06774e7c0517f1e09be1a11f2d5680257072723e709ddbcf7e08b795a"
+    },
+    {
+      "reference": "sales-presentations",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/sales-presentations/SKILL.md",
+      "sha256": "a1240a3442833878b2d22f43b8e30202978c6b3e971c2abe0b1a4d7fa337aeb5"
+    },
+    {
+      "reference": "schema-markup-generator",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/schema-markup-generator/SKILL.md",
+      "sha256": "7fa0b9ebeb11dcbb9a273f01bd6993af61179ba8318042c09cb9e0df9da35f31"
+    },
+    {
+      "reference": "sdk-docs-auditor",
+      "roles": [
+        "devrel"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/sdk-docs-auditor/SKILL.md",
+      "sha256": "c81be0d1f59fe254e58f86992c9fae0e929597d63f6d3e4727b0cea15cbec96d"
+    },
+    {
+      "reference": "security-baseline",
+      "roles": [
+        "secops"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/security-baseline/SKILL.md",
+      "sha256": "8af28729093ff8a97796cba7b37db6d621e50d5d31e684baf1ba8bc98383daaf"
+    },
+    {
+      "reference": "seo-aeo-geo",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/seo-aeo-geo/SKILL.md",
+      "sha256": "573caeaa6d9e988fb7539bb79c397756ca7fb4645ab4f79a69d3a14017988529"
+    },
+    {
+      "reference": "seo-geo-aeo",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/seo-geo-aeo/SKILL.md",
+      "sha256": "bad5ad92f0f23e5cb3486bb4dece1a285bd703155dc101e1d227412bee8eb9cf"
+    },
+    {
+      "reference": "seo-local-business",
+      "roles": [
+        "search"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/seo-local-business/SKILL.md",
+      "sha256": "0c4e773bd0b990a650aef3f563e5832fdb3dd70bb554df2a56d72f007bfcc835"
+    },
+    {
+      "reference": "social-selling",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/social-selling/SKILL.md",
+      "sha256": "4b1a8756fac2fe408df94bcc9b3b210470e646888112c5a48b08d893c1892b1a"
+    },
+    {
+      "reference": "steve-jobs-design-review",
+      "roles": [
+        "creative"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/steve-jobs-design-review/SKILL.md",
+      "sha256": "0bbfdcaf8d00ab82877a247369ce08b3ac7c2646d08b28d76f93bbe9456fa2ad"
+    },
+    {
+      "reference": "storybrand-messaging",
+      "roles": [
+        "content"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/storybrand-messaging/SKILL.md",
+      "sha256": "598998a880115de22dc80378e158a6fca9490dd14f6b0c011f284b104aa90b64"
+    },
+    {
+      "reference": "system-design",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/system-design/SKILL.md",
+      "sha256": "aae74791e2509a10325bf77e60e31b4adb3cdabd42b981a123336e93e0efeb55"
+    },
+    {
+      "reference": "systematic-debugging",
+      "roles": [
+        "backend-dev",
+        "frontend-dev",
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/systematic-debugging/SKILL.md",
+      "sha256": "df3f6451b43f4b5115b4599e17ece202fe8d8283f1ff5a40a6584ad2e44710fe"
+    },
+    {
+      "reference": "test-driven-development",
+      "roles": [
+        "backend-dev",
+        "frontend-dev",
+        "quality"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/test-driven-development/SKILL.md",
+      "sha256": "64b03fce4aee5a97a93160cea8111f3ba13a17b7c001db4bd5836d67fd10705d"
+    },
+    {
+      "reference": "top-design",
+      "roles": [
+        "creative"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/top-design/SKILL.md",
+      "sha256": "857f8f0025d3cfa0f7d72d3243f446e50e21c9651309f84121046d3258458083"
+    },
+    {
+      "reference": "trigger-event-detection",
+      "roles": [
+        "sales"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/trigger-event-detection/SKILL.md",
+      "sha256": "cb2c0fb10e5b8fcf2bb5a78ad846b2623892053b22d033639b45c2538df2b136"
+    },
+    {
+      "reference": "using-git-worktrees",
+      "roles": [
+        "backend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/using-git-worktrees/SKILL.md",
+      "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
+    },
+    {
+      "reference": "ux-heuristics",
+      "roles": [
+        "performance",
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/ux-heuristics/SKILL.md",
+      "sha256": "7333b6900dbd327d543ab94b3d52e01a4d4775cdb05edc38b744cee3186cacfc"
+    },
+    {
+      "reference": "verification-before-completion",
+      "roles": [
+        "backend-dev",
+        "frontend-dev",
+        "quality",
+        "platform"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/verification-before-completion/SKILL.md",
+      "sha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3"
+    },
+    {
+      "reference": "web-typography",
+      "roles": [
+        "creative",
+        "frontend-dev"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.agents/skills/web-typography/SKILL.md",
+      "sha256": "37fd68537c2ace2c4a85a4113036511c53f5fe5ecf7a3dd88fa4644f0c6d0950"
+    },
+    {
+      "reference": "writing-plans",
+      "roles": [
+        "architect"
+      ],
+      "status": "resolved-local-file",
+      "path": "/Users/qognitionagency/.claude/skills/writing-plans/SKILL.md",
+      "sha256": "6d476f62d4c961a363e96ef25da05d3305405362e93e011cd37743e5eb8054a3"
+    }
+  ],
+  "externalClientContext": [
+    {
+      "purpose": "context.md",
+      "path": "/Users/qognitionagency/qognition-ops/clients/qognition-agency/context.md",
+      "exists": true
+    },
+    {
+      "purpose": "guardrails.md",
+      "path": "/Users/qognitionagency/qognition-ops/clients/qognition-agency/guardrails.md",
+      "exists": true
+    },
+    {
+      "purpose": "brand-voice.md",
+      "path": "/Users/qognitionagency/qognition-ops/clients/qognition-agency/brand-voice.md",
+      "exists": true
+    }
+  ],
+  "preservedFiles": {
+    "CLAUDE.md": "affbb7d4ceb7943b310c3bb074171a85c6d1cd7e4f6dd246cf1b5d9c05241d87",
+    "docs/copy/home-v4.md": "0b532d01b0e05e5db9d669306c3407cb5326ccf9a1f694fe1238f11bae7e7b38",
+    "docs/icp-positioning.md": "1931bc86c9f7d9c4bd5bc1d41500a2bd7b59233377dfad9e6cae94a8b8fa4b9b",
+    ".agents/product-marketing.md": "b15c84c8b3a4b68f99877b39300e887f080fc0fa46a0114d44556b04c08c6f17"
+  },
+  "baselineGitHead": "231a91b2ef07275b075fd236b21a9b5dfd5b9082"
+}
